@@ -1,0 +1,63 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-ai_whitesec}
+      POSTGRES_USER: ${POSTGRES_USER:-ai_whitesec}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ai_whitesec} -d ${POSTGRES_DB:-ai_whitesec}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  inference:
+    build: ./inference
+    environment:
+      MODEL_VERSION: ${MODEL_VERSION:-mock-codebert-5cwe-v1}
+      MODEL_MODE: ${MODEL_MODE:-mock}
+      AI_CONFIDENCE_THRESHOLD: ${AI_CONFIDENCE_THRESHOLD:-0.70}
+      CHECKPOINT_DIR: ${CHECKPOINT_DIR:-}
+      CODEBERT_MAX_LENGTH: ${CODEBERT_MAX_LENGTH:-512}
+    ports:
+      - "8001:8001"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql+psycopg2://ai_whitesec:change-me@postgres:5432/ai_whitesec}
+      INFERENCE_URL: ${INFERENCE_URL:-http://inference:8001}
+      AI_CONFIDENCE_THRESHOLD: ${AI_CONFIDENCE_THRESHOLD:-0.70}
+      API_KEY: ${API_KEY:-}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    # Run alembic migrations before starting the server
+    command: >-
+      sh -c "alembic upgrade head &&
+             uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      inference:
+        condition: service_healthy
+    volumes:
+      - ./artifacts:/app/artifacts
+      - ./backend/alembic:/app/alembic
+      - ./backend/alembic.ini:/app/alembic.ini
+
+volumes:
+  postgres_data:
+

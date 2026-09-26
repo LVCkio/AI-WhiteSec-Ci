@@ -1,0 +1,97 @@
+name: AI WhiteSec Security Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      backend_url:
+        description: Deployed backend URL
+        required: true
+        default: https://security-api.example.edu
+      inference_url:
+        description: Deployed inference URL
+        required: true
+        default: https://security-model.example.edu
+      gate_severity:
+        description: "Minimum severity that blocks CI (info/low/medium/high/critical)"
+        required: false
+        default: high
+      gate_statuses:
+        description: "Space-separated combination statuses that block CI"
+        required: false
+        default: AGREEMENT
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      # ── Checkout ────────────────────────────────────────────────────────────
+      # Pinned to a reviewed commit SHA — do NOT change to @v4 or @main without
+      # verifying the new SHA in a separate security review.
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+        with:
+          fetch-depth: 0
+
+      # ── Checkmarx SAST ──────────────────────────────────────────────────────
+      # Pinned SHA: Checkmarx/ast-github-action @ v2.0.36 (2025-11-14)
+      # Review any SHA change before merging.
+      - name: Run Checkmarx One and export SARIF
+        uses: Checkmarx/ast-github-action@c732bef85f9cf60abcc96ea76db8b1f0f5da4fb4  # v2.0.36
+        continue-on-error: true
+        with:
+          base_uri: ${{ secrets.CX_BASE_URI }}
+          cx_tenant: ${{ secrets.CX_TENANT }}
+          cx_client_id: ${{ secrets.CX_CLIENT_ID }}
+          cx_client_secret: ${{ secrets.CX_CLIENT_SECRET }}
+          additional_params: --report-format sarif --output-path .
+
+      # ── Python setup ────────────────────────────────────────────────────────
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5.6.0
+        with:
+          python-version: "3.12"
+
+      # ── AI + Correlation pipeline ───────────────────────────────────────────
+      - name: Run AI and correlation pipeline
+        env:
+          BACKEND_API_KEY: ${{ secrets.BACKEND_API_KEY }}
+        run: >-
+          python pipeline/run_pipeline.py
+          --root .
+          --repository "${{ github.repository }}"
+          --project "${{ github.event.repository.name }}"
+          --commit-sha "${{ github.sha }}"
+          --branch "${{ github.ref_name }}"
+          --sarif cx_result.sarif
+          --backend "${{ inputs.backend_url }}"
+          --inference "${{ inputs.inference_url }}"
+          --output artifacts/pipeline-result.json
+
+      # ── Security Gate ────────────────────────────────────────────────────────
+      # Fails the build if AGREEMENT findings at high/critical severity are found.
+      # Adjust --block-on and --max-severity to change gate policy without code changes.
+      - name: Security Gate
+        run: >-
+          python scripts/security_gate.py artifacts/pipeline-result.json
+          --block-on ${{ inputs.gate_statuses }}
+          --max-severity ${{ inputs.gate_severity }}
+          --summary
+
+      # ── Upload SARIF to GitHub Security tab ─────────────────────────────────
+      - name: Upload Checkmarx SARIF to GitHub
+        if: ${{ hashFiles('cx_result.sarif') != '' }}
+        # Pinned SHA: github/codeql-action/upload-sarif @ v3.28.19 (2025-11-14)
+        uses: github/codeql-action/upload-sarif@4f3212b61783c3c68e8309a0f18a699764811cda  # v3.28.19
+        with:
+          sarif_file: cx_result.sarif
+          category: checkmarx-one
+
+      # ── Store pipeline artifact ──────────────────────────────────────────────
+      # Pinned SHA: actions/upload-artifact @ v4.6.2
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
+        if: always()
+        with:
+          name: ai-whitesec-results
+          path: artifacts/pipeline-result.json

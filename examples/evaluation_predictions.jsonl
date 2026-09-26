@@ -1,0 +1,5 @@
+{"sample_id":"sample-1-chunk-1","parent_sample_id":"case-1","expected":"CWE-89","predicted":"CWE-89","confidence":0.94}
+{"sample_id":"sample-2-chunk-1","parent_sample_id":"case-2","expected":"CWE-79","predicted":"SAFE","confidence":0.72}
+{"sample_id":"sample-3-chunk-1","parent_sample_id":"case-3","expected":"SAFE","predicted":"SAFE","confidence":0.88}
+{"sample_id":"sample-4-chunk-1","parent_sample_id":"case-4","expected":"CWE-22","predicted":"CWE-22","confidence":0.83}
+

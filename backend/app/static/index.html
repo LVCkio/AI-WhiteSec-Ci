@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#07111f" />
+    <title>AI WhiteSec CI Dashboard</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">W</span>
+          <div><strong>AI WhiteSec CI</strong><small>Hệ thống phân tích bảo mật</small></div>
+        </div>
+        <nav id="primary-nav" aria-label="Điều hướng chính"></nav>
+        <div class="operator"><span class="avatar">OP</span><div><small>Operator</small><strong>Nhóm vận hành</strong></div></div>
+      </aside>
+
+      <div class="workspace">
+        <div class="demo-ribbon"><span>●</span> DỮ LIỆU MINH HỌA <b>— Không phải kết quả thực nghiệm</b></div>
+        <header class="context-bar">
+          <div class="context-title"><strong>AI WhiteSec CI Dashboard</strong><span id="screen-label">Tổng quan hệ thống</span></div>
+          <div id="run-context" class="run-context"></div>
+          <button id="seed-button" class="outline-button" type="button">＋ Dữ liệu mẫu</button>
+          <button id="mobile-menu" class="mobile-menu" type="button" aria-label="Mở menu">☰</button>
+        </header>
+        <main id="app" tabindex="-1"></main>
+      </div>
+    </div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="/static/app.js"></script>
+  </body>
+</html>
