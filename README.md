@@ -1,5 +1,46 @@
 # AI WhiteSec CI
 
+## Dashboard mới — Gateway v2
+
+Dashboard nâng cấp nằm trong **[dashboard/](dashboard/README.md)** và chạy độc lập
+với backend ban đầu. Module này phục vụ giao diện cùng Gateway tại
+`http://127.0.0.1:8080/dashboard`, với luồng **cùng Git snapshot → Checkmarx và
+CodeBERT chạy song song → Gateway hợp nhất → Security Gate quyết định**.
+API Gateway v2 (`/v1/runs`) khác API của `backend/`; giao diện mới chưa được nối
+với backend ban đầu. Backend cũ và hướng dẫn chạy ở cổng `8000` vẫn được giữ bên
+dưới. Chạy từng cấu hình riêng vì hai cấu hình đều dùng cổng model `8001`.
+
+Năm màn hình gồm **Tổng quan**, **Giám sát CI/CD**, **Cảnh báo bảo mật**,
+**Đánh giá mô hình** và **So sánh lượt quét**. Bản mới bổ sung các ô tổng quan có
+thể mở danh sách tương ứng, lý do Security Gate kèm bằng chứng, cùng bộ lọc và
+xuất JSON khi so sánh hai lượt quét. Nhãn **không còn ghi nhận** chỉ mô tả kết quả
+đối chiếu, không xác nhận lỗ hổng đã được sửa; khác phạm vi hoặc thiếu bằng chứng
+được hiển thị rõ.
+
+Chạy demo trên Windows với Python 3.11:
+
+```powershell
+cd dashboard
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\scripts\run-local.ps1 -Demo -Python .\.venv\Scripts\python.exe
+```
+
+Mở [dashboard local](http://127.0.0.1:8080/dashboard). Dừng bằng
+`.\scripts\stop-local.ps1`. Nguồn minh họa trong giao diện và chế độ `-Demo`
+của model là hai lựa chọn riêng; demo luôn `allow_deploy=false`. Chưa có
+Checkmarx thật hoặc classifier đã được duyệt, và trang đánh giá vẫn chờ held-out
+dataset cùng ground truth trước khi báo cáo Precision/Recall/F1. Xem
+[hướng dẫn module](dashboard/README.md) để dùng nguồn API local và kiểm tra.
+
+![Tổng quan dashboard mới với dữ liệu minh họa](dashboard/docs/screenshots/dashboard-upgrade-overview.jpg)
+
+![So sánh lượt quét với dữ liệu minh họa](dashboard/docs/screenshots/dashboard-upgrade-comparison.jpg)
+
+## Pipeline backend ban đầu
+
+The remaining sections describe the original `backend/` stack and its dashboard.
+
 Skeleton for an AI-assisted white-box security testing pipeline. It keeps raw
 CodeBERT and Checkmarx findings, correlates them into an explainable combined
 view, stores versioned scan runs, and presents the results in a four-screen

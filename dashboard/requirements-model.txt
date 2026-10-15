@@ -1,0 +1,4 @@
+# Install the CPU wheel first, then this file (see Dockerfile / README).
+torch==2.8.0
+transformers==4.57.1
+safetensors>=0.6,<1.0

@@ -1,0 +1,6 @@
+{
+  "version": "pilot-unapproved-v1",
+  "release_approved": false,
+  "block_checkmarx_severities": ["critical", "high"],
+  "review_score_margin": 0.15
+}

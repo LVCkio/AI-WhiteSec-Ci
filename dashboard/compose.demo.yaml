@@ -1,0 +1,8 @@
+# Explicit parallel demo. CodeBERT fixture scores and the Gateway gate never authorize deployment.
+services:
+  codebert:
+    image: whitesec-codebert-demo:local
+    build:
+      target: runtime
+    environment:
+      MODEL_MODE: demo

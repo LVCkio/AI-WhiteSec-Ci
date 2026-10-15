@@ -1,0 +1,40 @@
+name: Dashboard checks
+
+on:
+  push:
+    paths:
+      - "dashboard/**"
+      - ".github/workflows/dashboard-checks.yml"
+  pull_request:
+    paths:
+      - "dashboard/**"
+      - ".github/workflows/dashboard-checks.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dashboard:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: dashboard
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: dashboard/requirements.txt
+      - name: Install dashboard dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Run Gateway and model tests
+        run: python -m unittest discover -s tests -v
+      - name: Verify parallel demo without external services
+        run: python scripts/smoke_demo.py --offline
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+      - name: Verify scan comparison
+        run: node --experimental-vm-modules scripts/verify-dashboard-comparison.mjs
