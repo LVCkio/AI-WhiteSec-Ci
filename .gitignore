@@ -1,19 +1,17 @@
 .env
+.venv/
 __pycache__/
 *.py[cod]
 .pytest_cache/
-.venv/
-venv/
-node_modules/
-artifacts/*
-!artifacts/.gitkeep
-*.db
+.local/
+data/
+reports/
+decision.json
+run-receipt.json
+.dashboard-build/node_modules/
+.dashboard-build/.npm-cache/
+*.sqlite
 *.sqlite3
-# Alembic compiled cache
-alembic/__pycache__/
-# CodeBERT checkpoint (large binary files — store in object storage)
-checkpoints/
-*.bin
-*.safetensors
-# Checkmarx SARIF output
-cx_result.sarif
+*.db
+models/current/
+*.log
