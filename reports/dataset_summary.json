@@ -1,0 +1,175 @@
+{
+ "manifest": {
+  "version": "six_class_v5_1_e03",
+  "created": "2026-10-18",
+  "script": "18_build_multilang.py",
+  "seed": 42,
+  "sources": {
+   "data_versions\\m03_sources\\cvefixes_e03.csv": "1eba4e04b9d578c48e0f837541c573cfa8669361f6d233a535ea5f2dc3e708e8",
+   "data_versions\\m03_sources\\crossvul_e03.csv": "74fc567cc836d17878a208407a5a55655acc3e154972e243d71f777e6128e649"
+  },
+  "cwe_map": "extended (E03)",
+  "pin_from": "data_versions\\v5_multilang",
+  "pinned_rows": {
+   "train": 3194,
+   "val": 637,
+   "test": 658
+  },
+  "pyvul_extra": "data_versions\\v4_e03_cwe_extended",
+  "pyvul_extra_rows": 100,
+  "code_after_rows": 4315,
+  "base": "data/ (six_class_v2_grouped_split, tap giu nguyen)",
+  "exact_duplicates_dropped": 588,
+  "near_duplicate_pairs": 648,
+  "constraint_problems": [],
+  "new_source_rows_dropped_bridging_pyvul_splits": 37,
+  "max_per_repo_language_class": 20,
+  "rows_dropped_by_repo_cap": 1475,
+  "files": {
+   "train.csv": "fcdc9b2a9f56c408bea1b82ff144c9b00f19cf5aafb20c4132128eef81eca060",
+   "val.csv": "a28dc9cbb4db0a8738621bc36d1fa3ac3e46b5a56a15f29d5e15733ab5452ac5",
+   "test.csv": "01bdb179bd0bd69d5d21d36c4ecb8730097f3aef4f0025bb7fde5c25dbd82d12"
+  },
+  "counts": {
+   "train": 3697,
+   "val": 716,
+   "test": 746
+  }
+ },
+ "counts": {
+  "train": {
+   "n": 3697,
+   "cells": {
+    "Python|AUTHENTICATION_WEAKNESS": 96,
+    "Python|XSS": 146,
+    "JavaScript|XSS": 599,
+    "Python|PATH_TRAVERSAL": 163,
+    "Python|OS_COMMAND_INJECTION": 65,
+    "Python|SQL_INJECTION": 46,
+    "Python|HARDCODED_CREDENTIALS": 8,
+    "Java|HARDCODED_CREDENTIALS": 12,
+    "JavaScript|HARDCODED_CREDENTIALS": 14,
+    "PHP|HARDCODED_CREDENTIALS": 37,
+    "JavaScript|AUTHENTICATION_WEAKNESS": 50,
+    "Java|XSS": 125,
+    "PHP|SQL_INJECTION": 361,
+    "PHP|XSS": 964,
+    "JavaScript|PATH_TRAVERSAL": 110,
+    "JavaScript|OS_COMMAND_INJECTION": 143,
+    "JavaScript|SQL_INJECTION": 90,
+    "PHP|OS_COMMAND_INJECTION": 69,
+    "PHP|PATH_TRAVERSAL": 126,
+    "Java|AUTHENTICATION_WEAKNESS": 74,
+    "Java|SQL_INJECTION": 126,
+    "Java|PATH_TRAVERSAL": 126,
+    "PHP|AUTHENTICATION_WEAKNESS": 128,
+    "Java|OS_COMMAND_INJECTION": 19
+   },
+   "sources": {
+    "pyvul": 313,
+    "synthetic": 46,
+    "cvefixes": 2048,
+    "crossvul": 1290
+   }
+  },
+  "val": {
+   "n": 716,
+   "cells": {
+    "Python|XSS": 32,
+    "JavaScript|XSS": 114,
+    "Python|PATH_TRAVERSAL": 44,
+    "Python|OS_COMMAND_INJECTION": 13,
+    "Python|AUTHENTICATION_WEAKNESS": 16,
+    "Python|SQL_INJECTION": 6,
+    "Python|HARDCODED_CREDENTIALS": 6,
+    "Java|HARDCODED_CREDENTIALS": 4,
+    "PHP|SQL_INJECTION": 73,
+    "JavaScript|OS_COMMAND_INJECTION": 29,
+    "PHP|XSS": 192,
+    "JavaScript|SQL_INJECTION": 20,
+    "JavaScript|PATH_TRAVERSAL": 19,
+    "PHP|PATH_TRAVERSAL": 24,
+    "Java|SQL_INJECTION": 25,
+    "Java|PATH_TRAVERSAL": 26,
+    "PHP|AUTHENTICATION_WEAKNESS": 12,
+    "Java|XSS": 25,
+    "Java|AUTHENTICATION_WEAKNESS": 13,
+    "PHP|HARDCODED_CREDENTIALS": 1,
+    "PHP|OS_COMMAND_INJECTION": 15,
+    "JavaScript|AUTHENTICATION_WEAKNESS": 7
+   },
+   "sources": {
+    "pyvul": 56,
+    "synthetic": 10,
+    "cvefixes": 482,
+    "crossvul": 168
+   }
+  },
+  "test": {
+   "n": 746,
+   "cells": {
+    "Java|PATH_TRAVERSAL": 26,
+    "JavaScript|XSS": 114,
+    "Python|XSS": 51,
+    "Python|PATH_TRAVERSAL": 39,
+    "Python|OS_COMMAND_INJECTION": 11,
+    "Python|SQL_INJECTION": 8,
+    "Python|AUTHENTICATION_WEAKNESS": 23,
+    "Python|HARDCODED_CREDENTIALS": 2,
+    "JavaScript|HARDCODED_CREDENTIALS": 2,
+    "PHP|HARDCODED_CREDENTIALS": 4,
+    "PHP|XSS": 181,
+    "Java|XSS": 25,
+    "JavaScript|PATH_TRAVERSAL": 19,
+    "PHP|SQL_INJECTION": 72,
+    "PHP|PATH_TRAVERSAL": 36,
+    "Java|OS_COMMAND_INJECTION": 20,
+    "Java|SQL_INJECTION": 25,
+    "JavaScript|SQL_INJECTION": 17,
+    "Java|AUTHENTICATION_WEAKNESS": 7,
+    "PHP|AUTHENTICATION_WEAKNESS": 12,
+    "PHP|OS_COMMAND_INJECTION": 15,
+    "JavaScript|AUTHENTICATION_WEAKNESS": 8,
+    "JavaScript|OS_COMMAND_INJECTION": 28,
+    "Java|HARDCODED_CREDENTIALS": 1
+   },
+   "sources": {
+    "pyvul": 67,
+    "synthetic": 8,
+    "cvefixes": 524,
+    "crossvul": 147
+   }
+  }
+ },
+ "e05": {
+  "created": "2026-10-21T17:14:43+00:00",
+  "script": "31_build_temporal.py",
+  "cutoff_published_after": "2024-02-02T18:10:10Z",
+  "candidates": "data_versions/e05_temporal_candidates/candidates.csv",
+  "n_advisories_used": 285,
+  "n_functions": 680,
+  "by_class": {
+   "XSS": 128,
+   "PATH_TRAVERSAL": 262,
+   "AUTHENTICATION_WEAKNESS": 116,
+   "OS_COMMAND_INJECTION": 108,
+   "SQL_INJECTION": 61,
+   "HARDCODED_CREDENTIALS": 5
+  },
+  "published_range": [
+   "2024-02-21T18:04:00Z",
+   "2026-10-15T20:16:18Z"
+  ],
+  "dedup_against": [
+   "data_versions/v5_1_e03",
+   "data"
+  ],
+  "max_funcs": 10,
+  "max_py_files": 20,
+  "network_calls": {},
+  "files": {
+   "temporal_test.csv": "e82dff3b4d8c3200c625597943a89271d65dafcd8f250eff07cedb1a3cccf2ca",
+   "code_after.csv": "aa174cbe4fdd8cb8e8639cc8785b5219b0af867677ce826b88c03b04eb5e751d"
+  }
+ }
+}

@@ -1,0 +1,398 @@
+{
+  "app": "dvwa",
+  "architecture": "parallel",
+  "mode": "parallel",
+  "verdict": "BLOCK",
+  "verifier": "tfidf:models\\verifier_tfidf_v51",
+  "verifier_threshold": 0.6,
+  "languages": [
+    "JavaScript",
+    "PHP"
+  ],
+  "n_vulnerabilities": 25,
+  "n_vulnerable_units": 25,
+  "n_units": 102,
+  "timing_seconds": {
+    "extract_s": 0.047,
+    "sast_s": 32.929,
+    "codebert_s": 118.784,
+    "parallel_wall_s": 118.812,
+    "model_load_s": 13.776,
+    "total_s": 118.878
+  },
+  "compare_states": {
+    "agree": 18,
+    "sast_only": 21,
+    "codebert_only": 26,
+    "conflict": 4,
+    "pass": 33
+  },
+  "decisions": {
+    "BLOCK": 21,
+    "REVIEW": 48,
+    "PASS": 33
+  },
+  "rules": "security-config/semgrep/semgrep.yml",
+  "results": [
+    {
+      "method": "SAST_B",
+      "per_class": [
+        {
+          "class": "SQL_INJECTION",
+          "gt": 6,
+          "detected": 6,
+          "predicted": 20,
+          "recall": 1.0,
+          "precision": 0.3
+        },
+        {
+          "class": "XSS",
+          "gt": 9,
+          "detected": 4,
+          "predicted": 32,
+          "recall": 0.4444444444444444,
+          "precision": 0.125
+        },
+        {
+          "class": "OS_COMMAND_INJECTION",
+          "gt": 3,
+          "detected": 3,
+          "predicted": 4,
+          "recall": 1.0,
+          "precision": 0.75
+        },
+        {
+          "class": "PATH_TRAVERSAL",
+          "gt": 3,
+          "detected": 0,
+          "predicted": 7,
+          "recall": 0.0,
+          "precision": 0.0
+        },
+        {
+          "class": "AUTHENTICATION_WEAKNESS",
+          "gt": 3,
+          "detected": 3,
+          "predicted": 13,
+          "recall": 1.0,
+          "precision": 0.23076923076923078
+        },
+        {
+          "class": "HARDCODED_CREDENTIALS",
+          "gt": 1,
+          "detected": 1,
+          "predicted": 1,
+          "recall": 1.0,
+          "precision": 1.0
+        }
+      ],
+      "recall": 0.68,
+      "precision": 0.22077922077922077,
+      "detected_any_class": 0.68,
+      "flagged_safe_functions": 26,
+      "safe_functions": 77,
+      "wrong_class_on_vulnerable": 0,
+      "n_predictions": 77
+    },
+    {
+      "method": "SAST_high_only",
+      "per_class": [
+        {
+          "class": "SQL_INJECTION",
+          "gt": 6,
+          "detected": 3,
+          "predicted": 4,
+          "recall": 0.5,
+          "precision": 0.75
+        },
+        {
+          "class": "XSS",
+          "gt": 9,
+          "detected": 0,
+          "predicted": 1,
+          "recall": 0.0,
+          "precision": 0.0
+        },
+        {
+          "class": "OS_COMMAND_INJECTION",
+          "gt": 3,
+          "detected": 3,
+          "predicted": 4,
+          "recall": 1.0,
+          "precision": 0.75
+        },
+        {
+          "class": "PATH_TRAVERSAL",
+          "gt": 3,
+          "detected": 0,
+          "predicted": 3,
+          "recall": 0.0,
+          "precision": 0.0
+        },
+        {
+          "class": "AUTHENTICATION_WEAKNESS",
+          "gt": 3,
+          "detected": 0,
+          "predicted": 0,
+          "recall": 0.0,
+          "precision": null
+        },
+        {
+          "class": "HARDCODED_CREDENTIALS",
+          "gt": 1,
+          "detected": 1,
+          "predicted": 1,
+          "recall": 1.0,
+          "precision": 1.0
+        }
+      ],
+      "recall": 0.28,
+      "precision": 0.5384615384615384,
+      "detected_any_class": 0.32,
+      "flagged_safe_functions": 5,
+      "safe_functions": 77,
+      "wrong_class_on_vulnerable": 1,
+      "n_predictions": 13
+    },
+    {
+      "method": "AI_verifier",
+      "per_class": [
+        {
+          "class": "SQL_INJECTION",
+          "gt": 6,
+          "detected": 0,
+          "predicted": 0,
+          "recall": 0.0,
+          "precision": null
+        },
+        {
+          "class": "XSS",
+          "gt": 9,
+          "detected": 4,
+          "predicted": 43,
+          "recall": 0.4444444444444444,
+          "precision": 0.09302325581395349
+        },
+        {
+          "class": "OS_COMMAND_INJECTION",
+          "gt": 3,
+          "detected": 0,
+          "predicted": 0,
+          "recall": 0.0,
+          "precision": null
+        },
+        {
+          "class": "PATH_TRAVERSAL",
+          "gt": 3,
+          "detected": 0,
+          "predicted": 0,
+          "recall": 0.0,
+          "precision": null
+        },
+        {
+          "class": "AUTHENTICATION_WEAKNESS",
+          "gt": 3,
+          "detected": 0,
+          "predicted": 0,
+          "recall": 0.0,
+          "precision": null
+        },
+        {
+          "class": "HARDCODED_CREDENTIALS",
+          "gt": 1,
+          "detected": 0,
+          "predicted": 5,
+          "recall": 0.0,
+          "precision": 0.0
+        }
+      ],
+      "recall": 0.16,
+      "precision": 0.08333333333333333,
+      "detected_any_class": 0.64,
+      "flagged_safe_functions": 32,
+      "safe_functions": 77,
+      "wrong_class_on_vulnerable": 12,
+      "n_predictions": 48
+    },
+    {
+      "method": "CodeBERT_all_functions",
+      "per_class": [
+        {
+          "class": "SQL_INJECTION",
+          "gt": 6,
+          "detected": 0,
+          "predicted": 0,
+          "recall": 0.0,
+          "precision": null
+        },
+        {
+          "class": "XSS",
+          "gt": 9,
+          "detected": 8,
+          "predicted": 93,
+          "recall": 0.8888888888888888,
+          "precision": 0.08602150537634409
+        },
+        {
+          "class": "OS_COMMAND_INJECTION",
+          "gt": 3,
+          "detected": 0,
+          "predicted": 0,
+          "recall": 0.0,
+          "precision": null
+        },
+        {
+          "class": "PATH_TRAVERSAL",
+          "gt": 3,
+          "detected": 0,
+          "predicted": 0,
+          "recall": 0.0,
+          "precision": null
+        },
+        {
+          "class": "AUTHENTICATION_WEAKNESS",
+          "gt": 3,
+          "detected": 0,
+          "predicted": 1,
+          "recall": 0.0,
+          "precision": 0.0
+        },
+        {
+          "class": "HARDCODED_CREDENTIALS",
+          "gt": 1,
+          "detected": 0,
+          "predicted": 8,
+          "recall": 0.0,
+          "precision": 0.0
+        }
+      ],
+      "recall": 0.32,
+      "precision": 0.0784313725490196,
+      "detected_any_class": 1.0,
+      "flagged_safe_functions": 77,
+      "safe_functions": 77,
+      "wrong_class_on_vulnerable": 17,
+      "n_predictions": 102
+    },
+    {
+      "method": "Gate_BLOCK",
+      "per_class": [
+        {
+          "class": "SQL_INJECTION",
+          "gt": 6,
+          "detected": 3,
+          "predicted": 7,
+          "recall": 0.5,
+          "precision": 0.42857142857142855
+        },
+        {
+          "class": "XSS",
+          "gt": 9,
+          "detected": 1,
+          "predicted": 19,
+          "recall": 0.1111111111111111,
+          "precision": 0.05263157894736842
+        },
+        {
+          "class": "OS_COMMAND_INJECTION",
+          "gt": 3,
+          "detected": 3,
+          "predicted": 4,
+          "recall": 1.0,
+          "precision": 0.75
+        },
+        {
+          "class": "PATH_TRAVERSAL",
+          "gt": 3,
+          "detected": 0,
+          "predicted": 3,
+          "recall": 0.0,
+          "precision": 0.0
+        },
+        {
+          "class": "AUTHENTICATION_WEAKNESS",
+          "gt": 3,
+          "detected": 2,
+          "predicted": 4,
+          "recall": 0.6666666666666666,
+          "precision": 0.5
+        },
+        {
+          "class": "HARDCODED_CREDENTIALS",
+          "gt": 1,
+          "detected": 1,
+          "predicted": 1,
+          "recall": 1.0,
+          "precision": 1.0
+        }
+      ],
+      "recall": 0.4,
+      "precision": 0.2631578947368421,
+      "detected_any_class": 0.4,
+      "flagged_safe_functions": 11,
+      "safe_functions": 77,
+      "wrong_class_on_vulnerable": 0,
+      "n_predictions": 38
+    },
+    {
+      "method": "Gate_BLOCK_or_REVIEW",
+      "per_class": [
+        {
+          "class": "SQL_INJECTION",
+          "gt": 6,
+          "detected": 6,
+          "predicted": 20,
+          "recall": 1.0,
+          "precision": 0.3
+        },
+        {
+          "class": "XSS",
+          "gt": 9,
+          "detected": 7,
+          "predicted": 57,
+          "recall": 0.7777777777777778,
+          "precision": 0.12280701754385964
+        },
+        {
+          "class": "OS_COMMAND_INJECTION",
+          "gt": 3,
+          "detected": 3,
+          "predicted": 4,
+          "recall": 1.0,
+          "precision": 0.75
+        },
+        {
+          "class": "PATH_TRAVERSAL",
+          "gt": 3,
+          "detected": 0,
+          "predicted": 7,
+          "recall": 0.0,
+          "precision": 0.0
+        },
+        {
+          "class": "AUTHENTICATION_WEAKNESS",
+          "gt": 3,
+          "detected": 3,
+          "predicted": 13,
+          "recall": 1.0,
+          "precision": 0.23076923076923078
+        },
+        {
+          "class": "HARDCODED_CREDENTIALS",
+          "gt": 1,
+          "detected": 1,
+          "predicted": 6,
+          "recall": 1.0,
+          "precision": 0.16666666666666666
+        }
+      ],
+      "recall": 0.8,
+      "precision": 0.18691588785046728,
+      "detected_any_class": 0.88,
+      "flagged_safe_functions": 47,
+      "safe_functions": 77,
+      "wrong_class_on_vulnerable": 2,
+      "n_predictions": 107
+    }
+  ]
+}

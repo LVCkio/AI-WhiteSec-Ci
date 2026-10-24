@@ -1,0 +1,118 @@
+{
+  "version": "1.0",
+  "created": "2026-10-16",
+  "owasp_source": "OWASP Top 10:2021, danh sach 'List of Mapped CWEs' tai https://top10.owasp.org/2021/ (kiem tra ngay 2026-10-16)",
+  "priority": {
+    "formula": "score = round(100 * severity_weight * min(1, 0.5*sast + 0.5*p_model + bonus)); sast = 1 neu SAST bao dung lop, nguoc lai 0; p_model = xac suat CodeBERT cho lop (0 neu khong goi mo hinh); bonus = agreement_bonus neu SAST bao lop va lop co xac suat cao nhat cua CodeBERT trung lop do",
+    "agreement_bonus": 0.15,
+    "severity_weights": {"critical": 1.0, "high": 0.8, "medium": 0.6, "low": 0.3},
+    "levels": [
+      {"min_score": 70, "label": "P1", "meaning": "xu ly truoc khi merge"},
+      {"min_score": 40, "label": "P2", "meaning": "xu ly trong dot phat hanh"},
+      {"min_score": 0, "label": "P3", "meaning": "xem xet / co the bao nham"}
+    ],
+    "note": "Trong so va nguong chon truoc khi xem bat ky ket qua test nao cua A04; khong hieu chinh tren test."
+  },
+  "owasp_categories": {
+    "A01:2021": {"name": "Broken Access Control", "url": "https://top10.owasp.org/2021/A01_2021-Broken_Access_Control/index.html"},
+    "A02:2021": {"name": "Cryptographic Failures", "url": "https://top10.owasp.org/2021/A02_2021-Cryptographic_Failures/index.html"},
+    "A03:2021": {"name": "Injection", "url": "https://top10.owasp.org/2021/A03_2021-Injection/index.html"},
+    "A07:2021": {"name": "Identification and Authentication Failures", "url": "https://top10.owasp.org/2021/A07_2021-Identification_and_Authentication_Failures/index.html"}
+  },
+  "owasp_by_cwe": {
+    "77": "A03:2021", "78": "A03:2021", "79": "A03:2021", "80": "A03:2021", "88": "A03:2021", "89": "A03:2021",
+    "22": "A01:2021", "23": "A01:2021", "59": "A01:2021",
+    "287": "A07:2021", "306": "A07:2021", "307": "A07:2021", "384": "A07:2021", "640": "A07:2021",
+    "259": "A07:2021", "798": "A07:2021",
+    "321": "A02:2021"
+  },
+  "classes": {
+    "SQL_INJECTION": {
+      "cwe": 89, "cwe_name": "Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')",
+      "owasp": "A03:2021", "severity": "critical",
+      "remediation": {
+        "summary": "Dung truy van tham so hoa (prepared statement/placeholder); khong ghep chuoi hay format du lieu nguoi dung vao cau SQL. Ten bang/cot dong phai lay tu danh sach cho phep.",
+        "Python": "cursor.execute(\"SELECT ... WHERE id = %s\", (user_id,)); voi ORM dung filter()/params, tranh raw()/extra() voi chuoi da format.",
+        "Java": "PreparedStatement ps = conn.prepareStatement(\"SELECT ... WHERE id = ?\"); ps.setInt(1, id); voi JPA dung tham so dat ten (:id).",
+        "JavaScript": "Dung placeholder cua driver (db.query('SELECT ... WHERE id = ?', [id])) hoac query builder/ORM; khong dung template literal de tao SQL.",
+        "PHP": "PDO: $stmt = $pdo->prepare('SELECT ... WHERE id = :id'); $stmt->execute(['id' => $id]); khong noi bien vao chuoi SQL.",
+        "references": [
+          "https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html",
+          "https://cheatsheetseries.owasp.org/cheatsheets/Query_Parameterization_Cheat_Sheet.html"
+        ]
+      }
+    },
+    "XSS": {
+      "cwe": 79, "cwe_name": "Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')",
+      "owasp": "A03:2021", "severity": "medium",
+      "remediation": {
+        "summary": "Ma hoa dau ra theo ngu canh (HTML, thuoc tinh, JavaScript, URL); bat autoescape cua template; chi cho phep HTML qua thu vien sanitize; them Content-Security-Policy.",
+        "Python": "De Jinja2/Django tu escape; khong dung mark_safe/Markup/|safe voi du lieu nguoi dung; dung format_html() hoac markupsafe.escape(); sanitize HTML bang bleach/nh3.",
+        "Java": "Dung template tu escape (Thymeleaf th:text) hoac OWASP Java Encoder (Encode.forHtml); sanitize bang OWASP Java HTML Sanitizer.",
+        "JavaScript": "Gan textContent thay vi innerHTML; khong dung dangerouslySetInnerHTML/v-html voi du lieu chua sach; sanitize bang DOMPurify.",
+        "PHP": "echo htmlspecialchars($value, ENT_QUOTES, 'UTF-8'); dung template tu escape (Twig, Blade {{ }}).",
+        "references": [
+          "https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html"
+        ]
+      }
+    },
+    "OS_COMMAND_INJECTION": {
+      "cwe": 78, "cwe_name": "Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')",
+      "owasp": "A03:2021", "severity": "critical",
+      "remediation": {
+        "summary": "Tranh goi shell; dung API cua ngon ngu/thu vien thay lenh he thong; neu bat buoc chay tien trinh thi truyen danh sach doi so, them '--' truoc doi so tu nguoi dung va kiem tra theo danh sach cho phep.",
+        "Python": "subprocess.run([\"ping\", \"-c\", \"1\", host], check=True) voi shell=False; khong dung os.system/os.popen; neu can chuoi thi shlex.quote().",
+        "Java": "new ProcessBuilder(\"ping\", \"-c\", \"1\", host) thay vi Runtime.exec(String); kiem tra host theo regex cho phep.",
+        "JavaScript": "child_process.execFile('ping', ['-c', '1', host]) hoac spawn khong shell; khong dung exec() voi chuoi ghep.",
+        "PHP": "Tranh exec/system/shell_exec/backticks; neu bat buoc dung escapeshellarg() cho tung doi so.",
+        "references": [
+          "https://cheatsheetseries.owasp.org/cheatsheets/OS_Command_Injection_Defense_Cheat_Sheet.html"
+        ]
+      }
+    },
+    "PATH_TRAVERSAL": {
+      "cwe": 22, "cwe_name": "Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')",
+      "owasp": "A01:2021", "severity": "high",
+      "remediation": {
+        "summary": "Chuan hoa duong dan (realpath/resolve) roi kiem tra no van nam trong thu muc goc cho phep; uu tien anh xa ID -> file thay vi nhan ten file tu nguoi dung; giai nen archive co loc thanh vien.",
+        "Python": "p = (BASE / name).resolve(); kiem tra p.is_relative_to(BASE.resolve()); dung werkzeug safe_join/send_from_directory; tarfile.extractall(path, filter='data').",
+        "Java": "Path p = base.resolve(name).normalize(); if (!p.startsWith(base)) throw ...; kiem tra ten entry khi giai nen ZIP (Zip Slip).",
+        "JavaScript": "const p = path.resolve(base, name); if (!p.startsWith(base + path.sep)) throw ...; dung express.static/res.sendFile voi tuy chon root.",
+        "PHP": "$p = realpath($base . '/' . $name); if ($p === false || strpos($p, $base . DIRECTORY_SEPARATOR) !== 0) { ... }; basename() cho ten file.",
+        "references": [
+          "https://owasp.org/www-community/attacks/Path_Traversal",
+          "https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html"
+        ]
+      }
+    },
+    "AUTHENTICATION_WEAKNESS": {
+      "cwe": 287, "cwe_name": "Improper Authentication",
+      "owasp": "A07:2021", "severity": "high",
+      "remediation": {
+        "summary": "Dung co che xac thuc/framework da kiem chung; xac minh chu ky va thoi han token; so sanh bi mat bang ham thoi gian hang so; gioi han so lan dang nhap; tao lai session sau dang nhap; kiem tra xac thuc o moi endpoint nhay cam.",
+        "Python": "jwt.decode(token, key, algorithms=[\"HS256\"]) khong tat verify; hmac.compare_digest() de so sanh; Django: login_required, rotate session (login() da lam); gioi han dang nhap (django-axes).",
+        "Java": "Spring Security cho xac thuc/phan quyen; xac minh JWT bang thu vien (jjwt) voi khoa va thuat toan co dinh; MessageDigest.isEqual() de so sanh.",
+        "JavaScript": "jsonwebtoken.verify(token, key, { algorithms: ['HS256'] }); crypto.timingSafeEqual(); passport/middleware xac thuc cho moi route; regenerate session sau login.",
+        "PHP": "password_hash/password_verify; hash_equals() de so sanh token; session_regenerate_id(true) sau dang nhap; gioi han so lan thu.",
+        "references": [
+          "https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html",
+          "https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html"
+        ]
+      }
+    },
+    "HARDCODED_CREDENTIALS": {
+      "cwe": 798, "cwe_name": "Use of Hard-coded Credentials",
+      "owasp": "A07:2021", "severity": "high",
+      "remediation": {
+        "summary": "Xoa bi mat khoi ma nguon va lich su git, thu hoi/doi bi mat da lo; doc tu bien moi truong hoac secret manager (Vault, AWS/GCP/Azure Secret Manager); quet bi mat trong CI (gitleaks, trufflehog).",
+        "Python": "password = os.environ[\"DB_PASSWORD\"]; khoa ky JWT/AES lay tu secret manager, khong de chuoi/bytes literal trong code.",
+        "Java": "Doc tu bien moi truong/Spring Cloud Config/Vault (@Value(\"${db.password}\")), khong dat trong code hay file cau hinh commit len repo.",
+        "JavaScript": "process.env.DB_PASSWORD (dotenv chi o moi truong dev, .env trong .gitignore); dung secret manager cua nen tang deploy.",
+        "PHP": "getenv('DB_PASSWORD') hoac $_ENV; file .env ngoai webroot va trong .gitignore.",
+        "references": [
+          "https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+name: dashboard-tests
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Unit test dashboard (chi thu vien chuan)
+        run: python -m unittest tests.test_dashboard -v
+      - name: Dung du lieu tu ban chup
+        run: python dashboard/collect.py --out dashboard_data.json

@@ -1,0 +1,31 @@
+{
+  "created": "2026-10-21T17:14:43+00:00",
+  "script": "31_build_temporal.py",
+  "cutoff_published_after": "2024-02-02T18:10:10Z",
+  "candidates": "data_versions/e05_temporal_candidates/candidates.csv",
+  "n_advisories_used": 285,
+  "n_functions": 680,
+  "by_class": {
+    "XSS": 128,
+    "PATH_TRAVERSAL": 262,
+    "AUTHENTICATION_WEAKNESS": 116,
+    "OS_COMMAND_INJECTION": 108,
+    "SQL_INJECTION": 61,
+    "HARDCODED_CREDENTIALS": 5
+  },
+  "published_range": [
+    "2024-02-21T18:04:00Z",
+    "2026-10-15T20:16:18Z"
+  ],
+  "dedup_against": [
+    "data_versions/v5_1_e03",
+    "data"
+  ],
+  "max_funcs": 10,
+  "max_py_files": 20,
+  "network_calls": {},
+  "files": {
+    "temporal_test.csv": "e82dff3b4d8c3200c625597943a89271d65dafcd8f250eff07cedb1a3cccf2ca",
+    "code_after.csv": "aa174cbe4fdd8cb8e8639cc8785b5219b0af867677ce826b88c03b04eb5e751d"
+  }
+}

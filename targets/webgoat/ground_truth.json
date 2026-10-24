@@ -1,0 +1,279 @@
+{
+  "app": "webgoat",
+  "image": "webgoat/webgoat:v2023.8",
+  "source": "github.com/WebGoat/WebGoat tag v2023.8 (5357a65e054976cd7d79b81ef3906ded050ed921)",
+  "unit": "file",
+  "scan_scope": "src/main/java/org/owasp/webgoat/lessons",
+  "n": 29,
+  "by_class": {
+    "SQL_INJECTION": 12,
+    "XSS": 2,
+    "PATH_TRAVERSAL": 5,
+    "AUTHENTICATION_WEAKNESS": 7,
+    "HARDCODED_CREDENTIALS": 3
+  },
+  "note": "Chon tay theo bai hoc + doi chieu ma; WebGoat khong co bai OS command injection.",
+  "vulnerabilities": [
+    {
+      "id": "SqlInjectionLesson2:SQL_INJECTION",
+      "file": "src/main/java/org/owasp/webgoat/lessons/sqlinjection/introduction/SqlInjectionLesson2.java",
+      "function": "<file>",
+      "line": null,
+      "class": "SQL_INJECTION",
+      "cwe": "CWE-89",
+      "evidence": "thuc thi truy van nguoi dung nhap"
+    },
+    {
+      "id": "SqlInjectionLesson3:SQL_INJECTION",
+      "file": "src/main/java/org/owasp/webgoat/lessons/sqlinjection/introduction/SqlInjectionLesson3.java",
+      "function": "<file>",
+      "line": null,
+      "class": "SQL_INJECTION",
+      "cwe": "CWE-89",
+      "evidence": "thuc thi truy van nguoi dung nhap"
+    },
+    {
+      "id": "SqlInjectionLesson4:SQL_INJECTION",
+      "file": "src/main/java/org/owasp/webgoat/lessons/sqlinjection/introduction/SqlInjectionLesson4.java",
+      "function": "<file>",
+      "line": null,
+      "class": "SQL_INJECTION",
+      "cwe": "CWE-89",
+      "evidence": "thuc thi truy van nguoi dung nhap"
+    },
+    {
+      "id": "SqlInjectionLesson5:SQL_INJECTION",
+      "file": "src/main/java/org/owasp/webgoat/lessons/sqlinjection/introduction/SqlInjectionLesson5.java",
+      "function": "<file>",
+      "line": null,
+      "class": "SQL_INJECTION",
+      "cwe": "CWE-89",
+      "evidence": "thuc thi truy van nguoi dung nhap (GRANT)"
+    },
+    {
+      "id": "SqlInjectionLesson5a:SQL_INJECTION",
+      "file": "src/main/java/org/owasp/webgoat/lessons/sqlinjection/introduction/SqlInjectionLesson5a.java",
+      "function": "<file>",
+      "line": null,
+      "class": "SQL_INJECTION",
+      "cwe": "CWE-89",
+      "evidence": "noi chuoi accountName vao truy van"
+    },
+    {
+      "id": "SqlInjectionLesson5b:SQL_INJECTION",
+      "file": "src/main/java/org/owasp/webgoat/lessons/sqlinjection/introduction/SqlInjectionLesson5b.java",
+      "function": "<file>",
+      "line": null,
+      "class": "SQL_INJECTION",
+      "cwe": "CWE-89",
+      "evidence": "userid noi chuoi, chi Login_Count tham so hoa"
+    },
+    {
+      "id": "SqlInjectionLesson8:SQL_INJECTION",
+      "file": "src/main/java/org/owasp/webgoat/lessons/sqlinjection/introduction/SqlInjectionLesson8.java",
+      "function": "<file>",
+      "line": null,
+      "class": "SQL_INJECTION",
+      "cwe": "CWE-89",
+      "evidence": "noi chuoi name/auth_tan"
+    },
+    {
+      "id": "SqlInjectionLesson9:SQL_INJECTION",
+      "file": "src/main/java/org/owasp/webgoat/lessons/sqlinjection/introduction/SqlInjectionLesson9.java",
+      "function": "<file>",
+      "line": null,
+      "class": "SQL_INJECTION",
+      "cwe": "CWE-89",
+      "evidence": "noi chuoi name/auth_tan"
+    },
+    {
+      "id": "SqlInjectionLesson10:SQL_INJECTION",
+      "file": "src/main/java/org/owasp/webgoat/lessons/sqlinjection/introduction/SqlInjectionLesson10.java",
+      "function": "<file>",
+      "line": null,
+      "class": "SQL_INJECTION",
+      "cwe": "CWE-89",
+      "evidence": "noi chuoi action vao LIKE"
+    },
+    {
+      "id": "SqlInjectionLesson6a:SQL_INJECTION",
+      "file": "src/main/java/org/owasp/webgoat/lessons/sqlinjection/advanced/SqlInjectionLesson6a.java",
+      "function": "<file>",
+      "line": null,
+      "class": "SQL_INJECTION",
+      "cwe": "CWE-89",
+      "evidence": "noi chuoi userId"
+    },
+    {
+      "id": "SqlInjectionChallenge:SQL_INJECTION",
+      "file": "src/main/java/org/owasp/webgoat/lessons/sqlinjection/advanced/SqlInjectionChallenge.java",
+      "function": "<file>",
+      "line": null,
+      "class": "SQL_INJECTION",
+      "cwe": "CWE-89",
+      "evidence": "noi chuoi username_reg"
+    },
+    {
+      "id": "Servers:SQL_INJECTION",
+      "file": "src/main/java/org/owasp/webgoat/lessons/sqlinjection/mitigation/Servers.java",
+      "function": "<file>",
+      "line": null,
+      "class": "SQL_INJECTION",
+      "cwe": "CWE-89",
+      "evidence": "noi chuoi column vao ORDER BY"
+    },
+    {
+      "id": "CrossSiteScriptingLesson5a:XSS",
+      "file": "src/main/java/org/owasp/webgoat/lessons/xss/CrossSiteScriptingLesson5a.java",
+      "function": "<file>",
+      "line": null,
+      "class": "XSS",
+      "cwe": "CWE-79",
+      "evidence": "field1 dua thang vao HTML tra ve"
+    },
+    {
+      "id": "StoredXssComments:XSS",
+      "file": "src/main/java/org/owasp/webgoat/lessons/xss/stored/StoredXssComments.java",
+      "function": "<file>",
+      "line": null,
+      "class": "XSS",
+      "cwe": "CWE-79",
+      "evidence": "luu binh luan khong ma hoa (stored XSS)"
+    },
+    {
+      "id": "ProfileUploadBase:PATH_TRAVERSAL",
+      "file": "src/main/java/org/owasp/webgoat/lessons/pathtraversal/ProfileUploadBase.java",
+      "function": "<file>",
+      "line": null,
+      "class": "PATH_TRAVERSAL",
+      "cwe": "CWE-22",
+      "evidence": "new File(uploadDirectory, fullName)"
+    },
+    {
+      "id": "ProfileUploadFix:PATH_TRAVERSAL",
+      "file": "src/main/java/org/owasp/webgoat/lessons/pathtraversal/ProfileUploadFix.java",
+      "function": "<file>",
+      "line": null,
+      "class": "PATH_TRAVERSAL",
+      "cwe": "CWE-22",
+      "evidence": "chi thay '../' mot lan"
+    },
+    {
+      "id": "ProfileUploadRemoveUserInput:PATH_TRAVERSAL",
+      "file": "src/main/java/org/owasp/webgoat/lessons/pathtraversal/ProfileUploadRemoveUserInput.java",
+      "function": "<file>",
+      "line": null,
+      "class": "PATH_TRAVERSAL",
+      "cwe": "CWE-22",
+      "evidence": "dung getOriginalFilename()"
+    },
+    {
+      "id": "ProfileUploadRetrieval:PATH_TRAVERSAL",
+      "file": "src/main/java/org/owasp/webgoat/lessons/pathtraversal/ProfileUploadRetrieval.java",
+      "function": "<file>",
+      "line": null,
+      "class": "PATH_TRAVERSAL",
+      "cwe": "CWE-22",
+      "evidence": "tham so id vao duong dan file"
+    },
+    {
+      "id": "ProfileZipSlip:PATH_TRAVERSAL",
+      "file": "src/main/java/org/owasp/webgoat/lessons/pathtraversal/ProfileZipSlip.java",
+      "function": "<file>",
+      "line": null,
+      "class": "PATH_TRAVERSAL",
+      "cwe": "CWE-22",
+      "evidence": "giai nen zip khong kiem tra ten entry (zip slip)"
+    },
+    {
+      "id": "AccountVerificationHelper:AUTHENTICATION_WEAKNESS",
+      "file": "src/main/java/org/owasp/webgoat/lessons/authbypass/AccountVerificationHelper.java",
+      "function": "<file>",
+      "line": null,
+      "class": "AUTHENTICATION_WEAKNESS",
+      "cwe": "CWE-287",
+      "evidence": "chi kiem tra cau hoi duoc gui len -> bypass"
+    },
+    {
+      "id": "JWTVotesEndpoint:AUTHENTICATION_WEAKNESS",
+      "file": "src/main/java/org/owasp/webgoat/lessons/jwt/JWTVotesEndpoint.java",
+      "function": "<file>",
+      "line": null,
+      "class": "AUTHENTICATION_WEAKNESS",
+      "cwe": "CWE-287",
+      "evidence": "parse() chap nhan token khong ky (alg none)"
+    },
+    {
+      "id": "JWTRefreshEndpoint:AUTHENTICATION_WEAKNESS",
+      "file": "src/main/java/org/owasp/webgoat/lessons/jwt/JWTRefreshEndpoint.java",
+      "function": "<file>",
+      "line": null,
+      "class": "AUTHENTICATION_WEAKNESS",
+      "cwe": "CWE-287",
+      "evidence": "refresh token khong rang buoc nguoi dung"
+    },
+    {
+      "id": "JWTHeaderJKUEndpoint:AUTHENTICATION_WEAKNESS",
+      "file": "src/main/java/org/owasp/webgoat/lessons/jwt/claimmisuse/JWTHeaderJKUEndpoint.java",
+      "function": "<file>",
+      "line": null,
+      "class": "AUTHENTICATION_WEAKNESS",
+      "cwe": "CWE-287",
+      "evidence": "tin header jku de lay khoa"
+    },
+    {
+      "id": "JWTHeaderKIDEndpoint:AUTHENTICATION_WEAKNESS",
+      "file": "src/main/java/org/owasp/webgoat/lessons/jwt/claimmisuse/JWTHeaderKIDEndpoint.java",
+      "function": "<file>",
+      "line": null,
+      "class": "AUTHENTICATION_WEAKNESS",
+      "cwe": "CWE-287",
+      "evidence": "kid dua vao truy van lay khoa"
+    },
+    {
+      "id": "HijackSessionAuthenticationProvider:AUTHENTICATION_WEAKNESS",
+      "file": "src/main/java/org/owasp/webgoat/lessons/hijacksession/cas/HijackSessionAuthenticationProvider.java",
+      "function": "<file>",
+      "line": null,
+      "class": "AUTHENTICATION_WEAKNESS",
+      "cwe": "CWE-384",
+      "evidence": "session id doan duoc"
+    },
+    {
+      "id": "ResetLinkAssignmentForgotPassword:AUTHENTICATION_WEAKNESS",
+      "file": "src/main/java/org/owasp/webgoat/lessons/passwordreset/ResetLinkAssignmentForgotPassword.java",
+      "function": "<file>",
+      "line": null,
+      "class": "AUTHENTICATION_WEAKNESS",
+      "cwe": "CWE-640",
+      "evidence": "link dat lai mat khau theo Host header"
+    },
+    {
+      "id": "JWTRefreshEndpoint:HARDCODED_CREDENTIALS",
+      "file": "src/main/java/org/owasp/webgoat/lessons/jwt/JWTRefreshEndpoint.java",
+      "function": "<file>",
+      "line": null,
+      "class": "HARDCODED_CREDENTIALS",
+      "cwe": "CWE-798",
+      "evidence": "PASSWORD, JWT_PASSWORD viet cung"
+    },
+    {
+      "id": "JWTVotesEndpoint:HARDCODED_CREDENTIALS",
+      "file": "src/main/java/org/owasp/webgoat/lessons/jwt/JWTVotesEndpoint.java",
+      "function": "<file>",
+      "line": null,
+      "class": "HARDCODED_CREDENTIALS",
+      "cwe": "CWE-321",
+      "evidence": "khoa ky JWT 'victory' viet cung"
+    },
+    {
+      "id": "JWTSecretKeyEndpoint:HARDCODED_CREDENTIALS",
+      "file": "src/main/java/org/owasp/webgoat/lessons/jwt/JWTSecretKeyEndpoint.java",
+      "function": "<file>",
+      "line": null,
+      "class": "HARDCODED_CREDENTIALS",
+      "cwe": "CWE-321",
+      "evidence": "danh sach khoa ky SECRETS viet cung"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+# Rule DA TAT trong ruleset v4.2.0 (khong vao bundle semgrep.yml). Ly do: metadata.disabled_v42.
+# Bat lai: chuyen khoi rule ve rules/javascript/authentication_weakness.yml, khoi phuc test tu archive/ va chay tools/ruleset.py all.
+rules:
+- id: team.js.auth-secret-equality
+  languages:
+  - javascript
+  - typescript
+  severity: WARNING
+  message: A password, token or signature is compared with == / === (not constant time) (audit).
+  metadata:
+    cwe: CWE-287
+    owasp: A07:2021
+    vuln_class: AUTHENTICATION_WEAKNESS
+    confidence: audit
+    severity: high
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.1.0
+    ruleset_version: 4.2.0
+    disabled_v42: "TC4: train 0/3, val 0 lan bao; Juice Shop 1/9 (password !== passwordRepeat)."
+    change_v4: Bo 'otp' (khop nham lastDotPosition), bo bieu thuc goi ham va so sanh voi true/false/hang chuoi.
+  patterns:
+  - pattern-either:
+    - pattern: $A === $B
+    - pattern: $A == $B
+    - pattern: $A !== $B
+    - pattern: $A != $B
+  - pattern-not: $A === undefined
+  - pattern-not: $A === null
+  - pattern-not: $A === "..."
+  - pattern-not: $A == null
+  - pattern-not: '"..." === $A'
+  - pattern-not: '"..." == $A'
+  - pattern-not: $A === true
+  - pattern-not: $A === false
+  - pattern-not: $A !== -1
+  - pattern-not: $A != -1
+  - metavariable-regex:
+      metavariable: $A
+      regex: (?i)^[\w.$]*(password|passwd|token|secret|signature|digest|apikey|api_key)[\w.$]*$

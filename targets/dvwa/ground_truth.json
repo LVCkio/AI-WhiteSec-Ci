@@ -1,0 +1,253 @@
+{
+  "app": "dvwa",
+  "image": "vulnerables/web-dvwa:latest",
+  "image_digest": "vulnerables/web-dvwa@sha256:dae203fe11646a86937bf04db0079adef295f426da68a92b40e3b181f337daa7",
+  "n": 25,
+  "by_class": {
+    "SQL_INJECTION": 6,
+    "XSS": 9,
+    "OS_COMMAND_INJECTION": 3,
+    "PATH_TRAVERSAL": 3,
+    "AUTHENTICATION_WEAKNESS": 3,
+    "HARDCODED_CREDENTIALS": 1
+  },
+  "safe_files": [
+    "vulnerabilities/sqli/source/impossible.php",
+    "vulnerabilities/sqli_blind/source/impossible.php",
+    "vulnerabilities/xss_r/source/impossible.php",
+    "vulnerabilities/xss_s/source/impossible.php",
+    "vulnerabilities/xss_d/source/impossible.php",
+    "vulnerabilities/exec/source/impossible.php",
+    "vulnerabilities/fi/source/impossible.php",
+    "vulnerabilities/brute/source/impossible.php"
+  ],
+  "unit": "file",
+  "reference": "https://github.com/digininja/DVWA (tai lieu tung module; impossible = ban an toan)",
+  "vulnerabilities": [
+    {
+      "id": "sqli-low",
+      "file": "vulnerabilities/sqli/source/low.php",
+      "function": "<file>",
+      "line": null,
+      "class": "SQL_INJECTION",
+      "cwe": "CWE-89",
+      "description": "DVWA module sqli, muc low"
+    },
+    {
+      "id": "sqli-medium",
+      "file": "vulnerabilities/sqli/source/medium.php",
+      "function": "<file>",
+      "line": null,
+      "class": "SQL_INJECTION",
+      "cwe": "CWE-89",
+      "description": "DVWA module sqli, muc medium"
+    },
+    {
+      "id": "sqli-high",
+      "file": "vulnerabilities/sqli/source/high.php",
+      "function": "<file>",
+      "line": null,
+      "class": "SQL_INJECTION",
+      "cwe": "CWE-89",
+      "description": "DVWA module sqli, muc high"
+    },
+    {
+      "id": "sqli_blind-low",
+      "file": "vulnerabilities/sqli_blind/source/low.php",
+      "function": "<file>",
+      "line": null,
+      "class": "SQL_INJECTION",
+      "cwe": "CWE-89",
+      "description": "DVWA module sqli_blind, muc low"
+    },
+    {
+      "id": "sqli_blind-medium",
+      "file": "vulnerabilities/sqli_blind/source/medium.php",
+      "function": "<file>",
+      "line": null,
+      "class": "SQL_INJECTION",
+      "cwe": "CWE-89",
+      "description": "DVWA module sqli_blind, muc medium"
+    },
+    {
+      "id": "sqli_blind-high",
+      "file": "vulnerabilities/sqli_blind/source/high.php",
+      "function": "<file>",
+      "line": null,
+      "class": "SQL_INJECTION",
+      "cwe": "CWE-89",
+      "description": "DVWA module sqli_blind, muc high"
+    },
+    {
+      "id": "xss_r-low",
+      "file": "vulnerabilities/xss_r/source/low.php",
+      "function": "<file>",
+      "line": null,
+      "class": "XSS",
+      "cwe": "CWE-79",
+      "description": "DVWA module xss_r, muc low"
+    },
+    {
+      "id": "xss_r-medium",
+      "file": "vulnerabilities/xss_r/source/medium.php",
+      "function": "<file>",
+      "line": null,
+      "class": "XSS",
+      "cwe": "CWE-79",
+      "description": "DVWA module xss_r, muc medium"
+    },
+    {
+      "id": "xss_r-high",
+      "file": "vulnerabilities/xss_r/source/high.php",
+      "function": "<file>",
+      "line": null,
+      "class": "XSS",
+      "cwe": "CWE-79",
+      "description": "DVWA module xss_r, muc high"
+    },
+    {
+      "id": "xss_s-low",
+      "file": "vulnerabilities/xss_s/source/low.php",
+      "function": "<file>",
+      "line": null,
+      "class": "XSS",
+      "cwe": "CWE-79",
+      "description": "DVWA module xss_s, muc low"
+    },
+    {
+      "id": "xss_s-medium",
+      "file": "vulnerabilities/xss_s/source/medium.php",
+      "function": "<file>",
+      "line": null,
+      "class": "XSS",
+      "cwe": "CWE-79",
+      "description": "DVWA module xss_s, muc medium"
+    },
+    {
+      "id": "xss_s-high",
+      "file": "vulnerabilities/xss_s/source/high.php",
+      "function": "<file>",
+      "line": null,
+      "class": "XSS",
+      "cwe": "CWE-79",
+      "description": "DVWA module xss_s, muc high"
+    },
+    {
+      "id": "xss_d-low",
+      "file": "vulnerabilities/xss_d/source/low.php",
+      "function": "<file>",
+      "line": null,
+      "class": "XSS",
+      "cwe": "CWE-79",
+      "description": "DVWA module xss_d, muc low"
+    },
+    {
+      "id": "xss_d-medium",
+      "file": "vulnerabilities/xss_d/source/medium.php",
+      "function": "<file>",
+      "line": null,
+      "class": "XSS",
+      "cwe": "CWE-79",
+      "description": "DVWA module xss_d, muc medium"
+    },
+    {
+      "id": "xss_d-high",
+      "file": "vulnerabilities/xss_d/source/high.php",
+      "function": "<file>",
+      "line": null,
+      "class": "XSS",
+      "cwe": "CWE-79",
+      "description": "DVWA module xss_d, muc high"
+    },
+    {
+      "id": "exec-low",
+      "file": "vulnerabilities/exec/source/low.php",
+      "function": "<file>",
+      "line": null,
+      "class": "OS_COMMAND_INJECTION",
+      "cwe": "CWE-78",
+      "description": "DVWA module exec, muc low"
+    },
+    {
+      "id": "exec-medium",
+      "file": "vulnerabilities/exec/source/medium.php",
+      "function": "<file>",
+      "line": null,
+      "class": "OS_COMMAND_INJECTION",
+      "cwe": "CWE-78",
+      "description": "DVWA module exec, muc medium"
+    },
+    {
+      "id": "exec-high",
+      "file": "vulnerabilities/exec/source/high.php",
+      "function": "<file>",
+      "line": null,
+      "class": "OS_COMMAND_INJECTION",
+      "cwe": "CWE-78",
+      "description": "DVWA module exec, muc high"
+    },
+    {
+      "id": "fi-low",
+      "file": "vulnerabilities/fi/source/low.php",
+      "function": "<file>",
+      "line": null,
+      "class": "PATH_TRAVERSAL",
+      "cwe": "CWE-22/CWE-98",
+      "description": "DVWA module fi, muc low"
+    },
+    {
+      "id": "fi-medium",
+      "file": "vulnerabilities/fi/source/medium.php",
+      "function": "<file>",
+      "line": null,
+      "class": "PATH_TRAVERSAL",
+      "cwe": "CWE-22/CWE-98",
+      "description": "DVWA module fi, muc medium"
+    },
+    {
+      "id": "fi-high",
+      "file": "vulnerabilities/fi/source/high.php",
+      "function": "<file>",
+      "line": null,
+      "class": "PATH_TRAVERSAL",
+      "cwe": "CWE-22/CWE-98",
+      "description": "DVWA module fi, muc high"
+    },
+    {
+      "id": "brute-low",
+      "file": "vulnerabilities/brute/source/low.php",
+      "function": "<file>",
+      "line": null,
+      "class": "AUTHENTICATION_WEAKNESS",
+      "cwe": "CWE-307",
+      "description": "DVWA module brute, muc low"
+    },
+    {
+      "id": "brute-medium",
+      "file": "vulnerabilities/brute/source/medium.php",
+      "function": "<file>",
+      "line": null,
+      "class": "AUTHENTICATION_WEAKNESS",
+      "cwe": "CWE-307",
+      "description": "DVWA module brute, muc medium"
+    },
+    {
+      "id": "brute-high",
+      "file": "vulnerabilities/brute/source/high.php",
+      "function": "<file>",
+      "line": null,
+      "class": "AUTHENTICATION_WEAKNESS",
+      "cwe": "CWE-307",
+      "description": "DVWA module brute, muc high"
+    },
+    {
+      "id": "config-db-password",
+      "file": "config/config.inc.php",
+      "function": "<file>",
+      "line": 21,
+      "class": "HARDCODED_CREDENTIALS",
+      "cwe": "CWE-798",
+      "description": "Mat khau CSDL viet cung trong file cau hinh"
+    }
+  ]
+}

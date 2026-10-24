@@ -1,0 +1,40 @@
+# Rule DA TAT trong ruleset v4.2.0 (khong vao bundle semgrep.yml). Ly do: metadata.disabled_v42.
+# Bat lai: chuyen khoi rule ve rules/php/authentication_weakness.yml, khoi phuc test tu archive/ va chay tools/ruleset.py all.
+rules:
+- id: team.php.auth-secret-equality
+  languages:
+  - php
+  severity: WARNING
+  message: A password or token is compared with == / === instead of hash_equals/password_verify (audit).
+  metadata:
+    cwe: CWE-287
+    owasp: A07:2021
+    vuln_class: AUTHENTICATION_WEAKNESS
+    confidence: audit
+    severity: high
+    scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
+    rule_version: 1.1.0
+    ruleset_version: 4.2.0
+    disabled_v42: "TC4: train 0/7 dung lop; DVWA 9 bao nham dang $pass_new == $pass_conf (so sanh mat khau nhap lai)."
+    change_v4: Bo 'pass'/'otp' don le (khop nham $not_pass_update), so sanh voi true/false/null/hang chuoi.
+  patterns:
+  - pattern-either:
+    - pattern: $A == $B
+    - pattern: $A === $B
+    - pattern: $A != $B
+    - pattern: $A !== $B
+  - pattern-not: $A == ""
+  - pattern-not: $A === ""
+  - pattern-not: $A == null
+  - pattern-not: $A === null
+  - pattern-not: $A == false
+  - pattern-not: $A === false
+  - pattern-not: $A == true
+  - pattern-not: $A === true
+  - pattern-not: $A == "..."
+  - pattern-not: $A === "..."
+  - pattern-not: '"..." == $A'
+  - pattern-not: '"..." === $A'
+  - metavariable-regex:
+      metavariable: $A
+      regex: (?i)^\$((\w*_)?(pass|pwd|hash)(_\w*)?|[\w\[\]'"\->]*(password|passwd|token|secret)[\w\[\]'"\->]*)$

@@ -1,0 +1,35 @@
+# Rule DA TAT trong ruleset v4.2.0 (khong vao bundle semgrep.yml). Ly do: metadata.disabled_v42.
+# Bat lai: chuyen khoi rule ve rules/php/path_traversal.yml, khoi phuc test tu archive/ va chay tools/ruleset.py all.
+rules:
+- id: team.php.audit.file-path-api
+  languages:
+  - php
+  severity: INFO
+  message: A file read/write/delete API receives a non-literal path (audit hint).
+  metadata:
+    cwe: CWE-22
+    owasp: A01:2021
+    vuln_class: PATH_TRAVERSAL
+    confidence: audit
+    severity: high
+    scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
+    rule_version: 1.1.0
+    ruleset_version: 4.2.0
+    disabled_v42: "TC4: ti le dung lop train 0,27 (18/66), val 0,38 (3/8), cap val 3 dung/5 sai lop - duoi nguong 0,5 cua tang audit."
+    change_v4: 'Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5). 1.1.0: bo include/require/mkdir/rename/copy
+      (train: dung lop 32/136).'
+  patterns:
+  - pattern-either:
+    - pattern: fopen($P, ...)
+    - pattern: file_get_contents($P, ...)
+    - pattern: file_put_contents($P, ...)
+    - pattern: readfile($P, ...)
+    - pattern: file($P, ...)
+    - pattern: unlink($P, ...)
+    - pattern: opendir($P, ...)
+    - pattern: scandir($P, ...)
+    - pattern: rmdir($P, ...)
+    - pattern: move_uploaded_file($F, $P)
+  - pattern-not: $FN("...", ...)
+  - pattern-not: $FN(__DIR__ . "...", ...)
+  - pattern-not: $FN(dirname(__FILE__) . "...", ...)

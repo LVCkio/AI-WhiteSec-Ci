@@ -1,0 +1,186 @@
+{
+  "app": "flask_vuln_app",
+  "source": "marker # GT:<id> trong ma nguon (tac gia viet tay)",
+  "n": 19,
+  "by_class": {
+    "AUTHENTICATION_WEAKNESS": 4,
+    "HARDCODED_CREDENTIALS": 3,
+    "SQL_INJECTION": 3,
+    "OS_COMMAND_INJECTION": 3,
+    "PATH_TRAVERSAL": 3,
+    "XSS": 3
+  },
+  "vulnerabilities": [
+    {
+      "id": "AUTH-1",
+      "file": "app/auth.py",
+      "function": "check_admin_token",
+      "line": 28,
+      "class": "AUTHENTICATION_WEAKNESS",
+      "cwe": "CWE-287",
+      "description": "So sanh token admin bang != (khong hang so thoi gian; None khi chua cau hinh)"
+    },
+    {
+      "id": "AUTH-2",
+      "file": "app/auth.py",
+      "function": "current_user_from_jwt",
+      "line": 34,
+      "class": "AUTHENTICATION_WEAKNESS",
+      "cwe": "CWE-287",
+      "description": "jwt.decode tat kiem tra chu ky"
+    },
+    {
+      "id": "AUTH-3",
+      "file": "app/auth.py",
+      "function": "login",
+      "line": 41,
+      "class": "AUTHENTICATION_WEAKNESS",
+      "cwe": "CWE-384",
+      "description": "Khong tao lai session sau dang nhap (session fixation)"
+    },
+    {
+      "id": "HC-1",
+      "file": "app/config.py",
+      "function": "<module>",
+      "line": 3,
+      "class": "HARDCODED_CREDENTIALS",
+      "cwe": "CWE-798",
+      "description": "SECRET_KEY cua Flask viet cung"
+    },
+    {
+      "id": "HC-2",
+      "file": "app/config.py",
+      "function": "smtp_credentials",
+      "line": 12,
+      "class": "HARDCODED_CREDENTIALS",
+      "cwe": "CWE-259",
+      "description": "Mat khau SMTP viet cung"
+    },
+    {
+      "id": "SQLI-1",
+      "file": "app/db.py",
+      "function": "search_users",
+      "line": 19,
+      "class": "SQL_INJECTION",
+      "cwe": "CWE-89",
+      "description": "Tham so q chen vao LIKE bang f-string"
+    },
+    {
+      "id": "SQLI-2",
+      "file": "app/db.py",
+      "function": "list_orders",
+      "line": 25,
+      "class": "SQL_INJECTION",
+      "cwe": "CWE-89",
+      "description": "Tham so sort noi vao ORDER BY"
+    },
+    {
+      "id": "SQLI-3",
+      "file": "app/db.py",
+      "function": "find_user_by_email",
+      "line": 37,
+      "class": "SQL_INJECTION",
+      "cwe": "CWE-89",
+      "description": "Email dang nhap dua vao truy van bang toan tu %"
+    },
+    {
+      "id": "AUTH-4",
+      "file": "app/views/admin.py",
+      "function": "delete_user",
+      "line": 11,
+      "class": "AUTHENTICATION_WEAKNESS",
+      "cwe": "CWE-306",
+      "description": "Endpoint xoa nguoi dung khong kiem tra xac thuc"
+    },
+    {
+      "id": "CMD-3",
+      "file": "app/views/admin.py",
+      "function": "ping",
+      "line": 28,
+      "class": "OS_COMMAND_INJECTION",
+      "cwe": "CWE-78",
+      "description": "Host noi vao lenh ping voi shell=True"
+    },
+    {
+      "id": "HC-3",
+      "file": "app/views/admin.py",
+      "function": "storage_client",
+      "line": 41,
+      "class": "HARDCODED_CREDENTIALS",
+      "cwe": "CWE-798",
+      "description": "Khoa truy cap AWS viet cung"
+    },
+    {
+      "id": "PATH-1",
+      "file": "app/views/files.py",
+      "function": "download",
+      "line": 16,
+      "class": "PATH_TRAVERSAL",
+      "cwe": "CWE-22",
+      "description": "Ten file tu nguoi dung vao os.path.join + send_file"
+    },
+    {
+      "id": "PATH-2",
+      "file": "app/views/files.py",
+      "function": "read_log",
+      "line": 28,
+      "class": "PATH_TRAVERSAL",
+      "cwe": "CWE-22",
+      "description": "Ten log noi chuoi vao open()"
+    },
+    {
+      "id": "PATH-3",
+      "file": "app/views/files.py",
+      "function": "restore_backup",
+      "line": 34,
+      "class": "PATH_TRAVERSAL",
+      "cwe": "CWE-22",
+      "description": "tarfile.extractall khong loc thanh vien (tar slip)"
+    },
+    {
+      "id": "CMD-1",
+      "file": "app/views/files.py",
+      "function": "thumbnail",
+      "line": 41,
+      "class": "OS_COMMAND_INJECTION",
+      "cwe": "CWE-78",
+      "description": "Duong dan anh dua vao os.system"
+    },
+    {
+      "id": "CMD-2",
+      "file": "app/views/files.py",
+      "function": "archive",
+      "line": 56,
+      "class": "OS_COMMAND_INJECTION",
+      "cwe": "CWE-78",
+      "description": "Ten thu muc noi vao lenh tar voi shell=True"
+    },
+    {
+      "id": "XSS-1",
+      "file": "app/views/users.py",
+      "function": "hello",
+      "line": 12,
+      "class": "XSS",
+      "cwe": "CWE-79",
+      "description": "Tham so name noi vao HTML tra ve"
+    },
+    {
+      "id": "XSS-2",
+      "file": "app/views/users.py",
+      "function": "add_note",
+      "line": 40,
+      "class": "XSS",
+      "cwe": "CWE-79",
+      "description": "Noi dung ghi chu boc Markup khong escape (stored XSS)"
+    },
+    {
+      "id": "XSS-3",
+      "file": "app/views/users.py",
+      "function": "banner",
+      "line": 47,
+      "class": "XSS",
+      "cwe": "CWE-79",
+      "description": "render_template_string voi thong diep nguoi dung (XSS/SSTI)"
+    }
+  ]
+}

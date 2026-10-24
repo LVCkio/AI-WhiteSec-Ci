@@ -1,0 +1,12 @@
+{
+  "sast_configuration": "B_builtin_plus_custom_rules",
+  "rule": "sast_first",
+  "threshold": 0.0,
+  "selected_on": "val",
+  "val_macro_f1": 0.35768398268398266,
+  "model_dir": "models\\c03_v51",
+  "val_sast": "D:\\Đồ án FCA26IA18\\main\\sast_dev\\val_rules_v2\\sast_predictions.csv",
+  "architecture": "parallel",
+  "architecture_note": "K04: scan.py mac dinh chay SAST va CodeBERT song song, gop o compare_gate.py (models/gate_config.json). 'rule'/'threshold' chi dung cho --architecture sast_gate (tai lap T06).",
+  "model_note": "C03 (2026-10-20, Kaggle GPU): v5.1 4 ngon ngu, lr 5e-5 balanced, seed 42, val macro-F1 0.735 (716 mau). Model cu: models\\codebert_6class (Python v2). 'val_macro_f1' o tren la cua kien truc sast_gate cu (T06)."
+}

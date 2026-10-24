@@ -1,0 +1,34 @@
+{
+  "version": "1.1",
+  "architecture": "parallel",
+  "codebert_threshold": 0.5,
+  "codebert_threshold_note": "chua chon tren val: du lieu hien chi co code co lo hong (can A01/E09 de do bao nham)",
+  "policy": {
+    "agree": "BLOCK",
+    "sast_only": {
+      "high": "BLOCK",
+      "audit": "REVIEW"
+    },
+    "codebert_only": "REVIEW",
+    "conflict": "REVIEW",
+    "pass": "PASS"
+  },
+  "degraded_policy": {
+    "degraded_sast_only": {
+      "high": "BLOCK",
+      "audit": "REVIEW"
+    },
+    "degraded_codebert_only": "REVIEW"
+  },
+  "block_min_severity": "medium",
+  "verifier": {
+    "enabled": true,
+    "model": "models\\verifier_codebert_v51",
+    "kind": "codebert",
+    "threshold": 0.594,
+    "selected_on": "data_versions\\a01_pairs_v51/val.csv",
+    "selected": "2026-10-21",
+    "J": 0.37075212551715997,
+    "note": "chon bang 25_gate_eval.py; khong dung test"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "version": "six_class_v5_1_e03",
+  "created": "2026-10-18",
+  "script": "18_build_multilang.py",
+  "seed": 42,
+  "sources": {
+    "data_versions\\m03_sources\\cvefixes_e03.csv": "1eba4e04b9d578c48e0f837541c573cfa8669361f6d233a535ea5f2dc3e708e8",
+    "data_versions\\m03_sources\\crossvul_e03.csv": "74fc567cc836d17878a208407a5a55655acc3e154972e243d71f777e6128e649"
+  },
+  "cwe_map": "extended (E03)",
+  "pin_from": "data_versions\\v5_multilang",
+  "pinned_rows": {
+    "train": 3194,
+    "val": 637,
+    "test": 658
+  },
+  "pyvul_extra": "data_versions\\v4_e03_cwe_extended",
+  "pyvul_extra_rows": 100,
+  "code_after_rows": 4315,
+  "base": "data/ (six_class_v2_grouped_split, tap giu nguyen)",
+  "exact_duplicates_dropped": 588,
+  "near_duplicate_pairs": 648,
+  "constraint_problems": [],
+  "new_source_rows_dropped_bridging_pyvul_splits": 37,
+  "max_per_repo_language_class": 20,
+  "rows_dropped_by_repo_cap": 1475,
+  "files": {
+    "train.csv": "fcdc9b2a9f56c408bea1b82ff144c9b00f19cf5aafb20c4132128eef81eca060",
+    "val.csv": "a28dc9cbb4db0a8738621bc36d1fa3ac3e46b5a56a15f29d5e15733ab5452ac5",
+    "test.csv": "01bdb179bd0bd69d5d21d36c4ecb8730097f3aef4f0025bb7fde5c25dbd82d12"
+  },
+  "counts": {
+    "train": 3697,
+    "val": 716,
+    "test": 746
+  }
+}

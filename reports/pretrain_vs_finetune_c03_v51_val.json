@@ -1,0 +1,191 @@
+{
+  "split": "val",
+  "data_dir": "data_versions\\v5_1_e03",
+  "languages": [
+    "Python",
+    "Java",
+    "JavaScript",
+    "PHP"
+  ],
+  "preprocess": {
+    "strip_comments": false,
+    "normalize": false,
+    "lang_tag": false,
+    "chunk": "none",
+    "augment": false,
+    "sast_hints": false,
+    "hint_dropout": 0.3
+  },
+  "n_train": 3697,
+  "n_eval": 716,
+  "device": "cpu",
+  "embed_seconds_pretrained": 4619.3,
+  "results": {
+    "random_head": {
+      "desc": "CodeBERT gốc + đầu phân loại ngẫu nhiên (không train)",
+      "seeds": [
+        42,
+        1,
+        2
+      ],
+      "macro_f1_seeds": [
+        0.049352750809061485,
+        0.10774161252334664,
+        0.1356442069097156
+      ],
+      "macro_f1": 0.049352750809061485,
+      "accuracy": 0.17039106145251395,
+      "per_class_f1": {
+        "SQL_INJECTION": 0.2961165048543689,
+        "XSS": 0.0,
+        "OS_COMMAND_INJECTION": 0.0,
+        "PATH_TRAVERSAL": 0.0,
+        "AUTHENTICATION_WEAKNESS": 0.0,
+        "HARDCODED_CREDENTIALS": 0.0
+      },
+      "per_language_macro_f1": {
+        "Java": 0.07246376811594203,
+        "JavaScript": 0.03135313531353135,
+        "PHP": 0.06201550387596899,
+        "Python": 0.016666666666666666
+      },
+      "macro_f1_ci95": [
+        0.04218231602510293,
+        0.05615437123824981
+      ]
+    },
+    "linear_probe": {
+      "desc": "CodeBERT gốc đóng băng + Logistic Regression",
+      "pooling": "cls",
+      "C": 0.03,
+      "cv_train_macro_f1": {
+        "cls|C=0.001": 0.6669374012573228,
+        "cls|C=0.01": 0.7229948101641119,
+        "cls|C=0.03": 0.7374094628197692,
+        "cls|C=0.1": 0.7352670896834708,
+        "cls|C=0.3": 0.732349587657431,
+        "cls|C=1": 0.7275278202915157,
+        "cls|C=3": 0.7193055261479214,
+        "cls|C=10": 0.7162270466022569,
+        "cls|C=30": 0.712717576400565,
+        "cls|C=100": 0.7106183296751526,
+        "mean|C=0.001": 0.6236011006939806,
+        "mean|C=0.01": 0.7006407809730855,
+        "mean|C=0.03": 0.719802050171962,
+        "mean|C=0.1": 0.7287814024156108,
+        "mean|C=0.3": 0.7309037222432782,
+        "mean|C=1": 0.7258953650237456,
+        "mean|C=3": 0.7179317394816266,
+        "mean|C=10": 0.7066526057016496,
+        "mean|C=30": 0.709093557594098,
+        "mean|C=100": 0.7049298311188956
+      },
+      "train_seconds": 2834.8,
+      "macro_f1": 0.6005635187818854,
+      "accuracy": 0.6745810055865922,
+      "per_class_f1": {
+        "SQL_INJECTION": 0.6259541984732825,
+        "XSS": 0.7718223583460949,
+        "OS_COMMAND_INJECTION": 0.6176470588235294,
+        "PATH_TRAVERSAL": 0.5714285714285714,
+        "AUTHENTICATION_WEAKNESS": 0.5619834710743802,
+        "HARDCODED_CREDENTIALS": 0.45454545454545453
+      },
+      "per_language_macro_f1": {
+        "Java": 0.5697407167995404,
+        "JavaScript": 0.44857612753923815,
+        "PHP": 0.5628515442718581,
+        "Python": 0.4913533950008115
+      },
+      "macro_f1_ci95": [
+        0.5334052533291015,
+        0.6528697748108525
+      ]
+    },
+    "tfidf_lr": {
+      "desc": "TF-IDF token code + Logistic Regression",
+      "C": 100,
+      "cv_train_macro_f1": {
+        "0.1": 0.7586403387022325,
+        "0.3": 0.7942728093398822,
+        "1": 0.819842401584225,
+        "3": 0.8342603532031637,
+        "10": 0.843813332785391,
+        "30": 0.8468527001631045,
+        "100": 0.8481896880398467
+      },
+      "train_seconds": 238.8,
+      "macro_f1": 0.6527916222905662,
+      "accuracy": 0.7136871508379888,
+      "per_class_f1": {
+        "SQL_INJECTION": 0.6890756302521008,
+        "XSS": 0.8,
+        "OS_COMMAND_INJECTION": 0.660377358490566,
+        "PATH_TRAVERSAL": 0.5806451612903226,
+        "AUTHENTICATION_WEAKNESS": 0.4807692307692308,
+        "HARDCODED_CREDENTIALS": 0.7058823529411765
+      },
+      "per_language_macro_f1": {
+        "Java": 0.5788265977909812,
+        "JavaScript": 0.45777723973686973,
+        "PHP": 0.4974479416894983,
+        "Python": 0.6218465662683642
+      },
+      "macro_f1_ci95": [
+        0.5883879796175562,
+        0.7033296116307468
+      ]
+    },
+    "finetuned": {
+      "desc": "CodeBERT fine-tune toàn bộ tham số",
+      "model_dirs": [
+        "models\\c03_v51"
+      ],
+      "macro_f1_seeds": [
+        0.7345398038582402
+      ],
+      "train_seconds_seeds": [
+        1205.2
+      ],
+      "lr": 5e-05,
+      "class_weight": "balanced",
+      "macro_f1": 0.7345398038582402,
+      "accuracy": 0.7611731843575419,
+      "per_class_f1": {
+        "SQL_INJECTION": 0.647887323943662,
+        "XSS": 0.8387978142076503,
+        "OS_COMMAND_INJECTION": 0.8,
+        "PATH_TRAVERSAL": 0.6748971193415638,
+        "AUTHENTICATION_WEAKNESS": 0.5656565656565656,
+        "HARDCODED_CREDENTIALS": 0.88
+      },
+      "per_language_macro_f1": {
+        "Java": 0.5879923312478552,
+        "JavaScript": 0.49598493469287935,
+        "PHP": 0.7069449747764849,
+        "Python": 0.765356463625543
+      },
+      "macro_f1_ci95": [
+        0.6896861912435082,
+        0.7717931926674014
+      ]
+    }
+  },
+  "macro_f1_diff_ci95": {
+    "finetuned_minus_linear_probe": [
+      0.08362206773611268,
+      0.19609482530531722
+    ],
+    "linear_probe_minus_tfidf": [
+      -0.12646958966930044,
+      0.024387722554765703
+    ]
+  },
+  "silhouette_cosine": {
+    "before_cls": -0.12062191963195801,
+    "before_mean": -0.1818833202123642,
+    "after_cls": 0.25486481189727783
+  },
+  "tsne": "reports\\figures\\pretrain_vs_finetune_c03_v51_val_tsne.png",
+  "seconds_total": 9365.1
+}

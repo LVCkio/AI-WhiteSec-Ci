@@ -1,0 +1,2104 @@
+{
+  "check": {
+    "rules": 81,
+    "problems": [],
+    "positive_cases": 128,
+    "negative_cases": 142
+  },
+  "test": {
+    "passed": 270,
+    "total": 270,
+    "failures": [],
+    "cases": [
+      {
+        "file": "tests/negative/java/authentication_weakness.java",
+        "line": 11,
+        "rule": "team.java.auth-jwt-unverified",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/java/authentication_weakness.java",
+        "line": 17,
+        "rule": "team.java.auth-weak-password-hash",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/java/hardcoded_credentials.java",
+        "line": 10,
+        "rule": "team.java.hardcoded-secret",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/java/hardcoded_credentials.java",
+        "line": 12,
+        "rule": "team.java.hardcoded-secret",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/java/hardcoded_credentials.java",
+        "line": 16,
+        "rule": "team.java.hardcoded-password-compare",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/java/hardcoded_credentials.java",
+        "line": 18,
+        "rule": "team.java.hardcoded-password-compare",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/java/os_command_injection.java",
+        "line": 12,
+        "rule": "team.java.cmdi-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/java/os_command_injection.java",
+        "line": 12,
+        "rule": "team.java.cmd-string",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/java/os_command_injection.java",
+        "line": 14,
+        "rule": "team.java.audit.process-api",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/java/os_command_injection.java",
+        "line": 14,
+        "rule": "team.java.cmdi-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/java/os_command_injection.java",
+        "line": 17,
+        "rule": "team.java.cmdi-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/java/os_command_injection.java",
+        "line": 25,
+        "rule": "team.java.audit.commandline-api",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/java/os_command_injection.java",
+        "line": 27,
+        "rule": "team.java.audit.commandline-api",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/java/path_traversal.java",
+        "line": 12,
+        "rule": "team.java.path-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/java/path_traversal.java",
+        "line": 14,
+        "rule": "team.java.audit.file-path-api",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/java/path_traversal.java",
+        "line": 14,
+        "rule": "team.java.path-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/java/path_traversal.java",
+        "line": 19,
+        "rule": "team.java.path-upload-name",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/java/sql_injection.java",
+        "line": 13,
+        "rule": "team.java.sqli-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/java/sql_injection.java",
+        "line": 17,
+        "rule": "team.java.sqli-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/java/sql_injection.java",
+        "line": 19,
+        "rule": "team.java.audit.sql-api",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/java/sql_injection.java",
+        "line": 19,
+        "rule": "team.java.sqli-concat",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/java/sql_injection.java",
+        "line": 26,
+        "rule": "team.java.sqli-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/java/xss.java",
+        "line": 12,
+        "rule": "team.java.xss-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/java/xss.java",
+        "line": 14,
+        "rule": "team.java.audit.response-output",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/java/xss.java",
+        "line": 14,
+        "rule": "team.java.xss-html-concat",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/java/xss.java",
+        "line": 22,
+        "rule": "team.java.xss-writer-output",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/java/xss.java",
+        "line": 24,
+        "rule": "team.java.xss-writer-output",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/java/xss.java",
+        "line": 26,
+        "rule": "team.java.xss-writer-output",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/authentication_weakness.js",
+        "line": 11,
+        "rule": "team.js.auth-jwt-unverified",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/authentication_weakness.js",
+        "line": 11,
+        "rule": "team.js.auth-jwt-decode",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/authentication_weakness.js",
+        "line": 13,
+        "rule": "team.js.auth-weak-password-hash",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/hardcoded_credentials.js",
+        "line": 10,
+        "rule": "team.js.hardcoded-secret",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/hardcoded_credentials.js",
+        "line": 12,
+        "rule": "team.js.hardcoded-secret",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/hardcoded_credentials.js",
+        "line": 16,
+        "rule": "team.js.hardcoded-password-compare",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/hardcoded_credentials.js",
+        "line": 18,
+        "rule": "team.js.hardcoded-password-compare",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/hardcoded_credentials.js",
+        "line": 24,
+        "rule": "team.js.hardcoded-password-compare",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/os_command_injection.js",
+        "line": 11,
+        "rule": "team.js.cmdi-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/os_command_injection.js",
+        "line": 11,
+        "rule": "team.js.cmd-shell",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/os_command_injection.js",
+        "line": 13,
+        "rule": "team.js.cmd-shell",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/os_command_injection.js",
+        "line": 13,
+        "rule": "team.js.cmdi-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/os_command_injection.js",
+        "line": 19,
+        "rule": "team.js.audit.process-api",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/os_command_injection.js",
+        "line": 21,
+        "rule": "team.js.audit.process-api",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/path_traversal.js",
+        "line": 11,
+        "rule": "team.js.path-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/path_traversal.js",
+        "line": 13,
+        "rule": "team.js.path-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/path_traversal.js",
+        "line": 19,
+        "rule": "team.js.audit.fs-path-api",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/path_traversal.js",
+        "line": 21,
+        "rule": "team.js.audit.fs-path-api",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/path_traversal.js",
+        "line": 28,
+        "rule": "team.js.audit.fs-path-api",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/path_traversal.js",
+        "line": 30,
+        "rule": "team.js.audit.fs-path-api",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/sql_injection.js",
+        "line": 12,
+        "rule": "team.js.sqli-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/sql_injection.js",
+        "line": 12,
+        "rule": "team.js.sqli-string",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/sql_injection.js",
+        "line": 15,
+        "rule": "team.js.sqli-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/sql_injection.js",
+        "line": 21,
+        "rule": "team.js.sqli-dynamic-query",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/sql_injection.js",
+        "line": 23,
+        "rule": "team.js.sqli-dynamic-query",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/sql_injection.js",
+        "line": 29,
+        "rule": "team.js.audit.sql-api",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/sql_injection.js",
+        "line": 31,
+        "rule": "team.js.audit.sql-api",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/xss.js",
+        "line": 11,
+        "rule": "team.js.xss-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/xss.js",
+        "line": 13,
+        "rule": "team.js.xss-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/xss.js",
+        "line": 13,
+        "rule": "team.js.xss-html-concat",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/xss.js",
+        "line": 18,
+        "rule": "team.js.xss-dom-sink",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/xss.js",
+        "line": 20,
+        "rule": "team.js.xss-dom-sink",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/xss.js",
+        "line": 26,
+        "rule": "team.js.xss-jquery-insert",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/xss.js",
+        "line": 28,
+        "rule": "team.js.xss-jquery-insert",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/javascript/xss.js",
+        "line": 30,
+        "rule": "team.js.xss-jquery-insert",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/authentication_weakness.php",
+        "line": 5,
+        "rule": "team.php.auth-weak-password-hash",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/authentication_weakness.php",
+        "line": 7,
+        "rule": "team.php.auth-weak-password-hash",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/authentication_weakness.php",
+        "line": 15,
+        "rule": "team.php.audit.auth-code",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/authentication_weakness.php",
+        "line": 21,
+        "rule": "team.php.audit.auth-code",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/hardcoded_credentials.php",
+        "line": 3,
+        "rule": "team.php.hardcoded-secret",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/hardcoded_credentials.php",
+        "line": 7,
+        "rule": "team.php.hardcoded-password-compare",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/hardcoded_credentials.php",
+        "line": 9,
+        "rule": "team.php.hardcoded-password-compare",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/os_command_injection.php",
+        "line": 5,
+        "rule": "team.php.cmdi-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/os_command_injection.php",
+        "line": 5,
+        "rule": "team.php.cmd-dynamic",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/os_command_injection.php",
+        "line": 7,
+        "rule": "team.php.cmdi-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/os_command_injection.php",
+        "line": 7,
+        "rule": "team.php.cmd-dynamic",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/os_command_injection.php",
+        "line": 13,
+        "rule": "team.php.audit.process-api",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/path_traversal.php",
+        "line": 5,
+        "rule": "team.php.path-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/sql_injection.php",
+        "line": 5,
+        "rule": "team.php.sqli-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/sql_injection.php",
+        "line": 7,
+        "rule": "team.php.sqli-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/sql_injection.php",
+        "line": 7,
+        "rule": "team.php.sqli-string",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/sql_injection.php",
+        "line": 13,
+        "rule": "team.php.audit.sql-api",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/sql_injection.php",
+        "line": 15,
+        "rule": "team.php.audit.sql-api",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/sql_injection.php",
+        "line": 17,
+        "rule": "team.php.audit.sql-api",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/xss.php",
+        "line": 5,
+        "rule": "team.php.xss-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/xss.php",
+        "line": 7,
+        "rule": "team.php.xss-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/xss.php",
+        "line": 7,
+        "rule": "team.php.xss-html-concat",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/xss.php",
+        "line": 13,
+        "rule": "team.php.audit.echo-unescaped",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/xss.php",
+        "line": 15,
+        "rule": "team.php.audit.echo-unescaped",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/xss.php",
+        "line": 17,
+        "rule": "team.php.audit.echo-unescaped",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/xss.php",
+        "line": 23,
+        "rule": "team.php.xss-template-request",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/xss.php",
+        "line": 23,
+        "rule": "team.php.audit.xss-template-echo",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/xss.php",
+        "line": 25,
+        "rule": "team.php.xss-template-request",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/xss.php",
+        "line": 27,
+        "rule": "team.php.audit.xss-template-echo",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/php/xss.php",
+        "line": 29,
+        "rule": "team.php.audit.xss-template-echo",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/authentication_weakness.py",
+        "line": 8,
+        "rule": "team.authentication-weakness",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/authentication_weakness.py",
+        "line": 10,
+        "rule": "team.auth-secret-equality",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/authentication_weakness.py",
+        "line": 13,
+        "rule": "team.auth-secret-equality",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/authentication_weakness.py",
+        "line": 16,
+        "rule": "team.auth-secret-equality",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/authentication_weakness.py",
+        "line": 19,
+        "rule": "team.auth-weak-password-hash",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/authentication_weakness.py",
+        "line": 26,
+        "rule": "team.auth-session-fixation",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/authentication_weakness.py",
+        "line": 30,
+        "rule": "team.audit.auth-code",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/authentication_weakness.py",
+        "line": 36,
+        "rule": "team.audit.auth-code",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/hardcoded_credentials.py",
+        "line": 5,
+        "rule": "team.hardcoded-credentials",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/hardcoded_credentials.py",
+        "line": 7,
+        "rule": "team.hardcoded-auth-header",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/hardcoded_credentials.py",
+        "line": 9,
+        "rule": "team.hardcoded-auth-header",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/hardcoded_credentials.py",
+        "line": 14,
+        "rule": "team.py.hardcoded-password-compare",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/hardcoded_credentials.py",
+        "line": 17,
+        "rule": "team.py.hardcoded-password-compare",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/os_command_injection.py",
+        "line": 9,
+        "rule": "team.os-command-injection",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/os_command_injection.py",
+        "line": 9,
+        "rule": "team.audit.process-api",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/os_command_injection.py",
+        "line": 9,
+        "rule": "team.py.cmdi-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/os_command_injection.py",
+        "line": 11,
+        "rule": "team.os-command-injection",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/os_command_injection.py",
+        "line": 13,
+        "rule": "team.os-command-string-building",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/os_command_injection.py",
+        "line": 15,
+        "rule": "team.os-command-injection",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/os_command_injection.py",
+        "line": 21,
+        "rule": "team.py.cmdi-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/os_command_injection.py",
+        "line": 27,
+        "rule": "team.py.cmdi-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/path_traversal.py",
+        "line": 7,
+        "rule": "team.path-traversal",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/path_traversal.py",
+        "line": 7,
+        "rule": "team.audit.file-path-api",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/path_traversal.py",
+        "line": 7,
+        "rule": "team.path-request-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/path_traversal.py",
+        "line": 13,
+        "rule": "team.archive-extract-all",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/path_traversal.py",
+        "line": 18,
+        "rule": "team.path-from-parameter",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/path_traversal.py",
+        "line": 23,
+        "rule": "team.path-from-parameter",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/path_traversal.py",
+        "line": 29,
+        "rule": "team.path-request-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/path_traversal.py",
+        "line": 34,
+        "rule": "team.path-from-parameter",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/path_traversal.py",
+        "line": 40,
+        "rule": "team.py.audit.pathlib-api",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/path_traversal.py",
+        "line": 42,
+        "rule": "team.py.audit.pathlib-api",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/sql_injection.py",
+        "line": 6,
+        "rule": "team.sql-injection",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/sql_injection.py",
+        "line": 6,
+        "rule": "team.sql-string-building",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/sql_injection.py",
+        "line": 6,
+        "rule": "team.audit.sql-api",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/sql_injection.py",
+        "line": 8,
+        "rule": "team.sql-string-building",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/sql_injection.py",
+        "line": 10,
+        "rule": "team.audit.sql-api",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/sql_injection.py",
+        "line": 17,
+        "rule": "team.py.sqli-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/sql_injection.py",
+        "line": 17,
+        "rule": "team.sql-injection",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/sql_injection.py",
+        "line": 20,
+        "rule": "team.py.sqli-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/xss.py",
+        "line": 9,
+        "rule": "team.py.xss-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/xss.py",
+        "line": 9,
+        "rule": "team.audit.html-output-api",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/xss.py",
+        "line": 15,
+        "rule": "team.py.xss-taint",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/xss.py",
+        "line": 20,
+        "rule": "team.xss-unsafe-html",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/xss.py",
+        "line": 22,
+        "rule": "team.xss-unsafe-html",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/xss.py",
+        "line": 24,
+        "rule": "team.xss-html-string-building",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/xss.py",
+        "line": 26,
+        "rule": "team.audit.html-output-api",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/xss.py",
+        "line": 26,
+        "rule": "team.xss-response-formatting",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/xss.py",
+        "line": 32,
+        "rule": "team.py.xss-jinja-autoescape-default",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/negative/python/xss.py",
+        "line": 34,
+        "rule": "team.py.audit.response-body",
+        "expect": "khong bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/java/authentication_weakness.java",
+        "line": 11,
+        "rule": "team.java.auth-jwt-unverified",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/java/authentication_weakness.java",
+        "line": 17,
+        "rule": "team.java.auth-weak-password-hash",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/java/hardcoded_credentials.java",
+        "line": 10,
+        "rule": "team.java.hardcoded-secret",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/java/hardcoded_credentials.java",
+        "line": 14,
+        "rule": "team.java.hardcoded-secret",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/java/hardcoded_credentials.java",
+        "line": 19,
+        "rule": "team.java.hardcoded-password-compare",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/java/os_command_injection.java",
+        "line": 12,
+        "rule": "team.java.cmdi-taint",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/java/os_command_injection.java",
+        "line": 12,
+        "rule": "team.java.cmd-string",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/java/os_command_injection.java",
+        "line": 17,
+        "rule": "team.java.audit.process-api",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/java/os_command_injection.java",
+        "line": 25,
+        "rule": "team.java.audit.commandline-api",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/java/os_command_injection.java",
+        "line": 27,
+        "rule": "team.java.audit.commandline-api",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/java/path_traversal.java",
+        "line": 12,
+        "rule": "team.java.path-taint",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/java/path_traversal.java",
+        "line": 12,
+        "rule": "team.java.audit.file-path-api",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/java/path_traversal.java",
+        "line": 17,
+        "rule": "team.java.path-upload-name",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/java/path_traversal.java",
+        "line": 17,
+        "rule": "team.java.audit.file-path-api",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/java/path_traversal.java",
+        "line": 22,
+        "rule": "team.java.audit.file-path-api",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/java/sql_injection.java",
+        "line": 13,
+        "rule": "team.java.sqli-taint",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/java/sql_injection.java",
+        "line": 13,
+        "rule": "team.java.sqli-concat",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/java/sql_injection.java",
+        "line": 13,
+        "rule": "team.java.audit.sql-api",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/java/sql_injection.java",
+        "line": 18,
+        "rule": "team.java.sqli-taint",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/java/sql_injection.java",
+        "line": 18,
+        "rule": "team.java.sqli-concat",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/java/sql_injection.java",
+        "line": 23,
+        "rule": "team.java.audit.sql-api",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/java/xss.java",
+        "line": 12,
+        "rule": "team.java.xss-taint",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/java/xss.java",
+        "line": 12,
+        "rule": "team.java.xss-html-concat",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/java/xss.java",
+        "line": 12,
+        "rule": "team.java.audit.response-output",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/java/xss.java",
+        "line": 17,
+        "rule": "team.java.audit.response-output",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/java/xss.java",
+        "line": 25,
+        "rule": "team.java.xss-writer-output",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/java/xss.java",
+        "line": 27,
+        "rule": "team.java.xss-writer-output",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/java/xss.java",
+        "line": 29,
+        "rule": "team.java.xss-writer-output",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/javascript/authentication_weakness.js",
+        "line": 11,
+        "rule": "team.js.auth-jwt-unverified",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/javascript/authentication_weakness.js",
+        "line": 13,
+        "rule": "team.js.auth-jwt-decode",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/javascript/authentication_weakness.js",
+        "line": 15,
+        "rule": "team.js.auth-weak-password-hash",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/javascript/hardcoded_credentials.js",
+        "line": 10,
+        "rule": "team.js.hardcoded-secret",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/javascript/hardcoded_credentials.js",
+        "line": 12,
+        "rule": "team.js.hardcoded-secret",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/javascript/hardcoded_credentials.js",
+        "line": 14,
+        "rule": "team.js.hardcoded-secret",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/javascript/hardcoded_credentials.js",
+        "line": 18,
+        "rule": "team.js.hardcoded-password-compare",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/javascript/os_command_injection.js",
+        "line": 11,
+        "rule": "team.js.cmdi-taint",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/javascript/os_command_injection.js",
+        "line": 11,
+        "rule": "team.js.cmd-shell",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/javascript/os_command_injection.js",
+        "line": 17,
+        "rule": "team.js.audit.process-api",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/javascript/os_command_injection.js",
+        "line": 19,
+        "rule": "team.js.audit.process-api",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/javascript/path_traversal.js",
+        "line": 11,
+        "rule": "team.js.path-taint",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/javascript/path_traversal.js",
+        "line": 13,
+        "rule": "team.js.path-taint",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/javascript/path_traversal.js",
+        "line": 19,
+        "rule": "team.js.audit.fs-path-api",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/javascript/path_traversal.js",
+        "line": 21,
+        "rule": "team.js.audit.fs-path-api",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/javascript/path_traversal.js",
+        "line": 23,
+        "rule": "team.js.audit.fs-path-api",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/javascript/sql_injection.js",
+        "line": 12,
+        "rule": "team.js.sqli-taint",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/javascript/sql_injection.js",
+        "line": 12,
+        "rule": "team.js.sqli-string",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/javascript/sql_injection.js",
+        "line": 14,
+        "rule": "team.js.sqli-string",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/javascript/sql_injection.js",
+        "line": 20,
+        "rule": "team.js.sqli-dynamic-query",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/javascript/sql_injection.js",
+        "line": 22,
+        "rule": "team.js.sqli-dynamic-query",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/javascript/sql_injection.js",
+        "line": 24,
+        "rule": "team.js.sqli-dynamic-query",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/javascript/sql_injection.js",
+        "line": 29,
+        "rule": "team.js.audit.sql-api",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/javascript/xss.js",
+        "line": 11,
+        "rule": "team.js.xss-taint",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/javascript/xss.js",
+        "line": 11,
+        "rule": "team.js.xss-html-concat",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/javascript/xss.js",
+        "line": 16,
+        "rule": "team.js.xss-dom-sink",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/javascript/xss.js",
+        "line": 22,
+        "rule": "team.js.xss-jquery-insert",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/javascript/xss.js",
+        "line": 24,
+        "rule": "team.js.xss-jquery-insert",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/php/authentication_weakness.php",
+        "line": 5,
+        "rule": "team.php.auth-weak-password-hash",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/php/authentication_weakness.php",
+        "line": 12,
+        "rule": "team.php.audit.auth-code",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/php/authentication_weakness.php",
+        "line": 18,
+        "rule": "team.php.audit.auth-code",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/php/hardcoded_credentials.php",
+        "line": 3,
+        "rule": "team.php.hardcoded-secret",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/php/hardcoded_credentials.php",
+        "line": 5,
+        "rule": "team.php.hardcoded-secret",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/php/hardcoded_credentials.php",
+        "line": 7,
+        "rule": "team.php.hardcoded-secret",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/php/hardcoded_credentials.php",
+        "line": 9,
+        "rule": "team.php.hardcoded-secret",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/php/hardcoded_credentials.php",
+        "line": 13,
+        "rule": "team.php.hardcoded-password-compare",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/php/os_command_injection.php",
+        "line": 5,
+        "rule": "team.php.cmdi-taint",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/php/os_command_injection.php",
+        "line": 5,
+        "rule": "team.php.cmd-dynamic",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/php/os_command_injection.php",
+        "line": 11,
+        "rule": "team.php.audit.process-api",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/php/os_command_injection.php",
+        "line": 13,
+        "rule": "team.php.audit.process-api",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/php/path_traversal.php",
+        "line": 5,
+        "rule": "team.php.path-taint",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/php/sql_injection.php",
+        "line": 5,
+        "rule": "team.php.sqli-taint",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/php/sql_injection.php",
+        "line": 5,
+        "rule": "team.php.sqli-string",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/php/sql_injection.php",
+        "line": 8,
+        "rule": "team.php.sqli-string",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/php/sql_injection.php",
+        "line": 14,
+        "rule": "team.php.audit.sql-api",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/php/sql_injection.php",
+        "line": 16,
+        "rule": "team.php.audit.sql-api",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/php/sql_injection.php",
+        "line": 18,
+        "rule": "team.php.audit.sql-api",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/php/xss.php",
+        "line": 5,
+        "rule": "team.php.xss-taint",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/php/xss.php",
+        "line": 5,
+        "rule": "team.php.xss-html-concat",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/php/xss.php",
+        "line": 11,
+        "rule": "team.php.audit.echo-unescaped",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/php/xss.php",
+        "line": 13,
+        "rule": "team.php.audit.echo-unescaped",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/php/xss.php",
+        "line": 19,
+        "rule": "team.php.xss-template-request",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/php/xss.php",
+        "line": 21,
+        "rule": "team.php.xss-template-request",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/php/xss.php",
+        "line": 23,
+        "rule": "team.php.xss-template-request",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/php/xss.php",
+        "line": 25,
+        "rule": "team.php.audit.xss-template-echo",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/php/xss.php",
+        "line": 27,
+        "rule": "team.php.audit.xss-template-echo",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/authentication_weakness.py",
+        "line": 7,
+        "rule": "team.authentication-weakness",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/authentication_weakness.py",
+        "line": 7,
+        "rule": "team.audit.auth-code",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/authentication_weakness.py",
+        "line": 9,
+        "rule": "team.auth-secret-equality",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/authentication_weakness.py",
+        "line": 12,
+        "rule": "team.auth-weak-password-hash",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/authentication_weakness.py",
+        "line": 18,
+        "rule": "team.auth-session-fixation",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/authentication_weakness.py",
+        "line": 22,
+        "rule": "team.audit.auth-code",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/hardcoded_credentials.py",
+        "line": 4,
+        "rule": "team.hardcoded-credentials",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/hardcoded_credentials.py",
+        "line": 6,
+        "rule": "team.hardcoded-credentials",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/hardcoded_credentials.py",
+        "line": 8,
+        "rule": "team.hardcoded-auth-header",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/hardcoded_credentials.py",
+        "line": 10,
+        "rule": "team.hardcoded-auth-header",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/hardcoded_credentials.py",
+        "line": 15,
+        "rule": "team.py.hardcoded-password-compare",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/os_command_injection.py",
+        "line": 8,
+        "rule": "team.os-command-injection",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/os_command_injection.py",
+        "line": 8,
+        "rule": "team.audit.process-api",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/os_command_injection.py",
+        "line": 10,
+        "rule": "team.os-command-injection",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/os_command_injection.py",
+        "line": 10,
+        "rule": "team.audit.process-api",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/os_command_injection.py",
+        "line": 12,
+        "rule": "team.os-command-injection",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/os_command_injection.py",
+        "line": 14,
+        "rule": "team.os-command-string-building",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/os_command_injection.py",
+        "line": 14,
+        "rule": "team.audit.process-api",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/os_command_injection.py",
+        "line": 20,
+        "rule": "team.py.cmdi-taint",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/os_command_injection.py",
+        "line": 20,
+        "rule": "team.os-command-injection",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/path_traversal.py",
+        "line": 7,
+        "rule": "team.path-traversal",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/path_traversal.py",
+        "line": 7,
+        "rule": "team.path-request-taint",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/path_traversal.py",
+        "line": 7,
+        "rule": "team.audit.file-path-api",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/path_traversal.py",
+        "line": 13,
+        "rule": "team.archive-extract-all",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/path_traversal.py",
+        "line": 18,
+        "rule": "team.path-from-parameter",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/path_traversal.py",
+        "line": 24,
+        "rule": "team.path-request-taint",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/path_traversal.py",
+        "line": 30,
+        "rule": "team.py.audit.pathlib-api",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/path_traversal.py",
+        "line": 32,
+        "rule": "team.py.audit.pathlib-api",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/sql_injection.py",
+        "line": 6,
+        "rule": "team.sql-injection",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/sql_injection.py",
+        "line": 6,
+        "rule": "team.sql-string-building",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/sql_injection.py",
+        "line": 8,
+        "rule": "team.sql-string-building",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/sql_injection.py",
+        "line": 10,
+        "rule": "team.sql-string-building",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/sql_injection.py",
+        "line": 12,
+        "rule": "team.audit.sql-api",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/sql_injection.py",
+        "line": 19,
+        "rule": "team.py.sqli-taint",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/xss.py",
+        "line": 7,
+        "rule": "team.xss-unsafe-html",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/xss.py",
+        "line": 9,
+        "rule": "team.xss-html-string-building",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/xss.py",
+        "line": 11,
+        "rule": "team.xss-html-string-building",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/xss.py",
+        "line": 13,
+        "rule": "team.xss-unsafe-html",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/xss.py",
+        "line": 15,
+        "rule": "team.audit.html-output-api",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/xss.py",
+        "line": 20,
+        "rule": "team.xss-response-formatting",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/xss.py",
+        "line": 26,
+        "rule": "team.py.xss-taint",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/xss.py",
+        "line": 26,
+        "rule": "team.xss-response-formatting",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/xss.py",
+        "line": 32,
+        "rule": "team.py.xss-jinja-autoescape-default",
+        "expect": "bao",
+        "pass": true
+      },
+      {
+        "file": "tests/positive/python/xss.py",
+        "line": 34,
+        "rule": "team.py.audit.response-body",
+        "expect": "bao",
+        "pass": true
+      }
+    ],
+    "semgrep_errors": []
+  },
+  "manifest": {
+    "ruleset": "AI-WhiteSec-CI Semgrep CE ruleset",
+    "ruleset_version": "4.2.0",
+    "ruleset_commit": "khong co git trong workspace - dien commit khi dua vao repo",
+    "ruleset_sha256": "95267dec1cbd566c88240c58d42ec4e61ef3d503b8904a204ab29cdb8da381f3",
+    "semgrep_version": "1.181.0",
+    "semgrep_version_pinned": "1.181.0",
+    "bandit_version": "1.9.4",
+    "bandit_version_pinned": "1.9.4",
+    "generated_at": "2026-10-21T11:07:08+00:00",
+    "python": "3.11.9",
+    "files": {
+      "rules/java/authentication_weakness.yml": "46d0e93aefc3e5014e885de533de97a0e5131c3fb1448a87bf2a9d29120e30b8",
+      "rules/java/hardcoded_credentials.yml": "dc8dfc6ce2152498591ea50a47531b3f9e0ad0a7902ba255978b4c6792dc02bb",
+      "rules/java/os_command_injection.yml": "d1f7d415204562b2509f078b4da6d87b133fdf2089248903167d8a7d31863d84",
+      "rules/java/path_traversal.yml": "d7711f39f4e721f7432e6d172a651fe12bb2011873d648f0d49b983a633f3c37",
+      "rules/java/sql_injection.yml": "ed8ae64f863b23850854081f60832e9b2277e7899a561f426a38018408f7253a",
+      "rules/java/xss.yml": "62415121018097eccb62e1558f535050796e2b9c0b81ff7d5460ba6a31ee1a58",
+      "rules/javascript/authentication_weakness.yml": "d945fe13e4e90869d95867ae7a3b9b9e1d66e7d479ed22a12476327ec0a6aeb2",
+      "rules/javascript/hardcoded_credentials.yml": "180497b1b69951779093b7acb5e2061d9572319c7b86b90bd14e34897355ee66",
+      "rules/javascript/os_command_injection.yml": "7d0d9b5cae3dd05ffacaa42731dba5fffe318ed1337c2abac37195542c001918",
+      "rules/javascript/path_traversal.yml": "bd732d59ca25419552f9de95ee48d5d8fd483285e3dfd35e58ea303d87f641ef",
+      "rules/javascript/sql_injection.yml": "08b241d2c3ed3a92454cfd8255cad27bae1afc7b1e298d83fe0038155200b4e5",
+      "rules/javascript/xss.yml": "975ba4cb0f9173d4a9daef5ece79eb840441b4e9d5ca03b5a2965692ffefbb5d",
+      "rules/php/authentication_weakness.yml": "4da57203809559ae6752a73c42871f83d78458dd3b27ed4843df6e4e8a0c7b21",
+      "rules/php/hardcoded_credentials.yml": "9bab12bb85fa0c740425584fffb71d61ac7d4dc6d5d9083ba8e6e569f79fd57e",
+      "rules/php/os_command_injection.yml": "06b9973f13499cd1d870e3e184bfdd97fffb08e76b2c0902fdd854cfa7edf0a9",
+      "rules/php/path_traversal.yml": "6a6b5f68f2c938f0c6c3e93c7bda7c14de0930af428ef0aa1cfba59ee1c74ebf",
+      "rules/php/sql_injection.yml": "5ec504a4462aef5748aabb7b673c716aafacf7ee2b96fadc7e453abdf8510dc5",
+      "rules/php/xss.yml": "6572a070afca2f7b33ede1419bbe6dd5a59955c355ee3dc92e8a0bf30c771a5f",
+      "rules/python/authentication_weakness.yml": "ae08abc4b324d3791076d566d3f566b4c3263039433ea76b9d8560a932337b39",
+      "rules/python/hardcoded_credentials.yml": "c0bf8abf441228278086e663745946e399acc0f944990ec94d2cec55ed60d816",
+      "rules/python/os_command_injection.yml": "c6f466cb20033b146800aaf039f6b2a77e1c26f100544f1f34f88a1bb4f4d45a",
+      "rules/python/path_traversal.yml": "a23c6ad9b47f674e36c5951bbe6ad5da2c84930b81fc8d4ee7e8dfc3bf24f471",
+      "rules/python/sql_injection.yml": "ee673d9d8825f5b5dd8d76ab1095c3c5fd4f27fb2eb667a68d903ab758c04286",
+      "rules/python/xss.yml": "78ec1169c71de33744fb191c512e4ae62dc509adc5fec9a138860d09b78e0d46"
+    },
+    "tests": {
+      "tests/negative/java/authentication_weakness.java": "05e207b94eb0fcad5c8713c9cb849d532bd2b7bc053d981d608a30e4c5059253",
+      "tests/negative/java/hardcoded_credentials.java": "c4a4914d73c068b3a630b5a12ee22eb1a68be29d7c6c64f292f257bdad6bfcad",
+      "tests/negative/java/os_command_injection.java": "9e97d735a3b85d75b720d24c8a64e058883f6279587345c702562dc432f0aa3e",
+      "tests/negative/java/path_traversal.java": "6f999cdfe3a5e38ee6cf831c6b9f7c6ff2d60cf4e78bc768cdf2f52c908e5635",
+      "tests/negative/java/sql_injection.java": "5dc88609b64a4fae2123dd84beb434a251cc6ede29aef791b5fbed7928b0faf2",
+      "tests/negative/java/xss.java": "8e8b48ccb6f78ff3ac9b226d29867fa1c834054b96fe2fd0d5222edc93090d3b",
+      "tests/negative/javascript/authentication_weakness.js": "be34653afcaec0e4a1eef3f1ab23cadf562a0138e92b0321fb6081855587e5db",
+      "tests/negative/javascript/hardcoded_credentials.js": "2cfd4a194f67e5b3c0885ce478c88d0a60562b790997b980647503c5e2b4fd1c",
+      "tests/negative/javascript/os_command_injection.js": "dee1f111ff96f89fe1352c751dbe52bbb24d3fef8d072e21c07f32e7e70dfb33",
+      "tests/negative/javascript/path_traversal.js": "6e75c167f845f9a57b29a3ac52523d45387e13b82c9e07988fec34b0ac215f91",
+      "tests/negative/javascript/sql_injection.js": "2af70aa122e807024174fc93b70507f95f1f7de13c440a534acd69644664c42d",
+      "tests/negative/javascript/xss.js": "05930aa8877fcc0902d743100612659f0628914fe1077a8ac899c2c89be8a7ad",
+      "tests/negative/php/authentication_weakness.php": "151da110d478ab3979afc44be0442f038aefa9c87b92e502dd97d3481b2fbf63",
+      "tests/negative/php/hardcoded_credentials.php": "4298a5829d1223c783239e2bdec0eed5ffc2bd4f87394b2c1e954a02ccfc7d6f",
+      "tests/negative/php/os_command_injection.php": "f0c9a017f9020d76584cffabc1af4086573c7745afef14ab1538e00f73b08b6a",
+      "tests/negative/php/path_traversal.php": "bb45deb184ee194e867ddf5b30e8a7f2034b84d7a626245eecabaee71b0b0d98",
+      "tests/negative/php/sql_injection.php": "76bf8ad5feb9a024e925b09f5a3892ddb55726d050a2638b41a83f7442a75b69",
+      "tests/negative/php/xss.php": "4814e6903b5198dab604e6c24d399c804be3030cf80792225a4504b0ded9f08d",
+      "tests/negative/python/authentication_weakness.py": "f510a498418c0fc7415f655246fbb84a7ff032fb12375f17acbb0a6979b07b59",
+      "tests/negative/python/hardcoded_credentials.py": "9d5212616382b01d525dd601e5ff3841b779eff8472c5202ea5e370cc5832629",
+      "tests/negative/python/os_command_injection.py": "e80c9dea7c37bc6f3fa68e1b7460c44cd2748cd31098198551bee17b670cca22",
+      "tests/negative/python/path_traversal.py": "50d114c61ef255cc011bd6bcd8aef3a1964f1233e95f19bbf2e3ad8078b87b89",
+      "tests/negative/python/sql_injection.py": "fa572d19e0c3c0bf9310b1c0812fcb5760da1424a007a46aec3bed7e310f13bd",
+      "tests/negative/python/xss.py": "65b42a551078e9df222ac53f109fcb0afa789d5638a09f9684fc9a6c45172f18",
+      "tests/positive/java/authentication_weakness.java": "00ce457cfe96c52ab83509ba7b15afef7b07c7f53832a8c4cc8394f864073dcb",
+      "tests/positive/java/hardcoded_credentials.java": "4bb29b9dababb14a60d6c80ec0212ca2ce240796e236e758f32a87da4d8b930b",
+      "tests/positive/java/os_command_injection.java": "a421e89cb2603beb0131b4db13a3890b83e416734ce96c5024269a19b6552686",
+      "tests/positive/java/path_traversal.java": "1eedfbd35de3cdbc4114dde7e1914699fea44883a3b03d3f29323315f939545b",
+      "tests/positive/java/sql_injection.java": "54cbacfcbab7cff2588b12aa8e5bbf057cc9f1ffb4a6f1fd9f82d2e6c942238a",
+      "tests/positive/java/xss.java": "2198907fc6c9faf727c2c75d55045f5681867b203f641d7fd18c5d9ecfac9934",
+      "tests/positive/javascript/authentication_weakness.js": "b411d8039f2c429ef158145316cba3ddd3005b261ec2486b705080c917991bfe",
+      "tests/positive/javascript/hardcoded_credentials.js": "d2d974e6ffc5e5b0a17f42385dcdbacef1406d34189274447bbf20909b92eac4",
+      "tests/positive/javascript/os_command_injection.js": "465879733903162d2ef45c3a10703d49e50288167ee9a67ce773a7dc96e59109",
+      "tests/positive/javascript/path_traversal.js": "be529e12b39f0c4c4f2fa2973ad67b97678e47068ea86c4b694c9bac2ae4c378",
+      "tests/positive/javascript/sql_injection.js": "76a48da5ad1b0869477367457d800c0c94dd94f973142a6a308fc37e8225d519",
+      "tests/positive/javascript/xss.js": "f249b51c8959ac9e58994dbfde5f4688341fe1c5b82280635801a5c9456cfe48",
+      "tests/positive/php/authentication_weakness.php": "ebee298631c70ae08bcc3678c8be57db1838a209185f6bda35079ff14378fc3c",
+      "tests/positive/php/hardcoded_credentials.php": "116d32bb9522deacf73daecbd9a7eaa35788b91e1203d2b41d7bde68f76e9284",
+      "tests/positive/php/os_command_injection.php": "5e95a6aae6a415bee476d6f6b4138c4b2b3a159853b3c0a3cc9579cc5f850e3d",
+      "tests/positive/php/path_traversal.php": "949d7b0e086e79b69d6cad9cdf5b7e6d5ca3c9a5a3093fbea930339b18ab7d97",
+      "tests/positive/php/sql_injection.php": "583fcf94342a4ae2ea24a14aeb9f5ae72cbd93c2f3377d4f772463618b3aeae2",
+      "tests/positive/php/xss.php": "dccb972c07f66386e1e49fe5cdbe8937f8cef779277c1b488eaeefb2c22ac62d",
+      "tests/positive/python/authentication_weakness.py": "07eb065dc8fee13d9b12b3aa8671872a26ef93e1d998b8e69a84831166a6d7aa",
+      "tests/positive/python/hardcoded_credentials.py": "891e7e5c807039e9bfde27035e298f6138b7d389a59b17c1b2b093be083d252b",
+      "tests/positive/python/os_command_injection.py": "629a2a9bc86712fad82ee049f67b04f34fbc842703ac008dab903e304e78a0b3",
+      "tests/positive/python/path_traversal.py": "6a36bedeef3c7867726006395cab485626b46e0f3be2b070188f0940b9f72f5c",
+      "tests/positive/python/sql_injection.py": "e9fe575674877e378c0631d8ab144aeed3d4b9782da2c3a90098c8bdc8c5872c",
+      "tests/positive/python/xss.py": "45d9497c6a408c97f3fd910a9226f1b84edddedb75675f862c3f170d8743a574"
+    },
+    "registry_snapshot": {
+      "p_java.yml": "800b43b623f3f9a72fd80633b429de99db37506cabd3c75e55143d46fedb5d32",
+      "p_javascript.yml": "1bcb61b57b5c9ee521d5e1db2d80062fe90b64fc788650564dc1f1c5243419c2",
+      "p_php.yml": "45f37e32e44ba49f61b93697de35e4737d06f5b526a17cabeb944196a9c6bd84",
+      "p_python.yml": "10f171f2fa8e9892d868397dce987a84617c48fa67e04d911ebd01705e43c815",
+      "p_security-audit.yml": "83d7cde9157b3c79cc5cfaea26e7bd2ba9c740f2ba07635ad475b2585556c32d",
+      "p_typescript.yml": "967e551f37a9f27ce8b396ed121e5e127bf9ea60148e10589b794bd4ffe73395"
+    },
+    "rule_counts": {
+      "java/authentication_weakness": {
+        "high": 1,
+        "audit": 1
+      },
+      "java/hardcoded_credentials": {
+        "high": 2,
+        "audit": 0
+      },
+      "java/os_command_injection": {
+        "high": 1,
+        "audit": 3
+      },
+      "java/path_traversal": {
+        "high": 1,
+        "audit": 2
+      },
+      "java/sql_injection": {
+        "high": 1,
+        "audit": 2
+      },
+      "java/xss": {
+        "high": 1,
+        "audit": 3
+      },
+      "javascript/authentication_weakness": {
+        "high": 1,
+        "audit": 2
+      },
+      "javascript/hardcoded_credentials": {
+        "high": 2,
+        "audit": 0
+      },
+      "javascript/os_command_injection": {
+        "high": 1,
+        "audit": 2
+      },
+      "javascript/path_traversal": {
+        "high": 1,
+        "audit": 1
+      },
+      "javascript/sql_injection": {
+        "high": 1,
+        "audit": 3
+      },
+      "javascript/xss": {
+        "high": 1,
+        "audit": 3
+      },
+      "php/authentication_weakness": {
+        "high": 0,
+        "audit": 2
+      },
+      "php/hardcoded_credentials": {
+        "high": 2,
+        "audit": 0
+      },
+      "php/os_command_injection": {
+        "high": 1,
+        "audit": 2
+      },
+      "php/path_traversal": {
+        "high": 1,
+        "audit": 0
+      },
+      "php/sql_injection": {
+        "high": 1,
+        "audit": 2
+      },
+      "php/xss": {
+        "high": 2,
+        "audit": 3
+      },
+      "python/authentication_weakness": {
+        "high": 1,
+        "audit": 4
+      },
+      "python/hardcoded_credentials": {
+        "high": 3,
+        "audit": 0
+      },
+      "python/os_command_injection": {
+        "high": 3,
+        "audit": 1
+      },
+      "python/path_traversal": {
+        "high": 2,
+        "audit": 4
+      },
+      "python/sql_injection": {
+        "high": 2,
+        "audit": 2
+      },
+      "python/xss": {
+        "high": 3,
+        "audit": 4
+      }
+    },
+    "check_problems": 0,
+    "tests_passed": 270,
+    "tests_total": 270,
+    "regression_passed": true
+  }
+}

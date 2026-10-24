@@ -1,0 +1,120 @@
+{
+  "app": "juice-shop",
+  "image": "bkimminich/juice-shop:v17.1.1",
+  "image_digest": "bkimminich/juice-shop@sha256:9e437b456e444ff001d1663e4f6f05c796fe02f1058dd2651d6791a15b43dfeb",
+  "n": 10,
+  "by_class": {
+    "XSS": 3,
+    "AUTHENTICATION_WEAKNESS": 2,
+    "SQL_INJECTION": 5
+  },
+  "unit": "file+line",
+  "ignored_challenges_outside_6_classes": [
+    "accessLogDisclosureChallenge",
+    "adminSectionChallenge",
+    "changeProductChallenge",
+    "directoryListingChallenge",
+    "exposedMetricsChallenge",
+    "forgedReviewChallenge",
+    "noSqlReviewsChallenge",
+    "redirectChallenge",
+    "redirectCryptoCurrencyChallenge",
+    "registerAdminChallenge",
+    "scoreBoardChallenge",
+    "tokenSaleChallenge",
+    "web3SandboxChallenge"
+  ],
+  "reference": "https://pwning.owasp-juice.shop (danh sach challenge) + marker vuln-code-snippet",
+  "vulnerabilities": [
+    {
+      "id": "restfulXssChallenge@frontend/src/app/search-result/search-result.component.ts:125",
+      "file": "frontend/src/app/search-result/search-result.component.ts",
+      "function": "<file>",
+      "line": 125,
+      "class": "XSS",
+      "challenge": "restfulXssChallenge",
+      "description": "marker vuln-code-snippet chinh thuc cua Juice Shop"
+    },
+    {
+      "id": "localXssChallenge@frontend/src/app/search-result/search-result.component.ts:151",
+      "file": "frontend/src/app/search-result/search-result.component.ts",
+      "function": "<file>",
+      "line": 151,
+      "class": "XSS",
+      "challenge": "localXssChallenge",
+      "description": "marker vuln-code-snippet chinh thuc cua Juice Shop"
+    },
+    {
+      "id": "xssBonusChallenge@frontend/src/app/search-result/search-result.component.ts:151",
+      "file": "frontend/src/app/search-result/search-result.component.ts",
+      "function": "<file>",
+      "line": 151,
+      "class": "XSS",
+      "challenge": "xssBonusChallenge",
+      "description": "marker vuln-code-snippet chinh thuc cua Juice Shop"
+    },
+    {
+      "id": "weakPasswordChallenge@models/user.ts:77",
+      "file": "models/user.ts",
+      "function": "<file>",
+      "line": 77,
+      "class": "AUTHENTICATION_WEAKNESS",
+      "challenge": "weakPasswordChallenge",
+      "description": "marker vuln-code-snippet chinh thuc cua Juice Shop"
+    },
+    {
+      "id": "loginAdminChallenge@routes/login.ts:36",
+      "file": "routes/login.ts",
+      "function": "<file>",
+      "line": 36,
+      "class": "SQL_INJECTION",
+      "challenge": "loginAdminChallenge",
+      "description": "marker vuln-code-snippet chinh thuc cua Juice Shop"
+    },
+    {
+      "id": "loginBenderChallenge@routes/login.ts:36",
+      "file": "routes/login.ts",
+      "function": "<file>",
+      "line": 36,
+      "class": "SQL_INJECTION",
+      "challenge": "loginBenderChallenge",
+      "description": "marker vuln-code-snippet chinh thuc cua Juice Shop"
+    },
+    {
+      "id": "loginJimChallenge@routes/login.ts:36",
+      "file": "routes/login.ts",
+      "function": "<file>",
+      "line": 36,
+      "class": "SQL_INJECTION",
+      "challenge": "loginJimChallenge",
+      "description": "marker vuln-code-snippet chinh thuc cua Juice Shop"
+    },
+    {
+      "id": "unionSqlInjectionChallenge@routes/search.ts:23",
+      "file": "routes/search.ts",
+      "function": "<file>",
+      "line": 23,
+      "class": "SQL_INJECTION",
+      "challenge": "unionSqlInjectionChallenge",
+      "description": "marker vuln-code-snippet chinh thuc cua Juice Shop"
+    },
+    {
+      "id": "dbSchemaChallenge@routes/search.ts:23",
+      "file": "routes/search.ts",
+      "function": "<file>",
+      "line": 23,
+      "class": "SQL_INJECTION",
+      "challenge": "dbSchemaChallenge",
+      "description": "marker vuln-code-snippet chinh thuc cua Juice Shop"
+    },
+    {
+      "id": "resetPasswordMortyChallenge@server.ts:330",
+      "file": "server.ts",
+      "function": "<file>",
+      "line": 330,
+      "class": "AUTHENTICATION_WEAKNESS",
+      "challenge": "resetPasswordMortyChallenge",
+      "description": "marker vuln-code-snippet chinh thuc cua Juice Shop"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+# Rule DA TAT trong ruleset v4.2.0 (khong vao bundle semgrep.yml). Ly do: metadata.disabled_v42.
+# Bat lai: chuyen khoi rule ve rules/java/authentication_weakness.yml, khoi phuc test tu archive/ va chay tools/ruleset.py all.
+rules:
+- id: team.java.audit.auth-code
+  languages:
+  - java
+  severity: INFO
+  message: Authentication-sensitive code (filters, Authorization header, login/session handling) (audit hint).
+  metadata:
+    cwe: CWE-287
+    owasp: A07:2021
+    vuln_class: AUTHENTICATION_WEAKNESS
+    confidence: audit
+    severity: high
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+    disabled_v42: "TC3/TC4: rule dinh vi code xac thuc, khong mo ta diem yeu; train 1/8 (0,12), val 0 lan bao, 4 ung dung 2/12."
+  pattern-either:
+  - pattern: $REQ.getHeader("Authorization")
+  - pattern: $REQ.getUserPrincipal()
+  - pattern: $REQ.login(...)
+  - pattern: $REQ.authenticate(...)
+  - pattern: $SESSION.setAttribute("user", ...)
+  - pattern: $AUTH.authenticate(...)
+  - pattern: 'public void doFilter(ServletRequest $Q, ServletResponse $S, FilterChain $C) throws $E1, $E2 { ...
+      }
+
+      '
+  - pattern: 'public void doFilter(final ServletRequest $Q, final ServletResponse $S, final FilterChain $C) throws
+      $E1, $E2 { ... }
+
+      '
+  - patterns:
+    - pattern: '$RT $METHOD(...) { ... }
+
+        '
+    - metavariable-regex:
+        metavariable: $METHOD
+        regex: (?i)^(login|logout|authenticate|checkPassword|verifyPassword|checkAccess|isAuthorized|validateToken|verifyToken|checkCredentials)$
+- id: team.java.auth-secret-equals
+  languages:
+  - java
+  severity: WARNING
+  message: A password, token or signature is compared with equals() (not constant time) (audit).
+  metadata:
+    cwe: CWE-287
+    owasp: A07:2021
+    vuln_class: AUTHENTICATION_WEAKNESS
+    confidence: audit
+    severity: high
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.1.0
+    ruleset_version: 4.2.0
+    disabled_v42: "TC4: train 0/1, val 0/2 dung lop, cap val 0 dung/2 sai lop; WebGoat 1/10."
+    change_v4: Bo so sanh voi hang chuoi (chuyen sang hardcoded-password-compare) va bieu thuc goi ham.
+  patterns:
+  - pattern-either:
+    - pattern: $A.equals($B)
+    - pattern: $B.equals($A)
+  - pattern-not: '"...".equals($A)'
+  - pattern-not: $A.equals("...")
+  - metavariable-regex:
+      metavariable: $A
+      regex: (?i)^[\w.]*(password|passwd|token|secret|signature|digest|apikey|api_key)[\w.]*$

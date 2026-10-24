@@ -1,0 +1,546 @@
+{
+ "v3": {
+  "cells": {
+   "Python|XSS": {
+    "n": 31,
+    "any": 4,
+    "high": 1,
+    "pass": 26
+   },
+   "JavaScript|XSS": {
+    "n": 114,
+    "any": 37,
+    "high": 3,
+    "pass": 76
+   },
+   "Python|PATH_TRAVERSAL": {
+    "n": 32,
+    "any": 7,
+    "high": 0,
+    "pass": 25
+   },
+   "Python|OS_COMMAND_INJECTION": {
+    "n": 13,
+    "any": 5,
+    "high": 4,
+    "pass": 7
+   },
+   "Python|AUTHENTICATION_WEAKNESS": {
+    "n": 10,
+    "any": 4,
+    "high": 0,
+    "pass": 5
+   },
+   "Python|SQL_INJECTION": {
+    "n": 6,
+    "any": 3,
+    "high": 0,
+    "pass": 3
+   },
+   "Python|HARDCODED_CREDENTIALS": {
+    "n": 6,
+    "any": 2,
+    "high": 2,
+    "pass": 4
+   },
+   "Java|HARDCODED_CREDENTIALS": {
+    "n": 4,
+    "any": 0,
+    "high": 0,
+    "pass": 4
+   },
+   "PHP|SQL_INJECTION": {
+    "n": 73,
+    "any": 21,
+    "high": 1,
+    "pass": 46
+   },
+   "JavaScript|OS_COMMAND_INJECTION": {
+    "n": 29,
+    "any": 5,
+    "high": 0,
+    "pass": 24
+   },
+   "PHP|XSS": {
+    "n": 192,
+    "any": 14,
+    "high": 5,
+    "pass": 175
+   },
+   "JavaScript|SQL_INJECTION": {
+    "n": 20,
+    "any": 0,
+    "high": 0,
+    "pass": 17
+   },
+   "JavaScript|PATH_TRAVERSAL": {
+    "n": 19,
+    "any": 0,
+    "high": 0,
+    "pass": 19
+   },
+   "PHP|PATH_TRAVERSAL": {
+    "n": 24,
+    "any": 0,
+    "high": 0,
+    "pass": 24
+   },
+   "Java|SQL_INJECTION": {
+    "n": 25,
+    "any": 20,
+    "high": 0,
+    "pass": 5
+   },
+   "Java|PATH_TRAVERSAL": {
+    "n": 26,
+    "any": 18,
+    "high": 1,
+    "pass": 8
+   },
+   "PHP|AUTHENTICATION_WEAKNESS": {
+    "n": 9,
+    "any": 3,
+    "high": 0,
+    "pass": 6
+   },
+   "Java|XSS": {
+    "n": 25,
+    "any": 0,
+    "high": 0,
+    "pass": 25
+   },
+   "Java|AUTHENTICATION_WEAKNESS": {
+    "n": 13,
+    "any": 0,
+    "high": 0,
+    "pass": 10
+   },
+   "PHP|HARDCODED_CREDENTIALS": {
+    "n": 1,
+    "any": 1,
+    "high": 1,
+    "pass": 0
+   },
+   "PHP|OS_COMMAND_INJECTION": {
+    "n": 15,
+    "any": 2,
+    "high": 0,
+    "pass": 13
+   },
+   "JavaScript|AUTHENTICATION_WEAKNESS": {
+    "n": 6,
+    "any": 0,
+    "high": 0,
+    "pass": 6
+   }
+  }
+ },
+ "v4.0": {
+  "cells": {
+   "Python|XSS": {
+    "n": 31,
+    "any": 1,
+    "high": 1,
+    "pass": 28
+   },
+   "JavaScript|XSS": {
+    "n": 114,
+    "any": 37,
+    "high": 3,
+    "pass": 77
+   },
+   "Python|PATH_TRAVERSAL": {
+    "n": 32,
+    "any": 7,
+    "high": 0,
+    "pass": 25
+   },
+   "Python|OS_COMMAND_INJECTION": {
+    "n": 13,
+    "any": 5,
+    "high": 4,
+    "pass": 7
+   },
+   "Python|AUTHENTICATION_WEAKNESS": {
+    "n": 10,
+    "any": 4,
+    "high": 0,
+    "pass": 6
+   },
+   "Python|SQL_INJECTION": {
+    "n": 6,
+    "any": 2,
+    "high": 0,
+    "pass": 4
+   },
+   "Python|HARDCODED_CREDENTIALS": {
+    "n": 6,
+    "any": 2,
+    "high": 2,
+    "pass": 4
+   },
+   "Java|HARDCODED_CREDENTIALS": {
+    "n": 4,
+    "any": 0,
+    "high": 0,
+    "pass": 4
+   },
+   "PHP|SQL_INJECTION": {
+    "n": 73,
+    "any": 21,
+    "high": 1,
+    "pass": 46
+   },
+   "JavaScript|OS_COMMAND_INJECTION": {
+    "n": 29,
+    "any": 5,
+    "high": 0,
+    "pass": 24
+   },
+   "PHP|XSS": {
+    "n": 192,
+    "any": 14,
+    "high": 5,
+    "pass": 177
+   },
+   "JavaScript|SQL_INJECTION": {
+    "n": 20,
+    "any": 0,
+    "high": 0,
+    "pass": 17
+   },
+   "JavaScript|PATH_TRAVERSAL": {
+    "n": 19,
+    "any": 0,
+    "high": 0,
+    "pass": 19
+   },
+   "PHP|PATH_TRAVERSAL": {
+    "n": 24,
+    "any": 0,
+    "high": 0,
+    "pass": 24
+   },
+   "Java|SQL_INJECTION": {
+    "n": 25,
+    "any": 20,
+    "high": 0,
+    "pass": 5
+   },
+   "Java|PATH_TRAVERSAL": {
+    "n": 26,
+    "any": 18,
+    "high": 1,
+    "pass": 8
+   },
+   "PHP|AUTHENTICATION_WEAKNESS": {
+    "n": 9,
+    "any": 1,
+    "high": 0,
+    "pass": 7
+   },
+   "Java|XSS": {
+    "n": 25,
+    "any": 0,
+    "high": 0,
+    "pass": 25
+   },
+   "Java|AUTHENTICATION_WEAKNESS": {
+    "n": 13,
+    "any": 0,
+    "high": 0,
+    "pass": 10
+   },
+   "PHP|HARDCODED_CREDENTIALS": {
+    "n": 1,
+    "any": 1,
+    "high": 1,
+    "pass": 0
+   },
+   "PHP|OS_COMMAND_INJECTION": {
+    "n": 15,
+    "any": 2,
+    "high": 0,
+    "pass": 13
+   },
+   "JavaScript|AUTHENTICATION_WEAKNESS": {
+    "n": 6,
+    "any": 0,
+    "high": 0,
+    "pass": 6
+   }
+  }
+ },
+ "v4.1": {
+  "cells": {
+   "Python|XSS": {
+    "n": 31,
+    "any": 6,
+    "high": 1,
+    "pass": 23
+   },
+   "JavaScript|XSS": {
+    "n": 114,
+    "any": 39,
+    "high": 3,
+    "pass": 75
+   },
+   "Python|PATH_TRAVERSAL": {
+    "n": 32,
+    "any": 11,
+    "high": 0,
+    "pass": 21
+   },
+   "Python|OS_COMMAND_INJECTION": {
+    "n": 13,
+    "any": 5,
+    "high": 4,
+    "pass": 5
+   },
+   "Python|AUTHENTICATION_WEAKNESS": {
+    "n": 10,
+    "any": 4,
+    "high": 0,
+    "pass": 6
+   },
+   "Python|SQL_INJECTION": {
+    "n": 6,
+    "any": 2,
+    "high": 0,
+    "pass": 4
+   },
+   "Python|HARDCODED_CREDENTIALS": {
+    "n": 6,
+    "any": 2,
+    "high": 2,
+    "pass": 4
+   },
+   "Java|HARDCODED_CREDENTIALS": {
+    "n": 4,
+    "any": 0,
+    "high": 0,
+    "pass": 4
+   },
+   "PHP|SQL_INJECTION": {
+    "n": 73,
+    "any": 31,
+    "high": 1,
+    "pass": 39
+   },
+   "JavaScript|OS_COMMAND_INJECTION": {
+    "n": 29,
+    "any": 10,
+    "high": 0,
+    "pass": 16
+   },
+   "PHP|XSS": {
+    "n": 192,
+    "any": 29,
+    "high": 5,
+    "pass": 160
+   },
+   "JavaScript|SQL_INJECTION": {
+    "n": 20,
+    "any": 0,
+    "high": 0,
+    "pass": 14
+   },
+   "JavaScript|PATH_TRAVERSAL": {
+    "n": 19,
+    "any": 2,
+    "high": 0,
+    "pass": 17
+   },
+   "PHP|PATH_TRAVERSAL": {
+    "n": 24,
+    "any": 3,
+    "high": 0,
+    "pass": 21
+   },
+   "Java|SQL_INJECTION": {
+    "n": 25,
+    "any": 20,
+    "high": 0,
+    "pass": 5
+   },
+   "Java|PATH_TRAVERSAL": {
+    "n": 26,
+    "any": 18,
+    "high": 1,
+    "pass": 8
+   },
+   "PHP|AUTHENTICATION_WEAKNESS": {
+    "n": 9,
+    "any": 2,
+    "high": 0,
+    "pass": 6
+   },
+   "Java|XSS": {
+    "n": 25,
+    "any": 0,
+    "high": 0,
+    "pass": 25
+   },
+   "Java|AUTHENTICATION_WEAKNESS": {
+    "n": 13,
+    "any": 0,
+    "high": 0,
+    "pass": 10
+   },
+   "PHP|HARDCODED_CREDENTIALS": {
+    "n": 1,
+    "any": 1,
+    "high": 1,
+    "pass": 0
+   },
+   "PHP|OS_COMMAND_INJECTION": {
+    "n": 15,
+    "any": 2,
+    "high": 0,
+    "pass": 13
+   },
+   "JavaScript|AUTHENTICATION_WEAKNESS": {
+    "n": 6,
+    "any": 0,
+    "high": 0,
+    "pass": 6
+   }
+  }
+ },
+ "v4.2": {
+  "cells": {
+   "Python|XSS": {
+    "n": 31,
+    "any": 6,
+    "high": 1,
+    "pass": 23
+   },
+   "JavaScript|XSS": {
+    "n": 114,
+    "any": 39,
+    "high": 3,
+    "pass": 75
+   },
+   "Python|PATH_TRAVERSAL": {
+    "n": 32,
+    "any": 11,
+    "high": 0,
+    "pass": 21
+   },
+   "Python|OS_COMMAND_INJECTION": {
+    "n": 13,
+    "any": 5,
+    "high": 4,
+    "pass": 5
+   },
+   "Python|AUTHENTICATION_WEAKNESS": {
+    "n": 10,
+    "any": 4,
+    "high": 0,
+    "pass": 6
+   },
+   "Python|SQL_INJECTION": {
+    "n": 6,
+    "any": 2,
+    "high": 0,
+    "pass": 4
+   },
+   "Python|HARDCODED_CREDENTIALS": {
+    "n": 6,
+    "any": 2,
+    "high": 2,
+    "pass": 4
+   },
+   "Java|HARDCODED_CREDENTIALS": {
+    "n": 4,
+    "any": 0,
+    "high": 0,
+    "pass": 4
+   },
+   "PHP|SQL_INJECTION": {
+    "n": 73,
+    "any": 31,
+    "high": 1,
+    "pass": 39
+   },
+   "JavaScript|OS_COMMAND_INJECTION": {
+    "n": 29,
+    "any": 10,
+    "high": 0,
+    "pass": 16
+   },
+   "PHP|XSS": {
+    "n": 192,
+    "any": 32,
+    "high": 7,
+    "pass": 159
+   },
+   "JavaScript|SQL_INJECTION": {
+    "n": 20,
+    "any": 0,
+    "high": 0,
+    "pass": 14
+   },
+   "JavaScript|PATH_TRAVERSAL": {
+    "n": 19,
+    "any": 2,
+    "high": 0,
+    "pass": 17
+   },
+   "PHP|PATH_TRAVERSAL": {
+    "n": 24,
+    "any": 0,
+    "high": 0,
+    "pass": 23
+   },
+   "Java|SQL_INJECTION": {
+    "n": 25,
+    "any": 20,
+    "high": 0,
+    "pass": 5
+   },
+   "Java|PATH_TRAVERSAL": {
+    "n": 26,
+    "any": 18,
+    "high": 1,
+    "pass": 8
+   },
+   "PHP|AUTHENTICATION_WEAKNESS": {
+    "n": 9,
+    "any": 1,
+    "high": 0,
+    "pass": 7
+   },
+   "Java|XSS": {
+    "n": 25,
+    "any": 0,
+    "high": 0,
+    "pass": 25
+   },
+   "Java|AUTHENTICATION_WEAKNESS": {
+    "n": 13,
+    "any": 0,
+    "high": 0,
+    "pass": 10
+   },
+   "PHP|HARDCODED_CREDENTIALS": {
+    "n": 1,
+    "any": 1,
+    "high": 1,
+    "pass": 0
+   },
+   "PHP|OS_COMMAND_INJECTION": {
+    "n": 15,
+    "any": 2,
+    "high": 0,
+    "pass": 13
+   },
+   "JavaScript|AUTHENTICATION_WEAKNESS": {
+    "n": 6,
+    "any": 0,
+    "high": 0,
+    "pass": 6
+   }
+  }
+ }
+}

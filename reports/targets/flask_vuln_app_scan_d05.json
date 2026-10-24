@@ -1,0 +1,3865 @@
+{
+  "tool": {
+    "name": "AI-WhiteSec-CI",
+    "version": "0.2.0"
+  },
+  "repo": "D:\\Đồ án FCA26IA18\\main\\targets\\flask_vuln_app\\scan_src",
+  "commit": null,
+  "base": null,
+  "architecture": "parallel",
+  "mode": "parallel",
+  "degraded_reason": null,
+  "verdict": "BLOCK",
+  "pipeline": {
+    "sast_configuration": "B_builtin_plus_custom_rules",
+    "rule": "sast_first",
+    "threshold": 0.0,
+    "selected_on": "val",
+    "val_macro_f1": 0.35768398268398266,
+    "model_dir": "models\\codebert_6class",
+    "val_sast": "D:\\Đồ án FCA26IA18\\main\\sast_dev\\val_rules_v2\\sast_predictions.csv",
+    "architecture": "parallel",
+    "architecture_note": "K04: scan.py mac dinh chay SAST va CodeBERT song song, gop o compare_gate.py (models/gate_config.json). 'rule'/'threshold' chi dung cho --architecture sast_gate (tai lap T06)."
+  },
+  "gate_config": {
+    "version": "1.1",
+    "architecture": "parallel",
+    "codebert_threshold": 0.5,
+    "codebert_threshold_note": "chua chon tren val: du lieu hien chi co code co lo hong (can A01/E09 de do bao nham)",
+    "policy": {
+      "agree": "BLOCK",
+      "sast_only": {
+        "high": "BLOCK",
+        "audit": "REVIEW"
+      },
+      "codebert_only": "REVIEW",
+      "conflict": "REVIEW",
+      "pass": "PASS"
+    },
+    "degraded_policy": {
+      "degraded_sast_only": {
+        "high": "BLOCK",
+        "audit": "REVIEW"
+      },
+      "degraded_codebert_only": "REVIEW"
+    },
+    "block_min_severity": "medium",
+    "verifier": {
+      "enabled": true,
+      "model": "models\\verifier_tfidf_v51",
+      "kind": "tfidf",
+      "threshold": 0.6,
+      "note": "thu nghiem D05 tren ung dung muc tieu (khong ghi de models/gate_config.json)"
+    }
+  },
+  "ruleset": {
+    "ruleset_version": "4.1.0",
+    "ruleset_sha256": "26e176a57bfe04973e8bad3844714dd41659cc8c7f791f76cfaa8b76756cbdfd",
+    "semgrep_version_pinned": "1.181.0",
+    "regression_passed": true
+  },
+  "a01_verification": "tfidf:models\\verifier_tfidf_v51",
+  "device": "cpu",
+  "summary": {
+    "files": 8,
+    "units": 42,
+    "pass": 8,
+    "flagged": 34,
+    "decisions": {
+      "BLOCK": 10,
+      "REVIEW": 24,
+      "PASS": 8
+    },
+    "compare_states": {
+      "agree": 7,
+      "sast_only": 11,
+      "codebert_only": 9,
+      "conflict": 7,
+      "pass": 8
+    },
+    "model_calls": 42
+  },
+  "timing_seconds": {
+    "extract_s": 0.032,
+    "sast_s": 24.457,
+    "codebert_s": 38.117,
+    "parallel_wall_s": 38.12,
+    "model_load_s": 20.28,
+    "total_s": 38.163
+  },
+  "results": [
+    {
+      "file": "db.py",
+      "function": "list_orders",
+      "language": "Python",
+      "lines": [
+        23,
+        26
+      ],
+      "status": "FINDING",
+      "decision": "BLOCK",
+      "compare_state": "agree",
+      "reported_by": [
+        "sast",
+        "codebert"
+      ],
+      "vuln_class": "SQL_INJECTION",
+      "related_classes": [
+        "SQL_INJECTION"
+      ],
+      "sast_classes": [
+        "SQL_INJECTION"
+      ],
+      "codebert": {
+        "class": "SQL_INJECTION",
+        "prob": 0.42783862352371216,
+        "p_vulnerable": 0.7038549616286157,
+        "flagged": true,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.4278,
+        "XSS": 0.1095,
+        "OS_COMMAND_INJECTION": 0.1685,
+        "PATH_TRAVERSAL": 0.1109,
+        "AUTHENTICATION_WEAKNESS": 0.0782,
+        "HARDCODED_CREDENTIALS": 0.1049
+      },
+      "p_vulnerable": 0.7039,
+      "metadata": {
+        "cwe": "CWE-89",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/89.html",
+        "owasp": "A03:2021 Injection",
+        "owasp_url": "https://top10.owasp.org/2021/A03_2021-Injection/index.html",
+        "severity": "critical",
+        "priority": {
+          "score": 86,
+          "level": "P1",
+          "meaning": "xu ly truoc khi merge",
+          "components": {
+            "severity_weight": 1.0,
+            "sast": 1.0,
+            "p_model": 0.4278,
+            "agreement_bonus": true
+          }
+        },
+        "remediation": {
+          "summary": "Dung truy van tham so hoa (prepared statement/placeholder); khong ghep chuoi hay format du lieu nguoi dung vao cau SQL. Ten bang/cot dong phai lay tu danh sach cho phep.",
+          "language_specific": "cursor.execute(\"SELECT ... WHERE id = %s\", (user_id,)); voi ORM dung filter()/params, tranh raw()/extra() voi chuoi da format.",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html",
+            "https://cheatsheetseries.owasp.org/cheatsheets/Query_Parameterization_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": [
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.sql-string-building",
+          "cwes": [
+            "89"
+          ],
+          "classes": [
+            "SQL_INJECTION"
+          ],
+          "line": 25,
+          "message": "SQL text is built by interpolating or concatenating values.",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.audit.sql-api",
+          "cwes": [
+            "89"
+          ],
+          "classes": [
+            "SQL_INJECTION"
+          ],
+          "line": 26,
+          "message": "SQL execution API used (audit hint).",
+          "confidence": "audit"
+        },
+        {
+          "tool": "bandit",
+          "rule_id": "B608",
+          "cwes": [
+            "89"
+          ],
+          "classes": [
+            "SQL_INJECTION"
+          ],
+          "line": 25,
+          "message": "Possible SQL injection vector through string-based query construction.",
+          "confidence": "audit"
+        }
+      ]
+    },
+    {
+      "file": "db.py",
+      "function": "search_users",
+      "language": "Python",
+      "lines": [
+        17,
+        20
+      ],
+      "status": "FINDING",
+      "decision": "BLOCK",
+      "compare_state": "agree",
+      "reported_by": [
+        "sast",
+        "codebert"
+      ],
+      "vuln_class": "SQL_INJECTION",
+      "related_classes": [
+        "SQL_INJECTION"
+      ],
+      "sast_classes": [
+        "SQL_INJECTION"
+      ],
+      "codebert": {
+        "class": "SQL_INJECTION",
+        "prob": 0.3603423833847046,
+        "p_vulnerable": 0.825054893312783,
+        "flagged": true,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.3603,
+        "XSS": 0.1149,
+        "OS_COMMAND_INJECTION": 0.1706,
+        "PATH_TRAVERSAL": 0.1282,
+        "AUTHENTICATION_WEAKNESS": 0.0892,
+        "HARDCODED_CREDENTIALS": 0.1368
+      },
+      "p_vulnerable": 0.8251,
+      "metadata": {
+        "cwe": "CWE-89",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/89.html",
+        "owasp": "A03:2021 Injection",
+        "owasp_url": "https://top10.owasp.org/2021/A03_2021-Injection/index.html",
+        "severity": "critical",
+        "priority": {
+          "score": 83,
+          "level": "P1",
+          "meaning": "xu ly truoc khi merge",
+          "components": {
+            "severity_weight": 1.0,
+            "sast": 1.0,
+            "p_model": 0.3603,
+            "agreement_bonus": true
+          }
+        },
+        "remediation": {
+          "summary": "Dung truy van tham so hoa (prepared statement/placeholder); khong ghep chuoi hay format du lieu nguoi dung vao cau SQL. Ten bang/cot dong phai lay tu danh sach cho phep.",
+          "language_specific": "cursor.execute(\"SELECT ... WHERE id = %s\", (user_id,)); voi ORM dung filter()/params, tranh raw()/extra() voi chuoi da format.",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html",
+            "https://cheatsheetseries.owasp.org/cheatsheets/Query_Parameterization_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": [
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.sql-string-building",
+          "cwes": [
+            "89"
+          ],
+          "classes": [
+            "SQL_INJECTION"
+          ],
+          "line": 19,
+          "message": "SQL text is built by interpolating or concatenating values.",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.audit.sql-api",
+          "cwes": [
+            "89"
+          ],
+          "classes": [
+            "SQL_INJECTION"
+          ],
+          "line": 20,
+          "message": "SQL execution API used (audit hint).",
+          "confidence": "audit"
+        },
+        {
+          "tool": "bandit",
+          "rule_id": "B608",
+          "cwes": [
+            "89"
+          ],
+          "classes": [
+            "SQL_INJECTION"
+          ],
+          "line": 19,
+          "message": "Possible SQL injection vector through string-based query construction.",
+          "confidence": "audit"
+        }
+      ]
+    },
+    {
+      "file": "db.py",
+      "function": "find_user_by_email",
+      "language": "Python",
+      "lines": [
+        34,
+        38
+      ],
+      "status": "FINDING",
+      "decision": "BLOCK",
+      "compare_state": "agree",
+      "reported_by": [
+        "sast",
+        "codebert"
+      ],
+      "vuln_class": "SQL_INJECTION",
+      "related_classes": [
+        "SQL_INJECTION"
+      ],
+      "sast_classes": [
+        "SQL_INJECTION"
+      ],
+      "codebert": {
+        "class": "SQL_INJECTION",
+        "prob": 0.3002599775791168,
+        "p_vulnerable": 0.9115538943167698,
+        "flagged": true,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.3003,
+        "XSS": 0.1212,
+        "OS_COMMAND_INJECTION": 0.1857,
+        "PATH_TRAVERSAL": 0.1515,
+        "AUTHENTICATION_WEAKNESS": 0.1019,
+        "HARDCODED_CREDENTIALS": 0.1394
+      },
+      "p_vulnerable": 0.9116,
+      "metadata": {
+        "cwe": "CWE-89",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/89.html",
+        "owasp": "A03:2021 Injection",
+        "owasp_url": "https://top10.owasp.org/2021/A03_2021-Injection/index.html",
+        "severity": "critical",
+        "priority": {
+          "score": 80,
+          "level": "P1",
+          "meaning": "xu ly truoc khi merge",
+          "components": {
+            "severity_weight": 1.0,
+            "sast": 1.0,
+            "p_model": 0.3003,
+            "agreement_bonus": true
+          }
+        },
+        "remediation": {
+          "summary": "Dung truy van tham so hoa (prepared statement/placeholder); khong ghep chuoi hay format du lieu nguoi dung vao cau SQL. Ten bang/cot dong phai lay tu danh sach cho phep.",
+          "language_specific": "cursor.execute(\"SELECT ... WHERE id = %s\", (user_id,)); voi ORM dung filter()/params, tranh raw()/extra() voi chuoi da format.",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html",
+            "https://cheatsheetseries.owasp.org/cheatsheets/Query_Parameterization_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": [
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.audit.sql-api",
+          "cwes": [
+            "89"
+          ],
+          "classes": [
+            "SQL_INJECTION"
+          ],
+          "line": 37,
+          "message": "SQL execution API used (audit hint).",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.sql-injection",
+          "cwes": [
+            "89"
+          ],
+          "classes": [
+            "SQL_INJECTION"
+          ],
+          "line": 37,
+          "message": "SQL query appears to use dynamic string construction.",
+          "confidence": "high"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.sql-string-building",
+          "cwes": [
+            "89"
+          ],
+          "classes": [
+            "SQL_INJECTION"
+          ],
+          "line": 37,
+          "message": "SQL text is built by interpolating or concatenating values.",
+          "confidence": "audit"
+        },
+        {
+          "tool": "bandit",
+          "rule_id": "B608",
+          "cwes": [
+            "89"
+          ],
+          "classes": [
+            "SQL_INJECTION"
+          ],
+          "line": 37,
+          "message": "Possible SQL injection vector through string-based query construction.",
+          "confidence": "audit"
+        }
+      ]
+    },
+    {
+      "file": "config.py",
+      "function": "smtp_credentials",
+      "language": "Python",
+      "lines": [
+        11,
+        12
+      ],
+      "status": "FINDING",
+      "decision": "BLOCK",
+      "compare_state": "agree",
+      "reported_by": [
+        "sast",
+        "codebert"
+      ],
+      "vuln_class": "HARDCODED_CREDENTIALS",
+      "related_classes": [
+        "HARDCODED_CREDENTIALS"
+      ],
+      "sast_classes": [
+        "HARDCODED_CREDENTIALS"
+      ],
+      "codebert": {
+        "class": "HARDCODED_CREDENTIALS",
+        "prob": 0.3473217487335205,
+        "p_vulnerable": 0.665985780623186,
+        "flagged": true,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.1045,
+        "XSS": 0.1198,
+        "OS_COMMAND_INJECTION": 0.1342,
+        "PATH_TRAVERSAL": 0.1617,
+        "AUTHENTICATION_WEAKNESS": 0.1325,
+        "HARDCODED_CREDENTIALS": 0.3473
+      },
+      "p_vulnerable": 0.666,
+      "metadata": {
+        "cwe": "CWE-259",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/259.html",
+        "owasp": "A07:2021 Identification and Authentication Failures",
+        "owasp_url": "https://top10.owasp.org/2021/A07_2021-Identification_and_Authentication_Failures/index.html",
+        "severity": "high",
+        "priority": {
+          "score": 66,
+          "level": "P2",
+          "meaning": "xu ly trong dot phat hanh",
+          "components": {
+            "severity_weight": 0.8,
+            "sast": 1.0,
+            "p_model": 0.3473,
+            "agreement_bonus": true
+          }
+        },
+        "remediation": {
+          "summary": "Xoa bi mat khoi ma nguon va lich su git, thu hoi/doi bi mat da lo; doc tu bien moi truong hoac secret manager (Vault, AWS/GCP/Azure Secret Manager); quet bi mat trong CI (gitleaks, trufflehog).",
+          "language_specific": "password = os.environ[\"DB_PASSWORD\"]; khoa ky JWT/AES lay tu secret manager, khong de chuoi/bytes literal trong code.",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": [
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.hardcoded-credentials",
+          "cwes": [
+            "798"
+          ],
+          "classes": [
+            "HARDCODED_CREDENTIALS"
+          ],
+          "line": 12,
+          "message": "A credential-like variable appears to contain a hardcoded string.",
+          "confidence": "high"
+        },
+        {
+          "tool": "bandit",
+          "rule_id": "B105",
+          "cwes": [
+            "259"
+          ],
+          "classes": [
+            "HARDCODED_CREDENTIALS"
+          ],
+          "line": 12,
+          "message": "Possible hardcoded password: 'Notify#2024!'",
+          "confidence": "audit"
+        }
+      ]
+    },
+    {
+      "file": "views/admin.py",
+      "function": "storage_client",
+      "language": "Python",
+      "lines": [
+        39,
+        42
+      ],
+      "status": "FINDING",
+      "decision": "BLOCK",
+      "compare_state": "agree",
+      "reported_by": [
+        "sast",
+        "codebert"
+      ],
+      "vuln_class": "HARDCODED_CREDENTIALS",
+      "related_classes": [
+        "HARDCODED_CREDENTIALS"
+      ],
+      "sast_classes": [
+        "HARDCODED_CREDENTIALS"
+      ],
+      "codebert": {
+        "class": "HARDCODED_CREDENTIALS",
+        "prob": 0.340138703584671,
+        "p_vulnerable": 0.7582025645778528,
+        "flagged": true,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.0783,
+        "XSS": 0.1197,
+        "OS_COMMAND_INJECTION": 0.1286,
+        "PATH_TRAVERSAL": 0.1791,
+        "AUTHENTICATION_WEAKNESS": 0.1542,
+        "HARDCODED_CREDENTIALS": 0.3401
+      },
+      "p_vulnerable": 0.7582,
+      "metadata": {
+        "cwe": "CWE-259",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/259.html",
+        "owasp": "A07:2021 Identification and Authentication Failures",
+        "owasp_url": "https://top10.owasp.org/2021/A07_2021-Identification_and_Authentication_Failures/index.html",
+        "severity": "high",
+        "priority": {
+          "score": 66,
+          "level": "P2",
+          "meaning": "xu ly trong dot phat hanh",
+          "components": {
+            "severity_weight": 0.8,
+            "sast": 1.0,
+            "p_model": 0.3401,
+            "agreement_bonus": true
+          }
+        },
+        "remediation": {
+          "summary": "Xoa bi mat khoi ma nguon va lich su git, thu hoi/doi bi mat da lo; doc tu bien moi truong hoac secret manager (Vault, AWS/GCP/Azure Secret Manager); quet bi mat trong CI (gitleaks, trufflehog).",
+          "language_specific": "password = os.environ[\"DB_PASSWORD\"]; khoa ky JWT/AES lay tu secret manager, khong de chuoi/bytes literal trong code.",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": [
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.rules.registry_snapshot.python.boto3.security.hardcoded-token.hardcoded-token",
+          "cwes": [
+            "798"
+          ],
+          "classes": [
+            "HARDCODED_CREDENTIALS"
+          ],
+          "line": 41,
+          "message": "A hard-coded credential was detected. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module).",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.hardcoded-credentials",
+          "cwes": [
+            "798"
+          ],
+          "classes": [
+            "HARDCODED_CREDENTIALS"
+          ],
+          "line": 42,
+          "message": "A credential-like variable appears to contain a hardcoded string.",
+          "confidence": "high"
+        },
+        {
+          "tool": "bandit",
+          "rule_id": "B106",
+          "cwes": [
+            "259"
+          ],
+          "classes": [
+            "HARDCODED_CREDENTIALS"
+          ],
+          "line": 42,
+          "message": "Possible hardcoded password: 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYshopnotes'",
+          "confidence": "audit"
+        }
+      ]
+    },
+    {
+      "file": "config.py",
+      "function": "<module>",
+      "language": "Python",
+      "lines": [
+        1,
+        17
+      ],
+      "status": "FINDING",
+      "decision": "BLOCK",
+      "compare_state": "sast_only",
+      "reported_by": [
+        "sast"
+      ],
+      "vuln_class": "HARDCODED_CREDENTIALS",
+      "related_classes": [
+        "HARDCODED_CREDENTIALS"
+      ],
+      "sast_classes": [
+        "HARDCODED_CREDENTIALS"
+      ],
+      "codebert": {
+        "class": "HARDCODED_CREDENTIALS",
+        "prob": 0.2712557911872864,
+        "p_vulnerable": 0.38594070165966154,
+        "flagged": false,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.0847,
+        "XSS": 0.1485,
+        "OS_COMMAND_INJECTION": 0.1589,
+        "PATH_TRAVERSAL": 0.1904,
+        "AUTHENTICATION_WEAKNESS": 0.1462,
+        "HARDCODED_CREDENTIALS": 0.2713
+      },
+      "p_vulnerable": 0.3859,
+      "metadata": {
+        "cwe": "CWE-259",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/259.html",
+        "owasp": "A07:2021 Identification and Authentication Failures",
+        "owasp_url": "https://top10.owasp.org/2021/A07_2021-Identification_and_Authentication_Failures/index.html",
+        "severity": "high",
+        "priority": {
+          "score": 63,
+          "level": "P2",
+          "meaning": "xu ly trong dot phat hanh",
+          "components": {
+            "severity_weight": 0.8,
+            "sast": 1.0,
+            "p_model": 0.2713,
+            "agreement_bonus": true
+          }
+        },
+        "remediation": {
+          "summary": "Xoa bi mat khoi ma nguon va lich su git, thu hoi/doi bi mat da lo; doc tu bien moi truong hoac secret manager (Vault, AWS/GCP/Azure Secret Manager); quet bi mat trong CI (gitleaks, trufflehog).",
+          "language_specific": "password = os.environ[\"DB_PASSWORD\"]; khoa ky JWT/AES lay tu secret manager, khong de chuoi/bytes literal trong code.",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": [
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.hardcoded-credentials",
+          "cwes": [
+            "798"
+          ],
+          "classes": [
+            "HARDCODED_CREDENTIALS"
+          ],
+          "line": 3,
+          "message": "A credential-like variable appears to contain a hardcoded string.",
+          "confidence": "high"
+        },
+        {
+          "tool": "bandit",
+          "rule_id": "B105",
+          "cwes": [
+            "259"
+          ],
+          "classes": [
+            "HARDCODED_CREDENTIALS"
+          ],
+          "line": 3,
+          "message": "Possible hardcoded password: 'sh0pn0tes-dev-key-2024'",
+          "confidence": "audit"
+        }
+      ]
+    },
+    {
+      "file": "views/files.py",
+      "function": "restore_backup",
+      "language": "Python",
+      "lines": [
+        32,
+        34
+      ],
+      "status": "FINDING",
+      "decision": "BLOCK",
+      "compare_state": "agree",
+      "reported_by": [
+        "sast",
+        "codebert"
+      ],
+      "vuln_class": "PATH_TRAVERSAL",
+      "related_classes": [
+        "PATH_TRAVERSAL"
+      ],
+      "sast_classes": [
+        "PATH_TRAVERSAL"
+      ],
+      "codebert": {
+        "class": "PATH_TRAVERSAL",
+        "prob": 0.2713540196418762,
+        "p_vulnerable": 0.7331425955138137,
+        "flagged": true,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.1032,
+        "XSS": 0.1115,
+        "OS_COMMAND_INJECTION": 0.204,
+        "PATH_TRAVERSAL": 0.2714,
+        "AUTHENTICATION_WEAKNESS": 0.1289,
+        "HARDCODED_CREDENTIALS": 0.181
+      },
+      "p_vulnerable": 0.7331,
+      "metadata": {
+        "cwe": "CWE-22",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/22.html",
+        "owasp": "A01:2021 Broken Access Control",
+        "owasp_url": "https://top10.owasp.org/2021/A01_2021-Broken_Access_Control/index.html",
+        "severity": "high",
+        "priority": {
+          "score": 63,
+          "level": "P2",
+          "meaning": "xu ly trong dot phat hanh",
+          "components": {
+            "severity_weight": 0.8,
+            "sast": 1.0,
+            "p_model": 0.2714,
+            "agreement_bonus": true
+          }
+        },
+        "remediation": {
+          "summary": "Chuan hoa duong dan (realpath/resolve) roi kiem tra no van nam trong thu muc goc cho phep; uu tien anh xa ID -> file thay vi nhan ten file tu nguoi dung; giai nen archive co loc thanh vien.",
+          "language_specific": "p = (BASE / name).resolve(); kiem tra p.is_relative_to(BASE.resolve()); dung werkzeug safe_join/send_from_directory; tarfile.extractall(path, filter='data').",
+          "references": [
+            "https://owasp.org/www-community/attacks/Path_Traversal",
+            "https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": [
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.py.audit.pathlib-api",
+          "cwes": [
+            "22"
+          ],
+          "classes": [
+            "PATH_TRAVERSAL"
+          ],
+          "line": 33,
+          "message": "A pathlib/shutil/os file operation receives a non-literal path (audit hint).",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.archive-extract-all",
+          "cwes": [
+            "22"
+          ],
+          "classes": [
+            "PATH_TRAVERSAL"
+          ],
+          "line": 34,
+          "message": "Archive members are extracted without filtering their paths.",
+          "confidence": "audit"
+        },
+        {
+          "tool": "bandit",
+          "rule_id": "B202",
+          "cwes": [
+            "22"
+          ],
+          "classes": [
+            "PATH_TRAVERSAL"
+          ],
+          "line": 34,
+          "message": "tarfile.extractall used without any validation. Please check and discard dangerous members.",
+          "confidence": "high"
+        }
+      ]
+    },
+    {
+      "file": "auth.py",
+      "function": "current_user_from_jwt",
+      "language": "Python",
+      "lines": [
+        32,
+        36
+      ],
+      "status": "FINDING",
+      "decision": "BLOCK",
+      "compare_state": "sast_only",
+      "reported_by": [
+        "sast"
+      ],
+      "vuln_class": "AUTHENTICATION_WEAKNESS",
+      "related_classes": [
+        "AUTHENTICATION_WEAKNESS"
+      ],
+      "sast_classes": [
+        "AUTHENTICATION_WEAKNESS"
+      ],
+      "codebert": {
+        "class": "HARDCODED_CREDENTIALS",
+        "prob": 0.2594417929649353,
+        "p_vulnerable": 0.4890227121862412,
+        "flagged": false,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.075,
+        "XSS": 0.1396,
+        "OS_COMMAND_INJECTION": 0.1581,
+        "PATH_TRAVERSAL": 0.205,
+        "AUTHENTICATION_WEAKNESS": 0.1629,
+        "HARDCODED_CREDENTIALS": 0.2594
+      },
+      "p_vulnerable": 0.489,
+      "metadata": {
+        "cwe": "CWE-287",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/287.html",
+        "owasp": "A07:2021 Identification and Authentication Failures",
+        "owasp_url": "https://top10.owasp.org/2021/A07_2021-Identification_and_Authentication_Failures/index.html",
+        "severity": "high",
+        "priority": {
+          "score": 47,
+          "level": "P2",
+          "meaning": "xu ly trong dot phat hanh",
+          "components": {
+            "severity_weight": 0.8,
+            "sast": 1.0,
+            "p_model": 0.1629,
+            "agreement_bonus": false
+          }
+        },
+        "remediation": {
+          "summary": "Dung co che xac thuc/framework da kiem chung; xac minh chu ky va thoi han token; so sanh bi mat bang ham thoi gian hang so; gioi han so lan dang nhap; tao lai session sau dang nhap; kiem tra xac thuc o moi endpoint nhay cam.",
+          "language_specific": "jwt.decode(token, key, algorithms=[\"HS256\"]) khong tat verify; hmac.compare_digest() de so sanh; Django: login_required, rotate session (login() da lam); gioi han dang nhap (django-axes).",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html",
+            "https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": [
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.audit.auth-code",
+          "cwes": [
+            "287"
+          ],
+          "classes": [
+            "AUTHENTICATION_WEAKNESS"
+          ],
+          "line": 34,
+          "message": "Authentication-sensitive code (token/session/password/signature checks) (audit hint).",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.authentication-weakness",
+          "cwes": [
+            "287"
+          ],
+          "classes": [
+            "AUTHENTICATION_WEAKNESS"
+          ],
+          "line": 34,
+          "message": "Authentication or token verification appears to be disabled.",
+          "confidence": "high"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.rules.registry_snapshot.python.jwt.security.unverified-jwt-decode.unverified-jwt-decode",
+          "cwes": [
+            "287"
+          ],
+          "classes": [
+            "AUTHENTICATION_WEAKNESS"
+          ],
+          "line": 34,
+          "message": "Detected JWT token decoded with 'verify=False'. This bypasses any integrity checks for the token which means the token could be tampered with by malicious actors. Ensure that the JWT token is verified.",
+          "confidence": "audit"
+        }
+      ]
+    },
+    {
+      "file": "views/files.py",
+      "function": "download",
+      "language": "Python",
+      "lines": [
+        14,
+        16
+      ],
+      "status": "FINDING",
+      "decision": "BLOCK",
+      "compare_state": "sast_only",
+      "reported_by": [
+        "sast"
+      ],
+      "vuln_class": "PATH_TRAVERSAL",
+      "related_classes": [
+        "PATH_TRAVERSAL"
+      ],
+      "sast_classes": [
+        "PATH_TRAVERSAL"
+      ],
+      "codebert": {
+        "class": "HARDCODED_CREDENTIALS",
+        "prob": 0.35087448358535767,
+        "p_vulnerable": 0.522094814643127,
+        "flagged": false,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.1039,
+        "XSS": 0.1185,
+        "OS_COMMAND_INJECTION": 0.1369,
+        "PATH_TRAVERSAL": 0.1723,
+        "AUTHENTICATION_WEAKNESS": 0.1176,
+        "HARDCODED_CREDENTIALS": 0.3509
+      },
+      "p_vulnerable": 0.5221,
+      "metadata": {
+        "cwe": "CWE-22",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/22.html",
+        "owasp": "A01:2021 Broken Access Control",
+        "owasp_url": "https://top10.owasp.org/2021/A01_2021-Broken_Access_Control/index.html",
+        "severity": "high",
+        "priority": {
+          "score": 47,
+          "level": "P2",
+          "meaning": "xu ly trong dot phat hanh",
+          "components": {
+            "severity_weight": 0.8,
+            "sast": 1.0,
+            "p_model": 0.1723,
+            "agreement_bonus": false
+          }
+        },
+        "remediation": {
+          "summary": "Chuan hoa duong dan (realpath/resolve) roi kiem tra no van nam trong thu muc goc cho phep; uu tien anh xa ID -> file thay vi nhan ten file tu nguoi dung; giai nen archive co loc thanh vien.",
+          "language_specific": "p = (BASE / name).resolve(); kiem tra p.is_relative_to(BASE.resolve()); dung werkzeug safe_join/send_from_directory; tarfile.extractall(path, filter='data').",
+          "references": [
+            "https://owasp.org/www-community/attacks/Path_Traversal",
+            "https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": [
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.audit.file-path-api",
+          "cwes": [
+            "22"
+          ],
+          "classes": [
+            "PATH_TRAVERSAL"
+          ],
+          "line": 16,
+          "message": "A file system API receives a non-literal path (audit hint).",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.path-request-taint",
+          "cwes": [
+            "22"
+          ],
+          "classes": [
+            "PATH_TRAVERSAL"
+          ],
+          "line": 16,
+          "message": "Request data is used as a file system path.",
+          "confidence": "high"
+        }
+      ]
+    },
+    {
+      "file": "views/users.py",
+      "function": "add_note",
+      "language": "Python",
+      "lines": [
+        37,
+        41
+      ],
+      "status": "FINDING",
+      "decision": "BLOCK",
+      "compare_state": "agree",
+      "reported_by": [
+        "sast",
+        "codebert"
+      ],
+      "vuln_class": "XSS",
+      "related_classes": [
+        "XSS"
+      ],
+      "sast_classes": [
+        "XSS"
+      ],
+      "codebert": {
+        "class": "XSS",
+        "prob": 0.25057291984558105,
+        "p_vulnerable": 0.7435718625473621,
+        "flagged": true,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.0927,
+        "XSS": 0.2506,
+        "OS_COMMAND_INJECTION": 0.1777,
+        "PATH_TRAVERSAL": 0.1816,
+        "AUTHENTICATION_WEAKNESS": 0.1221,
+        "HARDCODED_CREDENTIALS": 0.1753
+      },
+      "p_vulnerable": 0.7436,
+      "metadata": {
+        "cwe": "CWE-79",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/79.html",
+        "owasp": "A03:2021 Injection",
+        "owasp_url": "https://top10.owasp.org/2021/A03_2021-Injection/index.html",
+        "severity": "medium",
+        "priority": {
+          "score": 47,
+          "level": "P2",
+          "meaning": "xu ly trong dot phat hanh",
+          "components": {
+            "severity_weight": 0.6,
+            "sast": 1.0,
+            "p_model": 0.2506,
+            "agreement_bonus": true
+          }
+        },
+        "remediation": {
+          "summary": "Ma hoa dau ra theo ngu canh (HTML, thuoc tinh, JavaScript, URL); bat autoescape cua template; chi cho phep HTML qua thu vien sanitize; them Content-Security-Policy.",
+          "language_specific": "De Jinja2/Django tu escape; khong dung mark_safe/Markup/|safe voi du lieu nguoi dung; dung format_html() hoac markupsafe.escape(); sanitize HTML bang bleach/nh3.",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": [
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.py.xss-taint",
+          "cwes": [
+            "79"
+          ],
+          "classes": [
+            "XSS"
+          ],
+          "line": 40,
+          "message": "Request data is returned as HTML without escaping.",
+          "confidence": "high"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.xss-unsafe-html",
+          "cwes": [
+            "79"
+          ],
+          "classes": [
+            "XSS"
+          ],
+          "line": 40,
+          "message": "Potentially untrusted content is inserted into HTML without escaping.",
+          "confidence": "high"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.xss-html-string-building",
+          "cwes": [
+            "79"
+          ],
+          "classes": [
+            "XSS"
+          ],
+          "line": 40,
+          "message": "HTML markup is built by interpolating or concatenating values.",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.rules.registry_snapshot.python.django.security.injection.raw-html-format.raw-html-format",
+          "cwes": [
+            "79"
+          ],
+          "classes": [
+            "XSS"
+          ],
+          "line": 40,
+          "message": "Detected user input flowing into a manually constructed HTML string. You may be accidentally bypassing secure methods of rendering HTML by manually constructing HTML and this could create a cross-site scripting vulnerability, which could let attackers steal sensitive user data. To be sure this is safe, check that the HTML is rendered safely. Otherwise, use templates (`django.shortcuts.render`) which will safely render HTML instead.",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.rules.registry_snapshot.python.flask.security.injection.raw-html-concat.raw-html-format",
+          "cwes": [
+            "79"
+          ],
+          "classes": [
+            "XSS"
+          ],
+          "line": 40,
+          "message": "Detected user input flowing into a manually constructed HTML string. You may be accidentally bypassing secure methods of rendering HTML by manually constructing HTML and this could create a cross-site scripting vulnerability, which could let attackers steal sensitive user data. To be sure this is safe, check that the HTML is rendered safely. Otherwise, use templates (`flask.render_template`) which will safely render HTML instead.",
+          "confidence": "audit"
+        },
+        {
+          "tool": "bandit",
+          "rule_id": "B704",
+          "cwes": [
+            "79"
+          ],
+          "classes": [
+            "XSS"
+          ],
+          "line": 40,
+          "message": "Potential XSS with ``markupsafe.Markup`` detected. Do not use ``Markup`` on untrusted data.",
+          "confidence": "high"
+        }
+      ]
+    },
+    {
+      "file": "views/admin.py",
+      "function": "<module>",
+      "language": "Python",
+      "lines": [
+        1,
+        43
+      ],
+      "status": "FINDING",
+      "decision": "REVIEW",
+      "compare_state": "sast_only",
+      "reported_by": [
+        "sast"
+      ],
+      "vuln_class": "OS_COMMAND_INJECTION",
+      "related_classes": [
+        "OS_COMMAND_INJECTION"
+      ],
+      "sast_classes": [
+        "OS_COMMAND_INJECTION"
+      ],
+      "codebert": {
+        "class": "XSS",
+        "prob": 0.2822973132133484,
+        "p_vulnerable": 0.5249958091092659,
+        "flagged": false,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.075,
+        "XSS": 0.2823,
+        "OS_COMMAND_INJECTION": 0.194,
+        "PATH_TRAVERSAL": 0.2073,
+        "AUTHENTICATION_WEAKNESS": 0.1634,
+        "HARDCODED_CREDENTIALS": 0.078
+      },
+      "p_vulnerable": 0.525,
+      "metadata": {
+        "cwe": "CWE-78",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/78.html",
+        "owasp": "A03:2021 Injection",
+        "owasp_url": "https://top10.owasp.org/2021/A03_2021-Injection/index.html",
+        "severity": "critical",
+        "priority": {
+          "score": 60,
+          "level": "P2",
+          "meaning": "xu ly trong dot phat hanh",
+          "components": {
+            "severity_weight": 1.0,
+            "sast": 1.0,
+            "p_model": 0.194,
+            "agreement_bonus": false
+          }
+        },
+        "remediation": {
+          "summary": "Tranh goi shell; dung API cua ngon ngu/thu vien thay lenh he thong; neu bat buoc chay tien trinh thi truyen danh sach doi so, them '--' truoc doi so tu nguoi dung va kiem tra theo danh sach cho phep.",
+          "language_specific": "subprocess.run([\"ping\", \"-c\", \"1\", host], check=True) voi shell=False; khong dung os.system/os.popen; neu can chuoi thi shlex.quote().",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/OS_Command_Injection_Defense_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": [
+        {
+          "tool": "bandit",
+          "rule_id": "B404",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 1,
+          "message": "Consider possible security implications associated with the subprocess module.",
+          "confidence": "audit"
+        }
+      ]
+    },
+    {
+      "file": "views/files.py",
+      "function": "<module>",
+      "language": "Python",
+      "lines": [
+        1,
+        58
+      ],
+      "status": "FINDING",
+      "decision": "REVIEW",
+      "compare_state": "sast_only",
+      "reported_by": [
+        "sast"
+      ],
+      "vuln_class": "OS_COMMAND_INJECTION",
+      "related_classes": [
+        "OS_COMMAND_INJECTION"
+      ],
+      "sast_classes": [
+        "OS_COMMAND_INJECTION"
+      ],
+      "codebert": {
+        "class": "XSS",
+        "prob": 0.2734476923942566,
+        "p_vulnerable": 0.5723039788735735,
+        "flagged": false,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.0522,
+        "XSS": 0.2734,
+        "OS_COMMAND_INJECTION": 0.1965,
+        "PATH_TRAVERSAL": 0.2362,
+        "AUTHENTICATION_WEAKNESS": 0.1537,
+        "HARDCODED_CREDENTIALS": 0.088
+      },
+      "p_vulnerable": 0.5723,
+      "metadata": {
+        "cwe": "CWE-78",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/78.html",
+        "owasp": "A03:2021 Injection",
+        "owasp_url": "https://top10.owasp.org/2021/A03_2021-Injection/index.html",
+        "severity": "critical",
+        "priority": {
+          "score": 60,
+          "level": "P2",
+          "meaning": "xu ly trong dot phat hanh",
+          "components": {
+            "severity_weight": 1.0,
+            "sast": 1.0,
+            "p_model": 0.1965,
+            "agreement_bonus": false
+          }
+        },
+        "remediation": {
+          "summary": "Tranh goi shell; dung API cua ngon ngu/thu vien thay lenh he thong; neu bat buoc chay tien trinh thi truyen danh sach doi so, them '--' truoc doi so tu nguoi dung va kiem tra theo danh sach cho phep.",
+          "language_specific": "subprocess.run([\"ping\", \"-c\", \"1\", host], check=True) voi shell=False; khong dung os.system/os.popen; neu can chuoi thi shlex.quote().",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/OS_Command_Injection_Defense_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": [
+        {
+          "tool": "bandit",
+          "rule_id": "B404",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 2,
+          "message": "Consider possible security implications associated with the subprocess module.",
+          "confidence": "audit"
+        }
+      ]
+    },
+    {
+      "file": "views/admin.py",
+      "function": "ping",
+      "language": "Python",
+      "lines": [
+        25,
+        29
+      ],
+      "status": "FINDING",
+      "decision": "REVIEW",
+      "compare_state": "conflict",
+      "reported_by": [
+        "sast",
+        "codebert"
+      ],
+      "vuln_class": "OS_COMMAND_INJECTION",
+      "related_classes": [
+        "HARDCODED_CREDENTIALS",
+        "OS_COMMAND_INJECTION"
+      ],
+      "sast_classes": [
+        "OS_COMMAND_INJECTION"
+      ],
+      "codebert": {
+        "class": "HARDCODED_CREDENTIALS",
+        "prob": 0.33936458826065063,
+        "p_vulnerable": 0.8140283619405928,
+        "flagged": true,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.0842,
+        "XSS": 0.1212,
+        "OS_COMMAND_INJECTION": 0.1513,
+        "PATH_TRAVERSAL": 0.1858,
+        "AUTHENTICATION_WEAKNESS": 0.1181,
+        "HARDCODED_CREDENTIALS": 0.3394
+      },
+      "p_vulnerable": 0.814,
+      "metadata": {
+        "cwe": "CWE-78",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/78.html",
+        "owasp": "A03:2021 Injection",
+        "owasp_url": "https://top10.owasp.org/2021/A03_2021-Injection/index.html",
+        "severity": "critical",
+        "priority": {
+          "score": 58,
+          "level": "P2",
+          "meaning": "xu ly trong dot phat hanh",
+          "components": {
+            "severity_weight": 1.0,
+            "sast": 1.0,
+            "p_model": 0.1513,
+            "agreement_bonus": false
+          }
+        },
+        "remediation": {
+          "summary": "Tranh goi shell; dung API cua ngon ngu/thu vien thay lenh he thong; neu bat buoc chay tien trinh thi truyen danh sach doi so, them '--' truoc doi so tu nguoi dung va kiem tra theo danh sach cho phep.",
+          "language_specific": "subprocess.run([\"ping\", \"-c\", \"1\", host], check=True) voi shell=False; khong dung os.system/os.popen; neu can chuoi thi shlex.quote().",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/OS_Command_Injection_Defense_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": [
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.os-command-injection",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 28,
+          "message": "A shell command is constructed or invoked through an unsafe API.",
+          "confidence": "high"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.rules.registry_snapshot.python.flask.security.injection.subprocess-injection.subprocess-injection",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 28,
+          "message": "Detected user input entering a `subprocess` call unsafely. This could result in a command injection vulnerability. An attacker could use this vulnerability to execute arbitrary commands on the host, which allows them to download malware, scan sensitive data, or run any command they wish on the server. Do not let users choose the command to run. In general, prefer to use Python API versions of system commands. If you must use subprocess, use a dictionary to allowlist a set of commands.",
+          "confidence": "high"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.audit.process-api",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 28,
+          "message": "A process/shell API is used (audit hint).",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.os-command-injection",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 28,
+          "message": "A shell command is constructed or invoked through an unsafe API.",
+          "confidence": "high"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.os-command-string-building",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 28,
+          "message": "A process command is built from interpolated strings.",
+          "confidence": "high"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.py.cmdi-taint",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 28,
+          "message": "Request data reaches a shell command.",
+          "confidence": "high"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.rules.registry_snapshot.python.lang.security.dangerous-subprocess-use.dangerous-subprocess-use",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 28,
+          "message": "Detected subprocess function 'run' with user controlled data. A malicious actor could leverage this to perform command injection. You may consider using 'shlex.escape()'.",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.rules.registry_snapshot.python.lang.security.audit.subprocess-shell-true.subprocess-shell-true",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 28,
+          "message": "Found 'subprocess' function 'run' with 'shell=True'. This is dangerous because this call will spawn the command using a shell process. Doing so propagates current shell settings and variables, which makes it much easier for a malicious actor to execute commands. Use 'shell=False' instead.",
+          "confidence": "audit"
+        },
+        {
+          "tool": "bandit",
+          "rule_id": "B602",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 28,
+          "message": "subprocess call with shell=True identified, security issue.",
+          "confidence": "high"
+        }
+      ]
+    },
+    {
+      "file": "views/files.py",
+      "function": "disk_usage",
+      "language": "Python",
+      "lines": [
+        47,
+        49
+      ],
+      "status": "FINDING",
+      "decision": "REVIEW",
+      "compare_state": "sast_only",
+      "reported_by": [
+        "sast"
+      ],
+      "vuln_class": "OS_COMMAND_INJECTION",
+      "related_classes": [
+        "OS_COMMAND_INJECTION"
+      ],
+      "sast_classes": [
+        "OS_COMMAND_INJECTION"
+      ],
+      "codebert": {
+        "class": "HARDCODED_CREDENTIALS",
+        "prob": 0.3334716260433197,
+        "p_vulnerable": 0.37064454084764586,
+        "flagged": false,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.1038,
+        "XSS": 0.1081,
+        "OS_COMMAND_INJECTION": 0.1538,
+        "PATH_TRAVERSAL": 0.1769,
+        "AUTHENTICATION_WEAKNESS": 0.1239,
+        "HARDCODED_CREDENTIALS": 0.3335
+      },
+      "p_vulnerable": 0.3706,
+      "metadata": {
+        "cwe": "CWE-78",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/78.html",
+        "owasp": "A03:2021 Injection",
+        "owasp_url": "https://top10.owasp.org/2021/A03_2021-Injection/index.html",
+        "severity": "critical",
+        "priority": {
+          "score": 58,
+          "level": "P2",
+          "meaning": "xu ly trong dot phat hanh",
+          "components": {
+            "severity_weight": 1.0,
+            "sast": 1.0,
+            "p_model": 0.1538,
+            "agreement_bonus": false
+          }
+        },
+        "remediation": {
+          "summary": "Tranh goi shell; dung API cua ngon ngu/thu vien thay lenh he thong; neu bat buoc chay tien trinh thi truyen danh sach doi so, them '--' truoc doi so tu nguoi dung va kiem tra theo danh sach cho phep.",
+          "language_specific": "subprocess.run([\"ping\", \"-c\", \"1\", host], check=True) voi shell=False; khong dung os.system/os.popen; neu can chuoi thi shlex.quote().",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/OS_Command_Injection_Defense_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": [
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.audit.process-api",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 48,
+          "message": "A process/shell API is used (audit hint).",
+          "confidence": "audit"
+        },
+        {
+          "tool": "bandit",
+          "rule_id": "B607",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 48,
+          "message": "Starting a process with a partial executable path",
+          "confidence": "audit"
+        },
+        {
+          "tool": "bandit",
+          "rule_id": "B603",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 48,
+          "message": "subprocess call - check for execution of untrusted input.",
+          "confidence": "audit"
+        }
+      ]
+    },
+    {
+      "file": "views/files.py",
+      "function": "archive",
+      "language": "Python",
+      "lines": [
+        54,
+        57
+      ],
+      "status": "FINDING",
+      "decision": "REVIEW",
+      "compare_state": "conflict",
+      "reported_by": [
+        "sast",
+        "codebert"
+      ],
+      "vuln_class": "OS_COMMAND_INJECTION",
+      "related_classes": [
+        "HARDCODED_CREDENTIALS",
+        "OS_COMMAND_INJECTION"
+      ],
+      "sast_classes": [
+        "OS_COMMAND_INJECTION"
+      ],
+      "codebert": {
+        "class": "HARDCODED_CREDENTIALS",
+        "prob": 0.3443240523338318,
+        "p_vulnerable": 0.7535671354055066,
+        "flagged": true,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.0935,
+        "XSS": 0.1176,
+        "OS_COMMAND_INJECTION": 0.1441,
+        "PATH_TRAVERSAL": 0.1767,
+        "AUTHENTICATION_WEAKNESS": 0.1239,
+        "HARDCODED_CREDENTIALS": 0.3443
+      },
+      "p_vulnerable": 0.7536,
+      "metadata": {
+        "cwe": "CWE-78",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/78.html",
+        "owasp": "A03:2021 Injection",
+        "owasp_url": "https://top10.owasp.org/2021/A03_2021-Injection/index.html",
+        "severity": "critical",
+        "priority": {
+          "score": 57,
+          "level": "P2",
+          "meaning": "xu ly trong dot phat hanh",
+          "components": {
+            "severity_weight": 1.0,
+            "sast": 1.0,
+            "p_model": 0.1441,
+            "agreement_bonus": false
+          }
+        },
+        "remediation": {
+          "summary": "Tranh goi shell; dung API cua ngon ngu/thu vien thay lenh he thong; neu bat buoc chay tien trinh thi truyen danh sach doi so, them '--' truoc doi so tu nguoi dung va kiem tra theo danh sach cho phep.",
+          "language_specific": "subprocess.run([\"ping\", \"-c\", \"1\", host], check=True) voi shell=False; khong dung os.system/os.popen; neu can chuoi thi shlex.quote().",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/OS_Command_Injection_Defense_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": [
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.os-command-injection",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 56,
+          "message": "A shell command is constructed or invoked through an unsafe API.",
+          "confidence": "high"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.rules.registry_snapshot.python.flask.security.injection.subprocess-injection.subprocess-injection",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 56,
+          "message": "Detected user input entering a `subprocess` call unsafely. This could result in a command injection vulnerability. An attacker could use this vulnerability to execute arbitrary commands on the host, which allows them to download malware, scan sensitive data, or run any command they wish on the server. Do not let users choose the command to run. In general, prefer to use Python API versions of system commands. If you must use subprocess, use a dictionary to allowlist a set of commands.",
+          "confidence": "high"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.audit.process-api",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 56,
+          "message": "A process/shell API is used (audit hint).",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.os-command-injection",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 56,
+          "message": "A shell command is constructed or invoked through an unsafe API.",
+          "confidence": "high"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.os-command-string-building",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 56,
+          "message": "A process command is built from interpolated strings.",
+          "confidence": "high"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.py.cmdi-taint",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 56,
+          "message": "Request data reaches a shell command.",
+          "confidence": "high"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.rules.registry_snapshot.python.lang.security.dangerous-subprocess-use.dangerous-subprocess-use",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 56,
+          "message": "Detected subprocess function 'check_output' with user controlled data. A malicious actor could leverage this to perform command injection. You may consider using 'shlex.escape()'.",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.rules.registry_snapshot.python.lang.security.audit.subprocess-shell-true.subprocess-shell-true",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 56,
+          "message": "Found 'subprocess' function 'check_output' with 'shell=True'. This is dangerous because this call will spawn the command using a shell process. Doing so propagates current shell settings and variables, which makes it much easier for a malicious actor to execute commands. Use 'shell=False' instead.",
+          "confidence": "audit"
+        },
+        {
+          "tool": "bandit",
+          "rule_id": "B602",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 56,
+          "message": "subprocess call with shell=True identified, security issue.",
+          "confidence": "high"
+        }
+      ]
+    },
+    {
+      "file": "views/files.py",
+      "function": "thumbnail",
+      "language": "Python",
+      "lines": [
+        39,
+        42
+      ],
+      "status": "FINDING",
+      "decision": "REVIEW",
+      "compare_state": "conflict",
+      "reported_by": [
+        "sast",
+        "codebert"
+      ],
+      "vuln_class": "OS_COMMAND_INJECTION",
+      "related_classes": [
+        "HARDCODED_CREDENTIALS",
+        "OS_COMMAND_INJECTION"
+      ],
+      "sast_classes": [
+        "OS_COMMAND_INJECTION"
+      ],
+      "codebert": {
+        "class": "HARDCODED_CREDENTIALS",
+        "prob": 0.3915577530860901,
+        "p_vulnerable": 0.7873473249860808,
+        "flagged": true,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.0843,
+        "XSS": 0.1118,
+        "OS_COMMAND_INJECTION": 0.1272,
+        "PATH_TRAVERSAL": 0.1676,
+        "AUTHENTICATION_WEAKNESS": 0.1176,
+        "HARDCODED_CREDENTIALS": 0.3916
+      },
+      "p_vulnerable": 0.7873,
+      "metadata": {
+        "cwe": "CWE-78",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/78.html",
+        "owasp": "A03:2021 Injection",
+        "owasp_url": "https://top10.owasp.org/2021/A03_2021-Injection/index.html",
+        "severity": "critical",
+        "priority": {
+          "score": 56,
+          "level": "P2",
+          "meaning": "xu ly trong dot phat hanh",
+          "components": {
+            "severity_weight": 1.0,
+            "sast": 1.0,
+            "p_model": 0.1272,
+            "agreement_bonus": false
+          }
+        },
+        "remediation": {
+          "summary": "Tranh goi shell; dung API cua ngon ngu/thu vien thay lenh he thong; neu bat buoc chay tien trinh thi truyen danh sach doi so, them '--' truoc doi so tu nguoi dung va kiem tra theo danh sach cho phep.",
+          "language_specific": "subprocess.run([\"ping\", \"-c\", \"1\", host], check=True) voi shell=False; khong dung os.system/os.popen; neu can chuoi thi shlex.quote().",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/OS_Command_Injection_Defense_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": [
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.rules.registry_snapshot.python.django.security.injection.command.command-injection-os-system.command-injection-os-system",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 40,
+          "message": "Request data detected in os.system. This could be vulnerable to a command injection and should be avoided. If this must be done, use the 'subprocess' module instead and pass the arguments as a list. See https://owasp.org/www-community/attacks/Command_Injection for more information.",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.rules.registry_snapshot.python.flask.security.injection.os-system-injection.os-system-injection",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 41,
+          "message": "User data detected in os.system. This could be vulnerable to a command injection and should be avoided. If this must be done, use the 'subprocess' module instead and pass the arguments as a list.",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.rules.registry_snapshot.python.lang.security.dangerous-system-call.dangerous-system-call",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 41,
+          "message": "Found user-controlled data used in a system call. This could allow a malicious actor to execute commands. Use the 'subprocess' module instead, which is easier to use without accidentally exposing a command injection vulnerability.",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.audit.process-api",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 41,
+          "message": "A process/shell API is used (audit hint).",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.os-command-injection",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 41,
+          "message": "A shell command is constructed or invoked through an unsafe API.",
+          "confidence": "high"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.py.cmdi-taint",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 41,
+          "message": "Request data reaches a shell command.",
+          "confidence": "high"
+        },
+        {
+          "tool": "bandit",
+          "rule_id": "B605",
+          "cwes": [
+            "78"
+          ],
+          "classes": [
+            "OS_COMMAND_INJECTION"
+          ],
+          "line": 41,
+          "message": "Starting a process with a shell, possible injection detected, security issue.",
+          "confidence": "high"
+        }
+      ]
+    },
+    {
+      "file": "views/files.py",
+      "function": "read_log",
+      "language": "Python",
+      "lines": [
+        26,
+        29
+      ],
+      "status": "FINDING",
+      "decision": "REVIEW",
+      "compare_state": "conflict",
+      "reported_by": [
+        "sast",
+        "codebert"
+      ],
+      "vuln_class": "PATH_TRAVERSAL",
+      "related_classes": [
+        "HARDCODED_CREDENTIALS",
+        "PATH_TRAVERSAL"
+      ],
+      "sast_classes": [
+        "PATH_TRAVERSAL"
+      ],
+      "codebert": {
+        "class": "HARDCODED_CREDENTIALS",
+        "prob": 0.2838151156902313,
+        "p_vulnerable": 0.7934542554431916,
+        "flagged": true,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.0814,
+        "XSS": 0.1225,
+        "OS_COMMAND_INJECTION": 0.165,
+        "PATH_TRAVERSAL": 0.225,
+        "AUTHENTICATION_WEAKNESS": 0.1222,
+        "HARDCODED_CREDENTIALS": 0.2838
+      },
+      "p_vulnerable": 0.7935,
+      "metadata": {
+        "cwe": "CWE-22",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/22.html",
+        "owasp": "A01:2021 Broken Access Control",
+        "owasp_url": "https://top10.owasp.org/2021/A01_2021-Broken_Access_Control/index.html",
+        "severity": "high",
+        "priority": {
+          "score": 49,
+          "level": "P2",
+          "meaning": "xu ly trong dot phat hanh",
+          "components": {
+            "severity_weight": 0.8,
+            "sast": 1.0,
+            "p_model": 0.225,
+            "agreement_bonus": false
+          }
+        },
+        "remediation": {
+          "summary": "Chuan hoa duong dan (realpath/resolve) roi kiem tra no van nam trong thu muc goc cho phep; uu tien anh xa ID -> file thay vi nhan ten file tu nguoi dung; giai nen archive co loc thanh vien.",
+          "language_specific": "p = (BASE / name).resolve(); kiem tra p.is_relative_to(BASE.resolve()); dung werkzeug safe_join/send_from_directory; tarfile.extractall(path, filter='data').",
+          "references": [
+            "https://owasp.org/www-community/attacks/Path_Traversal",
+            "https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": [
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.rules.registry_snapshot.python.flask.security.injection.path-traversal-open.path-traversal-open",
+          "cwes": [
+            "22"
+          ],
+          "classes": [
+            "PATH_TRAVERSAL"
+          ],
+          "line": 28,
+          "message": "Found request data in a call to 'open'. Ensure the request data is validated or sanitized, otherwise it could result in path traversal attacks.",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.audit.file-path-api",
+          "cwes": [
+            "22"
+          ],
+          "classes": [
+            "PATH_TRAVERSAL"
+          ],
+          "line": 28,
+          "message": "A file system API receives a non-literal path (audit hint).",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.path-request-taint",
+          "cwes": [
+            "22"
+          ],
+          "classes": [
+            "PATH_TRAVERSAL"
+          ],
+          "line": 28,
+          "message": "Request data is used as a file system path.",
+          "confidence": "high"
+        }
+      ]
+    },
+    {
+      "file": "auth.py",
+      "function": "check_api_key",
+      "language": "Python",
+      "lines": [
+        20,
+        23
+      ],
+      "status": "FINDING",
+      "decision": "REVIEW",
+      "compare_state": "conflict",
+      "reported_by": [
+        "sast",
+        "codebert"
+      ],
+      "vuln_class": "AUTHENTICATION_WEAKNESS",
+      "related_classes": [
+        "AUTHENTICATION_WEAKNESS",
+        "PATH_TRAVERSAL"
+      ],
+      "sast_classes": [
+        "AUTHENTICATION_WEAKNESS"
+      ],
+      "codebert": {
+        "class": "PATH_TRAVERSAL",
+        "prob": 0.25422099232673645,
+        "p_vulnerable": 0.6402767543971039,
+        "flagged": true,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.0644,
+        "XSS": 0.1591,
+        "OS_COMMAND_INJECTION": 0.1754,
+        "PATH_TRAVERSAL": 0.2542,
+        "AUTHENTICATION_WEAKNESS": 0.1628,
+        "HARDCODED_CREDENTIALS": 0.1841
+      },
+      "p_vulnerable": 0.6403,
+      "metadata": {
+        "cwe": "CWE-287",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/287.html",
+        "owasp": "A07:2021 Identification and Authentication Failures",
+        "owasp_url": "https://top10.owasp.org/2021/A07_2021-Identification_and_Authentication_Failures/index.html",
+        "severity": "high",
+        "priority": {
+          "score": 47,
+          "level": "P2",
+          "meaning": "xu ly trong dot phat hanh",
+          "components": {
+            "severity_weight": 0.8,
+            "sast": 1.0,
+            "p_model": 0.1628,
+            "agreement_bonus": false
+          }
+        },
+        "remediation": {
+          "summary": "Dung co che xac thuc/framework da kiem chung; xac minh chu ky va thoi han token; so sanh bi mat bang ham thoi gian hang so; gioi han so lan dang nhap; tao lai session sau dang nhap; kiem tra xac thuc o moi endpoint nhay cam.",
+          "language_specific": "jwt.decode(token, key, algorithms=[\"HS256\"]) khong tat verify; hmac.compare_digest() de so sanh; Django: login_required, rotate session (login() da lam); gioi han dang nhap (django-axes).",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html",
+            "https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": [
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.audit.auth-code",
+          "cwes": [
+            "287"
+          ],
+          "classes": [
+            "AUTHENTICATION_WEAKNESS"
+          ],
+          "line": 22,
+          "message": "Authentication-sensitive code (token/session/password/signature checks) (audit hint).",
+          "confidence": "audit"
+        }
+      ]
+    },
+    {
+      "file": "auth.py",
+      "function": "check_admin_token",
+      "language": "Python",
+      "lines": [
+        26,
+        29
+      ],
+      "status": "FINDING",
+      "decision": "REVIEW",
+      "compare_state": "sast_only",
+      "reported_by": [
+        "sast"
+      ],
+      "vuln_class": "AUTHENTICATION_WEAKNESS",
+      "related_classes": [
+        "AUTHENTICATION_WEAKNESS"
+      ],
+      "sast_classes": [
+        "AUTHENTICATION_WEAKNESS"
+      ],
+      "codebert": {
+        "class": "PATH_TRAVERSAL",
+        "prob": 0.23772099614143372,
+        "p_vulnerable": 0.48122288847328093,
+        "flagged": false,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.0687,
+        "XSS": 0.1578,
+        "OS_COMMAND_INJECTION": 0.174,
+        "PATH_TRAVERSAL": 0.2377,
+        "AUTHENTICATION_WEAKNESS": 0.1439,
+        "HARDCODED_CREDENTIALS": 0.2179
+      },
+      "p_vulnerable": 0.4812,
+      "metadata": {
+        "cwe": "CWE-287",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/287.html",
+        "owasp": "A07:2021 Identification and Authentication Failures",
+        "owasp_url": "https://top10.owasp.org/2021/A07_2021-Identification_and_Authentication_Failures/index.html",
+        "severity": "high",
+        "priority": {
+          "score": 46,
+          "level": "P2",
+          "meaning": "xu ly trong dot phat hanh",
+          "components": {
+            "severity_weight": 0.8,
+            "sast": 1.0,
+            "p_model": 0.1439,
+            "agreement_bonus": false
+          }
+        },
+        "remediation": {
+          "summary": "Dung co che xac thuc/framework da kiem chung; xac minh chu ky va thoi han token; so sanh bi mat bang ham thoi gian hang so; gioi han so lan dang nhap; tao lai session sau dang nhap; kiem tra xac thuc o moi endpoint nhay cam.",
+          "language_specific": "jwt.decode(token, key, algorithms=[\"HS256\"]) khong tat verify; hmac.compare_digest() de so sanh; Django: login_required, rotate session (login() da lam); gioi han dang nhap (django-axes).",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html",
+            "https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": [
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.auth-secret-equality",
+          "cwes": [
+            "287"
+          ],
+          "classes": [
+            "AUTHENTICATION_WEAKNESS"
+          ],
+          "line": 28,
+          "message": "A secret, token or signature is compared with a plain equality operator.",
+          "confidence": "audit"
+        }
+      ]
+    },
+    {
+      "file": "auth.py",
+      "function": "login",
+      "language": "Python",
+      "lines": [
+        39,
+        43
+      ],
+      "status": "FINDING",
+      "decision": "REVIEW",
+      "compare_state": "sast_only",
+      "reported_by": [
+        "sast"
+      ],
+      "vuln_class": "AUTHENTICATION_WEAKNESS",
+      "related_classes": [
+        "AUTHENTICATION_WEAKNESS"
+      ],
+      "sast_classes": [
+        "AUTHENTICATION_WEAKNESS"
+      ],
+      "codebert": {
+        "class": "PATH_TRAVERSAL",
+        "prob": 0.20910294353961945,
+        "p_vulnerable": 0.4185956330110429,
+        "flagged": false,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.0844,
+        "XSS": 0.1844,
+        "OS_COMMAND_INJECTION": 0.1682,
+        "PATH_TRAVERSAL": 0.2091,
+        "AUTHENTICATION_WEAKNESS": 0.1538,
+        "HARDCODED_CREDENTIALS": 0.2
+      },
+      "p_vulnerable": 0.4186,
+      "metadata": {
+        "cwe": "CWE-287",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/287.html",
+        "owasp": "A07:2021 Identification and Authentication Failures",
+        "owasp_url": "https://top10.owasp.org/2021/A07_2021-Identification_and_Authentication_Failures/index.html",
+        "severity": "high",
+        "priority": {
+          "score": 46,
+          "level": "P2",
+          "meaning": "xu ly trong dot phat hanh",
+          "components": {
+            "severity_weight": 0.8,
+            "sast": 1.0,
+            "p_model": 0.1538,
+            "agreement_bonus": false
+          }
+        },
+        "remediation": {
+          "summary": "Dung co che xac thuc/framework da kiem chung; xac minh chu ky va thoi han token; so sanh bi mat bang ham thoi gian hang so; gioi han so lan dang nhap; tao lai session sau dang nhap; kiem tra xac thuc o moi endpoint nhay cam.",
+          "language_specific": "jwt.decode(token, key, algorithms=[\"HS256\"]) khong tat verify; hmac.compare_digest() de so sanh; Django: login_required, rotate session (login() da lam); gioi han dang nhap (django-axes).",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html",
+            "https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": [
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.audit.auth-code",
+          "cwes": [
+            "287"
+          ],
+          "classes": [
+            "AUTHENTICATION_WEAKNESS"
+          ],
+          "line": 39,
+          "message": "Authentication-sensitive code (token/session/password/signature checks) (audit hint).",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.auth-session-fixation",
+          "cwes": [
+            "384"
+          ],
+          "classes": [
+            "AUTHENTICATION_WEAKNESS"
+          ],
+          "line": 41,
+          "message": "A login function stores the user in the session without regenerating it (audit).",
+          "confidence": "audit"
+        }
+      ]
+    },
+    {
+      "file": "views/users.py",
+      "function": "_check_password",
+      "language": "Python",
+      "lines": [
+        58,
+        60
+      ],
+      "status": "FINDING",
+      "decision": "REVIEW",
+      "compare_state": "sast_only",
+      "reported_by": [
+        "sast"
+      ],
+      "vuln_class": "AUTHENTICATION_WEAKNESS",
+      "related_classes": [
+        "AUTHENTICATION_WEAKNESS"
+      ],
+      "sast_classes": [
+        "AUTHENTICATION_WEAKNESS"
+      ],
+      "codebert": {
+        "class": "HARDCODED_CREDENTIALS",
+        "prob": 0.23408013582229614,
+        "p_vulnerable": 0.3021270878590848,
+        "flagged": false,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.1183,
+        "XSS": 0.1257,
+        "OS_COMMAND_INJECTION": 0.1756,
+        "PATH_TRAVERSAL": 0.2113,
+        "AUTHENTICATION_WEAKNESS": 0.135,
+        "HARDCODED_CREDENTIALS": 0.2341
+      },
+      "p_vulnerable": 0.3021,
+      "metadata": {
+        "cwe": "CWE-287",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/287.html",
+        "owasp": "A07:2021 Identification and Authentication Failures",
+        "owasp_url": "https://top10.owasp.org/2021/A07_2021-Identification_and_Authentication_Failures/index.html",
+        "severity": "high",
+        "priority": {
+          "score": 45,
+          "level": "P2",
+          "meaning": "xu ly trong dot phat hanh",
+          "components": {
+            "severity_weight": 0.8,
+            "sast": 1.0,
+            "p_model": 0.135,
+            "agreement_bonus": false
+          }
+        },
+        "remediation": {
+          "summary": "Dung co che xac thuc/framework da kiem chung; xac minh chu ky va thoi han token; so sanh bi mat bang ham thoi gian hang so; gioi han so lan dang nhap; tao lai session sau dang nhap; kiem tra xac thuc o moi endpoint nhay cam.",
+          "language_specific": "jwt.decode(token, key, algorithms=[\"HS256\"]) khong tat verify; hmac.compare_digest() de so sanh; Django: login_required, rotate session (login() da lam); gioi han dang nhap (django-axes).",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html",
+            "https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": [
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.audit.auth-code",
+          "cwes": [
+            "287"
+          ],
+          "classes": [
+            "AUTHENTICATION_WEAKNESS"
+          ],
+          "line": 60,
+          "message": "Authentication-sensitive code (token/session/password/signature checks) (audit hint).",
+          "confidence": "audit"
+        }
+      ]
+    },
+    {
+      "file": "views/users.py",
+      "function": "<module>",
+      "language": "Python",
+      "lines": [
+        1,
+        61
+      ],
+      "status": "FINDING",
+      "decision": "REVIEW",
+      "compare_state": "sast_only",
+      "reported_by": [
+        "sast"
+      ],
+      "vuln_class": "AUTHENTICATION_WEAKNESS",
+      "related_classes": [
+        "AUTHENTICATION_WEAKNESS"
+      ],
+      "sast_classes": [
+        "AUTHENTICATION_WEAKNESS"
+      ],
+      "codebert": {
+        "class": "XSS",
+        "prob": 0.39530083537101746,
+        "p_vulnerable": 0.1851038673397221,
+        "flagged": false,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.1093,
+        "XSS": 0.3953,
+        "OS_COMMAND_INJECTION": 0.1712,
+        "PATH_TRAVERSAL": 0.1508,
+        "AUTHENTICATION_WEAKNESS": 0.1186,
+        "HARDCODED_CREDENTIALS": 0.0548
+      },
+      "p_vulnerable": 0.1851,
+      "metadata": {
+        "cwe": "CWE-287",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/287.html",
+        "owasp": "A07:2021 Identification and Authentication Failures",
+        "owasp_url": "https://top10.owasp.org/2021/A07_2021-Identification_and_Authentication_Failures/index.html",
+        "severity": "high",
+        "priority": {
+          "score": 45,
+          "level": "P2",
+          "meaning": "xu ly trong dot phat hanh",
+          "components": {
+            "severity_weight": 0.8,
+            "sast": 1.0,
+            "p_model": 0.1186,
+            "agreement_bonus": false
+          }
+        },
+        "remediation": {
+          "summary": "Dung co che xac thuc/framework da kiem chung; xac minh chu ky va thoi han token; so sanh bi mat bang ham thoi gian hang so; gioi han so lan dang nhap; tao lai session sau dang nhap; kiem tra xac thuc o moi endpoint nhay cam.",
+          "language_specific": "jwt.decode(token, key, algorithms=[\"HS256\"]) khong tat verify; hmac.compare_digest() de so sanh; Django: login_required, rotate session (login() da lam); gioi han dang nhap (django-axes).",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html",
+            "https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": [
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.audit.auth-code",
+          "cwes": [
+            "287"
+          ],
+          "classes": [
+            "AUTHENTICATION_WEAKNESS"
+          ],
+          "line": 50,
+          "message": "Authentication-sensitive code (token/session/password/signature checks) (audit hint).",
+          "confidence": "audit"
+        }
+      ]
+    },
+    {
+      "file": "views/users.py",
+      "function": "hello",
+      "language": "Python",
+      "lines": [
+        10,
+        12
+      ],
+      "status": "FINDING",
+      "decision": "REVIEW",
+      "compare_state": "conflict",
+      "reported_by": [
+        "sast",
+        "codebert"
+      ],
+      "vuln_class": "XSS",
+      "related_classes": [
+        "HARDCODED_CREDENTIALS",
+        "XSS"
+      ],
+      "sast_classes": [
+        "XSS"
+      ],
+      "codebert": {
+        "class": "HARDCODED_CREDENTIALS",
+        "prob": 0.3354829251766205,
+        "p_vulnerable": 0.7280081734632375,
+        "flagged": true,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.1057,
+        "XSS": 0.1282,
+        "OS_COMMAND_INJECTION": 0.1417,
+        "PATH_TRAVERSAL": 0.1687,
+        "AUTHENTICATION_WEAKNESS": 0.1202,
+        "HARDCODED_CREDENTIALS": 0.3355
+      },
+      "p_vulnerable": 0.728,
+      "metadata": {
+        "cwe": "CWE-79",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/79.html",
+        "owasp": "A03:2021 Injection",
+        "owasp_url": "https://top10.owasp.org/2021/A03_2021-Injection/index.html",
+        "severity": "medium",
+        "priority": {
+          "score": 34,
+          "level": "P3",
+          "meaning": "xem xet / co the bao nham",
+          "components": {
+            "severity_weight": 0.6,
+            "sast": 1.0,
+            "p_model": 0.1282,
+            "agreement_bonus": false
+          }
+        },
+        "remediation": {
+          "summary": "Ma hoa dau ra theo ngu canh (HTML, thuoc tinh, JavaScript, URL); bat autoescape cua template; chi cho phep HTML qua thu vien sanitize; them Content-Security-Policy.",
+          "language_specific": "De Jinja2/Django tu escape; khong dung mark_safe/Markup/|safe voi du lieu nguoi dung; dung format_html() hoac markupsafe.escape(); sanitize HTML bang bleach/nh3.",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": [
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.rules.registry_snapshot.python.flask.security.audit.directly-returned-format-string.directly-returned-format-string",
+          "cwes": [
+            "79"
+          ],
+          "classes": [
+            "XSS"
+          ],
+          "line": 12,
+          "message": "Detected Flask route directly returning a formatted string. This is subject to cross-site scripting if user input can reach the string. Consider using the template engine instead and rendering pages with 'render_template()'.",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.xss-html-string-building",
+          "cwes": [
+            "79"
+          ],
+          "classes": [
+            "XSS"
+          ],
+          "line": 12,
+          "message": "HTML markup is built by interpolating or concatenating values.",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.rules.registry_snapshot.python.django.security.injection.raw-html-format.raw-html-format",
+          "cwes": [
+            "79"
+          ],
+          "classes": [
+            "XSS"
+          ],
+          "line": 12,
+          "message": "Detected user input flowing into a manually constructed HTML string. You may be accidentally bypassing secure methods of rendering HTML by manually constructing HTML and this could create a cross-site scripting vulnerability, which could let attackers steal sensitive user data. To be sure this is safe, check that the HTML is rendered safely. Otherwise, use templates (`django.shortcuts.render`) which will safely render HTML instead.",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.rules.registry_snapshot.python.flask.security.injection.raw-html-concat.raw-html-format",
+          "cwes": [
+            "79"
+          ],
+          "classes": [
+            "XSS"
+          ],
+          "line": 12,
+          "message": "Detected user input flowing into a manually constructed HTML string. You may be accidentally bypassing secure methods of rendering HTML by manually constructing HTML and this could create a cross-site scripting vulnerability, which could let attackers steal sensitive user data. To be sure this is safe, check that the HTML is rendered safely. Otherwise, use templates (`flask.render_template`) which will safely render HTML instead.",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.xss-html-string-building",
+          "cwes": [
+            "79"
+          ],
+          "classes": [
+            "XSS"
+          ],
+          "line": 12,
+          "message": "HTML markup is built by interpolating or concatenating values.",
+          "confidence": "audit"
+        }
+      ]
+    },
+    {
+      "file": "views/users.py",
+      "function": "profile",
+      "language": "Python",
+      "lines": [
+        16,
+        18
+      ],
+      "status": "FINDING",
+      "decision": "REVIEW",
+      "compare_state": "sast_only",
+      "reported_by": [
+        "sast"
+      ],
+      "vuln_class": "XSS",
+      "related_classes": [
+        "XSS"
+      ],
+      "sast_classes": [
+        "XSS"
+      ],
+      "codebert": {
+        "class": "HARDCODED_CREDENTIALS",
+        "prob": 0.2801152467727661,
+        "p_vulnerable": 0.16536376369984962,
+        "flagged": false,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.1312,
+        "XSS": 0.1418,
+        "OS_COMMAND_INJECTION": 0.152,
+        "PATH_TRAVERSAL": 0.1787,
+        "AUTHENTICATION_WEAKNESS": 0.1162,
+        "HARDCODED_CREDENTIALS": 0.2801
+      },
+      "p_vulnerable": 0.1654,
+      "metadata": {
+        "cwe": "CWE-79",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/79.html",
+        "owasp": "A03:2021 Injection",
+        "owasp_url": "https://top10.owasp.org/2021/A03_2021-Injection/index.html",
+        "severity": "medium",
+        "priority": {
+          "score": 34,
+          "level": "P3",
+          "meaning": "xem xet / co the bao nham",
+          "components": {
+            "severity_weight": 0.6,
+            "sast": 1.0,
+            "p_model": 0.1418,
+            "agreement_bonus": false
+          }
+        },
+        "remediation": {
+          "summary": "Ma hoa dau ra theo ngu canh (HTML, thuoc tinh, JavaScript, URL); bat autoescape cua template; chi cho phep HTML qua thu vien sanitize; them Content-Security-Policy.",
+          "language_specific": "De Jinja2/Django tu escape; khong dung mark_safe/Markup/|safe voi du lieu nguoi dung; dung format_html() hoac markupsafe.escape(); sanitize HTML bang bleach/nh3.",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": [
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.rules.registry_snapshot.python.flask.security.audit.directly-returned-format-string.directly-returned-format-string",
+          "cwes": [
+            "79"
+          ],
+          "classes": [
+            "XSS"
+          ],
+          "line": 18,
+          "message": "Detected Flask route directly returning a formatted string. This is subject to cross-site scripting if user input can reach the string. Consider using the template engine instead and rendering pages with 'render_template()'.",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.xss-html-string-building",
+          "cwes": [
+            "79"
+          ],
+          "classes": [
+            "XSS"
+          ],
+          "line": 18,
+          "message": "HTML markup is built by interpolating or concatenating values.",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.rules.registry_snapshot.python.flask.security.injection.raw-html-concat.raw-html-format",
+          "cwes": [
+            "79"
+          ],
+          "classes": [
+            "XSS"
+          ],
+          "line": 18,
+          "message": "Detected user input flowing into a manually constructed HTML string. You may be accidentally bypassing secure methods of rendering HTML by manually constructing HTML and this could create a cross-site scripting vulnerability, which could let attackers steal sensitive user data. To be sure this is safe, check that the HTML is rendered safely. Otherwise, use templates (`flask.render_template`) which will safely render HTML instead.",
+          "confidence": "audit"
+        }
+      ]
+    },
+    {
+      "file": "views/users.py",
+      "function": "banner",
+      "language": "Python",
+      "lines": [
+        45,
+        47
+      ],
+      "status": "FINDING",
+      "decision": "REVIEW",
+      "compare_state": "conflict",
+      "reported_by": [
+        "sast",
+        "codebert"
+      ],
+      "vuln_class": "XSS",
+      "related_classes": [
+        "HARDCODED_CREDENTIALS",
+        "XSS"
+      ],
+      "sast_classes": [
+        "XSS"
+      ],
+      "codebert": {
+        "class": "HARDCODED_CREDENTIALS",
+        "prob": 0.33715540170669556,
+        "p_vulnerable": 0.702113839149478,
+        "flagged": true,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.1207,
+        "XSS": 0.1305,
+        "OS_COMMAND_INJECTION": 0.1407,
+        "PATH_TRAVERSAL": 0.1617,
+        "AUTHENTICATION_WEAKNESS": 0.1092,
+        "HARDCODED_CREDENTIALS": 0.3372
+      },
+      "p_vulnerable": 0.7021,
+      "metadata": {
+        "cwe": "CWE-79",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/79.html",
+        "owasp": "A03:2021 Injection",
+        "owasp_url": "https://top10.owasp.org/2021/A03_2021-Injection/index.html",
+        "severity": "medium",
+        "priority": {
+          "score": 34,
+          "level": "P3",
+          "meaning": "xem xet / co the bao nham",
+          "components": {
+            "severity_weight": 0.6,
+            "sast": 1.0,
+            "p_model": 0.1305,
+            "agreement_bonus": false
+          }
+        },
+        "remediation": {
+          "summary": "Ma hoa dau ra theo ngu canh (HTML, thuoc tinh, JavaScript, URL); bat autoescape cua template; chi cho phep HTML qua thu vien sanitize; them Content-Security-Policy.",
+          "language_specific": "De Jinja2/Django tu escape; khong dung mark_safe/Markup/|safe voi du lieu nguoi dung; dung format_html() hoac markupsafe.escape(); sanitize HTML bang bleach/nh3.",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": [
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.rules.registry_snapshot.python.flask.security.audit.render-template-string.render-template-string",
+          "cwes": [
+            "96"
+          ],
+          "classes": [],
+          "line": 47,
+          "message": "Found a template created with string formatting. This is susceptible to server-side template injection and cross-site scripting attacks.",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.audit.html-output-api",
+          "cwes": [
+            "79"
+          ],
+          "classes": [
+            "XSS"
+          ],
+          "line": 47,
+          "message": "HTML is produced from a non-literal value (audit hint).",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.py.xss-taint",
+          "cwes": [
+            "79"
+          ],
+          "classes": [
+            "XSS"
+          ],
+          "line": 47,
+          "message": "Request data is returned as HTML without escaping.",
+          "confidence": "high"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.xss-unsafe-html",
+          "cwes": [
+            "79"
+          ],
+          "classes": [
+            "XSS"
+          ],
+          "line": 47,
+          "message": "Potentially untrusted content is inserted into HTML without escaping.",
+          "confidence": "high"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.xss-html-string-building",
+          "cwes": [
+            "79"
+          ],
+          "classes": [
+            "XSS"
+          ],
+          "line": 47,
+          "message": "HTML markup is built by interpolating or concatenating values.",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.rules.registry_snapshot.python.django.security.injection.raw-html-format.raw-html-format",
+          "cwes": [
+            "79"
+          ],
+          "classes": [
+            "XSS"
+          ],
+          "line": 47,
+          "message": "Detected user input flowing into a manually constructed HTML string. You may be accidentally bypassing secure methods of rendering HTML by manually constructing HTML and this could create a cross-site scripting vulnerability, which could let attackers steal sensitive user data. To be sure this is safe, check that the HTML is rendered safely. Otherwise, use templates (`django.shortcuts.render`) which will safely render HTML instead.",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.rules.registry_snapshot.python.flask.security.injection.raw-html-concat.raw-html-format",
+          "cwes": [
+            "79"
+          ],
+          "classes": [
+            "XSS"
+          ],
+          "line": 47,
+          "message": "Detected user input flowing into a manually constructed HTML string. You may be accidentally bypassing secure methods of rendering HTML by manually constructing HTML and this could create a cross-site scripting vulnerability, which could let attackers steal sensitive user data. To be sure this is safe, check that the HTML is rendered safely. Otherwise, use templates (`flask.render_template`) which will safely render HTML instead.",
+          "confidence": "audit"
+        },
+        {
+          "tool": "semgrep",
+          "rule_id": "D.nFCA26IA18.main.security-config.semgrep.team.xss-html-string-building",
+          "cwes": [
+            "79"
+          ],
+          "classes": [
+            "XSS"
+          ],
+          "line": 47,
+          "message": "HTML markup is built by interpolating or concatenating values.",
+          "confidence": "audit"
+        }
+      ]
+    },
+    {
+      "file": "db.py",
+      "function": "<module>",
+      "language": "Python",
+      "lines": [
+        1,
+        39
+      ],
+      "status": "FINDING",
+      "decision": "REVIEW",
+      "compare_state": "codebert_only",
+      "reported_by": [
+        "codebert"
+      ],
+      "vuln_class": "SQL_INJECTION",
+      "related_classes": [
+        "SQL_INJECTION"
+      ],
+      "sast_classes": [],
+      "codebert": {
+        "class": "SQL_INJECTION",
+        "prob": 0.5309263467788696,
+        "p_vulnerable": 0.6457520352731627,
+        "flagged": true,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.5309,
+        "XSS": 0.1313,
+        "OS_COMMAND_INJECTION": 0.171,
+        "PATH_TRAVERSAL": 0.0809,
+        "AUTHENTICATION_WEAKNESS": 0.0578,
+        "HARDCODED_CREDENTIALS": 0.0281
+      },
+      "p_vulnerable": 0.6458,
+      "metadata": {
+        "cwe": "CWE-89",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/89.html",
+        "owasp": "A03:2021 Injection",
+        "owasp_url": "https://top10.owasp.org/2021/A03_2021-Injection/index.html",
+        "severity": "critical",
+        "priority": {
+          "score": 27,
+          "level": "P3",
+          "meaning": "xem xet / co the bao nham",
+          "components": {
+            "severity_weight": 1.0,
+            "sast": 0.0,
+            "p_model": 0.5309,
+            "agreement_bonus": false
+          }
+        },
+        "remediation": {
+          "summary": "Dung truy van tham so hoa (prepared statement/placeholder); khong ghep chuoi hay format du lieu nguoi dung vao cau SQL. Ten bang/cot dong phai lay tu danh sach cho phep.",
+          "language_specific": "cursor.execute(\"SELECT ... WHERE id = %s\", (user_id,)); voi ORM dung filter()/params, tranh raw()/extra() voi chuoi da format.",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html",
+            "https://cheatsheetseries.owasp.org/cheatsheets/Query_Parameterization_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": []
+    },
+    {
+      "file": "views/admin.py",
+      "function": "mail_test",
+      "language": "Python",
+      "lines": [
+        33,
+        36
+      ],
+      "status": "FINDING",
+      "decision": "REVIEW",
+      "compare_state": "codebert_only",
+      "reported_by": [
+        "codebert"
+      ],
+      "vuln_class": "HARDCODED_CREDENTIALS",
+      "related_classes": [
+        "HARDCODED_CREDENTIALS"
+      ],
+      "sast_classes": [],
+      "codebert": {
+        "class": "HARDCODED_CREDENTIALS",
+        "prob": 0.3723890781402588,
+        "p_vulnerable": 0.699590333417057,
+        "flagged": true,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.0981,
+        "XSS": 0.1095,
+        "OS_COMMAND_INJECTION": 0.1317,
+        "PATH_TRAVERSAL": 0.1633,
+        "AUTHENTICATION_WEAKNESS": 0.1251,
+        "HARDCODED_CREDENTIALS": 0.3724
+      },
+      "p_vulnerable": 0.6996,
+      "metadata": {
+        "cwe": "CWE-798",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/798.html",
+        "owasp": "A07:2021 Identification and Authentication Failures",
+        "owasp_url": "https://top10.owasp.org/2021/A07_2021-Identification_and_Authentication_Failures/index.html",
+        "severity": "high",
+        "priority": {
+          "score": 15,
+          "level": "P3",
+          "meaning": "xem xet / co the bao nham",
+          "components": {
+            "severity_weight": 0.8,
+            "sast": 0.0,
+            "p_model": 0.3724,
+            "agreement_bonus": false
+          }
+        },
+        "remediation": {
+          "summary": "Xoa bi mat khoi ma nguon va lich su git, thu hoi/doi bi mat da lo; doc tu bien moi truong hoac secret manager (Vault, AWS/GCP/Azure Secret Manager); quet bi mat trong CI (gitleaks, trufflehog).",
+          "language_specific": "password = os.environ[\"DB_PASSWORD\"]; khoa ky JWT/AES lay tu secret manager, khong de chuoi/bytes literal trong code.",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": []
+    },
+    {
+      "file": "views/admin.py",
+      "function": "stats",
+      "language": "Python",
+      "lines": [
+        18,
+        21
+      ],
+      "status": "FINDING",
+      "decision": "REVIEW",
+      "compare_state": "codebert_only",
+      "reported_by": [
+        "codebert"
+      ],
+      "vuln_class": "HARDCODED_CREDENTIALS",
+      "related_classes": [
+        "HARDCODED_CREDENTIALS"
+      ],
+      "sast_classes": [],
+      "codebert": {
+        "class": "HARDCODED_CREDENTIALS",
+        "prob": 0.2949714958667755,
+        "p_vulnerable": 0.7972929829454009,
+        "flagged": true,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.1348,
+        "XSS": 0.1248,
+        "OS_COMMAND_INJECTION": 0.1512,
+        "PATH_TRAVERSAL": 0.1681,
+        "AUTHENTICATION_WEAKNESS": 0.1261,
+        "HARDCODED_CREDENTIALS": 0.295
+      },
+      "p_vulnerable": 0.7973,
+      "metadata": {
+        "cwe": "CWE-798",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/798.html",
+        "owasp": "A07:2021 Identification and Authentication Failures",
+        "owasp_url": "https://top10.owasp.org/2021/A07_2021-Identification_and_Authentication_Failures/index.html",
+        "severity": "high",
+        "priority": {
+          "score": 12,
+          "level": "P3",
+          "meaning": "xem xet / co the bao nham",
+          "components": {
+            "severity_weight": 0.8,
+            "sast": 0.0,
+            "p_model": 0.295,
+            "agreement_bonus": false
+          }
+        },
+        "remediation": {
+          "summary": "Xoa bi mat khoi ma nguon va lich su git, thu hoi/doi bi mat da lo; doc tu bien moi truong hoac secret manager (Vault, AWS/GCP/Azure Secret Manager); quet bi mat trong CI (gitleaks, trufflehog).",
+          "language_specific": "password = os.environ[\"DB_PASSWORD\"]; khoa ky JWT/AES lay tu secret manager, khong de chuoi/bytes literal trong code.",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": []
+    },
+    {
+      "file": "__init__.py",
+      "function": "create_app",
+      "language": "Python",
+      "lines": [
+        7,
+        14
+      ],
+      "status": "FINDING",
+      "decision": "REVIEW",
+      "compare_state": "codebert_only",
+      "reported_by": [
+        "codebert"
+      ],
+      "vuln_class": "OS_COMMAND_INJECTION",
+      "related_classes": [
+        "OS_COMMAND_INJECTION"
+      ],
+      "sast_classes": [],
+      "codebert": {
+        "class": "OS_COMMAND_INJECTION",
+        "prob": 0.22163553535938263,
+        "p_vulnerable": 0.7654631331586708,
+        "flagged": true,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.0941,
+        "XSS": 0.2201,
+        "OS_COMMAND_INJECTION": 0.2216,
+        "PATH_TRAVERSAL": 0.1968,
+        "AUTHENTICATION_WEAKNESS": 0.1354,
+        "HARDCODED_CREDENTIALS": 0.1319
+      },
+      "p_vulnerable": 0.7655,
+      "metadata": {
+        "cwe": "CWE-78",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/78.html",
+        "owasp": "A03:2021 Injection",
+        "owasp_url": "https://top10.owasp.org/2021/A03_2021-Injection/index.html",
+        "severity": "critical",
+        "priority": {
+          "score": 11,
+          "level": "P3",
+          "meaning": "xem xet / co the bao nham",
+          "components": {
+            "severity_weight": 1.0,
+            "sast": 0.0,
+            "p_model": 0.2216,
+            "agreement_bonus": false
+          }
+        },
+        "remediation": {
+          "summary": "Tranh goi shell; dung API cua ngon ngu/thu vien thay lenh he thong; neu bat buoc chay tien trinh thi truyen danh sach doi so, them '--' truoc doi so tu nguoi dung va kiem tra theo danh sach cho phep.",
+          "language_specific": "subprocess.run([\"ping\", \"-c\", \"1\", host], check=True) voi shell=False; khong dung os.system/os.popen; neu can chuoi thi shlex.quote().",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/OS_Command_Injection_Defense_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": []
+    },
+    {
+      "file": "db.py",
+      "function": "connect",
+      "language": "Python",
+      "lines": [
+        6,
+        9
+      ],
+      "status": "FINDING",
+      "decision": "REVIEW",
+      "compare_state": "codebert_only",
+      "reported_by": [
+        "codebert"
+      ],
+      "vuln_class": "HARDCODED_CREDENTIALS",
+      "related_classes": [
+        "HARDCODED_CREDENTIALS"
+      ],
+      "sast_classes": [],
+      "codebert": {
+        "class": "HARDCODED_CREDENTIALS",
+        "prob": 0.2737880349159241,
+        "p_vulnerable": 0.6757615107331976,
+        "flagged": true,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.1439,
+        "XSS": 0.1263,
+        "OS_COMMAND_INJECTION": 0.157,
+        "PATH_TRAVERSAL": 0.1719,
+        "AUTHENTICATION_WEAKNESS": 0.1271,
+        "HARDCODED_CREDENTIALS": 0.2738
+      },
+      "p_vulnerable": 0.6758,
+      "metadata": {
+        "cwe": "CWE-798",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/798.html",
+        "owasp": "A07:2021 Identification and Authentication Failures",
+        "owasp_url": "https://top10.owasp.org/2021/A07_2021-Identification_and_Authentication_Failures/index.html",
+        "severity": "high",
+        "priority": {
+          "score": 11,
+          "level": "P3",
+          "meaning": "xem xet / co the bao nham",
+          "components": {
+            "severity_weight": 0.8,
+            "sast": 0.0,
+            "p_model": 0.2738,
+            "agreement_bonus": false
+          }
+        },
+        "remediation": {
+          "summary": "Xoa bi mat khoi ma nguon va lich su git, thu hoi/doi bi mat da lo; doc tu bien moi truong hoac secret manager (Vault, AWS/GCP/Azure Secret Manager); quet bi mat trong CI (gitleaks, trufflehog).",
+          "language_specific": "password = os.environ[\"DB_PASSWORD\"]; khoa ky JWT/AES lay tu secret manager, khong de chuoi/bytes literal trong code.",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": []
+    },
+    {
+      "file": "views/files.py",
+      "function": "avatar",
+      "language": "Python",
+      "lines": [
+        20,
+        21
+      ],
+      "status": "FINDING",
+      "decision": "REVIEW",
+      "compare_state": "codebert_only",
+      "reported_by": [
+        "codebert"
+      ],
+      "vuln_class": "HARDCODED_CREDENTIALS",
+      "related_classes": [
+        "HARDCODED_CREDENTIALS"
+      ],
+      "sast_classes": [],
+      "codebert": {
+        "class": "HARDCODED_CREDENTIALS",
+        "prob": 0.28593894839286804,
+        "p_vulnerable": 0.6601751540241205,
+        "flagged": true,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.134,
+        "XSS": 0.1149,
+        "OS_COMMAND_INJECTION": 0.1555,
+        "PATH_TRAVERSAL": 0.19,
+        "AUTHENTICATION_WEAKNESS": 0.1197,
+        "HARDCODED_CREDENTIALS": 0.2859
+      },
+      "p_vulnerable": 0.6602,
+      "metadata": {
+        "cwe": "CWE-798",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/798.html",
+        "owasp": "A07:2021 Identification and Authentication Failures",
+        "owasp_url": "https://top10.owasp.org/2021/A07_2021-Identification_and_Authentication_Failures/index.html",
+        "severity": "high",
+        "priority": {
+          "score": 11,
+          "level": "P3",
+          "meaning": "xem xet / co the bao nham",
+          "components": {
+            "severity_weight": 0.8,
+            "sast": 0.0,
+            "p_model": 0.2859,
+            "agreement_bonus": false
+          }
+        },
+        "remediation": {
+          "summary": "Xoa bi mat khoi ma nguon va lich su git, thu hoi/doi bi mat da lo; doc tu bien moi truong hoac secret manager (Vault, AWS/GCP/Azure Secret Manager); quet bi mat trong CI (gitleaks, trufflehog).",
+          "language_specific": "password = os.environ[\"DB_PASSWORD\"]; khoa ky JWT/AES lay tu secret manager, khong de chuoi/bytes literal trong code.",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": []
+    },
+    {
+      "file": "views/__init__.py",
+      "function": "<file>",
+      "language": "Python",
+      "lines": [
+        1,
+        2
+      ],
+      "status": "FINDING",
+      "decision": "REVIEW",
+      "compare_state": "codebert_only",
+      "reported_by": [
+        "codebert"
+      ],
+      "vuln_class": "HARDCODED_CREDENTIALS",
+      "related_classes": [
+        "HARDCODED_CREDENTIALS"
+      ],
+      "sast_classes": [],
+      "codebert": {
+        "class": "HARDCODED_CREDENTIALS",
+        "prob": 0.25327175855636597,
+        "p_vulnerable": 0.6324021891687958,
+        "flagged": true,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.1362,
+        "XSS": 0.1449,
+        "OS_COMMAND_INJECTION": 0.156,
+        "PATH_TRAVERSAL": 0.1733,
+        "AUTHENTICATION_WEAKNESS": 0.1363,
+        "HARDCODED_CREDENTIALS": 0.2533
+      },
+      "p_vulnerable": 0.6324,
+      "metadata": {
+        "cwe": "CWE-798",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/798.html",
+        "owasp": "A07:2021 Identification and Authentication Failures",
+        "owasp_url": "https://top10.owasp.org/2021/A07_2021-Identification_and_Authentication_Failures/index.html",
+        "severity": "high",
+        "priority": {
+          "score": 10,
+          "level": "P3",
+          "meaning": "xem xet / co the bao nham",
+          "components": {
+            "severity_weight": 0.8,
+            "sast": 0.0,
+            "p_model": 0.2533,
+            "agreement_bonus": false
+          }
+        },
+        "remediation": {
+          "summary": "Xoa bi mat khoi ma nguon va lich su git, thu hoi/doi bi mat da lo; doc tu bien moi truong hoac secret manager (Vault, AWS/GCP/Azure Secret Manager); quet bi mat trong CI (gitleaks, trufflehog).",
+          "language_specific": "password = os.environ[\"DB_PASSWORD\"]; khoa ky JWT/AES lay tu secret manager, khong de chuoi/bytes literal trong code.",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": []
+    },
+    {
+      "file": "auth.py",
+      "function": "wrapped",
+      "language": "Python",
+      "lines": [
+        13,
+        16
+      ],
+      "status": "FINDING",
+      "decision": "REVIEW",
+      "compare_state": "codebert_only",
+      "reported_by": [
+        "codebert"
+      ],
+      "vuln_class": "XSS",
+      "related_classes": [
+        "XSS"
+      ],
+      "sast_classes": [],
+      "codebert": {
+        "class": "XSS",
+        "prob": 0.2884751558303833,
+        "p_vulnerable": 0.6581556572109137,
+        "flagged": true,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.1122,
+        "XSS": 0.2885,
+        "OS_COMMAND_INJECTION": 0.2165,
+        "PATH_TRAVERSAL": 0.2133,
+        "AUTHENTICATION_WEAKNESS": 0.1275,
+        "HARDCODED_CREDENTIALS": 0.0421
+      },
+      "p_vulnerable": 0.6582,
+      "metadata": {
+        "cwe": "CWE-79",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/79.html",
+        "owasp": "A03:2021 Injection",
+        "owasp_url": "https://top10.owasp.org/2021/A03_2021-Injection/index.html",
+        "severity": "medium",
+        "priority": {
+          "score": 9,
+          "level": "P3",
+          "meaning": "xem xet / co the bao nham",
+          "components": {
+            "severity_weight": 0.6,
+            "sast": 0.0,
+            "p_model": 0.2885,
+            "agreement_bonus": false
+          }
+        },
+        "remediation": {
+          "summary": "Ma hoa dau ra theo ngu canh (HTML, thuoc tinh, JavaScript, URL); bat autoescape cua template; chi cho phep HTML qua thu vien sanitize; them Content-Security-Policy.",
+          "language_specific": "De Jinja2/Django tu escape; khong dung mark_safe/Markup/|safe voi du lieu nguoi dung; dung format_html() hoac markupsafe.escape(); sanitize HTML bang bleach/nh3.",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": []
+    },
+    {
+      "file": "__init__.py",
+      "function": "<module>",
+      "language": "Python",
+      "lines": [
+        1,
+        15
+      ],
+      "status": "FINDING",
+      "decision": "REVIEW",
+      "compare_state": "codebert_only",
+      "reported_by": [
+        "codebert"
+      ],
+      "vuln_class": "XSS",
+      "related_classes": [
+        "XSS"
+      ],
+      "sast_classes": [],
+      "codebert": {
+        "class": "XSS",
+        "prob": 0.26867949962615967,
+        "p_vulnerable": 0.6747081123613743,
+        "flagged": true,
+        "flag_source": "verifier"
+      },
+      "probabilities": {
+        "SQL_INJECTION": 0.137,
+        "XSS": 0.2687,
+        "OS_COMMAND_INJECTION": 0.2602,
+        "PATH_TRAVERSAL": 0.172,
+        "AUTHENTICATION_WEAKNESS": 0.1151,
+        "HARDCODED_CREDENTIALS": 0.047
+      },
+      "p_vulnerable": 0.6747,
+      "metadata": {
+        "cwe": "CWE-79",
+        "cwe_url": "https://cwe.mitre.org/data/definitions/79.html",
+        "owasp": "A03:2021 Injection",
+        "owasp_url": "https://top10.owasp.org/2021/A03_2021-Injection/index.html",
+        "severity": "medium",
+        "priority": {
+          "score": 8,
+          "level": "P3",
+          "meaning": "xem xet / co the bao nham",
+          "components": {
+            "severity_weight": 0.6,
+            "sast": 0.0,
+            "p_model": 0.2687,
+            "agreement_bonus": false
+          }
+        },
+        "remediation": {
+          "summary": "Ma hoa dau ra theo ngu canh (HTML, thuoc tinh, JavaScript, URL); bat autoescape cua template; chi cho phep HTML qua thu vien sanitize; them Content-Security-Policy.",
+          "language_specific": "De Jinja2/Django tu escape; khong dung mark_safe/Markup/|safe voi du lieu nguoi dung; dung format_html() hoac markupsafe.escape(); sanitize HTML bang bleach/nh3.",
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html"
+          ]
+        }
+      },
+      "findings": []
+    }
+  ],
+  "pass": [
+    "auth.py::<module>",
+    "config.py::payment_api_key",
+    "db.py::get_user_by_id",
+    "db.py::add_note",
+    "views/admin.py::delete_user",
+    "views/users.py::search",
+    "views/users.py::orders",
+    "views/users.py::login"
+  ],
+  "all_units": [
+    {
+      "file": "__init__.py",
+      "function": "create_app",
+      "decision": "REVIEW",
+      "compare_state": "codebert_only",
+      "sast_classes": [],
+      "codebert_class": "OS_COMMAND_INJECTION",
+      "p_vulnerable": 0.7655
+    },
+    {
+      "file": "__init__.py",
+      "function": "<module>",
+      "decision": "REVIEW",
+      "compare_state": "codebert_only",
+      "sast_classes": [],
+      "codebert_class": "XSS",
+      "p_vulnerable": 0.6747
+    },
+    {
+      "file": "auth.py",
+      "function": "check_api_key",
+      "decision": "REVIEW",
+      "compare_state": "conflict",
+      "sast_classes": [
+        "AUTHENTICATION_WEAKNESS"
+      ],
+      "codebert_class": "PATH_TRAVERSAL",
+      "p_vulnerable": 0.6403
+    },
+    {
+      "file": "auth.py",
+      "function": "check_admin_token",
+      "decision": "REVIEW",
+      "compare_state": "sast_only",
+      "sast_classes": [
+        "AUTHENTICATION_WEAKNESS"
+      ],
+      "codebert_class": "PATH_TRAVERSAL",
+      "p_vulnerable": 0.4812
+    },
+    {
+      "file": "auth.py",
+      "function": "current_user_from_jwt",
+      "decision": "BLOCK",
+      "compare_state": "sast_only",
+      "sast_classes": [
+        "AUTHENTICATION_WEAKNESS"
+      ],
+      "codebert_class": "HARDCODED_CREDENTIALS",
+      "p_vulnerable": 0.489
+    },
+    {
+      "file": "auth.py",
+      "function": "login",
+      "decision": "REVIEW",
+      "compare_state": "sast_only",
+      "sast_classes": [
+        "AUTHENTICATION_WEAKNESS"
+      ],
+      "codebert_class": "PATH_TRAVERSAL",
+      "p_vulnerable": 0.4186
+    },
+    {
+      "file": "auth.py",
+      "function": "wrapped",
+      "decision": "REVIEW",
+      "compare_state": "codebert_only",
+      "sast_classes": [],
+      "codebert_class": "XSS",
+      "p_vulnerable": 0.6582
+    },
+    {
+      "file": "auth.py",
+      "function": "<module>",
+      "decision": "PASS",
+      "compare_state": "pass",
+      "sast_classes": [],
+      "codebert_class": "XSS",
+      "p_vulnerable": 0.3342
+    },
+    {
+      "file": "config.py",
+      "function": "smtp_credentials",
+      "decision": "BLOCK",
+      "compare_state": "agree",
+      "sast_classes": [
+        "HARDCODED_CREDENTIALS"
+      ],
+      "codebert_class": "HARDCODED_CREDENTIALS",
+      "p_vulnerable": 0.666
+    },
+    {
+      "file": "config.py",
+      "function": "payment_api_key",
+      "decision": "PASS",
+      "compare_state": "pass",
+      "sast_classes": [],
+      "codebert_class": "HARDCODED_CREDENTIALS",
+      "p_vulnerable": 0.293
+    },
+    {
+      "file": "config.py",
+      "function": "<module>",
+      "decision": "BLOCK",
+      "compare_state": "sast_only",
+      "sast_classes": [
+        "HARDCODED_CREDENTIALS"
+      ],
+      "codebert_class": "HARDCODED_CREDENTIALS",
+      "p_vulnerable": 0.3859
+    },
+    {
+      "file": "db.py",
+      "function": "connect",
+      "decision": "REVIEW",
+      "compare_state": "codebert_only",
+      "sast_classes": [],
+      "codebert_class": "HARDCODED_CREDENTIALS",
+      "p_vulnerable": 0.6758
+    },
+    {
+      "file": "db.py",
+      "function": "get_user_by_id",
+      "decision": "PASS",
+      "compare_state": "pass",
+      "sast_classes": [],
+      "codebert_class": "SQL_INJECTION",
+      "p_vulnerable": 0.4368
+    },
+    {
+      "file": "db.py",
+      "function": "search_users",
+      "decision": "BLOCK",
+      "compare_state": "agree",
+      "sast_classes": [
+        "SQL_INJECTION"
+      ],
+      "codebert_class": "SQL_INJECTION",
+      "p_vulnerable": 0.8251
+    },
+    {
+      "file": "db.py",
+      "function": "list_orders",
+      "decision": "BLOCK",
+      "compare_state": "agree",
+      "sast_classes": [
+        "SQL_INJECTION"
+      ],
+      "codebert_class": "SQL_INJECTION",
+      "p_vulnerable": 0.7039
+    },
+    {
+      "file": "db.py",
+      "function": "add_note",
+      "decision": "PASS",
+      "compare_state": "pass",
+      "sast_classes": [],
+      "codebert_class": "SQL_INJECTION",
+      "p_vulnerable": 0.4513
+    },
+    {
+      "file": "db.py",
+      "function": "find_user_by_email",
+      "decision": "BLOCK",
+      "compare_state": "agree",
+      "sast_classes": [
+        "SQL_INJECTION"
+      ],
+      "codebert_class": "SQL_INJECTION",
+      "p_vulnerable": 0.9116
+    },
+    {
+      "file": "db.py",
+      "function": "<module>",
+      "decision": "REVIEW",
+      "compare_state": "codebert_only",
+      "sast_classes": [],
+      "codebert_class": "SQL_INJECTION",
+      "p_vulnerable": 0.6458
+    },
+    {
+      "file": "views/__init__.py",
+      "function": "<file>",
+      "decision": "REVIEW",
+      "compare_state": "codebert_only",
+      "sast_classes": [],
+      "codebert_class": "HARDCODED_CREDENTIALS",
+      "p_vulnerable": 0.6324
+    },
+    {
+      "file": "views/admin.py",
+      "function": "delete_user",
+      "decision": "PASS",
+      "compare_state": "pass",
+      "sast_classes": [],
+      "codebert_class": "SQL_INJECTION",
+      "p_vulnerable": 0.4019
+    },
+    {
+      "file": "views/admin.py",
+      "function": "stats",
+      "decision": "REVIEW",
+      "compare_state": "codebert_only",
+      "sast_classes": [],
+      "codebert_class": "HARDCODED_CREDENTIALS",
+      "p_vulnerable": 0.7973
+    },
+    {
+      "file": "views/admin.py",
+      "function": "ping",
+      "decision": "REVIEW",
+      "compare_state": "conflict",
+      "sast_classes": [
+        "OS_COMMAND_INJECTION"
+      ],
+      "codebert_class": "HARDCODED_CREDENTIALS",
+      "p_vulnerable": 0.814
+    },
+    {
+      "file": "views/admin.py",
+      "function": "mail_test",
+      "decision": "REVIEW",
+      "compare_state": "codebert_only",
+      "sast_classes": [],
+      "codebert_class": "HARDCODED_CREDENTIALS",
+      "p_vulnerable": 0.6996
+    },
+    {
+      "file": "views/admin.py",
+      "function": "storage_client",
+      "decision": "BLOCK",
+      "compare_state": "agree",
+      "sast_classes": [
+        "HARDCODED_CREDENTIALS"
+      ],
+      "codebert_class": "HARDCODED_CREDENTIALS",
+      "p_vulnerable": 0.7582
+    },
+    {
+      "file": "views/admin.py",
+      "function": "<module>",
+      "decision": "REVIEW",
+      "compare_state": "sast_only",
+      "sast_classes": [
+        "OS_COMMAND_INJECTION"
+      ],
+      "codebert_class": "XSS",
+      "p_vulnerable": 0.525
+    },
+    {
+      "file": "views/files.py",
+      "function": "download",
+      "decision": "BLOCK",
+      "compare_state": "sast_only",
+      "sast_classes": [
+        "PATH_TRAVERSAL"
+      ],
+      "codebert_class": "HARDCODED_CREDENTIALS",
+      "p_vulnerable": 0.5221
+    },
+    {
+      "file": "views/files.py",
+      "function": "avatar",
+      "decision": "REVIEW",
+      "compare_state": "codebert_only",
+      "sast_classes": [],
+      "codebert_class": "HARDCODED_CREDENTIALS",
+      "p_vulnerable": 0.6602
+    },
+    {
+      "file": "views/files.py",
+      "function": "read_log",
+      "decision": "REVIEW",
+      "compare_state": "conflict",
+      "sast_classes": [
+        "PATH_TRAVERSAL"
+      ],
+      "codebert_class": "HARDCODED_CREDENTIALS",
+      "p_vulnerable": 0.7935
+    },
+    {
+      "file": "views/files.py",
+      "function": "restore_backup",
+      "decision": "BLOCK",
+      "compare_state": "agree",
+      "sast_classes": [
+        "PATH_TRAVERSAL"
+      ],
+      "codebert_class": "PATH_TRAVERSAL",
+      "p_vulnerable": 0.7331
+    },
+    {
+      "file": "views/files.py",
+      "function": "thumbnail",
+      "decision": "REVIEW",
+      "compare_state": "conflict",
+      "sast_classes": [
+        "OS_COMMAND_INJECTION"
+      ],
+      "codebert_class": "HARDCODED_CREDENTIALS",
+      "p_vulnerable": 0.7873
+    },
+    {
+      "file": "views/files.py",
+      "function": "disk_usage",
+      "decision": "REVIEW",
+      "compare_state": "sast_only",
+      "sast_classes": [
+        "OS_COMMAND_INJECTION"
+      ],
+      "codebert_class": "HARDCODED_CREDENTIALS",
+      "p_vulnerable": 0.3706
+    },
+    {
+      "file": "views/files.py",
+      "function": "archive",
+      "decision": "REVIEW",
+      "compare_state": "conflict",
+      "sast_classes": [
+        "OS_COMMAND_INJECTION"
+      ],
+      "codebert_class": "HARDCODED_CREDENTIALS",
+      "p_vulnerable": 0.7536
+    },
+    {
+      "file": "views/files.py",
+      "function": "<module>",
+      "decision": "REVIEW",
+      "compare_state": "sast_only",
+      "sast_classes": [
+        "OS_COMMAND_INJECTION"
+      ],
+      "codebert_class": "XSS",
+      "p_vulnerable": 0.5723
+    },
+    {
+      "file": "views/users.py",
+      "function": "hello",
+      "decision": "REVIEW",
+      "compare_state": "conflict",
+      "sast_classes": [
+        "XSS"
+      ],
+      "codebert_class": "HARDCODED_CREDENTIALS",
+      "p_vulnerable": 0.728
+    },
+    {
+      "file": "views/users.py",
+      "function": "profile",
+      "decision": "REVIEW",
+      "compare_state": "sast_only",
+      "sast_classes": [
+        "XSS"
+      ],
+      "codebert_class": "HARDCODED_CREDENTIALS",
+      "p_vulnerable": 0.1654
+    },
+    {
+      "file": "views/users.py",
+      "function": "search",
+      "decision": "PASS",
+      "compare_state": "pass",
+      "sast_classes": [],
+      "codebert_class": "XSS",
+      "p_vulnerable": 0.5531
+    },
+    {
+      "file": "views/users.py",
+      "function": "orders",
+      "decision": "PASS",
+      "compare_state": "pass",
+      "sast_classes": [],
+      "codebert_class": "HARDCODED_CREDENTIALS",
+      "p_vulnerable": 0.5706
+    },
+    {
+      "file": "views/users.py",
+      "function": "add_note",
+      "decision": "BLOCK",
+      "compare_state": "agree",
+      "sast_classes": [
+        "XSS"
+      ],
+      "codebert_class": "XSS",
+      "p_vulnerable": 0.7436
+    },
+    {
+      "file": "views/users.py",
+      "function": "banner",
+      "decision": "REVIEW",
+      "compare_state": "conflict",
+      "sast_classes": [
+        "XSS"
+      ],
+      "codebert_class": "HARDCODED_CREDENTIALS",
+      "p_vulnerable": 0.7021
+    },
+    {
+      "file": "views/users.py",
+      "function": "login",
+      "decision": "PASS",
+      "compare_state": "pass",
+      "sast_classes": [],
+      "codebert_class": "PATH_TRAVERSAL",
+      "p_vulnerable": 0.3957
+    },
+    {
+      "file": "views/users.py",
+      "function": "_check_password",
+      "decision": "REVIEW",
+      "compare_state": "sast_only",
+      "sast_classes": [
+        "AUTHENTICATION_WEAKNESS"
+      ],
+      "codebert_class": "HARDCODED_CREDENTIALS",
+      "p_vulnerable": 0.3021
+    },
+    {
+      "file": "views/users.py",
+      "function": "<module>",
+      "decision": "REVIEW",
+      "compare_state": "sast_only",
+      "sast_classes": [
+        "AUTHENTICATION_WEAKNESS"
+      ],
+      "codebert_class": "XSS",
+      "p_vulnerable": 0.1851
+    }
+  ]
+}
