@@ -1,0 +1,48 @@
+rule,confidence,languages,classes,pos_hits,pos_correct,class_rate,neg_hits,tc4_verdict
+team.audit.auth-code,audit,Python,INSECURE_AUTHENTICATION,2,1,0.500,4,chua du du lieu (<5)
+team.audit.file-path-api,audit,Python,PATH_TRAVERSAL,6,4,0.667,11,dat
+team.audit.html-output-api,audit,Python,XSS,4,2,0.500,7,chua du du lieu (<5)
+team.audit.process-api,audit,Python,OS_COMMAND_INJECTION,5,5,1.000,5,dat
+team.audit.sql-api,audit,Python,SQL_INJECTION,3,2,0.667,3,chua du du lieu (<5)
+team.hardcoded-credentials,high,Python,HARDCODED_CREDENTIALS,4,4,1.000,1,chua du du lieu (<5)
+team.java.audit.file-path-api,audit,Java,PATH_TRAVERSAL,7,6,0.857,11,dat
+team.java.audit.response-output,audit,Java,XSS,1,0,0.000,1,chua du du lieu (<5)
+team.java.audit.sql-api,audit,Java,SQL_INJECTION,14,14,1.000,9,dat
+team.java.hardcoded-secret,high,Java,HARDCODED_CREDENTIALS,1,1,1.000,0,chua du du lieu (<5)
+team.java.path-taint,high,Java,PATH_TRAVERSAL,0,0,,1,chua du du lieu (<5)
+team.java.path-upload-name,audit,Java,PATH_TRAVERSAL,0,0,,2,chua du du lieu (<5)
+team.java.sqli-concat,audit,Java,SQL_INJECTION,7,7,1.000,0,dat
+team.java.xss-html-concat,audit,Java,XSS,2,0,0.000,2,chua du du lieu (<5)
+team.java.xss-taint,high,Java,XSS,1,0,0.000,1,chua du du lieu (<5)
+team.java.xss-writer-output,audit,Java,XSS,1,0,0.000,1,chua du du lieu (<5)
+team.js.audit.fs-path-api,audit,JavaScript,PATH_TRAVERSAL,6,6,1.000,8,dat
+team.js.audit.process-api,audit,JavaScript,OS_COMMAND_INJECTION,6,6,1.000,9,dat
+team.js.cmd-shell,audit,JavaScript,OS_COMMAND_INJECTION,2,2,1.000,1,chua du du lieu (<5)
+team.js.hardcoded-secret,high,JavaScript,HARDCODED_CREDENTIALS,3,3,1.000,0,chua du du lieu (<5)
+team.js.sqli-string,audit,JavaScript,SQL_INJECTION,0,0,,1,chua du du lieu (<5)
+team.js.xss-dom-sink,audit,JavaScript,XSS,25,25,1.000,22,dat
+team.js.xss-html-concat,audit,JavaScript,XSS,20,20,1.000,21,dat
+team.js.xss-jquery-insert,audit,JavaScript,XSS,4,4,1.000,3,chua du du lieu (<5)
+team.os-command-injection,high,Python,OS_COMMAND_INJECTION,4,4,1.000,2,chua du du lieu (<5)
+team.path-from-parameter,audit,Python,PATH_TRAVERSAL,8,6,0.750,4,dat
+team.php.audit.auth-code,audit,PHP,INSECURE_AUTHENTICATION,5,3,0.600,7,dat
+team.php.audit.echo-unescaped,audit,PHP,XSS,14,11,0.786,20,dat
+team.php.audit.process-api,audit,PHP,OS_COMMAND_INJECTION,0,0,,1,chua du du lieu (<5)
+team.php.audit.sql-api,audit,PHP,SQL_INJECTION,26,26,1.000,35,dat
+team.php.audit.xss-template-echo,audit,PHP,XSS,6,6,1.000,5,dat
+team.php.hardcoded-password-compare,high,PHP,HARDCODED_CREDENTIALS,1,1,1.000,0,chua du du lieu (<5)
+team.php.hardcoded-secret,high,PHP,HARDCODED_CREDENTIALS,1,1,1.000,1,chua du du lieu (<5)
+team.php.path-taint,audit,PHP,PATH_TRAVERSAL,0,0,,1,chua du du lieu (<5)
+team.php.sqli-string,audit,PHP,SQL_INJECTION,19,19,1.000,30,dat
+team.php.sqli-taint,high,PHP,SQL_INJECTION,1,1,1.000,2,chua du du lieu (<5)
+team.php.xss-html-concat,audit,PHP,XSS,6,6,1.000,13,dat
+team.php.xss-taint,high,PHP,XSS,5,5,1.000,5,dat
+team.php.xss-template-request,high,PHP,XSS,1,1,1.000,0,chua du du lieu (<5)
+team.py.audit.pathlib-api,audit,Python,PATH_TRAVERSAL,2,2,1.000,3,chua du du lieu (<5)
+team.py.audit.response-body,audit,Python,XSS,0,0,,2,chua du du lieu (<5)
+team.py.sqli-taint,high,Python,SQL_INJECTION,1,1,1.000,0,chua du du lieu (<5)
+team.py.xss-taint,high,Python,XSS,2,1,0.500,2,chua du du lieu (<5)
+team.sql-injection,high,Python,SQL_INJECTION,2,2,1.000,0,chua du du lieu (<5)
+team.sql-string-building,audit,Python,SQL_INJECTION,1,1,1.000,1,chua du du lieu (<5)
+team.xss-html-string-building,audit,Python,XSS,2,2,1.000,4,chua du du lieu (<5)
+team.xss-unsafe-html,high,Python,XSS,1,1,1.000,5,chua du du lieu (<5)
