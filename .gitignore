@@ -5,3 +5,19 @@ __pycache__/
 *.log
 .DS_Store
 Thumbs.db
+
+# Du lieu, model, goi dong goi: khong dua len repo (xem BRANCHING.md)
+v2.2/
+data/
+external_data/
+ckpt/
+*.jsonl
+data_versions/**/*.csv
+*.safetensors
+*.bin
+*.pt
+*.zip
+_to_delete/
+security-config/semgrep/reports/r1_overlap_*
+security-config/semgrep/reports/*_tuning_subset.csv
+security-config/semgrep/reports/run*_log.txt
