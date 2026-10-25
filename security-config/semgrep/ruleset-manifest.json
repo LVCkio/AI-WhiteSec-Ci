@@ -7,7 +7,7 @@
   "semgrep_version_pinned": "1.181.0",
   "taxonomy_version": "0.3.0",
   "taxonomy_sha256": "a4c49ab274f4156ee32a067cdb4bf6319f324515a2ebe3e42a11f974662f7a46",
-  "generated_at": "2026-10-25T11:58:43+00:00",
+  "generated_at": "2026-10-25T13:03:54+00:00",
   "python": "3.11.9",
   "files": {
     "rules/java/authentication_weakness.yml": "3acbfaf18a88cc40d5ccd95f6a2ed58d356313a8e1c6bd5936e453c61632f27b",
