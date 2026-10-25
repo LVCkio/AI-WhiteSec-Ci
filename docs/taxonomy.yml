@@ -1,0 +1,98 @@
+# Chuẩn chung cho Semgrep và CodeBERT (giai đoạn R0)
+# Trạng thái: v0.3.0 (2026-10-25): chốt dataset v2.2 và tên lớp Auth theo model.
+# Cả hai phía đọc từ file này, không tự định nghĩa lại. Mục TODO cần người phụ trách điền.
+
+schema_version: 0.3.0
+
+languages: [python, java, javascript, php]
+
+classes:
+  SQL_INJECTION:
+    cwe: [89]
+    codebert_label: TODO
+    default_severity: critical
+  XSS:
+    cwe: [79]
+    codebert_label: TODO
+    default_severity: medium
+  OS_COMMAND_INJECTION:
+    cwe: [78, 77, 88]
+    codebert_label: TODO
+    default_severity: critical
+  PATH_TRAVERSAL:
+    cwe: [22, 23, 36]
+    codebert_label: TODO
+    default_severity: high
+  INSECURE_AUTHENTICATION:
+    cwe: [287, 306, 307]
+    cwe_by_rule_metadata: [916]   # chờ đối chiếu bảng gán nhãn v2.2
+    old_names: [AUTHENTICATION_WEAKNESS]   # chỉ để đọc báo cáo cũ
+    codebert_label: INSECURE_AUTHENTICATION
+    default_severity: high
+  HARDCODED_CREDENTIALS:
+    cwe: [798, 259, 321]
+    codebert_label: TODO
+    default_severity: high
+
+# default_severity lấy theo rule hiện tại. Thang severity cuối cùng chốt ở Phase 6 (dashboard).
+
+dataset:
+  version_for_official_eval: v2.2   # CodeBERT đóng băng (v22_sel_e8); test v2.2 giữ nguyên sha256
+  test_policy: Test v2.2 chỉ quét một lần ở R5 với bộ rule đã đóng băng.
+  legacy_rule_tuning_data: "train/val v5 + cặp a01"   # đã dùng chỉnh v4.2; phải kiểm tra chồng lấn với test v2.2
+  later_optional: v2.3   # train/val mới theo kế hoạch 4d; test vẫn là v2.2
+  required_in_every_report: [dataset_version, dataset_sha256, split_file_sha256, semgrep_version, ruleset_version]
+
+confidence_tiers:
+  high: Kết luận trực tiếp (taint source tới sink, hoặc mẫu gần như chắc chắn sai). Được đưa vào gate.
+  audit: Gợi ý cần người rà. Không tự chặn build.
+
+records:
+  code_unit:
+    fields: [sample_id, file, language, unit, start_line, end_line, n_tokens, over_512, split]
+    unit_values: [function, module_snippet]
+    notes:
+      - start_line và end_line là số dòng trong bản file TRƯỚC khi sửa (bản có lỗi).
+      - Bản ghi after_fix của nguồn review2a không có start_line và end_line.
+      - CodeBERT chỉ nhìn 512 token đầu (gồm token đặc biệt, tokenizer microsoft/codebert-base); phần sau bị bỏ.
+      - module_snippet chỉ có ở nhóm HARDCODED_CREDENTIALS (nguồn CredData): dòng credential cộng trừ 5 dòng.
+  semgrep_finding:
+    fields: [sample_id, file, rule_id, cwes, class, confidence, line, end_line, message, line_visible_to_codebert]
+    note: line_visible_to_codebert = dòng finding nằm trong 512 token đầu của đơn vị; tính bằng cùng tokenizer.
+  codebert_prediction:
+    fields: [sample_id, class, score, threshold, predicted]
+    note: Mức hàm, không có vị trí dòng.
+
+join_rule:
+  dataset_mode: Quét từng mẫu riêng; finding thuộc mẫu đó, không cần ghép theo dòng. Cộng start_line nếu cần quy về dòng của file.
+  repo_mode: Tách đơn vị bằng đúng bộ tách của phía CodeBERT (lizard, module_snippet, cắt 512); finding thuộc đơn vị khi file trùng và start_line <= line <= end_line.
+
+comparison_groups:
+  note: Bảng giao nhau (chỉ Semgrep, chỉ CodeBERT, cả hai, không ai) phải tách theo 3 nhóm.
+  groups:
+    - over_512 = false
+    - over_512 = true và finding nằm trong 512 token đầu
+    - over_512 = true và finding nằm ngoài 512 token đầu   # không phải bằng chứng bổ trợ, chỉ phản ánh việc cắt
+
+gate_merge_draft:
+  status: NHÁP, phụ thuộc quyết định Phase 6 (trọng số, công thức rủi ro). Dùng tạm để đo, không coi là chốt.
+  rows:
+    - {semgrep: high_dung_lop, codebert: ">= nguong_nhom", decision: BLOCK}
+    - {semgrep: khong_bao, codebert: ">= nguong_nhom", decision: REVIEW}
+    - {semgrep: high_dung_lop, codebert: "< nguong_nhom", decision: REVIEW, extra: ghi vao danh_sach_hoc_lai}
+    - {semgrep: chi_audit, codebert: bat_ky, decision: GHI_NHAN}
+    - {semgrep: khong_bao, codebert: "< nguong_nhom", decision: QUA}
+
+retrain_candidates:
+  source: Chỉ lấy ca thuộc tập train hoặc val. Không lấy từ tập test hay 4 ứng dụng dùng đánh giá cuối.
+  label_rule: Nhãn phải do người xác minh. Không lấy nhãn từ kết quả Semgrep.
+  exclude: Ca có finding nằm ngoài 512 token đầu (mô hình không nhìn thấy dòng đó), trừ khi cách cắt đã thay đổi.
+  record: [sample_id, class, semgrep_rule_id, human_verdict, reviewer, date]
+
+open_questions:
+  - CWE-916 hiện xếp vào INSECURE_AUTHENTICATION theo metadata rule nhưng không nằm trong bảng CWE; đối chiếu bảng gán nhãn của v2.2.
+  - Kết quả kiểm tra chồng lấn giữa dữ liệu chỉnh v4.2 (train/val v5, cặp a01) và test v2.2 (theo repo, commit, sha256 code).
+  - codebert_label của 5 lớp còn lại: điền theo vector nhãn của model.
+  - Lúc quét repo, module_snippet (nhóm HARDCODED) lấy mốc dòng credential từ đâu khi chưa biết dòng nào có credential.
+  - Phiên bản lizard khác nhau (MoreFixes 1.17.10, tự tách 1.24.1, CVEfixes chưa rõ); ranh giới hàm có ổn định giữa các bản không.
+  - Ranh giới hàm với decorator, hàm lồng, arrow function, lambda chưa được kiểm tra riêng.

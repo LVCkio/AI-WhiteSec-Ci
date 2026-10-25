@@ -1,0 +1,63 @@
+# Ruleset AI-WhiteSec-CI v4.2.0 | ngon ngu: php | lop: AUTHENTICATION_WEAKNESS
+# confidence: high = ket luan truc tiep; audit = bat rong, can ra soat (luong SAST doc lap voi CodeBERT).
+# Test: tests/positive/php/authentication_weakness.* (phai bao) va tests/negative/php/authentication_weakness.* (khong duoc bao).
+rules:
+- id: team.php.auth-weak-password-hash
+  languages:
+  - php
+  severity: WARNING
+  message: md5()/sha1() used on a password (audit).
+  metadata:
+    cwe: CWE-916
+    owasp: A02:2021
+    vuln_class: AUTHENTICATION_WEAKNESS
+    confidence: audit
+    severity: high
+    scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
+    rule_version: 1.1.0
+    ruleset_version: 4.2.0
+    change_v4: Ten bien phai la mot tu ve mat khau ($pass, $user_password), khong khop chuoi con.
+  pattern-either:
+  - patterns:
+    - pattern-either:
+      - pattern: md5($P)
+      - pattern: sha1($P)
+    - metavariable-regex:
+        metavariable: $P
+        regex: (?i)^['"$]?(\w*_)?(pass|password|passwd|pwd|secret)(_\w*)?['"]?$
+  - patterns:
+    - pattern-either:
+      - pattern: md5($ARR[$K])
+      - pattern: sha1($ARR[$K])
+    - metavariable-regex:
+        metavariable: $K
+        regex: (?i)^['"$]?(\w*_)?(pass|password|passwd|pwd|secret)(_\w*)?['"]?$
+- id: team.php.audit.auth-code
+  languages:
+  - php
+  severity: INFO
+  message: Authentication-sensitive code (login/permission functions, session user) (audit hint).
+  metadata:
+    cwe: CWE-287
+    owasp: A07:2021
+    vuln_class: AUTHENTICATION_WEAKNESS
+    confidence: audit
+    severity: high
+    scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
+    rule_version: 1.1.0
+    ruleset_version: 4.2.0
+    change_v4: 'Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5). 1.1.0: bo password_verify
+      (ham an toan, train: dung lop 10/20).'
+  pattern-either:
+  - pattern: $X->is_granted(...)
+  - pattern: $X->isGranted(...)
+  - patterns:
+    - pattern: $_SESSION[$K] = $V;
+    - metavariable-regex:
+        metavariable: $K
+        regex: (?i).*(user|login|auth|logged).*
+  - patterns:
+    - pattern: function $F(...) { ... }
+    - metavariable-regex:
+        metavariable: $F
+        regex: (?i)^(login|logout|authenticate|checkPassword|verifyPassword|checkLogin|isGranted|isAuthenticated|storeUser|validateToken|checkToken|checkAuth|doLogin)$

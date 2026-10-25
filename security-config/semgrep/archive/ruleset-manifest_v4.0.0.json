@@ -1,0 +1,198 @@
+{
+  "ruleset": "AI-WhiteSec-CI Semgrep CE ruleset",
+  "ruleset_version": "4.0.0",
+  "ruleset_commit": "khong co git trong workspace - dien commit khi dua vao repo",
+  "ruleset_sha256": "bb55c4ea5fe545c9741f437b8c539254c92143737c390839ea243886b89916ac",
+  "semgrep_version": "1.181.0",
+  "semgrep_version_pinned": "1.181.0",
+  "bandit_version": "1.9.4",
+  "bandit_version_pinned": "1.9.4",
+  "generated_at": "2026-10-18T06:02:40+00:00",
+  "python": "3.11.9",
+  "files": {
+    "rules/java/authentication_weakness.yml": "c61fee4aa059f6624078c0206e296da73be5ee1fc51968636bfb190a78877c73",
+    "rules/java/hardcoded_credentials.yml": "ebe8e1a7a36c0ea5ebe287099cfeeb28c8a8d0b93d4fa753605f88fc849c46e9",
+    "rules/java/os_command_injection.yml": "e2fb116162be9dd40112bb4dfdfc2cb12637b0f245f21a1995213e8049037791",
+    "rules/java/path_traversal.yml": "3679955b159b51286f6461ae2d88b53bb4d6a71eb842ba74430e88bc3b630dd1",
+    "rules/java/sql_injection.yml": "c0e644b6349b4b382d1b1e57ce9073001f7cf99f1a3070479d82b693bb462543",
+    "rules/java/xss.yml": "e83552de3a55d40a53f9881b1b8e961dd0237960d730287073fdf8adb8a4c25a",
+    "rules/javascript/authentication_weakness.yml": "75368f1ef25952dc45cebb79726427d64f21f5fbbf9ccf318b60323e59d628da",
+    "rules/javascript/hardcoded_credentials.yml": "a76f4eaebdc827148f39d82c35d3163ebd15a580478d34494a2798cef9324a7a",
+    "rules/javascript/os_command_injection.yml": "0d0aefd1d4a57f3e5fadbf6ce53ea55ffe783d611769d0d4c92933218e654d9a",
+    "rules/javascript/path_traversal.yml": "daeba08c1c176ee76dec88202fc29d10498c4c648d83d71e08fb530b779bf94a",
+    "rules/javascript/sql_injection.yml": "11e41043a950578195be885e920fd3b6540ad05cdb7e276225dedf618387ef59",
+    "rules/javascript/xss.yml": "cd70bf8354383e6e9301f50a058e79f8bdbfbd0e635eb0a153bde6db673070d2",
+    "rules/php/authentication_weakness.yml": "43b1216e007a45a224ee1cf8121f71725f9d159b26e751cf69f28d232c3c2a5b",
+    "rules/php/hardcoded_credentials.yml": "ca18d7c46f51c28251dfbcc5e8bdc27d3af35257c4e2af968017f94da1dbd64f",
+    "rules/php/os_command_injection.yml": "fdf79abfe32d060b8075731b71644e7489b04980a7cdc42f4abc4467de5a9f28",
+    "rules/php/path_traversal.yml": "e278c5c8b9831467cb77320eae74716afdfba1664b7bd307138c371d81c3dad7",
+    "rules/php/sql_injection.yml": "abe4253369bc20aecfdc4ab61ee19db78bdc794e2baab8538325a110528653a1",
+    "rules/php/xss.yml": "ffb3335cd82a9eacb627542b93b2b173ec52d70bc44925c16a1c490bd45b15a8",
+    "rules/python/authentication_weakness.yml": "a5909b92bd2dacb2c98517dde94e4184bd6ab39a5610fdcf0decdc75d7429ea8",
+    "rules/python/hardcoded_credentials.yml": "76724f27a2e298f3ca231be2be94a494048b2545687f66b321389d5e40a9947b",
+    "rules/python/os_command_injection.yml": "6ab837cb8d0158bdc0baa7b550b278f7d7e6fa4f2036bf6a8b06e52e3b1f1ce1",
+    "rules/python/path_traversal.yml": "d27e7a9ab8f87d2332aab2579e6f11b2d1887cb239de168f2d90a70af01e6c3e",
+    "rules/python/sql_injection.yml": "96d6bd2a43aed6ec9f320b2a19985d2e46471f1c78d3262be0501542899328d9",
+    "rules/python/xss.yml": "57f564a6c6d0d8f76b7f33ec70500cb1bd71e43002976fbe88e265611fff2a5d"
+  },
+  "tests": {
+    "tests/negative/java/authentication_weakness.java": "0f4794fd2ce7d9d572c55dd70d16cde02ed84ae115a799f73d233dee25d0c73b",
+    "tests/negative/java/hardcoded_credentials.java": "c4a4914d73c068b3a630b5a12ee22eb1a68be29d7c6c64f292f257bdad6bfcad",
+    "tests/negative/java/os_command_injection.java": "1c69f8570c0113caefa4a1334309b18beb096632887b703179fae6fb2da1698a",
+    "tests/negative/java/path_traversal.java": "6f999cdfe3a5e38ee6cf831c6b9f7c6ff2d60cf4e78bc768cdf2f52c908e5635",
+    "tests/negative/java/sql_injection.java": "d0311e70451c7f0f1c0db597d4c582961450b71641b69435b1fd99748c19a1ca",
+    "tests/negative/java/xss.java": "57763b361286dc4d0205933f212c60de8d8172c5e551e5bf3045b98c39adf8a7",
+    "tests/negative/javascript/authentication_weakness.js": "d9c8d0430b72244918f7fbc7aea291d36d65d1f918d1e8006d1016a511171c88",
+    "tests/negative/javascript/hardcoded_credentials.js": "d8cac129816851d17489561f605dc5bdc53ada2e84b85f5e44f03bf03153ef03",
+    "tests/negative/javascript/os_command_injection.js": "371478a836bba4a96646ffc32d767e99a1e52021c14009b97eea5223480ef1a9",
+    "tests/negative/javascript/path_traversal.js": "db22996088d8fc6dc589d0520e73bbd3ac35058d9a8b23b80993547fba603c7c",
+    "tests/negative/javascript/sql_injection.js": "b9252dd1ac555edc782068a2dc057a0f9f9502c0f2875a82bc579bb2aa985dfc",
+    "tests/negative/javascript/xss.js": "669717167fbfbe67c15bb0be3a0372b8dca43a7a37bae55e68a3c77de4074068",
+    "tests/negative/php/authentication_weakness.php": "cc4d4873d95f0a1b13fd2781805d256e0d5c12643159a44fbef3f3e4a3d4fc9e",
+    "tests/negative/php/hardcoded_credentials.php": "4298a5829d1223c783239e2bdec0eed5ffc2bd4f87394b2c1e954a02ccfc7d6f",
+    "tests/negative/php/os_command_injection.php": "355384935ff414acb1225a4c2b16cdef89017b64ab0a327c05203807a2ed3214",
+    "tests/negative/php/path_traversal.php": "7bd22a2d809ba0324d8fe9a409fe7206434db9602e220dda246cf06d6615084c",
+    "tests/negative/php/sql_injection.php": "4f4a0e1d1b8b09bf881a199a750d8fe5c236d48a06d070f9c3a6ba21117b3b17",
+    "tests/negative/php/xss.php": "dc5a94f04c941b8820fee61ea6ba23da86ba82182b39a2eb124222a7f2366aed",
+    "tests/negative/python/authentication_weakness.py": "05b5e8a6a2156bf64705c82074aa34b023e3bddad7cb8d72d16521c9afe9f8cf",
+    "tests/negative/python/hardcoded_credentials.py": "9d5212616382b01d525dd601e5ff3841b779eff8472c5202ea5e370cc5832629",
+    "tests/negative/python/os_command_injection.py": "e80c9dea7c37bc6f3fa68e1b7460c44cd2748cd31098198551bee17b670cca22",
+    "tests/negative/python/path_traversal.py": "d2a9d3a0ae3a7d125617db288008861422b285729ae9869ca2e56000d2a6da29",
+    "tests/negative/python/sql_injection.py": "fa572d19e0c3c0bf9310b1c0812fcb5760da1424a007a46aec3bed7e310f13bd",
+    "tests/negative/python/xss.py": "f1a143342e05f8f7227f166e8ed5b440d561474fb7b147f7bbba54bfd69b16ed",
+    "tests/positive/java/authentication_weakness.java": "2c71882257146c44669bb2863a82a9fac8ae845587ba4aab3125d75280c20c61",
+    "tests/positive/java/hardcoded_credentials.java": "4bb29b9dababb14a60d6c80ec0212ca2ce240796e236e758f32a87da4d8b930b",
+    "tests/positive/java/os_command_injection.java": "7d49185d6a86c9670a64dac1972348ec7414532bb9f7a64f178068eee8b37c99",
+    "tests/positive/java/path_traversal.java": "1eedfbd35de3cdbc4114dde7e1914699fea44883a3b03d3f29323315f939545b",
+    "tests/positive/java/sql_injection.java": "54cbacfcbab7cff2588b12aa8e5bbf057cc9f1ffb4a6f1fd9f82d2e6c942238a",
+    "tests/positive/java/xss.java": "cfc9924d8011a1ca0ba3f29b1de8ea2765aa1f6af0e4bc0bfae786c27f5a79e3",
+    "tests/positive/javascript/authentication_weakness.js": "ed04c449c46d1696caf74101edcba2a0d16efe0bd8a23a2205d67c57f6f019cd",
+    "tests/positive/javascript/hardcoded_credentials.js": "d2d974e6ffc5e5b0a17f42385dcdbacef1406d34189274447bbf20909b92eac4",
+    "tests/positive/javascript/os_command_injection.js": "18947d541325eedf565d8d8eaf35b03110819a19982ba6bd436e3f530a5c85c7",
+    "tests/positive/javascript/path_traversal.js": "8dc9b43a505fc44367a18351dbbe8eeaa05806b561ce7dd58fc4505dd1a3b918",
+    "tests/positive/javascript/sql_injection.js": "b341b5f574c9631c653a9075155bbf5d7a8d372e9f482295f4748b67513d7363",
+    "tests/positive/javascript/xss.js": "93e2ddba3588171077d8597ea923f04066115b8964b91f6815bce823e78d6e25",
+    "tests/positive/php/authentication_weakness.php": "899d1dca385c32a31a13f72e440428507c1503c5bb9874f6a538e935b0d23bcc",
+    "tests/positive/php/hardcoded_credentials.php": "116d32bb9522deacf73daecbd9a7eaa35788b91e1203d2b41d7bde68f76e9284",
+    "tests/positive/php/os_command_injection.php": "79eb3ff55c22ac76449f0217a17a3b7e7af52ebda073d46d0f886550894b5faa",
+    "tests/positive/php/path_traversal.php": "2ccf9d5aaee1d534c50b7971101a160c5fe4e0ae75629ccc34ae496f5d8d7045",
+    "tests/positive/php/sql_injection.php": "6adf7378b231abca00037304d1478def56491aef3d90b58c1dc91546465207ab",
+    "tests/positive/php/xss.php": "ccbd53cec5c1eb3b1ffa6b7862eb166c4bef72cecd650d0882266d8b3183ba1d",
+    "tests/positive/python/authentication_weakness.py": "07eb065dc8fee13d9b12b3aa8671872a26ef93e1d998b8e69a84831166a6d7aa",
+    "tests/positive/python/hardcoded_credentials.py": "891e7e5c807039e9bfde27035e298f6138b7d389a59b17c1b2b093be083d252b",
+    "tests/positive/python/os_command_injection.py": "629a2a9bc86712fad82ee049f67b04f34fbc842703ac008dab903e304e78a0b3",
+    "tests/positive/python/path_traversal.py": "b19014ab5e424f3b9dbe38d5d49871f9bdcbf06e543940b1bb2c0818a83e0d8f",
+    "tests/positive/python/sql_injection.py": "e9fe575674877e378c0631d8ab144aeed3d4b9782da2c3a90098c8bdc8c5872c",
+    "tests/positive/python/xss.py": "b7dce5200eea3d0969e16934b8ccd9d81e65b6b66a67caabb638be48ee57208b"
+  },
+  "registry_snapshot": {
+    "p_java.yml": "800b43b623f3f9a72fd80633b429de99db37506cabd3c75e55143d46fedb5d32",
+    "p_javascript.yml": "1bcb61b57b5c9ee521d5e1db2d80062fe90b64fc788650564dc1f1c5243419c2",
+    "p_php.yml": "45f37e32e44ba49f61b93697de35e4737d06f5b526a17cabeb944196a9c6bd84",
+    "p_python.yml": "10f171f2fa8e9892d868397dce987a84617c48fa67e04d911ebd01705e43c815",
+    "p_security-audit.yml": "83d7cde9157b3c79cc5cfaea26e7bd2ba9c740f2ba07635ad475b2585556c32d",
+    "p_typescript.yml": "967e551f37a9f27ce8b396ed121e5e127bf9ea60148e10589b794bd4ffe73395"
+  },
+  "rule_counts": {
+    "java/authentication_weakness": {
+      "high": 1,
+      "audit": 3
+    },
+    "java/hardcoded_credentials": {
+      "high": 2,
+      "audit": 0
+    },
+    "java/os_command_injection": {
+      "high": 1,
+      "audit": 2
+    },
+    "java/path_traversal": {
+      "high": 1,
+      "audit": 2
+    },
+    "java/sql_injection": {
+      "high": 1,
+      "audit": 2
+    },
+    "java/xss": {
+      "high": 1,
+      "audit": 2
+    },
+    "javascript/authentication_weakness": {
+      "high": 1,
+      "audit": 3
+    },
+    "javascript/hardcoded_credentials": {
+      "high": 2,
+      "audit": 0
+    },
+    "javascript/os_command_injection": {
+      "high": 1,
+      "audit": 1
+    },
+    "javascript/path_traversal": {
+      "high": 1,
+      "audit": 0
+    },
+    "javascript/sql_injection": {
+      "high": 1,
+      "audit": 1
+    },
+    "javascript/xss": {
+      "high": 1,
+      "audit": 2
+    },
+    "php/authentication_weakness": {
+      "high": 0,
+      "audit": 2
+    },
+    "php/hardcoded_credentials": {
+      "high": 2,
+      "audit": 0
+    },
+    "php/os_command_injection": {
+      "high": 1,
+      "audit": 1
+    },
+    "php/path_traversal": {
+      "high": 1,
+      "audit": 0
+    },
+    "php/sql_injection": {
+      "high": 1,
+      "audit": 1
+    },
+    "php/xss": {
+      "high": 1,
+      "audit": 1
+    },
+    "python/authentication_weakness": {
+      "high": 1,
+      "audit": 4
+    },
+    "python/hardcoded_credentials": {
+      "high": 3,
+      "audit": 0
+    },
+    "python/os_command_injection": {
+      "high": 3,
+      "audit": 1
+    },
+    "python/path_traversal": {
+      "high": 2,
+      "audit": 3
+    },
+    "python/sql_injection": {
+      "high": 2,
+      "audit": 2
+    },
+    "python/xss": {
+      "high": 3,
+      "audit": 2
+    }
+  },
+  "check_problems": 0,
+  "tests_passed": 210,
+  "tests_total": 210,
+  "regression_passed": true
+}

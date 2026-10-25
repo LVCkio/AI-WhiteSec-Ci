@@ -146,3 +146,19 @@ của nhãn, không phải báo nhầm:
 
 Kết luận: chưa có báo nhầm nào được xác nhận, rule giữ tầng high. Ghi chú: finding high mà chỉ SAST báo sẽ bị Gate BLOCK
 (`compare_gate.py`), nên mọi lần hạ tầng/tắt rule high phải qua rà tay như trên.
+
+## 7. Bổ sung theo `docs/semgrep_tool.md` v1.2 (2026-10-25, ruleset v4.3.0)
+
+- Tên lớp và danh sách CWE lấy từ `docs/taxonomy.yml` (v0.3.0). `tools/ruleset.py check` đối chiếu từng rule với file này.
+- Quy tắc ba trường mức độ (mục 5.3): `severity` của Semgrep **chỉ suy từ `confidence`** (high → ERROR, audit → WARNING); `metadata.severity` **chỉ suy từ lớp**. Lệch là lỗi chặn phát hành.
+- Rule có **< 5 lần báo** trên train: ghi “chưa đủ dữ liệu”, không kết luận và không tắt. Rule `high` không đạt TC4 thì **hạ xuống `audit`** trước; chỉ tắt khi rớt cả ngưỡng `audit`.
+- Không dùng Bandit (kể cả làm đối chứng); manifest không còn ghi phiên bản Bandit.
+- Số liệu chính thức đo trên dataset **v2.2**; số trong mục 3–6 (train/val v5, cặp a01) phải đo lại trước khi dựa vào.
+- Kết quả kiểm tra 81 rule theo các tiêu chí trên: `reports/r2_kiem_tra_tieu_chi_v42_2026-10-25.md`.
+
+## 8. Ruleset v4.3.1 (2026-10-25): ghi lý do ngoại lệ tầng
+
+- Hai rule taint ở tầng `audit` (ngoại lệ của mục 5.2 “taint → high”) nay có `metadata.tier_exception` ghi lý do: `team.path-from-parameter` (Python, `rule_version` 1.1.0) và `team.php.path-taint` (PHP, 1.2.0).
+- `tools/ruleset.py check`: rule taint ở `audit` **có** `tier_exception` (≥ 30 ký tự) không còn bị cảnh báo mà được liệt kê ở mục “Ngoại lệ tầng” của `reports/rule_test_report.md` và ở `tier_exceptions` trong manifest. Rule taint ở `audit` không ghi lý do vẫn bị cảnh báo.
+- Không đổi pattern, không đổi kết quả quét: chỉ đổi metadata, nên bundle có SHA-256 mới. Bản v4.3.0 lưu ở `archive/`.
+- Số cảnh báo của `check`: 32 → 30.

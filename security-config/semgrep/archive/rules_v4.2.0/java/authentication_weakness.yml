@@ -1,0 +1,48 @@
+# Ruleset AI-WhiteSec-CI v4.2.0 | ngon ngu: java | lop: AUTHENTICATION_WEAKNESS
+# confidence: high = ket luan truc tiep; audit = bat rong, can ra soat (luong SAST doc lap voi CodeBERT).
+# Test: tests/positive/java/authentication_weakness.* (phai bao) va tests/negative/java/authentication_weakness.* (khong duoc bao).
+rules:
+- id: team.java.auth-jwt-unverified
+  languages:
+  - java
+  severity: ERROR
+  message: A JWT is parsed without requiring a valid signature.
+  metadata:
+    cwe: CWE-287
+    owasp: A07:2021
+    vuln_class: AUTHENTICATION_WEAKNESS
+    confidence: high
+    severity: high
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  pattern-either:
+  - pattern: Jwts.parser().$X(...).parse($T)
+  - pattern: Jwts.parser().parse($T)
+  - pattern: JWT.decode($T)
+  - pattern: $P.parseClaimsJwt($T)
+- id: team.java.auth-weak-password-hash
+  languages:
+  - java
+  severity: WARNING
+  message: A fast/broken hash is used for passwords (audit).
+  metadata:
+    cwe: CWE-916
+    owasp: A02:2021
+    vuln_class: AUTHENTICATION_WEAKNESS
+    confidence: audit
+    severity: high
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.1.0
+    ruleset_version: 4.2.0
+    change_v4: Chi bao khi gia tri duoc bam la mat khau (truoc day bao moi MessageDigest MD5).
+  patterns:
+  - pattern-either:
+    - pattern: DigestUtils.md5Hex($P)
+    - pattern: DigestUtils.sha1Hex($P)
+    - pattern: $MD.digest($P.getBytes(...))
+    - pattern: $MD.update($P.getBytes(...))
+    - pattern: $MD.digest($P)
+  - metavariable-regex:
+      metavariable: $P
+      regex: (?i)^\w*(pass|pwd|secret)\w*$

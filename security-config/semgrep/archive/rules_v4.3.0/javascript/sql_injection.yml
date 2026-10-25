@@ -1,0 +1,118 @@
+# Ruleset AI-WhiteSec-CI v4.2.0 | ngon ngu: javascript | lop: SQL_INJECTION
+# confidence: high = ket luan truc tiep; audit = bat rong, can ra soat (luong SAST doc lap voi CodeBERT).
+# Test: tests/positive/javascript/sql_injection.* (phai bao) va tests/negative/javascript/sql_injection.* (khong duoc bao).
+rules:
+- id: team.js.sqli-taint
+  languages:
+  - javascript
+  - typescript
+  severity: ERROR
+  message: Request data reaches an SQL query string.
+  metadata:
+    cwe: CWE-89
+    owasp: A03:2021
+    vuln_class: SQL_INJECTION
+    confidence: high
+    severity: critical
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.0.0
+    ruleset_version: 4.3.0
+  mode: taint
+  pattern-sources:
+  - pattern: $REQ.query
+  - pattern: $REQ.body
+  - pattern: $REQ.params
+  - pattern: $REQ.headers
+  - pattern: $REQ.cookies
+  pattern-sinks:
+  - patterns:
+    - pattern-either:
+      - pattern: $DB.$QUERY($Q, ...)
+    - metavariable-regex:
+        metavariable: $QUERY
+        regex: ^(query|execute|raw|run|all|get)$
+    - metavariable-regex:
+        metavariable: $DB
+        regex: (?i).*(db|conn|pool|client|knex|sequelize|sql|database|connection|pg|mysql|sqlite|models?).*
+    - focus-metavariable: $Q
+  pattern-sanitizers:
+  - pattern: parseInt(...)
+  - pattern: Number(...)
+  - pattern: parseFloat(...)
+  - pattern: $DB.escape(...)
+- id: team.js.sqli-string
+  languages:
+  - javascript
+  - typescript
+  severity: WARNING
+  message: SQL text is built by concatenation or template interpolation (audit).
+  metadata:
+    cwe: CWE-89
+    owasp: A03:2021
+    vuln_class: SQL_INJECTION
+    confidence: audit
+    severity: critical
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.0.0
+    ruleset_version: 4.3.0
+  pattern-either:
+  - pattern-regex: (?i)[`'"]\s*(?:select\s|insert\s+into|delete\s+from|update\s+\w+\s+set)[^`'"\n]*(?:\$\{|[`'"]\s*\+\s*[\w(])
+  - pattern-regex: (?i)[`'"][^`'"\n]*\b(?:where|order\s+by|values\s*\()[^`'"\n]*(?:\$\{|[`'"]\s*\+\s*[\w(])
+- id: team.js.sqli-dynamic-query
+  languages:
+  - javascript
+  - typescript
+  severity: WARNING
+  message: A database query receives a string built by concatenation or template interpolation (audit).
+  metadata:
+    cwe: CWE-89
+    owasp: A03:2021
+    vuln_class: SQL_INJECTION
+    confidence: audit
+    severity: critical
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.0.0
+    ruleset_version: 4.3.0
+    change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
+  pattern-either:
+  - patterns:
+    - pattern-either:
+      - pattern: $DB.$M($A + $B, ...)
+      - pattern: $DB.$M(`...${$X}...`, ...)
+    - metavariable-regex:
+        metavariable: $M
+        regex: ^(query|execute|raw|exec|prepare|unsafe)$
+    - metavariable-regex:
+        metavariable: $DB
+        regex: (?i).*(db|conn|pool|client|knex|sequelize|sql|database|connection|pg|mysql|sqlite|models?|tx|trx|manager|repository)$
+  - pattern: $SEQ.literal($A + $B)
+  - pattern: $SEQ.literal(`...${$X}...`)
+- id: team.js.audit.sql-api
+  languages:
+  - javascript
+  - typescript
+  severity: WARNING
+  message: A database query API receives a non-literal query (audit hint).
+  metadata:
+    cwe: CWE-89
+    owasp: A03:2021
+    vuln_class: SQL_INJECTION
+    confidence: audit
+    severity: critical
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.1.0
+    ruleset_version: 4.3.0
+    change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
+    change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
+  patterns:
+  - pattern: $DB.$M($Q, ...)
+  - pattern-not: $DB.$M("...", ...)
+  - metavariable-regex:
+      metavariable: $M
+      regex: ^(query|execute|raw|exec|unsafe)$
+  - metavariable-regex:
+      metavariable: $DB
+      regex: (?i).*(db|conn|pool|client|knex|sequelize|sql|database|connection|pg|mysql|sqlite|models?|tx|trx)$
+  - metavariable-regex:
+      metavariable: $Q
+      regex: ^[A-Za-z_$][\w$.]*$

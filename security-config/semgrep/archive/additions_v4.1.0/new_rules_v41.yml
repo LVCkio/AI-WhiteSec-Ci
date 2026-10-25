@@ -1,0 +1,319 @@
+# Rule bo sung v4.1.0 - khoa la "<ngon ngu>/<lop file>"; metadata con thieu (owasp, severity, scope,
+# rule_version, ruleset_version) duoc them tu dong khi chen vao file.
+javascript/xss:
+- id: team.js.xss-jquery-insert
+  languages: [javascript, typescript]
+  severity: WARNING
+  message: A non-literal value is inserted into the DOM with jQuery append/prepend/after/before/replaceWith (audit).
+  metadata: {cwe: CWE-79, vuln_class: XSS, confidence: audit}
+  patterns:
+  - pattern-either:
+    - pattern: $E.append($X)
+    - pattern: $E.prepend($X)
+    - pattern: $E.after($X)
+    - pattern: $E.before($X)
+    - pattern: $E.replaceWith($X)
+  - pattern-not: $E.$M("...")
+  - pattern-not: $E.$M(document.createTextNode(...))
+  - metavariable-regex:
+      metavariable: $E
+      regex: (?i)^((\$|jquery)\(.*|[\w.$]*(el|elem|element|container|wrapper|div|row|list|table|tbody|body|node|panel|target|parent|box|area|holder|item|li|ul|span|cell|td|tr|html|content|dom))$
+javascript/sql_injection:
+- id: team.js.sqli-dynamic-query
+  languages: [javascript, typescript]
+  severity: WARNING
+  message: A database query receives a string built by concatenation or template interpolation (audit).
+  metadata: {cwe: CWE-89, vuln_class: SQL_INJECTION, confidence: audit}
+  pattern-either:
+  - patterns:
+    - pattern-either:
+      - pattern: $DB.$M($A + $B, ...)
+      - pattern: $DB.$M(`...${$X}...`, ...)
+    - metavariable-regex:
+        metavariable: $M
+        regex: ^(query|execute|raw|exec|prepare|unsafe)$
+    - metavariable-regex:
+        metavariable: $DB
+        regex: (?i).*(db|conn|pool|client|knex|sequelize|sql|database|connection|pg|mysql|sqlite|models?|tx|trx|manager|repository)$
+  - pattern: $SEQ.literal($A + $B)
+  - pattern: $SEQ.literal(`...${$X}...`)
+javascript/path_traversal:
+- id: team.js.audit.fs-path-api
+  languages: [javascript, typescript]
+  severity: INFO
+  message: A file system API receives a non-literal path (audit hint).
+  metadata: {cwe: CWE-22, vuln_class: PATH_TRAVERSAL, confidence: audit}
+  pattern-either:
+  - patterns:
+    - pattern: $FS.$FN($P, ...)
+    - pattern-not: $FS.$FN("...", ...)
+    - metavariable-regex:
+        metavariable: $FS
+        regex: ^(fs|fse|fsp|fsExtra|fs\.promises|fsPromises|fspath|promises)$
+    - metavariable-regex:
+        metavariable: $FN
+        regex: ^(readFile|readFileSync|createReadStream|writeFile|writeFileSync|createWriteStream|unlink|unlinkSync|readdir|readdirSync|stat|statSync|lstat|lstatSync|existsSync|access|accessSync|mkdir|mkdirSync|rmdir|rmdirSync|rm|rmSync|rename|renameSync|copyFile|copyFileSync|appendFile|appendFileSync|remove|removeSync|outputFile|outputFileSync)$
+  - patterns:
+    - pattern-either:
+      - pattern: $RES.sendFile($P, ...)
+      - pattern: $RES.download($P, ...)
+    - pattern-not: $RES.$M("...", ...)
+javascript/os_command_injection:
+- id: team.js.audit.process-api
+  languages: [javascript, typescript]
+  severity: INFO
+  message: A child process is started with a non-literal command (audit hint).
+  metadata: {cwe: CWE-78, vuln_class: OS_COMMAND_INJECTION, confidence: audit}
+  patterns:
+  - pattern-either:
+    - patterns:
+      - pattern-either:
+        - pattern: $CP.exec($X, ...)
+        - pattern: $CP.execSync($X, ...)
+        - pattern: $CP.spawn($X, ...)
+        - pattern: $CP.spawnSync($X, ...)
+        - pattern: $CP.execFile($X, ...)
+        - pattern: $CP.execFileSync($X, ...)
+      - metavariable-regex:
+          metavariable: $CP
+          regex: ^(cp|child_process|childProcess|child|proc|shell|shelljs|sh|execa|childprocess|this)$
+    - pattern: exec($X, ...)
+    - pattern: execSync($X, ...)
+    - pattern: spawn($X, ...)
+    - pattern: execa($X, ...)
+  - pattern-not: $CP.$F("...", ...)
+  - pattern-not: $F("...", ...)
+javascript/authentication_weakness:
+- id: team.js.audit.auth-code
+  languages: [javascript, typescript]
+  severity: INFO
+  message: Authentication-sensitive code (login handlers, session user, password/token checks) (audit hint).
+  metadata: {cwe: CWE-287, vuln_class: AUTHENTICATION_WEAKNESS, confidence: audit}
+  pattern-either:
+  - pattern: passport.authenticate(...)
+  - pattern: bcrypt.compare(...)
+  - pattern: bcrypt.compareSync(...)
+  - patterns:
+    - pattern: $REQ.session.$U = $V
+    - metavariable-regex:
+        metavariable: $U
+        regex: (?i)^(user|userId|user_id|uid|authenticated|isAuthenticated|loggedIn|logged_in|auth)$
+  - patterns:
+    - pattern: function $F(...) { ... }
+    - metavariable-regex:
+        metavariable: $F
+        regex: (?i)^(login|logout|signin|authenticate|verifyToken|validateToken|checkToken|isAuthenticated|ensureAuthenticated|requireAuth|checkPassword|verifyPassword|checkAuth)$
+php/path_traversal:
+- id: team.php.audit.file-path-api
+  languages: [php]
+  severity: INFO
+  message: A file system API or include receives a non-literal path (audit hint).
+  metadata: {cwe: CWE-22, vuln_class: PATH_TRAVERSAL, confidence: audit}
+  patterns:
+  - pattern-either:
+    - pattern: fopen($P, ...)
+    - pattern: file_get_contents($P, ...)
+    - pattern: file_put_contents($P, ...)
+    - pattern: readfile($P, ...)
+    - pattern: file($P, ...)
+    - pattern: unlink($P, ...)
+    - pattern: opendir($P, ...)
+    - pattern: scandir($P, ...)
+    - pattern: mkdir($P, ...)
+    - pattern: rmdir($P, ...)
+    - pattern: rename($P, ...)
+    - pattern: copy($P, ...)
+    - pattern: move_uploaded_file($F, $P)
+    - pattern: include $P;
+    - pattern: include_once $P;
+    - pattern: require $P;
+    - pattern: require_once $P;
+  - pattern-not: $FN("...", ...)
+  - pattern-not: $FN(__DIR__ . "...", ...)
+  - pattern-not: $FN(dirname(__FILE__) . "...", ...)
+  - pattern-not: include "...";
+  - pattern-not: include_once "...";
+  - pattern-not: require "...";
+  - pattern-not: require_once "...";
+  - pattern-not: include __DIR__ . "...";
+  - pattern-not: include_once __DIR__ . "...";
+  - pattern-not: require __DIR__ . "...";
+  - pattern-not: require_once __DIR__ . "...";
+  - pattern-not: require_once dirname(__FILE__) . "...";
+  - pattern-not: include_once dirname(__FILE__) . "...";
+php/xss:
+- id: team.php.audit.echo-unescaped
+  languages: [php]
+  severity: INFO
+  message: A variable is echoed into the page without an escaping function (audit hint).
+  metadata: {cwe: CWE-79, vuln_class: XSS, confidence: audit}
+  patterns:
+  - pattern-either:
+    - pattern: echo $X;
+    - pattern: print($X);
+  - metavariable-regex:
+      metavariable: $X
+      regex: (?s).*\$\w
+  - pattern-not: echo htmlspecialchars(...);
+  - pattern-not: echo htmlentities(...);
+  - pattern-not: echo esc_html(...);
+  - pattern-not: echo esc_attr(...);
+  - pattern-not: echo esc_url(...);
+  - pattern-not: echo intval(...);
+  - pattern-not: echo json_encode(...);
+  - pattern-not: echo (int) $Y;
+php/sql_injection:
+- id: team.php.audit.sql-api
+  languages: [php]
+  severity: INFO
+  message: An SQL API receives a dynamic query (audit hint).
+  metadata: {cwe: CWE-89, vuln_class: SQL_INJECTION, confidence: audit}
+  patterns:
+  - pattern-either:
+    - pattern: $DB->query($Q, ...)
+    - pattern: $DB->exec($Q)
+    - pattern: $DB->get_results($Q, ...)
+    - pattern: $DB->get_row($Q, ...)
+    - pattern: $DB->get_var($Q, ...)
+    - pattern: $DB->get_col($Q, ...)
+    - pattern: mysqli_query($C, $Q, ...)
+    - pattern: mysql_query($Q, ...)
+    - pattern: pg_query($C, $Q)
+    - pattern: $S->where($Q, ...)
+    - patterns:
+      - pattern: $DB->execute($Q, ...)
+      - metavariable-regex:
+          metavariable: $DB
+          regex: (?i)^\$(this->)?(z?db|conn\w*|adapter|pdo|mysqli?|database|\w*_db|dbh)$
+  - metavariable-regex:
+      metavariable: $Q
+      regex: (?s).*\$
+php/os_command_injection:
+- id: team.php.audit.process-api
+  languages: [php]
+  severity: INFO
+  message: A shell or process function receives a non-literal command (audit hint).
+  metadata: {cwe: CWE-78, vuln_class: OS_COMMAND_INJECTION, confidence: audit}
+  patterns:
+  - pattern-either:
+    - pattern: exec($X, ...)
+    - pattern: shell_exec($X)
+    - pattern: system($X, ...)
+    - pattern: passthru($X, ...)
+    - pattern: popen($X, ...)
+    - pattern: proc_open($X, ...)
+    - pattern: pcntl_exec($X, ...)
+    - pattern: escapeshellcmd($X)
+  - pattern-not: $F("...", ...)
+php/authentication_weakness:
+- id: team.php.audit.auth-code
+  languages: [php]
+  severity: INFO
+  message: Authentication-sensitive code (login/permission functions, session user) (audit hint).
+  metadata: {cwe: CWE-287, vuln_class: AUTHENTICATION_WEAKNESS, confidence: audit}
+  pattern-either:
+  - pattern: password_verify(...)
+  - pattern: $X->is_granted(...)
+  - pattern: $X->isGranted(...)
+  - patterns:
+    - pattern: $_SESSION[$K] = $V;
+    - metavariable-regex:
+        metavariable: $K
+        regex: (?i).*(user|login|auth|logged).*
+  - patterns:
+    - pattern: function $F(...) { ... }
+    - metavariable-regex:
+        metavariable: $F
+        regex: (?i)^(login|logout|authenticate|checkPassword|verifyPassword|checkLogin|isGranted|isAuthenticated|storeUser|validateToken|checkToken|checkAuth|doLogin)$
+java/xss:
+- id: team.java.xss-writer-output
+  languages: [java]
+  severity: WARNING
+  message: A non-literal value is written to an HTML/XML writer or set as Jsoup element HTML (audit).
+  metadata: {cwe: CWE-79, vuln_class: XSS, confidence: audit}
+  pattern-either:
+  - patterns:
+    - pattern-either:
+      - pattern: $P.print($X)
+      - pattern: $P.println($X)
+      - pattern: $P.printRaw($X)
+      - pattern: $P.write($X)
+    - metavariable-regex:
+        metavariable: $P
+        regex: (?i)^(.*(writer|printer|html|xml)(\(\))?|out|jw|pw|.*(getwriter|getprinter|getout)\(\))$
+    - pattern-not: $P.$W("...")
+    - pattern-not: System.out.$W(...)
+    - pattern-not: System.err.$W(...)
+  - patterns:
+    - pattern: $EL.html($X)
+    - pattern-not: $EL.html("...")
+java/os_command_injection:
+- id: team.java.audit.commandline-api
+  languages: [java]
+  severity: INFO
+  message: A command line is built from a non-literal value (Apache Commons Exec / command builders) (audit hint).
+  metadata: {cwe: CWE-78, vuln_class: OS_COMMAND_INJECTION, confidence: audit}
+  patterns:
+  - pattern-either:
+    - pattern: new CommandLine($X, ...)
+    - pattern: CommandLine.parse($X, ...)
+    - pattern: $CL.addArgument($X, ...)
+    - pattern: $CL.addArguments($X, ...)
+    - pattern: $CL.withArg($X)
+    - pattern: $CL.withArgs(...)
+    - pattern: CommandLine.createCommandLine($X)
+  - pattern-not: new CommandLine("...", ...)
+  - pattern-not: CommandLine.parse("...", ...)
+  - pattern-not: $CL.addArgument("...", ...)
+  - pattern-not: $CL.withArg("...")
+  - pattern-not: CommandLine.createCommandLine("...")
+python/path_traversal:
+- id: team.py.audit.pathlib-api
+  languages: [python]
+  severity: INFO
+  message: A pathlib/shutil/os file operation receives a non-literal path (audit hint).
+  metadata: {cwe: CWE-22, vuln_class: PATH_TRAVERSAL, confidence: audit}
+  patterns:
+  - pattern-either:
+    - pattern: pathlib.Path($P, ...)
+    - pattern: Path($P, ...)
+    - pattern: shutil.move($A, $P)
+    - pattern: os.rename($A, $P)
+    - pattern: os.replace($A, $P)
+    - pattern: tarfile.open($P, ...)
+    - pattern: zipfile.ZipFile($P, ...)
+  - pattern-not: pathlib.Path("...", ...)
+  - pattern-not: Path("...", ...)
+  - pattern-not: Path(__file__, ...)
+  - pattern-not: pathlib.Path(__file__, ...)
+  - pattern-not: Path()
+python/xss:
+- id: team.py.xss-jinja-autoescape-default
+  languages: [python]
+  severity: WARNING
+  message: A Jinja2 environment/template is created without autoescape (Jinja2 default is off) (audit).
+  metadata: {cwe: CWE-79, vuln_class: XSS, confidence: audit}
+  pattern-either:
+  - patterns:
+    - pattern-either:
+      - pattern: jinja2.Environment(...)
+      - pattern: Environment(...)
+    - pattern-not: jinja2.Environment(..., autoescape=$A, ...)
+    - pattern-not: Environment(..., autoescape=$A, ...)
+  - pattern: jinja2.Template(...)
+- id: team.py.audit.response-body
+  languages: [python]
+  severity: INFO
+  message: An HTTP response body is built from a non-literal value (audit hint).
+  metadata: {cwe: CWE-79, vuln_class: XSS, confidence: audit}
+  patterns:
+  - pattern-either:
+    - pattern: flask.Response($X, ...)
+    - pattern: Response($X, ...)
+    - pattern: web.Response(..., text=$X, ...)
+    - pattern: web.Response(..., body=$X, ...)
+  - pattern-not: Response("...", ...)
+  - pattern-not: flask.Response("...", ...)
+  - pattern-not: Response(json.dumps(...), ...)
+  - pattern-not: flask.Response(json.dumps(...), ...)
+  - pattern-not: web.Response(..., text="...", ...)

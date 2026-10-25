@@ -1,0 +1,95 @@
+# Ruleset AI-WhiteSec-CI v4.2.0 | ngon ngu: php | lop: OS_COMMAND_INJECTION
+# confidence: high = ket luan truc tiep; audit = bat rong, can ra soat (luong SAST doc lap voi CodeBERT).
+# Test: tests/positive/php/os_command_injection.* (phai bao) va tests/negative/php/os_command_injection.* (khong duoc bao).
+rules:
+- id: team.php.cmdi-taint
+  languages:
+  - php
+  severity: ERROR
+  message: Request data reaches a shell command.
+  metadata:
+    cwe: CWE-78
+    owasp: A03:2021
+    vuln_class: OS_COMMAND_INJECTION
+    confidence: high
+    severity: critical
+    scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
+    rule_version: 1.0.0
+    ruleset_version: 4.3.0
+  mode: taint
+  pattern-sources:
+  - pattern: $_GET
+  - pattern: $_POST
+  - pattern: $_REQUEST
+  - pattern: $_COOKIE
+  - pattern: $_SERVER['QUERY_STRING']
+  - pattern: $_SERVER['REQUEST_URI']
+  - pattern: $_SERVER['HTTP_USER_AGENT']
+  pattern-sinks:
+  - patterns:
+    - pattern-either:
+      - pattern: shell_exec($X, ...)
+      - pattern: exec($X, ...)
+      - pattern: system($X, ...)
+      - pattern: passthru($X, ...)
+      - pattern: popen($X, ...)
+      - pattern: proc_open($X, ...)
+      - pattern: pcntl_exec($X, ...)
+    - focus-metavariable: $X
+  pattern-sanitizers:
+  - pattern: escapeshellarg(...)
+  - pattern: intval(...)
+  - pattern: (int) $X
+- id: team.php.cmd-dynamic
+  languages:
+  - php
+  severity: WARNING
+  message: A shell command is built from a variable (audit).
+  metadata:
+    cwe: CWE-78
+    owasp: A03:2021
+    vuln_class: OS_COMMAND_INJECTION
+    confidence: audit
+    severity: critical
+    scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
+    rule_version: 1.0.0
+    ruleset_version: 4.3.0
+  patterns:
+  - pattern-either:
+    - pattern: shell_exec("..." . $X)
+    - pattern: exec("..." . $X, ...)
+    - pattern: system("..." . $X, ...)
+    - pattern: passthru("..." . $X, ...)
+    - pattern: shell_exec($X)
+  - pattern-not: shell_exec("...")
+  - pattern-not: shell_exec("..." . escapeshellarg($Y))
+  - pattern-not: exec("..." . escapeshellarg($Y), ...)
+  - pattern-not: system("..." . escapeshellarg($Y), ...)
+  - pattern-not: passthru("..." . escapeshellarg($Y), ...)
+- id: team.php.audit.process-api
+  languages:
+  - php
+  severity: WARNING
+  message: A shell or process function receives a non-literal command (audit hint).
+  metadata:
+    cwe: CWE-78
+    owasp: A03:2021
+    vuln_class: OS_COMMAND_INJECTION
+    confidence: audit
+    severity: critical
+    scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
+    rule_version: 1.1.0
+    ruleset_version: 4.3.0
+    change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
+    change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
+  patterns:
+  - pattern-either:
+    - pattern: exec($X, ...)
+    - pattern: shell_exec($X)
+    - pattern: system($X, ...)
+    - pattern: passthru($X, ...)
+    - pattern: popen($X, ...)
+    - pattern: proc_open($X, ...)
+    - pattern: pcntl_exec($X, ...)
+    - pattern: escapeshellcmd($X)
+  - pattern-not: $F("...", ...)
