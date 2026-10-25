@@ -7,7 +7,7 @@ Lenh (chay tu thu muc main/):
   python security-config/semgrep/tools/ruleset.py all       # check -> bundle -> test -> manifest (dung truoc khi phat hanh)
   python security-config/semgrep/tools/ruleset.py verify    # dung trong CI truoc lan quet chinh thuc
 
-Tieu chi "rule dat chuan" (xem README.md):
+Tieu chi "rule dat chuan" (xem README.md, TIEU_CHI_CHON_RULE.md, docs/semgrep_tool.md):
   1. Metadata day du: id, languages, severity, message, cwe, owasp, vuln_class, confidence,
      severity (muc do), scope (pham vi ap dung), rule_version, ruleset_version.
   2. Co it nhat 1 positive test (`ruleid: <id>`) va 1 negative test (`ok: <id>`).
@@ -28,10 +28,10 @@ REPORTS = BASE / "reports"
 BUNDLE = BASE / "semgrep.yml"
 MANIFEST = BASE / "ruleset-manifest.json"
 REGISTRY_SNAPSHOT = MAIN / "rules" / "registry_snapshot"
+TAXONOMY = MAIN / "docs" / "taxonomy.yml"   # chuan chung Semgrep/CodeBERT (semgrep_tool.md muc 3)
 
-RULESET_VERSION = "4.2.0"
+RULESET_VERSION = "4.3.1"
 PINNED_SEMGREP = "1.181.0"
-PINNED_BANDIT = "1.9.4"
 LANG_EXT = {"python": ".py", "java": ".java", "javascript": ".js", "php": ".php"}
 CLASSES = {"sql_injection": "SQL_INJECTION", "xss": "XSS", "os_command_injection": "OS_COMMAND_INJECTION",
            "path_traversal": "PATH_TRAVERSAL", "authentication_weakness": "AUTHENTICATION_WEAKNESS",
@@ -78,9 +78,27 @@ def test_files():
 
 
 # --------------------------------------------------------------------------- check
+def load_taxonomy():
+    try:
+        return yaml.safe_load(TAXONOMY.read_text(encoding="utf-8")) or {}
+    except OSError:
+        return {}
+
+
+def taxonomy_class(tax, name):
+    """Ten lop theo taxonomy.yml (chap nhan ten cu trong old_names) -> (ten chuan, cau hinh lop) hoac (None, None)."""
+    for cls, cfg in (tax.get("classes") or {}).items():
+        if name == cls or name in (cfg.get("old_names") or []):
+            return cls, cfg
+    return None, None
+
+
 def cmd_check(_=None) -> dict:
-    problems, seen = [], {}
+    problems, warnings, seen, exceptions = [], [], {}, []
     rules = load_rules()
+    tax = load_taxonomy()
+    if not tax:
+        warnings.append(f"khong doc duoc {TAXONOMY.relative_to(MAIN)}: bo qua kiem tra theo taxonomy")
     for f, r in rules:
         rid = r.get("id", "?")
         lang_dir, cls_file = f.parent.name, f.stem
@@ -114,6 +132,38 @@ def cmd_check(_=None) -> dict:
             problems.append(f"{where}: ruleset_version {md.get('ruleset_version')} != {RULESET_VERSION}")
         if not re.fullmatch(r"\d+\.\d+\.\d+", str(md.get("rule_version", ""))):
             problems.append(f"{where}: rule_version phai dang X.Y.Z")
+        # semgrep_tool.md 5.3: severity cua Semgrep chi suy tu confidence (high -> ERROR, audit -> WARNING)
+        want_sev = {"high": "ERROR", "audit": "WARNING"}.get(md.get("confidence"))
+        if want_sev and r.get("severity") != want_sev:
+            problems.append(f"{where}: severity {r.get('severity')} phai la {want_sev} (confidence {md.get('confidence')})")
+        if tax:
+            tcls, tcfg = taxonomy_class(tax, md.get("vuln_class"))
+            if not tcls:
+                problems.append(f"{where}: vuln_class {md.get('vuln_class')} khong co trong taxonomy.yml")
+            else:
+                if tcls != md.get("vuln_class"):
+                    warnings.append(f"{where}: vuln_class {md.get('vuln_class')} la ten cu, taxonomy dung {tcls} (doi ten trong mot dot rieng)")
+                # semgrep_tool.md 5.3: metadata.severity chi suy tu lop
+                if tcfg.get("default_severity") and md.get("severity") != tcfg["default_severity"]:
+                    problems.append(f"{where}: metadata.severity {md.get('severity')} phai la {tcfg['default_severity']} (theo lop {tcls})")
+                cwes = [int(x) for x in re.findall(r"\d+", str(md.get("cwe", "")))]
+                for c in cwes:
+                    if c in (tcfg.get("cwe") or []):
+                        continue
+                    if c in (tcfg.get("cwe_by_rule_metadata") or []):
+                        warnings.append(f"{where}: CWE-{c} xep vao {tcls} theo metadata, cho xac nhan (taxonomy open_questions)")
+                    else:
+                        warnings.append(f"{where}: CWE-{c} khong thuoc danh sach CWE cua {tcls} trong taxonomy.yml (TC1)")
+        # semgrep_tool.md 5.2: taint -> high; regex chi khi parser khong doc duoc file, kem paths.include
+        if r.get("mode") == "taint" and md.get("confidence") != "high":
+            reason = str(md.get("tier_exception") or "").strip()
+            if len(reason) >= 30:   # ngoai le da ghi ly do: liet ke trong bao cao, khong canh bao
+                exceptions.append({"rule": rid, "file": str(f.relative_to(BASE)).replace("\\", "/"),
+                                   "rule_version": str(md.get("rule_version")), "reason": reason})
+            else:
+                warnings.append(f"{where}: rule taint o tang audit; ghi ly do vao metadata.tier_exception (semgrep_tool.md 5.2)")
+        if "pattern-regex" in yaml.safe_dump(r) and not includes:
+            warnings.append(f"{where}: dung pattern-regex nhung khong co paths.include (5.2: chi dung regex khi parser khong doc duoc file)")
     pos, neg = {}, {}
     for t in test_files():
         kind_dir = t.parts[-3]
@@ -135,13 +185,19 @@ def cmd_check(_=None) -> dict:
         for kind in ("positive", "negative"):
             if not (TESTS / kind / lang / f"{cls}{LANG_EXT[lang]}").is_file():
                 problems.append(f"thieu file tests/{kind}/{lang}/{cls}{LANG_EXT[lang]}")
-    result = {"rules": len(rules), "problems": problems,
+    result = {"rules": len(rules), "problems": problems, "warnings": warnings, "tier_exceptions": exceptions,
               "positive_cases": sum(len(v) for v in pos.values()),
               "negative_cases": sum(len(v) for v in neg.values())}
     print(f"[check] {len(rules)} rule, {result['positive_cases']} positive, "
           f"{result['negative_cases']} negative, {len(problems)} van de")
     for p in problems:
         print("   -", p)
+    for e in exceptions:
+        print(f"   * ngoai le tang (tier_exception): {e['rule']}")
+    if warnings:
+        print(f"[check] {len(warnings)} canh bao (khong chan phat hanh; xem semgrep_tool.md):")
+        for w in warnings:
+            print("   ~", w)
     return result
 
 
@@ -263,7 +319,7 @@ def counts():
 
 
 def write_manifest(check_res, test_res):
-    semgrep_v, bandit_v = tool_version("semgrep"), tool_version("bandit")
+    semgrep_v = tool_version("semgrep")
     m = {
         "ruleset": "AI-WhiteSec-CI Semgrep CE ruleset",
         "ruleset_version": RULESET_VERSION,
@@ -271,8 +327,8 @@ def write_manifest(check_res, test_res):
         "ruleset_sha256": sha256(BUNDLE),
         "semgrep_version": semgrep_v,
         "semgrep_version_pinned": PINNED_SEMGREP,
-        "bandit_version": bandit_v,
-        "bandit_version_pinned": PINNED_BANDIT,
+        "taxonomy_version": (load_taxonomy() or {}).get("schema_version"),
+        "taxonomy_sha256": sha256(TAXONOMY) if TAXONOMY.is_file() else None,
         "generated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
         "python": platform.python_version(),
         "files": {str(f.relative_to(BASE)).replace("\\", "/"): sha256(f) for f in rule_files()},
@@ -280,6 +336,8 @@ def write_manifest(check_res, test_res):
         "registry_snapshot": {p.name: sha256(p) for p in sorted(REGISTRY_SNAPSHOT.glob("*.yml"))},
         "rule_counts": counts(),
         "check_problems": len(check_res.get("problems", [])),
+        "check_warnings": len(check_res.get("warnings", [])),
+        "tier_exceptions": [e["rule"] for e in check_res.get("tier_exceptions", [])],
         "tests_passed": test_res.get("passed", 0),
         "tests_total": test_res.get("total", 0),
         "regression_passed": not check_res.get("problems") and not test_res.get("failures"),
@@ -296,11 +354,16 @@ def write_report(check_res, test_res, manifest):
         encoding="utf-8")
     lines = [f"# Ket qua kiem tra ruleset v{RULESET_VERSION}", "",
              f"- Thoi diem: {manifest.get('generated_at')}",
-             f"- Semgrep: {manifest.get('semgrep_version')} (ghim {PINNED_SEMGREP}); Bandit: {manifest.get('bandit_version')}",
+             f"- Semgrep: {manifest.get('semgrep_version')} (ghim {PINNED_SEMGREP}); taxonomy: {manifest.get('taxonomy_version')}",
              f"- So rule: {check_res.get('rules')}; van de metadata/do phu: {len(check_res.get('problems', []))}",
              f"- Test: {test_res.get('passed', 0)}/{test_res.get('total', 0)} dat; loi: {len(test_res.get('failures', []))}",
              f"- ruleset_sha256: `{manifest.get('ruleset_sha256')}`",
              f"- **regression_passed: {manifest.get('regression_passed')}**", ""]
+    if check_res.get("tier_exceptions"):
+        lines += [f"## Ngoai le tang high/audit da ghi ly do ({len(check_res['tier_exceptions'])})", ""] + \
+                 [f"- `{e['rule']}` (rule_version {e['rule_version']}): {e['reason']}" for e in check_res["tier_exceptions"]] + [""]
+    if check_res.get("warnings"):
+        lines += [f"## Canh bao theo semgrep_tool.md ({len(check_res['warnings'])})", ""] + [f"- {w}" for w in check_res["warnings"]] + [""]
     if check_res.get("problems") or test_res.get("failures"):
         lines += ["## Loi can sua", ""] + [f"- {p}" for p in check_res.get("problems", []) + test_res.get("failures", [])] + [""]
     lines += ["## Chi tiet tung truong hop", "", "| File | Dong | Rule | Ky vong | Ket qua |", "|---|---:|---|---|---|"]

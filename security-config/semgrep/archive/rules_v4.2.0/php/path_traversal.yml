@@ -1,0 +1,45 @@
+# Ruleset AI-WhiteSec-CI v4.2.0 | ngon ngu: php | lop: PATH_TRAVERSAL
+# confidence: high = ket luan truc tiep; audit = bat rong, can ra soat (luong SAST doc lap voi CodeBERT).
+# Test: tests/positive/php/path_traversal.* (phai bao) va tests/negative/php/path_traversal.* (khong duoc bao).
+rules:
+- id: team.php.path-taint
+  languages:
+  - php
+  severity: ERROR
+  message: Request data is used as a file path or included file.
+  metadata:
+    cwe: CWE-22
+    owasp: A01:2021
+    vuln_class: PATH_TRAVERSAL
+    confidence: high
+    severity: high
+    scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  mode: taint
+  pattern-sources:
+  - pattern: $_GET
+  - pattern: $_POST
+  - pattern: $_REQUEST
+  - pattern: $_COOKIE
+  - pattern: $_SERVER['QUERY_STRING']
+  - pattern: $_SERVER['REQUEST_URI']
+  - pattern: $_SERVER['HTTP_USER_AGENT']
+  pattern-sinks:
+  - patterns:
+    - pattern-either:
+      - pattern: include $X;
+      - pattern: include_once $X;
+      - pattern: require $X;
+      - pattern: require_once $X;
+      - pattern: file_get_contents($X, ...)
+      - pattern: fopen($X, ...)
+      - pattern: readfile($X, ...)
+      - pattern: file($X, ...)
+      - pattern: unlink($X, ...)
+      - pattern: file_put_contents($X, ...)
+      - pattern: copy($X, ...)
+    - focus-metavariable: $X
+  pattern-sanitizers:
+  - pattern: basename(...)
+  - pattern: intval(...)
