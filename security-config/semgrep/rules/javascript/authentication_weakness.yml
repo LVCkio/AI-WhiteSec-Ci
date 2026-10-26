@@ -1,4 +1,4 @@
-# Ruleset AI-WhiteSec-CI v4.2.0 | ngon ngu: javascript | lop: AUTHENTICATION_WEAKNESS
+# Ruleset AI-WhiteSec-CI v4.2.0 | ngon ngu: javascript | lop: INSECURE_AUTHENTICATION (ten cu AUTHENTICATION_WEAKNESS, doi o v4.7.0)
 # confidence: high = ket luan truc tiep; audit = bat rong, can ra soat (luong SAST doc lap voi CodeBERT).
 # Test: tests/positive/javascript/authentication_weakness.* (phai bao) va tests/negative/javascript/authentication_weakness.* (khong duoc bao).
 rules:
@@ -11,12 +11,13 @@ rules:
   metadata:
     cwe: CWE-287
     owasp: A07:2021
-    vuln_class: AUTHENTICATION_WEAKNESS
+    vuln_class: INSECURE_AUTHENTICATION
     confidence: high
     severity: high
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
-    rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    rule_version: 1.1.0
+    ruleset_version: 4.7.0
+    change_v470: 'vuln_class AUTHENTICATION_WEAKNESS -> INSECURE_AUTHENTICATION (ten lop theo taxonomy.yml v0.3.0 / vector nhan CodeBERT). Logic khong doi.'
   pattern-either:
   - pattern: '$JWT.verify($T, $K, {..., algorithms: [..., "none", ...], ...}, ...)'
   - pattern: '$JWT.verify($T, $K, {..., ignoreExpiration: true, ...}, ...)'
@@ -29,12 +30,13 @@ rules:
   metadata:
     cwe: CWE-287
     owasp: A07:2021
-    vuln_class: AUTHENTICATION_WEAKNESS
+    vuln_class: INSECURE_AUTHENTICATION
     confidence: audit
     severity: high
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
-    rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    rule_version: 1.1.0
+    ruleset_version: 4.7.0
+    change_v470: 'vuln_class AUTHENTICATION_WEAKNESS -> INSECURE_AUTHENTICATION (ten lop theo taxonomy.yml v0.3.0 / vector nhan CodeBERT). Logic khong doi.'
   pattern-either:
   - pattern: jwt.decode($T, ...)
   - pattern: jsonwebtoken.decode($T, ...)
@@ -47,12 +49,13 @@ rules:
   metadata:
     cwe: CWE-916
     owasp: A02:2021
-    vuln_class: AUTHENTICATION_WEAKNESS
+    vuln_class: INSECURE_AUTHENTICATION
     confidence: audit
     severity: high
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
-    rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    rule_version: 1.1.0
+    ruleset_version: 4.7.0
+    change_v470: 'vuln_class AUTHENTICATION_WEAKNESS -> INSECURE_AUTHENTICATION (ten lop theo taxonomy.yml v0.3.0 / vector nhan CodeBERT). Logic khong doi.'
   pattern-either:
   - pattern: $CRYPTO.createHash("md5")
   - pattern: $CRYPTO.createHash("sha1")

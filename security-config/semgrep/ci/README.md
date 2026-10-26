@@ -1,6 +1,8 @@
 # Semgrep trong GitLab CI (P2)
 
-Theo `QUYET_DINH_SEMGREP.md`: **GitLab CI**, runner **Docker**, Semgrep ghim **1.181.0**, finding tầng **audit chỉ ghi nhận, không chặn build**.
+Theo `QUYET_DINH_SEMGREP.md`: **GitLab CE tự cài trong máy ảo** (server1), runner **Docker** trên server3, Semgrep ghim **1.181.0**, finding tầng **audit chỉ ghi nhận, không chặn build**.
+
+**Cài server:** xem `servers/README.md` (script `server1_gitlab.sh`, `server3_worker.sh`). Mặc định job dùng ảnh **có sẵn trên server3** (`aiws-semgrep:4.7.0-semgrep1.181.0`, runner `pull_policy = if-not-present`), không cần registry. Pipeline chạy ở **mọi lần push** và merge request (workflow trong `.gitlab-ci.yml` gốc).
 
 ## File
 
@@ -8,7 +10,8 @@ Theo `QUYET_DINH_SEMGREP.md`: **GitLab CI**, runner **Docker**, Semgrep ghim **1
 |---|---|
 | `Dockerfile` | Ảnh `aiws-semgrep`: Python 3.11 + Semgrep 1.181.0 + bộ rule đã đóng gói + `scan_repo.py`. Ảnh **chỉ build được khi `ruleset.py verify` đạt**. |
 | `Dockerfile.dockerignore` | Chỉ đưa vào ảnh `docs/taxonomy.yml`, bundle, manifest, `.semgrepignore`, `rules/`, `ruleset.py`, `scan_repo.py` (không đưa dataset, model, báo cáo). |
-| `gitlab-ci-semgrep.yml` | Hai job: `aiws-semgrep-image` (build và đẩy ảnh lên GitLab Container Registry) và `aiws-semgrep` (quét, xuất artifact). |
+| `gitlab-ci-semgrep.yml` | Job `aiws-semgrep` (quét, xuất artifact) và job tùy chọn `aiws-semgrep-image` (chỉ chạy khi đặt biến `AIWS_BUILD_IMAGE=1` và GitLab có Container Registry). |
+| `servers/` | Script cài server1 (GitLab CE) và server3 (Docker, Runner, ảnh Semgrep). |
 
 ## Dùng trong `.gitlab-ci.yml` ở gốc repo
 
@@ -34,7 +37,7 @@ Chạy khi: merge request, nhánh mặc định, hoặc chạy tay (Run pipeline
 
 - GitLab Runner **Docker executor**.
 - Job `aiws-semgrep-image` dùng `docker:27-dind` → runner cần `privileged = true`. Nếu runner không cho privileged, build ảnh trên máy rồi `docker push` tay lên registry với đúng tag `$AIWS_SEMGREP_IMAGE`.
-- Tag ảnh = `aiws-semgrep:<ruleset_version>-semgrep<semgrep_version>` (hiện `4.6.1-semgrep1.181.0`). Đổi bộ rule → tăng `AIWS_RULESET_VERSION` trong `gitlab-ci-semgrep.yml`.
+- Tag ảnh = `aiws-semgrep:<ruleset_version>-semgrep<semgrep_version>` (hiện `4.7.0-semgrep1.181.0`). Đổi bộ rule → tăng `AIWS_RULESET_VERSION` trong `gitlab-ci-semgrep.yml`.
 
 ## Chạy thử trên máy (Docker Desktop)
 

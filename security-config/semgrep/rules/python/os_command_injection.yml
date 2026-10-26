@@ -15,7 +15,7 @@ rules:
     severity: critical
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.3.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v461: 'Bo nhanh regex tho subprocess shell=True (da co pattern AST subprocess.$F(..., shell=True, ...)).'
     change_v43: 'severity WARNING -> ERROR (semgrep_tool.md 5.3: severity suy tu confidence high).'
     change_v4: Bo qua lenh la hang chuoi (vi du os.system("service nginx restart")).
@@ -47,7 +47,7 @@ rules:
     severity: critical
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity WARNING -> ERROR (semgrep_tool.md 5.3: severity suy tu confidence high).'
   pattern-either:
   - pattern: subprocess.$F(f"...", ...)
@@ -70,7 +70,7 @@ rules:
     severity: critical
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v4: Rule moi trong v4.
   mode: taint
   pattern-sources:
@@ -121,7 +121,7 @@ rules:
     severity: critical
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.2.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
     change_v4: Bo lenh la hang chuoi (khong the bi chen du lieu).
   patterns:

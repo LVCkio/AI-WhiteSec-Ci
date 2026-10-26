@@ -1,10 +1,10 @@
-# Ket qua kiem tra ruleset v4.6.1
+# Ket qua kiem tra ruleset v4.7.0
 
-- Thoi diem: 2026-10-26T05:53:02+00:00
+- Thoi diem: 2026-10-26T13:14:37+00:00
 - Semgrep: 1.181.0 (ghim 1.181.0); taxonomy: 0.3.0
 - So rule: 79; van de metadata/do phu: 0
 - Test: 306/306 dat; loi: 0
-- ruleset_sha256: `bff761dd3726fa3a094109e30dc3d6f62612254d4cf135e3a1e627ac2b863986`
+- ruleset_sha256: `29aea8a801f93a4f149849c3eb256b5466a09eb314ede3822af3637e9df24a77`
 - **regression_passed: True**
 
 ## Ngoai le tang high/audit da ghi ly do (4)
@@ -14,27 +14,17 @@
 - `team.php.xss-taint` (rule_version 1.2.0): Taint nhung o audit (ngoai le semgrep_tool.md 5.2): sau khi them sanitizer, train v2.2 dung lop 13/17 = 0,76 (< 0,80 high, >= 0,50 audit); val v2.2 5/5. Nhieu mau am tren train co echo $_GET that (nhan sai), nen chua ket luan duoc pattern sai. Xet lai len high khi nhan v2.3 duoc ra soat.
 - `team.path-from-parameter` (rule_version 1.1.0): Taint nhung giu audit (ngoai le semgrep_tool.md 5.2). Source la moi tham so ham, khong phai du lieu request, nen chi biet gia tri co the do ben ngoai dua vao, khong chac la dau vao nguoi dung. Train v5: 30/34 = 0,88 dung lop, val v5: 4/4 (< 5 hit, chua du de len high theo TC4). Xet lai len high khi val v2.2 co >= 5 hit va >= 0,80.
 
-## Canh bao theo semgrep_tool.md (22)
+## Canh bao theo semgrep_tool.md (12)
 
-- rules\java\authentication_weakness.yml::team.java.auth-jwt-unverified: vuln_class AUTHENTICATION_WEAKNESS la ten cu, taxonomy dung INSECURE_AUTHENTICATION (doi ten trong mot dot rieng)
-- rules\java\authentication_weakness.yml::team.java.auth-weak-password-hash: vuln_class AUTHENTICATION_WEAKNESS la ten cu, taxonomy dung INSECURE_AUTHENTICATION (doi ten trong mot dot rieng)
 - rules\java\authentication_weakness.yml::team.java.auth-weak-password-hash: CWE-916 xep vao INSECURE_AUTHENTICATION theo metadata, cho xac nhan (taxonomy open_questions)
 - rules\java\sql_injection.yml::team.java.sqli-concat: dung pattern-regex nhung khong co paths.include (5.2: chi dung regex khi parser khong doc duoc file)
 - rules\java\xss.yml::team.java.xss-html-concat: dung pattern-regex nhung khong co paths.include (5.2: chi dung regex khi parser khong doc duoc file)
-- rules\javascript\authentication_weakness.yml::team.js.auth-jwt-unverified: vuln_class AUTHENTICATION_WEAKNESS la ten cu, taxonomy dung INSECURE_AUTHENTICATION (doi ten trong mot dot rieng)
-- rules\javascript\authentication_weakness.yml::team.js.auth-jwt-decode: vuln_class AUTHENTICATION_WEAKNESS la ten cu, taxonomy dung INSECURE_AUTHENTICATION (doi ten trong mot dot rieng)
-- rules\javascript\authentication_weakness.yml::team.js.auth-weak-password-hash: vuln_class AUTHENTICATION_WEAKNESS la ten cu, taxonomy dung INSECURE_AUTHENTICATION (doi ten trong mot dot rieng)
 - rules\javascript\authentication_weakness.yml::team.js.auth-weak-password-hash: CWE-916 xep vao INSECURE_AUTHENTICATION theo metadata, cho xac nhan (taxonomy open_questions)
 - rules\javascript\sql_injection.yml::team.js.sqli-string: dung pattern-regex nhung khong co paths.include (5.2: chi dung regex khi parser khong doc duoc file)
 - rules\javascript\xss.yml::team.js.xss-html-concat: dung pattern-regex nhung khong co paths.include (5.2: chi dung regex khi parser khong doc duoc file)
-- rules\php\authentication_weakness.yml::team.php.auth-weak-password-hash: vuln_class AUTHENTICATION_WEAKNESS la ten cu, taxonomy dung INSECURE_AUTHENTICATION (doi ten trong mot dot rieng)
 - rules\php\authentication_weakness.yml::team.php.auth-weak-password-hash: CWE-916 xep vao INSECURE_AUTHENTICATION theo metadata, cho xac nhan (taxonomy open_questions)
 - rules\php\sql_injection.yml::team.php.sqli-string: dung pattern-regex nhung khong co paths.include (5.2: chi dung regex khi parser khong doc duoc file)
-- rules\python\authentication_weakness.yml::team.authentication-weakness: vuln_class AUTHENTICATION_WEAKNESS la ten cu, taxonomy dung INSECURE_AUTHENTICATION (doi ten trong mot dot rieng)
-- rules\python\authentication_weakness.yml::team.auth-secret-equality: vuln_class AUTHENTICATION_WEAKNESS la ten cu, taxonomy dung INSECURE_AUTHENTICATION (doi ten trong mot dot rieng)
-- rules\python\authentication_weakness.yml::team.auth-session-fixation: vuln_class AUTHENTICATION_WEAKNESS la ten cu, taxonomy dung INSECURE_AUTHENTICATION (doi ten trong mot dot rieng)
 - rules\python\authentication_weakness.yml::team.auth-session-fixation: CWE-384 khong thuoc danh sach CWE cua INSECURE_AUTHENTICATION trong taxonomy.yml (TC1)
-- rules\python\authentication_weakness.yml::team.auth-weak-password-hash: vuln_class AUTHENTICATION_WEAKNESS la ten cu, taxonomy dung INSECURE_AUTHENTICATION (doi ten trong mot dot rieng)
 - rules\python\authentication_weakness.yml::team.auth-weak-password-hash: CWE-916 xep vao INSECURE_AUTHENTICATION theo metadata, cho xac nhan (taxonomy open_questions)
 - rules\python\sql_injection.yml::team.sql-string-building: dung pattern-regex nhung khong co paths.include (5.2: chi dung regex khi parser khong doc duoc file)
 - rules\python\xss.yml::team.xss-html-string-building: dung pattern-regex nhung khong co paths.include (5.2: chi dung regex khi parser khong doc duoc file)

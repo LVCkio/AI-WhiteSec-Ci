@@ -15,7 +15,7 @@ rules:
     severity: critical
     scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   mode: taint
   pattern-sources:
   - pattern: $_GET
@@ -53,7 +53,7 @@ rules:
     severity: critical
     scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   patterns:
   - pattern-either:
     - pattern: shell_exec("..." . $X)
@@ -79,7 +79,7 @@ rules:
     severity: critical
     scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
     change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
   patterns:
@@ -109,7 +109,7 @@ rules:
     severity: critical
     scope: PHP; GitPHP executor Execute(projectPath, GIT_COMMAND, arguments)
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v45: Train v2.2 GitPHP paired fixes quote array entries with escapeshellarg. AST audit checks an unquoted
       append followed by Execute, not proven request taint; pre-sanitized variables may require manual review.
   patterns:

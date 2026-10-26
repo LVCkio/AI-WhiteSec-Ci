@@ -13,7 +13,7 @@ rules:
     severity: medium
     scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
     rule_version: 1.2.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     tier_exception: 'Taint nhung o audit (ngoai le semgrep_tool.md 5.2): sau khi them sanitizer, train v2.2 dung
       lop 13/17 = 0,76 (< 0,80 high, >= 0,50 audit); val v2.2 5/5. Nhieu mau am tren train co echo $_GET that (nhan
       sai), nen chua ket luan duoc pattern sai. Xet lai len high khi nhan v2.3 duoc ra soat.'
@@ -73,7 +73,7 @@ rules:
     severity: medium
     scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
     change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
   patterns:
@@ -110,7 +110,7 @@ rules:
     scope: PHP template (HTML + <?= ?>, <?php echo ?>); regex rule because Semgrep's PHP parser fails on mixed HTML/PHP
       fragments (PARSE_ERROR/PARTIAL_PARSE)
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v42: Rule moi trong v4.2.0. Mau PHP XSS bi bo sot tren train v5 phan lon la file template khong parse
       duoc nen moi rule php (ke ca pattern-regex) deu khong chay. Train v5 - 44 lan bao, 43 dung lop XSS; cap a01
       train - bao 44 ban loi, 2 ban da va.
@@ -133,7 +133,7 @@ rules:
     scope: PHP template (HTML + <?= ?>, <?php echo ?>); regex rule because Semgrep's PHP parser fails on mixed HTML/PHP
       fragments (PARSE_ERROR/PARTIAL_PARSE)
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
     change_v42: Rule moi trong v4.2.0. Train v5 - 120 lan bao, 114 dung lop XSS (0,95); khong phan biet tot ban
       loi/ban va (cap a01 train 122/96) nen chi o tang audit.

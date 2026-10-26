@@ -15,7 +15,7 @@ rules:
     severity: medium
     scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   mode: taint
   pattern-sources:
   - pattern: (javax.servlet.http.HttpServletRequest $R).$GET(...)
@@ -69,7 +69,7 @@ rules:
     severity: medium
     scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
   patterns:
   - pattern-either:
@@ -95,7 +95,7 @@ rules:
     severity: medium
     scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   pattern-regex: '"[^"\n]*<\/?[a-zA-Z][a-zA-Z0-9]*[\s>/][^"\n]*"\s*\+\s*(?!")[\w(]'
 - id: team.java.xss-writer-output
   languages:
@@ -110,7 +110,7 @@ rules:
     severity: medium
     scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v4: 'Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5). 1.1.0: write()
       chi cho writer HTML/XML (FileWriter ghi file gay bao sai lop, train: 2/8).'
   pattern-either:

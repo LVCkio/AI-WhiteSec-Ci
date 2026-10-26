@@ -15,7 +15,7 @@ rules:
     severity: medium
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v4: Rule moi trong v4.
   mode: taint
   pattern-sources:
@@ -72,7 +72,7 @@ rules:
     severity: medium
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity WARNING -> ERROR (semgrep_tool.md 5.3: severity suy tu confidence high).'
   pattern-either:
   - pattern: HttpResponse("..." % $X, ...)
@@ -95,7 +95,7 @@ rules:
     severity: medium
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity WARNING -> ERROR (semgrep_tool.md 5.3: severity suy tu confidence high).'
   pattern-either:
   - pattern: mark_safe($VALUE)
@@ -117,7 +117,7 @@ rules:
     severity: medium
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.2.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
     change_v4: self.write thay cho $SELF.write (truoc day khop nham f.write ghi file).
   patterns:
@@ -145,7 +145,7 @@ rules:
     severity: medium
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   pattern-regex: (?i)(?:\bf"[^"\n]*<\/?[a-z][a-z0-9]*[\s>/][^"\n]*\{|\bf'[^'\n]*<\/?[a-z][a-z0-9]*[\s>/][^'\n]*\{|"[^"\n]*<\/?[a-z][a-z0-9]*[\s>/][^"\n]*"\s*(?:%\s*[\w(]|\+\s*[\w(]|\.format\s*\()|'[^'\n]*<\/?[a-z][a-z0-9]*[\s>/][^'\n]*'\s*(?:%\s*[\w(]|\+\s*[\w(]|\.format\s*\()|[\w)\]]\s*\+\s*[\"']\s*<\/[a-z])
 - id: team.py.xss-jinja-autoescape-default
   languages:
@@ -160,7 +160,7 @@ rules:
     severity: medium
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
   pattern-either:
   - patterns:
@@ -183,7 +183,7 @@ rules:
     severity: medium
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
     change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
   patterns:

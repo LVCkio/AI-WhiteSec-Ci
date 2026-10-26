@@ -30,11 +30,11 @@ MANIFEST = BASE / "ruleset-manifest.json"
 REGISTRY_SNAPSHOT = MAIN / "rules" / "registry_snapshot"
 TAXONOMY = MAIN / "docs" / "taxonomy.yml"   # chuan chung Semgrep/CodeBERT (semgrep_tool.md muc 3)
 
-RULESET_VERSION = "4.6.1"
+RULESET_VERSION = "4.7.0"
 PINNED_SEMGREP = "1.181.0"
 LANG_EXT = {"python": ".py", "java": ".java", "javascript": ".js", "php": ".php"}
 CLASSES = {"sql_injection": "SQL_INJECTION", "xss": "XSS", "os_command_injection": "OS_COMMAND_INJECTION",
-           "path_traversal": "PATH_TRAVERSAL", "authentication_weakness": "AUTHENTICATION_WEAKNESS",
+           "path_traversal": "PATH_TRAVERSAL", "authentication_weakness": "INSECURE_AUTHENTICATION",
            "hardcoded_credentials": "HARDCODED_CREDENTIALS"}
 REQUIRED_META = ("cwe", "owasp", "vuln_class", "confidence", "severity", "scope", "rule_version", "ruleset_version")
 ANNOT = re.compile(r"(?:#|//)\s*(ruleid|ok)\s*:\s*([\w.\-, ]+)")

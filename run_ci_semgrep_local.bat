@@ -1,8 +1,8 @@
 @echo off
 chcp 65001 >nul
 cd /d "%~dp0"
-set TAG=aiws-semgrep:4.6.1-semgrep1.181.0
-set OUT=%~dp0security-config\semgrep\reports\ci_local_2026-10-26
+set TAG=aiws-semgrep:4.7.0-semgrep1.181.0
+set OUT=%~dp0security-config\semgrep\reports\ci_local_v470_2026-10-26
 if not exist "%OUT%" mkdir "%OUT%"
 set LOG=%OUT%\run_log.txt
 echo Chay thu anh Docker Semgrep: build anh roi quet repo AI-WhiteSec-Ci trong container. Lan dau khoang 3-8 phut.

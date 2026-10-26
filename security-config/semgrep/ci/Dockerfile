@@ -1,9 +1,9 @@
 # syntax=docker/dockerfile:1
 # Anh Semgrep cho P2 (AI-WhiteSec-CI) - chi nhanh Semgrep, khong co CodeBERT.
 # Build (thu muc goc = main/ hoac goc repo co security-config/ va docs/):
-#   docker build -f security-config/semgrep/ci/Dockerfile -t aiws-semgrep:4.6.1 .
+#   docker build -f security-config/semgrep/ci/Dockerfile -t aiws-semgrep:4.7.0 .
 # Chay:
-#   docker run --rm -v <repo>:/src:ro -v <thu muc ket qua>:/out aiws-semgrep:4.6.1 \
+#   docker run --rm -v <repo>:/src:ro -v <thu muc ket qua>:/out aiws-semgrep:4.7.0 \
 #       --repo /src --out /out/semgrep-results.json --scope-out /out/scope.json
 # Quyet dinh: QUYET_DINH_SEMGREP.md (GitLab CI, Docker, Semgrep ghim 1.181.0, audit khong chan build).
 FROM python:3.11-slim
@@ -40,7 +40,9 @@ COPY security-config/semgrep/tools/ruleset.py \
 RUN test "$(semgrep --version 2>/dev/null | tail -n 1)" = "${SEMGREP_VERSION}" \
  && python security-config/semgrep/tools/ruleset.py verify
 
-RUN useradd --create-home --uid 10001 scanner
+# File chep tu Windows/tar co the mang quyen 700 -> user scanner khong doc duoc
+RUN chmod -R a+rX /opt/aiws \
+ && useradd --create-home --uid 10001 scanner
 USER scanner
 WORKDIR /src
 

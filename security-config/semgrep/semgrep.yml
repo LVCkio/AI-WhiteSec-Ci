@@ -1,4 +1,4 @@
-# AI-WhiteSec-CI Semgrep ruleset v4.6.1 - FILE SINH TU DONG tu rules/, khong sua tay.
+# AI-WhiteSec-CI Semgrep ruleset v4.7.0 - FILE SINH TU DONG tu rules/, khong sua tay.
 # Tao bang: python security-config/semgrep/tools/ruleset.py build
 rules:
 - id: team.java.auth-jwt-unverified
@@ -9,12 +9,14 @@ rules:
   metadata:
     cwe: CWE-287
     owasp: A07:2021
-    vuln_class: AUTHENTICATION_WEAKNESS
+    vuln_class: INSECURE_AUTHENTICATION
     confidence: high
     severity: high
     scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
-    rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    rule_version: 1.1.0
+    ruleset_version: 4.7.0
+    change_v470: vuln_class AUTHENTICATION_WEAKNESS -> INSECURE_AUTHENTICATION (ten lop theo taxonomy.yml v0.3.0
+      / vector nhan CodeBERT). Logic khong doi.
   pattern-either:
   - pattern: Jwts.parser().$X(...).parse($T)
   - pattern: Jwts.parser().parse($T)
@@ -28,12 +30,14 @@ rules:
   metadata:
     cwe: CWE-916
     owasp: A02:2021
-    vuln_class: AUTHENTICATION_WEAKNESS
+    vuln_class: INSECURE_AUTHENTICATION
     confidence: audit
     severity: high
     scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
-    rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    rule_version: 1.2.0
+    ruleset_version: 4.7.0
+    change_v470: vuln_class AUTHENTICATION_WEAKNESS -> INSECURE_AUTHENTICATION (ten lop theo taxonomy.yml v0.3.0
+      / vector nhan CodeBERT). Logic khong doi.
     change_v4: Chi bao khi gia tri duoc bam la mat khau (truoc day bao moi MessageDigest MD5).
   patterns:
   - pattern-either:
@@ -58,7 +62,7 @@ rules:
     severity: high
     scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v4: Rule moi trong v4.
   patterns:
   - pattern-either:
@@ -84,7 +88,7 @@ rules:
     severity: high
     scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   pattern-either:
   - patterns:
     - pattern-either:
@@ -113,7 +117,7 @@ rules:
     severity: critical
     scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   mode: taint
   pattern-sources:
   - pattern: (javax.servlet.http.HttpServletRequest $R).$GET(...)
@@ -161,7 +165,7 @@ rules:
     severity: critical
     scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
     rule_version: 1.2.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
     change_v4: Bo lenh la hang chuoi (khong the bi chen du lieu).
   patterns:
@@ -184,7 +188,7 @@ rules:
     severity: critical
     scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   pattern-either:
   - pattern: Runtime.getRuntime().exec("..." + $X, ...)
   - pattern: Runtime.getRuntime().exec($X + "...", ...)
@@ -204,7 +208,7 @@ rules:
     severity: critical
     scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
     change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
   patterns:
@@ -234,7 +238,7 @@ rules:
     severity: high
     scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   mode: taint
   pattern-sources:
   - pattern: (javax.servlet.http.HttpServletRequest $R).$GET(...)
@@ -285,7 +289,7 @@ rules:
     severity: high
     scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
   patterns:
   - pattern-either:
@@ -317,7 +321,7 @@ rules:
     severity: high
     scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   pattern-either:
   - pattern: new File($D, $F.getOriginalFilename())
   - pattern: $D.resolve($F.getOriginalFilename())
@@ -336,7 +340,7 @@ rules:
     severity: critical
     scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v42: Bo super.execute(...) khoi sink (WebGoat ProfileUpload - goi lop cha, khong phai JDBC; 2 bao nham
       + 1 sai lop).
   mode: taint
@@ -395,7 +399,7 @@ rules:
     severity: critical
     scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
   patterns:
   - pattern-either:
@@ -421,7 +425,7 @@ rules:
     severity: critical
     scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   pattern-either:
   - pattern-regex: (?i)"\s*(?:select\s|insert\s+into|delete\s+from|update\s+\w+\s+set|where\s|order\s+by)[^"\n]*"\s*\+\s*[\w(]
   - pattern-regex: (?i)"[^"\n]*\b(?:where|order\s+by|values\s*\()[^"\n]*"\s*\+\s*[\w(]
@@ -438,7 +442,7 @@ rules:
     severity: medium
     scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   mode: taint
   pattern-sources:
   - pattern: (javax.servlet.http.HttpServletRequest $R).$GET(...)
@@ -492,7 +496,7 @@ rules:
     severity: medium
     scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
   patterns:
   - pattern-either:
@@ -518,7 +522,7 @@ rules:
     severity: medium
     scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   pattern-regex: '"[^"\n]*<\/?[a-zA-Z][a-zA-Z0-9]*[\s>/][^"\n]*"\s*\+\s*(?!")[\w(]'
 - id: team.java.xss-writer-output
   languages:
@@ -533,7 +537,7 @@ rules:
     severity: medium
     scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v4: 'Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5). 1.1.0: write()
       chi cho writer HTML/XML (FileWriter ghi file gay bao sai lop, train: 2/8).'
   pattern-either:
@@ -566,12 +570,14 @@ rules:
   metadata:
     cwe: CWE-287
     owasp: A07:2021
-    vuln_class: AUTHENTICATION_WEAKNESS
+    vuln_class: INSECURE_AUTHENTICATION
     confidence: high
     severity: high
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
-    rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    rule_version: 1.1.0
+    ruleset_version: 4.7.0
+    change_v470: vuln_class AUTHENTICATION_WEAKNESS -> INSECURE_AUTHENTICATION (ten lop theo taxonomy.yml v0.3.0
+      / vector nhan CodeBERT). Logic khong doi.
   pattern-either:
   - pattern: '$JWT.verify($T, $K, {..., algorithms: [..., "none", ...], ...}, ...)'
   - pattern: '$JWT.verify($T, $K, {..., ignoreExpiration: true, ...}, ...)'
@@ -584,12 +590,14 @@ rules:
   metadata:
     cwe: CWE-287
     owasp: A07:2021
-    vuln_class: AUTHENTICATION_WEAKNESS
+    vuln_class: INSECURE_AUTHENTICATION
     confidence: audit
     severity: high
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
-    rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    rule_version: 1.1.0
+    ruleset_version: 4.7.0
+    change_v470: vuln_class AUTHENTICATION_WEAKNESS -> INSECURE_AUTHENTICATION (ten lop theo taxonomy.yml v0.3.0
+      / vector nhan CodeBERT). Logic khong doi.
   pattern-either:
   - pattern: jwt.decode($T, ...)
   - pattern: jsonwebtoken.decode($T, ...)
@@ -602,12 +610,14 @@ rules:
   metadata:
     cwe: CWE-916
     owasp: A02:2021
-    vuln_class: AUTHENTICATION_WEAKNESS
+    vuln_class: INSECURE_AUTHENTICATION
     confidence: audit
     severity: high
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
-    rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    rule_version: 1.1.0
+    ruleset_version: 4.7.0
+    change_v470: vuln_class AUTHENTICATION_WEAKNESS -> INSECURE_AUTHENTICATION (ten lop theo taxonomy.yml v0.3.0
+      / vector nhan CodeBERT). Logic khong doi.
   pattern-either:
   - pattern: $CRYPTO.createHash("md5")
   - pattern: $CRYPTO.createHash("sha1")
@@ -626,7 +636,7 @@ rules:
     severity: high
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v42: Bo so sanh voi chuoi 'undefined'/'null'/'true'/'false' (Juice Shop changePassword/resetPassword
       - kiem tra rong, khong phai mat khau).
     change_v4: Rule moi trong v4.
@@ -656,7 +666,7 @@ rules:
     severity: high
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   pattern-either:
   - patterns:
     - pattern-either:
@@ -686,7 +696,7 @@ rules:
     severity: critical
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   mode: taint
   pattern-sources:
   - pattern: $REQ.query
@@ -722,7 +732,7 @@ rules:
     severity: critical
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   pattern-either:
   - pattern: $CP.exec("..." + $X, ...)
   - pattern: $CP.execSync("..." + $X, ...)
@@ -745,7 +755,7 @@ rules:
     severity: critical
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
     change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
   patterns:
@@ -781,7 +791,7 @@ rules:
     severity: high
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   mode: taint
   pattern-sources:
   - pattern: $REQ.query
@@ -823,7 +833,7 @@ rules:
     severity: high
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
     rule_version: 1.2.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
     change_v42: Bo duong dan ghep toan hang so (path.resolve('...'), path.join(__dirname, '...')) - Juice Shop angular.ts.
     change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
@@ -864,7 +874,7 @@ rules:
     severity: critical
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   mode: taint
   pattern-sources:
   - pattern: $REQ.query
@@ -902,7 +912,7 @@ rules:
     severity: critical
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   pattern-either:
   - pattern-regex: (?i)[`'"]\s*(?:select\s|insert\s+into|delete\s+from|update\s+\w+\s+set)[^`'"\n]*(?:\$\{|[`'"]\s*\+\s*[\w(])
   - pattern-regex: (?i)[`'"][^`'"\n]*\b(?:where|order\s+by|values\s*\()[^`'"\n]*(?:\$\{|[`'"]\s*\+\s*[\w(])
@@ -920,7 +930,7 @@ rules:
     severity: critical
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
   pattern-either:
   - patterns:
@@ -949,7 +959,7 @@ rules:
     severity: critical
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
     change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
   patterns:
@@ -978,7 +988,7 @@ rules:
     severity: medium
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   mode: taint
   pattern-sources:
   - pattern: $REQ.query
@@ -1015,7 +1025,7 @@ rules:
     severity: medium
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   patterns:
   - pattern-either:
     - pattern: $EL.innerHTML = $X
@@ -1042,7 +1052,7 @@ rules:
     severity: medium
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   pattern-either:
   - pattern-regex: '[''"][^''"\n]*<\/?[a-zA-Z][a-zA-Z0-9]*[\s>/][^''"\n]*[''"]\s*\+\s*(?![''"])[\w(]'
   - pattern-regex: '`[^`\n]*<\/?[a-zA-Z][a-zA-Z0-9]*[\s>/][^`\n]*\$\{'
@@ -1060,7 +1070,7 @@ rules:
     severity: medium
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
   patterns:
   - pattern-either:
@@ -1082,12 +1092,14 @@ rules:
   metadata:
     cwe: CWE-916
     owasp: A02:2021
-    vuln_class: AUTHENTICATION_WEAKNESS
+    vuln_class: INSECURE_AUTHENTICATION
     confidence: audit
     severity: high
     scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
-    rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    rule_version: 1.2.0
+    ruleset_version: 4.7.0
+    change_v470: vuln_class AUTHENTICATION_WEAKNESS -> INSECURE_AUTHENTICATION (ten lop theo taxonomy.yml v0.3.0
+      / vector nhan CodeBERT). Logic khong doi.
     change_v4: Ten bien phai la mot tu ve mat khau ($pass, $user_password), khong khop chuoi con.
   pattern-either:
   - patterns:
@@ -1117,7 +1129,7 @@ rules:
     severity: high
     scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v4: Rule moi trong v4.
   patterns:
   - pattern-either:
@@ -1144,7 +1156,7 @@ rules:
     severity: high
     scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   pattern-either:
   - patterns:
     - pattern: $VAR = '$VAL';
@@ -1185,7 +1197,7 @@ rules:
     severity: critical
     scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   mode: taint
   pattern-sources:
   - pattern: $_GET
@@ -1223,7 +1235,7 @@ rules:
     severity: critical
     scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   patterns:
   - pattern-either:
     - pattern: shell_exec("..." . $X)
@@ -1249,7 +1261,7 @@ rules:
     severity: critical
     scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
     change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
   patterns:
@@ -1277,7 +1289,7 @@ rules:
     severity: critical
     scope: PHP; GitPHP executor Execute(projectPath, GIT_COMMAND, arguments)
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v45: Train v2.2 GitPHP paired fixes quote array entries with escapeshellarg. AST audit checks an unquoted
       append followed by Execute, not proven request taint; pre-sanitized variables may require manual review.
   patterns:
@@ -1329,7 +1341,7 @@ rules:
     severity: high
     scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
     rule_version: 1.2.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     tier_exception: 'Taint nhung o audit (ngoai le semgrep_tool.md 5.2). Train v5 chi dung lop 7/13 = 0,54: dat
       nguong audit 0,50, chua dat high 0,80 (TC4). Rot TC5-audit (ban va 10 > ban loi 7) nhung giu vi la rule PHP
       PATH_TRAVERSAL gan nhu duy nhat; can ra tay cac hit tren train v2.2 truoc khi quyet dinh giu hay tat.'
@@ -1377,7 +1389,7 @@ rules:
     severity: critical
     scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     tier_exception: 'Taint nhung o audit (ngoai le semgrep_tool.md 5.2): train v2.2 dung lop 7/11 = 0,64, dat nguong
       audit 0,50 nhung chua dat high 0,80 (TC4); val v2.2 < 5 lan bao. Xet lai len high khi do lai tren train/val
       v2.2 >= 0,80.'
@@ -1424,7 +1436,7 @@ rules:
     severity: critical
     scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   pattern-either:
   - pattern-regex: (?i)["'](?:select\s|insert\s+into|delete\s+from|update\s+\w+\s+set)[^"'\n]*(?:["']\s*\.\s*\$|\$\w)
   - pattern-regex: (?i)["'][^"'\n]*\b(?:where|order\s+by|values\s*\()[^"'\n]*(?:["']\s*\.\s*\$|\$\w)
@@ -1441,7 +1453,7 @@ rules:
     severity: critical
     scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
     change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
   patterns:
@@ -1477,7 +1489,7 @@ rules:
     severity: critical
     scope: PHP; Navigate CMS-style query_single(select, table, where, order, bindings)
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v45: 'Train v2.2: query_single WHERE concatenation replaced by named placeholders and bindings in paired
       fixes. This is an audit of dynamic SQL, not proof that an unknown protect() implementation is unsafe.'
   patterns:
@@ -1510,7 +1522,7 @@ rules:
     severity: medium
     scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
     rule_version: 1.2.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     tier_exception: 'Taint nhung o audit (ngoai le semgrep_tool.md 5.2): sau khi them sanitizer, train v2.2 dung
       lop 13/17 = 0,76 (< 0,80 high, >= 0,50 audit); val v2.2 5/5. Nhieu mau am tren train co echo $_GET that (nhan
       sai), nen chua ket luan duoc pattern sai. Xet lai len high khi nhan v2.3 duoc ra soat.'
@@ -1570,7 +1582,7 @@ rules:
     severity: medium
     scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
     change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
   patterns:
@@ -1607,7 +1619,7 @@ rules:
     scope: PHP template (HTML + <?= ?>, <?php echo ?>); regex rule because Semgrep's PHP parser fails on mixed HTML/PHP
       fragments (PARSE_ERROR/PARTIAL_PARSE)
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v42: Rule moi trong v4.2.0. Mau PHP XSS bi bo sot tren train v5 phan lon la file template khong parse
       duoc nen moi rule php (ke ca pattern-regex) deu khong chay. Train v5 - 44 lan bao, 43 dung lop XSS; cap a01
       train - bao 44 ban loi, 2 ban da va.
@@ -1630,7 +1642,7 @@ rules:
     scope: PHP template (HTML + <?= ?>, <?php echo ?>); regex rule because Semgrep's PHP parser fails on mixed HTML/PHP
       fragments (PARSE_ERROR/PARTIAL_PARSE)
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
     change_v42: Rule moi trong v4.2.0. Train v5 - 120 lan bao, 114 dung lop XSS (0,95); khong phan biet tot ban
       loi/ban va (cap a01 train 122/96) nen chi o tang audit.
@@ -1643,12 +1655,14 @@ rules:
   metadata:
     cwe: CWE-287
     owasp: A07:2021
-    vuln_class: AUTHENTICATION_WEAKNESS
+    vuln_class: INSECURE_AUTHENTICATION
     confidence: high
     severity: high
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
-    rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    rule_version: 1.2.0
+    ruleset_version: 4.7.0
+    change_v470: vuln_class AUTHENTICATION_WEAKNESS -> INSECURE_AUTHENTICATION (ten lop theo taxonomy.yml v0.3.0
+      / vector nhan CodeBERT). Logic khong doi.
     change_v43: 'severity WARNING -> ERROR (semgrep_tool.md 5.3: severity suy tu confidence high).'
   pattern-either:
   - pattern: 'jwt.decode(..., options={"verify_signature": False}, ...)'
@@ -1662,12 +1676,14 @@ rules:
   metadata:
     cwe: CWE-287
     owasp: A07:2021
-    vuln_class: AUTHENTICATION_WEAKNESS
+    vuln_class: INSECURE_AUTHENTICATION
     confidence: audit
     severity: high
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
-    rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    rule_version: 1.2.0
+    ruleset_version: 4.7.0
+    change_v470: vuln_class AUTHENTICATION_WEAKNESS -> INSECURE_AUTHENTICATION (ten lop theo taxonomy.yml v0.3.0
+      / vector nhan CodeBERT). Logic khong doi.
     change_v4: Chi xet bien/thuoc tinh (khong xet bieu thuc goi ham); bo so sanh voi hang so (chuyen sang rule hardcoded-password-compare).
   patterns:
   - pattern-either:
@@ -1693,12 +1709,14 @@ rules:
   metadata:
     cwe: CWE-384
     owasp: A07:2021
-    vuln_class: AUTHENTICATION_WEAKNESS
+    vuln_class: INSECURE_AUTHENTICATION
     confidence: audit
     severity: high
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
-    rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    rule_version: 1.1.0
+    ruleset_version: 4.7.0
+    change_v470: vuln_class AUTHENTICATION_WEAKNESS -> INSECURE_AUTHENTICATION (ten lop theo taxonomy.yml v0.3.0
+      / vector nhan CodeBERT). Logic khong doi.
   patterns:
   - pattern-inside: "def $FUNC(...):\n  ...\n"
   - metavariable-regex:
@@ -1728,12 +1746,14 @@ rules:
   metadata:
     cwe: CWE-916
     owasp: A02:2021
-    vuln_class: AUTHENTICATION_WEAKNESS
+    vuln_class: INSECURE_AUTHENTICATION
     confidence: audit
     severity: high
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
-    rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    rule_version: 1.1.0
+    ruleset_version: 4.7.0
+    change_v470: vuln_class AUTHENTICATION_WEAKNESS -> INSECURE_AUTHENTICATION (ten lop theo taxonomy.yml v0.3.0
+      / vector nhan CodeBERT). Logic khong doi.
   patterns:
   - pattern-either:
     - pattern: hashlib.md5($X, ...)
@@ -1756,7 +1776,7 @@ rules:
     severity: high
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.2.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v461: regex tho -> pattern AST (regex khop ca chuoi/comment; bao sai tang high khi quet repo that, p2_demo_2026-10-26).
     change_v43: 'severity WARNING -> ERROR (semgrep_tool.md 5.3: severity suy tu confidence high).'
   pattern-either:
@@ -1782,7 +1802,7 @@ rules:
     severity: high
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.2.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v461: regex tho -> pattern AST (regex khop ca chuoi/comment; bao sai tang high khi quet repo that, p2_demo_2026-10-26).
     change_v43: 'severity WARNING -> ERROR (semgrep_tool.md 5.3: severity suy tu confidence high).'
   patterns:
@@ -1810,7 +1830,7 @@ rules:
     severity: high
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v4: Rule moi trong v4.
   patterns:
   - pattern-either:
@@ -1835,7 +1855,7 @@ rules:
     severity: critical
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.3.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v461: Bo nhanh regex tho subprocess shell=True (da co pattern AST subprocess.$F(..., shell=True, ...)).
     change_v43: 'severity WARNING -> ERROR (semgrep_tool.md 5.3: severity suy tu confidence high).'
     change_v4: Bo qua lenh la hang chuoi (vi du os.system("service nginx restart")).
@@ -1867,7 +1887,7 @@ rules:
     severity: critical
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity WARNING -> ERROR (semgrep_tool.md 5.3: severity suy tu confidence high).'
   pattern-either:
   - pattern: subprocess.$F(f"...", ...)
@@ -1890,7 +1910,7 @@ rules:
     severity: critical
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v4: Rule moi trong v4.
   mode: taint
   pattern-sources:
@@ -1941,7 +1961,7 @@ rules:
     severity: critical
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.2.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
     change_v4: Bo lenh la hang chuoi (khong the bi chen du lieu).
   patterns:
@@ -1968,7 +1988,7 @@ rules:
     severity: high
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   mode: taint
   pattern-sources:
   - pattern: request.args
@@ -2010,7 +2030,7 @@ rules:
     severity: high
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.2.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v461: regex tho -> pattern AST (regex khop ca chuoi/comment; bao sai tang high khi quet repo that, p2_demo_2026-10-26).
     change_v43: 'severity WARNING -> ERROR (semgrep_tool.md 5.3: severity suy tu confidence high).'
   patterns:
@@ -2034,7 +2054,7 @@ rules:
     severity: high
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   patterns:
   - pattern-either:
     - pattern: $ARCHIVE.extractall(...)
@@ -2053,7 +2073,7 @@ rules:
     severity: high
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     tier_exception: 'Taint nhung giu audit (ngoai le semgrep_tool.md 5.2). Source la moi tham so ham, khong phai
       du lieu request, nen chi biet gia tri co the do ben ngoai dua vao, khong chac la dau vao nguoi dung. Train
       v5: 30/34 = 0,88 dung lop, val v5: 4/4 (< 5 hit, chua du de len high theo TC4). Xet lai len high khi val v2.2
@@ -2102,7 +2122,7 @@ rules:
     severity: high
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
     change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
   patterns:
@@ -2132,7 +2152,7 @@ rules:
     severity: critical
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v4: Rule moi trong v4.
   mode: taint
   pattern-sources:
@@ -2186,7 +2206,7 @@ rules:
     severity: critical
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.2.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v461: regex tho -> pattern AST (regex khop ca chuoi/comment; bao sai tang high khi quet repo that, p2_demo_2026-10-26).
     change_v43: 'severity WARNING -> ERROR (semgrep_tool.md 5.3: severity suy tu confidence high).'
   patterns:
@@ -2215,7 +2235,7 @@ rules:
     severity: critical
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.2.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
     change_v4: Chi xet doi tuong ten giong DB (cursor/conn/db/session/engine) va bo cau truy van hang chuoi.
   pattern-either:
@@ -2246,7 +2266,7 @@ rules:
     severity: critical
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   pattern-regex: (?i)(?:\bf"[^"\n]*\b(?:select\s|insert\s+into|delete\s+from|update\s+\S+\s+set|where\s|order\s+by|group\s+by|values\s*\(|join\s)[^"\n]*\{|\bf'[^'\n]*\b(?:select\s|insert\s+into|delete\s+from|update\s+\S+\s+set|where\s|order\s+by|group\s+by|values\s*\(|join\s)[^'\n]*\{|"[^"\n]*\b(?:select\s|insert\s+into|delete\s+from|update\s+\S+\s+set|where\s|order\s+by|group\s+by|values\s*\(|join\s)[^"\n]*"\s*(?:%\s*[\w(]|\+\s*[\w(]|\.format\s*\()|'[^'\n]*\b(?:select\s|insert\s+into|delete\s+from|update\s+\S+\s+set|where\s|order\s+by|group\s+by|values\s*\(|join\s)[^'\n]*'\s*(?:%\s*[\w(]|\+\s*[\w(]|\.format\s*\())
 - id: team.py.xss-taint
   languages:
@@ -2261,7 +2281,7 @@ rules:
     severity: medium
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v4: Rule moi trong v4.
   mode: taint
   pattern-sources:
@@ -2318,7 +2338,7 @@ rules:
     severity: medium
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity WARNING -> ERROR (semgrep_tool.md 5.3: severity suy tu confidence high).'
   pattern-either:
   - pattern: HttpResponse("..." % $X, ...)
@@ -2341,7 +2361,7 @@ rules:
     severity: medium
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity WARNING -> ERROR (semgrep_tool.md 5.3: severity suy tu confidence high).'
   pattern-either:
   - pattern: mark_safe($VALUE)
@@ -2363,7 +2383,7 @@ rules:
     severity: medium
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.2.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
     change_v4: self.write thay cho $SELF.write (truoc day khop nham f.write ghi file).
   patterns:
@@ -2391,7 +2411,7 @@ rules:
     severity: medium
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   pattern-regex: (?i)(?:\bf"[^"\n]*<\/?[a-z][a-z0-9]*[\s>/][^"\n]*\{|\bf'[^'\n]*<\/?[a-z][a-z0-9]*[\s>/][^'\n]*\{|"[^"\n]*<\/?[a-z][a-z0-9]*[\s>/][^"\n]*"\s*(?:%\s*[\w(]|\+\s*[\w(]|\.format\s*\()|'[^'\n]*<\/?[a-z][a-z0-9]*[\s>/][^'\n]*'\s*(?:%\s*[\w(]|\+\s*[\w(]|\.format\s*\()|[\w)\]]\s*\+\s*[\"']\s*<\/[a-z])
 - id: team.py.xss-jinja-autoescape-default
   languages:
@@ -2406,7 +2426,7 @@ rules:
     severity: medium
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
   pattern-either:
   - patterns:
@@ -2429,7 +2449,7 @@ rules:
     severity: medium
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
     change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
   patterns:

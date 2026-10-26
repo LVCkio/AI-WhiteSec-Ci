@@ -1,19 +1,24 @@
-# AI-WhiteSec-CI - nhanh P2 Semgrep cho GitLab CI.
+# AI-WhiteSec-CI - nhanh P2 Semgrep cho GitLab CI (GitLab CE tu cai, runner Docker tren server3).
 # Dung trong .gitlab-ci.yml o goc repo:
 #   stages: [build-image, sast, compare, gate]
 #   include:
 #     - local: security-config/semgrep/ci/gitlab-ci-semgrep.yml
-# Quyet dinh (QUYET_DINH_SEMGREP.md): GitLab CI; runner Docker; Semgrep ghim 1.181.0;
+# Quyet dinh (QUYET_DINH_SEMGREP.md): GitLab CE trong may ao; runner Docker; Semgrep ghim 1.181.0;
 # finding tang audit chi ghi nhan, KHONG chan build. Job nay KHONG chan build vi finding:
 # no chi that bai khi loi cau hinh/moi truong (ma 2) hoac Semgrep loi (ma 3). Viec chan do job gate.
+#
+# Anh Docker: mac dinh dung anh CO SAN tren may chay runner (server3), build bang
+# ci/servers/server3_worker.sh; runner dat pull_policy = if-not-present nen khong can registry.
+# Neu GitLab co bat Container Registry: dat bien CI/CD AIWS_SEMGREP_IMAGE = $CI_REGISTRY_IMAGE/aiws-semgrep:<tag>
+# va AIWS_BUILD_IMAGE = "1" de job aiws-semgrep-image build + day anh.
 
 variables:
-  AIWS_RULESET_VERSION: "4.6.1"
+  AIWS_RULESET_VERSION: "4.7.0"
   AIWS_SEMGREP_VERSION: "1.181.0"
-  AIWS_SEMGREP_IMAGE: "$CI_REGISTRY_IMAGE/aiws-semgrep:$AIWS_RULESET_VERSION-semgrep$AIWS_SEMGREP_VERSION"
+  AIWS_SEMGREP_IMAGE: "aiws-semgrep:4.7.0-semgrep1.181.0"
 
-# Build va day anh len GitLab Container Registry khi bo rule / taxonomy / Dockerfile doi tren nhanh mac dinh.
-# Can runner Docker co quyen privileged (docker:dind). Chay tay duoc tu giao dien (Run pipeline).
+# Tuy chon: build va day anh len Container Registry (chi khi AIWS_BUILD_IMAGE = "1").
+# Can runner Docker privileged (docker:dind).
 aiws-semgrep-image:
   stage: build-image
   image: docker:27
@@ -22,25 +27,15 @@ aiws-semgrep-image:
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      changes:
-        - security-config/semgrep/rules/**/*
-        - security-config/semgrep/semgrep.yml
-        - security-config/semgrep/ruleset-manifest.json
-        - security-config/semgrep/.semgrepignore
-        - security-config/semgrep/tools/*.py
-        - security-config/semgrep/ci/*
-        - docs/taxonomy.yml
-    - if: $CI_PIPELINE_SOURCE == "web"
-      when: manual
-      allow_failure: true
+    - if: $AIWS_BUILD_IMAGE == "1" && $CI_REGISTRY
   script:
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
     - docker build --build-arg SEMGREP_VERSION="$AIWS_SEMGREP_VERSION"
         -f security-config/semgrep/ci/Dockerfile -t "$AIWS_SEMGREP_IMAGE" .
     - docker push "$AIWS_SEMGREP_IMAGE"
 
-# P2: quet ca repo bang bo rule team.* da dong goi trong anh, xuat semgrep-results.json + scope.json.
+# P2: quet ca repo bang bo rule team.* dong goi trong anh; xuat semgrep-results.json + scope.json.
+# Chay o moi pipeline (push moi nhanh, merge request, chay tay) - xem workflow trong .gitlab-ci.yml goc.
 aiws-semgrep:
   stage: sast
   image:
@@ -49,10 +44,6 @@ aiws-semgrep:
   needs:
     - job: aiws-semgrep-image
       optional: true
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-    - if: $CI_PIPELINE_SOURCE == "web"
   variables:
     GIT_DEPTH: "1"
   script:

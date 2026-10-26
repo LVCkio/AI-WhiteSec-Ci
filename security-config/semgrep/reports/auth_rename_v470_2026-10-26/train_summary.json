@@ -1,0 +1,751 @@
+{
+  "dataset_version": "v2.3",
+  "dataset_dir": "D:\\Đồ án FCA26IA18\\dataset_model\\dataset\\v2.3",
+  "split": "train",
+  "n": 8261,
+  "semgrep_version": "1.181.0",
+  "rules_sha256": "29aea8a801f93a4f149849c3eb256b5466a09eb314ede3822af3637e9df24a77",
+  "data_sha256": "dfc6b766a457a6c74e7ddb5690d484a558c2076657e40dc4938d3532f883b527",
+  "data_card_sha256": "8375187538f27dbf18a92609ff70cf382702a0e1f14844101768d784623077b6",
+  "config": "D:\\Đồ án FCA26IA18\\main\\security-config\\semgrep\\semgrep.yml",
+  "baseline_csv": "D:\\Đồ án FCA26IA18\\main\\security-config\\semgrep\\reports\\v23_v461_2026-10-26\\train_samples.csv",
+  "n_positive": 2773,
+  "n_negative": 5488,
+  "correct_positive": 777,
+  "correct_high": 157,
+  "negative_flagged": 978,
+  "negative_high": 67,
+  "new_correct_vs_baseline": 0,
+  "parse": {
+    "partial": 452,
+    "ok": 7717,
+    "error": 92
+  },
+  "n_scanned": 8261,
+  "rules": {
+    "team.archive-extract-all": {
+      "negative_hits": 5,
+      "correct_positive": 4,
+      "new_positive_vs_baseline": 0,
+      "positive_hits": 4
+    },
+    "team.audit.html-output-api": {
+      "negative_hits": 32,
+      "correct_positive": 9,
+      "new_positive_vs_baseline": 0,
+      "positive_hits": 9
+    },
+    "team.audit.process-api": {
+      "positive_hits": 18,
+      "correct_positive": 17,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 19
+    },
+    "team.audit.sql-api": {
+      "positive_hits": 3,
+      "correct_positive": 3,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 2
+    },
+    "team.auth-secret-equality": {
+      "positive_hits": 2,
+      "correct_positive": 2,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 1
+    },
+    "team.hardcoded-credentials": {
+      "positive_hits": 24,
+      "correct_positive": 23,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 16
+    },
+    "team.java.audit.commandline-api": {
+      "negative_hits": 8,
+      "correct_positive": 5,
+      "new_positive_vs_baseline": 0,
+      "positive_hits": 5
+    },
+    "team.java.audit.file-path-api": {
+      "positive_hits": 54,
+      "correct_positive": 39,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 71
+    },
+    "team.java.audit.process-api": {
+      "positive_hits": 1,
+      "correct_positive": 1,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 1
+    },
+    "team.java.audit.response-output": {
+      "negative_hits": 1,
+      "correct_positive": 0,
+      "new_positive_vs_baseline": 0,
+      "positive_hits": 2
+    },
+    "team.java.audit.sql-api": {
+      "positive_hits": 16,
+      "correct_positive": 16,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 8
+    },
+    "team.java.auth-weak-password-hash": {
+      "positive_hits": 1,
+      "correct_positive": 0,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 2
+    },
+    "team.java.hardcoded-secret": {
+      "positive_hits": 39,
+      "correct_positive": 39,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 9
+    },
+    "team.java.path-taint": {
+      "positive_hits": 2,
+      "correct_positive": 2,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 2
+    },
+    "team.java.path-upload-name": {
+      "positive_hits": 1,
+      "correct_positive": 1,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 1
+    },
+    "team.java.sqli-concat": {
+      "negative_hits": 11,
+      "correct_positive": 37,
+      "new_positive_vs_baseline": 0,
+      "positive_hits": 38
+    },
+    "team.java.sqli-taint": {
+      "negative_hits": 2,
+      "correct_positive": 1,
+      "new_positive_vs_baseline": 0,
+      "positive_hits": 1
+    },
+    "team.java.xss-html-concat": {
+      "positive_hits": 6,
+      "correct_positive": 4,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 7
+    },
+    "team.java.xss-taint": {
+      "positive_hits": 1,
+      "correct_positive": 0,
+      "new_positive_vs_baseline": 0
+    },
+    "team.js.audit.fs-path-api": {
+      "negative_hits": 38,
+      "correct_positive": 12,
+      "new_positive_vs_baseline": 0,
+      "positive_hits": 21
+    },
+    "team.js.audit.process-api": {
+      "positive_hits": 28,
+      "correct_positive": 27,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 18
+    },
+    "team.js.audit.sql-api": {
+      "negative_hits": 18,
+      "correct_positive": 14,
+      "new_positive_vs_baseline": 0,
+      "positive_hits": 16
+    },
+    "team.js.auth-jwt-decode": {
+      "negative_hits": 1,
+      "correct_positive": 0,
+      "new_positive_vs_baseline": 0
+    },
+    "team.js.auth-weak-password-hash": {
+      "negative_hits": 1,
+      "correct_positive": 0,
+      "new_positive_vs_baseline": 0
+    },
+    "team.js.cmd-shell": {
+      "positive_hits": 9,
+      "correct_positive": 9,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 2
+    },
+    "team.js.cmdi-taint": {
+      "positive_hits": 1,
+      "correct_positive": 1,
+      "new_positive_vs_baseline": 0
+    },
+    "team.js.hardcoded-secret": {
+      "positive_hits": 27,
+      "correct_positive": 26,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 10
+    },
+    "team.js.sqli-dynamic-query": {
+      "positive_hits": 2,
+      "correct_positive": 2,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 2
+    },
+    "team.js.sqli-string": {
+      "positive_hits": 7,
+      "correct_positive": 6,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 7
+    },
+    "team.js.sqli-taint": {
+      "negative_hits": 1,
+      "correct_positive": 1,
+      "new_positive_vs_baseline": 0,
+      "positive_hits": 1
+    },
+    "team.js.xss-dom-sink": {
+      "positive_hits": 103,
+      "correct_positive": 90,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 120
+    },
+    "team.js.xss-html-concat": {
+      "negative_hits": 62,
+      "correct_positive": 52,
+      "new_positive_vs_baseline": 0,
+      "positive_hits": 59
+    },
+    "team.js.xss-jquery-insert": {
+      "negative_hits": 49,
+      "correct_positive": 36,
+      "new_positive_vs_baseline": 0,
+      "positive_hits": 36
+    },
+    "team.js.xss-taint": {
+      "positive_hits": 4,
+      "correct_positive": 4,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 4
+    },
+    "team.os-command-injection": {
+      "positive_hits": 12,
+      "correct_positive": 12,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 4
+    },
+    "team.os-command-string-building": {
+      "negative_hits": 2,
+      "correct_positive": 4,
+      "new_positive_vs_baseline": 0,
+      "positive_hits": 4
+    },
+    "team.path-from-parameter": {
+      "negative_hits": 18,
+      "correct_positive": 10,
+      "new_positive_vs_baseline": 0,
+      "positive_hits": 12
+    },
+    "team.path-request-taint": {
+      "positive_hits": 1,
+      "correct_positive": 1,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 1
+    },
+    "team.php.audit.echo-unescaped": {
+      "negative_hits": 174,
+      "correct_positive": 66,
+      "new_positive_vs_baseline": 0,
+      "positive_hits": 99
+    },
+    "team.php.audit.gitphp-unescaped-argument": {
+      "positive_hits": 10,
+      "correct_positive": 10,
+      "new_positive_vs_baseline": 0
+    },
+    "team.php.audit.process-api": {
+      "positive_hits": 16,
+      "correct_positive": 13,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 17
+    },
+    "team.php.audit.query-single-dynamic-where": {
+      "positive_hits": 20,
+      "correct_positive": 20,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 9
+    },
+    "team.php.audit.sql-api": {
+      "negative_hits": 236,
+      "correct_positive": 170,
+      "new_positive_vs_baseline": 0,
+      "positive_hits": 199
+    },
+    "team.php.audit.xss-template-echo": {
+      "positive_hits": 11,
+      "correct_positive": 10,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 16
+    },
+    "team.php.auth-weak-password-hash": {
+      "positive_hits": 1,
+      "correct_positive": 1,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 2
+    },
+    "team.php.cmd-dynamic": {
+      "positive_hits": 8,
+      "correct_positive": 8,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 7
+    },
+    "team.php.hardcoded-password-compare": {
+      "positive_hits": 3,
+      "correct_positive": 1,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 2
+    },
+    "team.php.hardcoded-secret": {
+      "positive_hits": 5,
+      "correct_positive": 4,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 1
+    },
+    "team.php.path-taint": {
+      "positive_hits": 1,
+      "correct_positive": 0,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 2
+    },
+    "team.php.sqli-string": {
+      "positive_hits": 54,
+      "correct_positive": 33,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 89
+    },
+    "team.php.sqli-taint": {
+      "positive_hits": 11,
+      "correct_positive": 7,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 13
+    },
+    "team.php.xss-taint": {
+      "positive_hits": 17,
+      "correct_positive": 13,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 26
+    },
+    "team.php.xss-template-request": {
+      "positive_hits": 2,
+      "correct_positive": 2,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 1
+    },
+    "team.py.audit.pathlib-api": {
+      "negative_hits": 23,
+      "correct_positive": 17,
+      "new_positive_vs_baseline": 0,
+      "positive_hits": 21
+    },
+    "team.py.cmdi-taint": {
+      "negative_hits": 1,
+      "correct_positive": 1,
+      "new_positive_vs_baseline": 0,
+      "positive_hits": 1
+    },
+    "team.py.hardcoded-password-compare": {
+      "positive_hits": 1,
+      "correct_positive": 1,
+      "new_positive_vs_baseline": 0
+    },
+    "team.py.xss-jinja-autoescape-default": {
+      "negative_hits": 2,
+      "correct_positive": 3,
+      "new_positive_vs_baseline": 0,
+      "positive_hits": 4
+    },
+    "team.py.xss-taint": {
+      "positive_hits": 5,
+      "correct_positive": 5,
+      "new_positive_vs_baseline": 0
+    },
+    "team.sql-injection": {
+      "positive_hits": 3,
+      "correct_positive": 3,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 2
+    },
+    "team.sql-string-building": {
+      "positive_hits": 4,
+      "correct_positive": 3,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 2
+    },
+    "team.xss-html-string-building": {
+      "positive_hits": 21,
+      "correct_positive": 19,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 9
+    },
+    "team.xss-response-formatting": {
+      "positive_hits": 2,
+      "correct_positive": 2,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 1
+    },
+    "team.xss-unsafe-html": {
+      "positive_hits": 32,
+      "correct_positive": 32,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 11
+    }
+  },
+  "pairs": {
+    "team.hardcoded-credentials": {
+      "correct_before_with_after": 0,
+      "after_still_flagged": 0
+    },
+    "team.java.hardcoded-secret": {
+      "correct_before_with_after": 0,
+      "after_still_flagged": 0
+    },
+    "team.php.audit.echo-unescaped": {
+      "correct_before_with_after": 66,
+      "after_still_flagged": 63
+    },
+    "team.js.hardcoded-secret": {
+      "correct_before_with_after": 0,
+      "after_still_flagged": 0
+    },
+    "team.php.sqli-string": {
+      "correct_before_with_after": 33,
+      "after_still_flagged": 30
+    },
+    "team.java.audit.file-path-api": {
+      "correct_before_with_after": 39,
+      "after_still_flagged": 35
+    },
+    "team.php.hardcoded-password-compare": {
+      "correct_before_with_after": 0,
+      "after_still_flagged": 0
+    },
+    "team.php.hardcoded-secret": {
+      "correct_before_with_after": 1,
+      "after_still_flagged": 0
+    },
+    "team.php.audit.sql-api": {
+      "correct_before_with_after": 170,
+      "after_still_flagged": 139
+    },
+    "team.js.sqli-string": {
+      "correct_before_with_after": 6,
+      "after_still_flagged": 5
+    },
+    "team.path-from-parameter": {
+      "correct_before_with_after": 10,
+      "after_still_flagged": 9
+    },
+    "team.js.auth-jwt-decode": {
+      "correct_before_with_after": 0,
+      "after_still_flagged": 0
+    },
+    "team.py.hardcoded-password-compare": {
+      "correct_before_with_after": 0,
+      "after_still_flagged": 0
+    },
+    "team.js.audit.sql-api": {
+      "correct_before_with_after": 14,
+      "after_still_flagged": 14
+    },
+    "team.php.xss-taint": {
+      "correct_before_with_after": 13,
+      "after_still_flagged": 9
+    },
+    "team.audit.html-output-api": {
+      "correct_before_with_after": 9,
+      "after_still_flagged": 9
+    },
+    "team.js.xss-jquery-insert": {
+      "correct_before_with_after": 36,
+      "after_still_flagged": 36
+    },
+    "team.xss-unsafe-html": {
+      "correct_before_with_after": 32,
+      "after_still_flagged": 10
+    },
+    "team.xss-html-string-building": {
+      "correct_before_with_after": 19,
+      "after_still_flagged": 2
+    },
+    "team.java.audit.sql-api": {
+      "correct_before_with_after": 16,
+      "after_still_flagged": 3
+    },
+    "team.java.sqli-concat": {
+      "correct_before_with_after": 37,
+      "after_still_flagged": 6
+    },
+    "team.js.xss-dom-sink": {
+      "correct_before_with_after": 90,
+      "after_still_flagged": 78
+    },
+    "team.js.xss-html-concat": {
+      "correct_before_with_after": 52,
+      "after_still_flagged": 46
+    },
+    "team.js.audit.fs-path-api": {
+      "correct_before_with_after": 12,
+      "after_still_flagged": 12
+    },
+    "team.py.audit.pathlib-api": {
+      "correct_before_with_after": 17,
+      "after_still_flagged": 13
+    },
+    "team.java.audit.process-api": {
+      "correct_before_with_after": 1,
+      "after_still_flagged": 1
+    },
+    "team.js.xss-taint": {
+      "correct_before_with_after": 4,
+      "after_still_flagged": 4
+    },
+    "team.archive-extract-all": {
+      "correct_before_with_after": 4,
+      "after_still_flagged": 3
+    },
+    "team.php.audit.xss-template-echo": {
+      "correct_before_with_after": 10,
+      "after_still_flagged": 10
+    },
+    "team.php.xss-template-request": {
+      "correct_before_with_after": 2,
+      "after_still_flagged": 1
+    },
+    "team.js.audit.process-api": {
+      "correct_before_with_after": 27,
+      "after_still_flagged": 17
+    },
+    "team.audit.process-api": {
+      "correct_before_with_after": 17,
+      "after_still_flagged": 14
+    },
+    "team.os-command-injection": {
+      "correct_before_with_after": 12,
+      "after_still_flagged": 3
+    },
+    "team.php.audit.process-api": {
+      "correct_before_with_after": 13,
+      "after_still_flagged": 12
+    },
+    "team.php.cmd-dynamic": {
+      "correct_before_with_after": 8,
+      "after_still_flagged": 7
+    },
+    "team.php.audit.query-single-dynamic-where": {
+      "correct_before_with_after": 20,
+      "after_still_flagged": 3
+    },
+    "team.audit.sql-api": {
+      "correct_before_with_after": 3,
+      "after_still_flagged": 1
+    },
+    "team.sql-injection": {
+      "correct_before_with_after": 3,
+      "after_still_flagged": 1
+    },
+    "team.sql-string-building": {
+      "correct_before_with_after": 3,
+      "after_still_flagged": 1
+    },
+    "team.java.path-upload-name": {
+      "correct_before_with_after": 1,
+      "after_still_flagged": 1
+    },
+    "team.php.audit.gitphp-unescaped-argument": {
+      "correct_before_with_after": 10,
+      "after_still_flagged": 0
+    },
+    "team.py.xss-jinja-autoescape-default": {
+      "correct_before_with_after": 3,
+      "after_still_flagged": 1
+    },
+    "team.php.sqli-taint": {
+      "correct_before_with_after": 7,
+      "after_still_flagged": 5
+    },
+    "team.java.sqli-taint": {
+      "correct_before_with_after": 1,
+      "after_still_flagged": 1
+    },
+    "team.java.audit.response-output": {
+      "correct_before_with_after": 0,
+      "after_still_flagged": 0
+    },
+    "team.js.cmd-shell": {
+      "correct_before_with_after": 9,
+      "after_still_flagged": 2
+    },
+    "team.auth-secret-equality": {
+      "correct_before_with_after": 2,
+      "after_still_flagged": 1
+    },
+    "team.java.xss-html-concat": {
+      "correct_before_with_after": 4,
+      "after_still_flagged": 4
+    },
+    "team.java.audit.commandline-api": {
+      "correct_before_with_after": 5,
+      "after_still_flagged": 5
+    },
+    "team.py.xss-taint": {
+      "correct_before_with_after": 5,
+      "after_still_flagged": 0
+    },
+    "team.java.path-taint": {
+      "correct_before_with_after": 2,
+      "after_still_flagged": 2
+    },
+    "team.path-request-taint": {
+      "correct_before_with_after": 1,
+      "after_still_flagged": 0
+    },
+    "team.js.sqli-dynamic-query": {
+      "correct_before_with_after": 2,
+      "after_still_flagged": 1
+    },
+    "team.php.auth-weak-password-hash": {
+      "correct_before_with_after": 1,
+      "after_still_flagged": 1
+    },
+    "team.xss-response-formatting": {
+      "correct_before_with_after": 2,
+      "after_still_flagged": 1
+    },
+    "team.js.cmdi-taint": {
+      "correct_before_with_after": 1,
+      "after_still_flagged": 0
+    },
+    "team.js.auth-weak-password-hash": {
+      "correct_before_with_after": 0,
+      "after_still_flagged": 0
+    },
+    "team.java.xss-taint": {
+      "correct_before_with_after": 0,
+      "after_still_flagged": 0
+    },
+    "team.os-command-string-building": {
+      "correct_before_with_after": 4,
+      "after_still_flagged": 1
+    },
+    "team.js.sqli-taint": {
+      "correct_before_with_after": 1,
+      "after_still_flagged": 1
+    },
+    "team.java.auth-weak-password-hash": {
+      "correct_before_with_after": 0,
+      "after_still_flagged": 0
+    },
+    "team.php.path-taint": {
+      "correct_before_with_after": 0,
+      "after_still_flagged": 0
+    },
+    "team.py.cmdi-taint": {
+      "correct_before_with_after": 1,
+      "after_still_flagged": 1
+    }
+  },
+  "cells": {
+    "Python|HARDCODED_CREDENTIALS": {
+      "n": 56,
+      "correct": 23
+    },
+    "Python|INSECURE_AUTHENTICATION": {
+      "n": 49,
+      "correct": 2
+    },
+    "Python|OS_COMMAND_INJECTION": {
+      "n": 44,
+      "correct": 17
+    },
+    "Python|PATH_TRAVERSAL": {
+      "n": 54,
+      "correct": 24
+    },
+    "Python|SQL_INJECTION": {
+      "n": 13,
+      "correct": 3
+    },
+    "Python|XSS": {
+      "n": 86,
+      "correct": 41
+    },
+    "Java|HARDCODED_CREDENTIALS": {
+      "n": 145,
+      "correct": 39
+    },
+    "Java|INSECURE_AUTHENTICATION": {
+      "n": 66,
+      "correct": 0
+    },
+    "Java|OS_COMMAND_INJECTION": {
+      "n": 23,
+      "correct": 6
+    },
+    "Java|PATH_TRAVERSAL": {
+      "n": 84,
+      "correct": 39
+    },
+    "Java|SQL_INJECTION": {
+      "n": 92,
+      "correct": 40
+    },
+    "Java|XSS": {
+      "n": 96,
+      "correct": 4
+    },
+    "JavaScript|HARDCODED_CREDENTIALS": {
+      "n": 49,
+      "correct": 26
+    },
+    "JavaScript|INSECURE_AUTHENTICATION": {
+      "n": 16,
+      "correct": 0
+    },
+    "JavaScript|OS_COMMAND_INJECTION": {
+      "n": 63,
+      "correct": 29
+    },
+    "JavaScript|PATH_TRAVERSAL": {
+      "n": 53,
+      "correct": 12
+    },
+    "JavaScript|SQL_INJECTION": {
+      "n": 59,
+      "correct": 17
+    },
+    "JavaScript|XSS": {
+      "n": 534,
+      "correct": 149
+    },
+    "PHP|HARDCODED_CREDENTIALS": {
+      "n": 51,
+      "correct": 5
+    },
+    "PHP|INSECURE_AUTHENTICATION": {
+      "n": 50,
+      "correct": 1
+    },
+    "PHP|OS_COMMAND_INJECTION": {
+      "n": 64,
+      "correct": 23
+    },
+    "PHP|PATH_TRAVERSAL": {
+      "n": 23,
+      "correct": 0
+    },
+    "PHP|SQL_INJECTION": {
+      "n": 515,
+      "correct": 211
+    },
+    "PHP|XSS": {
+      "n": 488,
+      "correct": 66
+    }
+  },
+  "policy": "train for development, val for aggregate evaluation; no test or target applications read; no labels changed"
+}

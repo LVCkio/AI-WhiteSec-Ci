@@ -15,7 +15,7 @@ rules:
     severity: critical
     scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v42: Bo super.execute(...) khoi sink (WebGoat ProfileUpload - goi lop cha, khong phai JDBC; 2 bao nham + 1 sai lop).
   mode: taint
   pattern-sources:
@@ -73,7 +73,7 @@ rules:
     severity: critical
     scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
     rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
   patterns:
   - pattern-either:
@@ -99,7 +99,7 @@ rules:
     severity: critical
     scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   pattern-either:
   - pattern-regex: (?i)"\s*(?:select\s|insert\s+into|delete\s+from|update\s+\w+\s+set|where\s|order\s+by)[^"\n]*"\s*\+\s*[\w(]
   - pattern-regex: (?i)"[^"\n]*\b(?:where|order\s+by|values\s*\()[^"\n]*"\s*\+\s*[\w(]

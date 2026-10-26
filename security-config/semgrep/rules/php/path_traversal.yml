@@ -15,7 +15,7 @@ rules:
     severity: high
     scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
     rule_version: 1.2.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     tier_exception: 'Taint nhung o audit (ngoai le semgrep_tool.md 5.2). Train v5 chi dung lop 7/13 = 0,54: dat nguong audit 0,50, chua dat high 0,80 (TC4). Rot TC5-audit (ban va 10 > ban loi 7) nhung giu vi la rule PHP PATH_TRAVERSAL gan nhu duy nhat; can ra tay cac hit tren train v2.2 truoc khi quyet dinh giu hay tat.'
     change_v431: 'Them metadata tier_exception ghi ly do o tang audit (khong doi pattern, khong doi ket qua quet).'
     change_v43: 'Ha high -> audit theo semgrep_tool.md muc 9 / TC4: train v5 dung lop 7/13 = 0,54 < 0,80 (dat nguong audit 0,50). Ngoai le: van rot TC5-audit (ban va 10 > ban loi 7) nhung la rule PHP PATH_TRAVERSAL gan nhu duy nhat con lai. severity ERROR -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'

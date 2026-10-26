@@ -1,9 +1,20 @@
-# AI-WhiteSec-CI - pipeline GitLab CI (so do P1).
-# Moi phan mot file con; file goc chi khai bao stages va include.
-#   build-image : build/day anh Docker (Semgrep, CodeBERT)
+# AI-WhiteSec-CI - pipeline GitLab CI (so do P1), GitLab CE tu cai.
+# Moi phan mot file con; file goc chi khai bao workflow, stages va include.
+#   build-image : (tuy chon) build/day anh Docker
 #   sast        : P2 Semgrep va P3 CodeBERT chay song song tren cung pham vi file (scope.json)
 #   compare     : P4 ghep ket qua theo ham
 #   gate        : BLOCK / REVIEW / PASS (chi finding Semgrep tang high vao gate; audit chi ghi nhan)
+
+# Chay o MOI lan push (phat hien loi ngay) va merge request; khong chay trung khi nhanh da co MR mo.
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
+      when: never
+    - if: $CI_COMMIT_BRANCH
+    - if: $CI_PIPELINE_SOURCE == "web"
+    - if: $CI_PIPELINE_SOURCE == "trigger" || $CI_PIPELINE_SOURCE == "api"   # dashboard/orchestrator goi API
+
 stages: [build-image, sast, compare, gate]
 
 include:

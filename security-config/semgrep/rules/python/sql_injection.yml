@@ -15,7 +15,7 @@ rules:
     severity: critical
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v4: Rule moi trong v4.
   mode: taint
   pattern-sources:
@@ -69,7 +69,7 @@ rules:
     severity: critical
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.2.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v461: 'regex tho -> pattern AST (regex khop ca chuoi/comment; bao sai tang high khi quet repo that, p2_demo_2026-10-26).'
     change_v43: 'severity WARNING -> ERROR (semgrep_tool.md 5.3: severity suy tu confidence high).'
   patterns:
@@ -98,7 +98,7 @@ rules:
     severity: critical
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.2.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
     change_v4: Chi xet doi tuong ten giong DB (cursor/conn/db/session/engine) va bo cau truy van hang chuoi.
   pattern-either:
@@ -129,5 +129,5 @@ rules:
     severity: critical
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.0.0
-    ruleset_version: 4.6.1
+    ruleset_version: 4.7.0
   pattern-regex: (?i)(?:\bf"[^"\n]*\b(?:select\s|insert\s+into|delete\s+from|update\s+\S+\s+set|where\s|order\s+by|group\s+by|values\s*\(|join\s)[^"\n]*\{|\bf'[^'\n]*\b(?:select\s|insert\s+into|delete\s+from|update\s+\S+\s+set|where\s|order\s+by|group\s+by|values\s*\(|join\s)[^'\n]*\{|"[^"\n]*\b(?:select\s|insert\s+into|delete\s+from|update\s+\S+\s+set|where\s|order\s+by|group\s+by|values\s*\(|join\s)[^"\n]*"\s*(?:%\s*[\w(]|\+\s*[\w(]|\.format\s*\()|'[^'\n]*\b(?:select\s|insert\s+into|delete\s+from|update\s+\S+\s+set|where\s|order\s+by|group\s+by|values\s*\(|join\s)[^'\n]*'\s*(?:%\s*[\w(]|\+\s*[\w(]|\.format\s*\())

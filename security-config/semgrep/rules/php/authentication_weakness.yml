@@ -8,12 +8,13 @@ rules:
   metadata:
     cwe: CWE-916
     owasp: A02:2021
-    vuln_class: AUTHENTICATION_WEAKNESS
+    vuln_class: INSECURE_AUTHENTICATION
     confidence: audit
     severity: high
     scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
-    rule_version: 1.1.0
-    ruleset_version: 4.6.1
+    rule_version: 1.2.0
+    ruleset_version: 4.7.0
+    change_v470: 'vuln_class AUTHENTICATION_WEAKNESS -> INSECURE_AUTHENTICATION (ten lop theo taxonomy.yml v0.3.0 / vector nhan CodeBERT). Logic khong doi.'
     change_v4: Ten bien phai la mot tu ve mat khau ($pass, $user_password), khong khop chuoi con.
   pattern-either:
   - patterns:
