@@ -1,0 +1,33 @@
+# Disabled rules; excluded from the active bundle. See metadata.disabled_v460.
+rules:
+- id: team.audit.file-path-api
+  languages:
+  - python
+  severity: WARNING
+  message: A file system API receives a non-literal path (audit hint).
+  metadata:
+    cwe: CWE-22
+    owasp: A01:2021
+    vuln_class: PATH_TRAVERSAL
+    confidence: audit
+    severity: high
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.2.0
+    ruleset_version: 4.6.0
+    change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
+    previous_rule_version: 1.1.0
+    disabled_v460: 'TC4 train v2.2: 9/28 correct class (0.321), 36 negative hits. Dynamic open/remove/copy/makedirs
+      alone gives no evidence of traversal or external control; existing narrower path/taint rules remain active.'
+    disabled_date: '2026-10-26'
+  patterns:
+  - pattern-either:
+    - pattern: open($P, ...)
+    - pattern: send_file($P, ...)
+    - pattern: os.remove($P)
+    - pattern: os.unlink($P)
+    - pattern: shutil.rmtree($P, ...)
+    - pattern: shutil.copy($P, ...)
+    - pattern: os.makedirs($P, ...)
+    - pattern: $Z.extract($M, ...)
+  - pattern-not: open("...", ...)
+  - pattern-not: send_file("...", ...)

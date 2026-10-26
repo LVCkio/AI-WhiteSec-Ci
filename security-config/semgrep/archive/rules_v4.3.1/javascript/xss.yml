@@ -1,0 +1,114 @@
+# Ruleset AI-WhiteSec-CI v4.2.0 | ngon ngu: javascript | lop: XSS
+# confidence: high = ket luan truc tiep; audit = bat rong, can ra soat (luong SAST doc lap voi CodeBERT).
+# Test: tests/positive/javascript/xss.* (phai bao) va tests/negative/javascript/xss.* (khong duoc bao).
+rules:
+- id: team.js.xss-taint
+  languages:
+  - javascript
+  - typescript
+  severity: ERROR
+  message: Request data is written into an HTML response or the DOM without encoding.
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: high
+    severity: medium
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.0.0
+    ruleset_version: 4.3.1
+  mode: taint
+  pattern-sources:
+  - pattern: $REQ.query
+  - pattern: $REQ.body
+  - pattern: $REQ.params
+  - pattern: $REQ.headers
+  - pattern: $REQ.cookies
+  pattern-sinks:
+  - patterns:
+    - pattern-either:
+      - pattern: $RES.send($X)
+      - pattern: $RES.write($X)
+      - pattern: $RES.end($X)
+    - focus-metavariable: $X
+  pattern-sanitizers:
+  - pattern: escape(...)
+  - pattern: escapeHtml(...)
+  - pattern: encodeURIComponent(...)
+  - pattern: DOMPurify.sanitize(...)
+  - pattern: $HE.encode(...)
+  - pattern: parseInt(...)
+  - pattern: JSON.stringify(...)
+- id: team.js.xss-dom-sink
+  languages:
+  - javascript
+  - typescript
+  severity: WARNING
+  message: A value is inserted as raw HTML into the page (audit).
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: audit
+    severity: medium
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.0.0
+    ruleset_version: 4.3.1
+  patterns:
+  - pattern-either:
+    - pattern: $EL.innerHTML = $X
+    - pattern: $EL.outerHTML = $X
+    - pattern: document.write($X)
+    - pattern: $EL.insertAdjacentHTML($POS, $X)
+    - pattern: $S.bypassSecurityTrustHtml($X)
+    - pattern: $J.html($X)
+  - pattern-not: $EL.innerHTML = "..."
+  - pattern-not: $EL.innerHTML = ''
+  - pattern-not: document.write("...")
+  - pattern-not: $J.html("...")
+- id: team.js.xss-html-concat
+  languages:
+  - javascript
+  - typescript
+  severity: WARNING
+  message: HTML markup is concatenated with a value (audit).
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: audit
+    severity: medium
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.0.0
+    ruleset_version: 4.3.1
+  pattern-either:
+  - pattern-regex: '[''"][^''"\n]*<\/?[a-zA-Z][a-zA-Z0-9]*[\s>/][^''"\n]*[''"]\s*\+\s*(?![''"])[\w(]'
+  - pattern-regex: '`[^`\n]*<\/?[a-zA-Z][a-zA-Z0-9]*[\s>/][^`\n]*\$\{'
+- id: team.js.xss-jquery-insert
+  languages:
+  - javascript
+  - typescript
+  severity: WARNING
+  message: A non-literal value is inserted into the DOM with jQuery append/prepend/after/before/replaceWith (audit).
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: audit
+    severity: medium
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.0.0
+    ruleset_version: 4.3.1
+    change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
+  patterns:
+  - pattern-either:
+    - pattern: $E.append($X)
+    - pattern: $E.prepend($X)
+    - pattern: $E.after($X)
+    - pattern: $E.before($X)
+    - pattern: $E.replaceWith($X)
+  - pattern-not: $E.$M("...")
+  - pattern-not: $E.$M(document.createTextNode(...))
+  - metavariable-regex:
+      metavariable: $E
+      regex: (?i)^((\$|jquery)\(.*|[\w.$]*(el|elem|element|container|wrapper|div|row|list|table|tbody|body|node|panel|target|parent|box|area|holder|item|li|ul|span|cell|td|tr|html|content|dom))$

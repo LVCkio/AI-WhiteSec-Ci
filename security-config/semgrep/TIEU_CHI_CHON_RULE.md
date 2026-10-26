@@ -162,3 +162,10 @@ Kết luận: chưa có báo nhầm nào được xác nhận, rule giữ tầng
 - `tools/ruleset.py check`: rule taint ở `audit` **có** `tier_exception` (≥ 30 ký tự) không còn bị cảnh báo mà được liệt kê ở mục “Ngoại lệ tầng” của `reports/rule_test_report.md` và ở `tier_exceptions` trong manifest. Rule taint ở `audit` không ghi lý do vẫn bị cảnh báo.
 - Không đổi pattern, không đổi kết quả quét: chỉ đổi metadata, nên bundle có SHA-256 mới. Bản v4.3.0 lưu ở `archive/`.
 - Số cảnh báo của `check`: 32 → 30.
+
+## 9. Ruleset v4.4.0 (2026-10-25): R2 theo đo nền train/val v2.2
+
+- `team.php.sqli-taint` hạ high → audit (TC4: 7/11 = 0,64 trên train v2.2), ghi `tier_exception`.
+- `team.php.xss-taint` thêm sanitizer (`strip_tags`, `absint`, `esc_*`, …) sau khi rà tay các mẫu báo sai trên train; chờ đo lại, nếu train < 0,80 thì hạ audit.
+- 4 rule audit rớt TC4 (`team.php.xss-html-concat`, `team.audit.file-path-api`, `team.php.audit.auth-code`, `team.audit.auth-code`): chưa sửa pattern, lý do và đề xuất trong `reports/r2_thay_doi_v44_2026-10-25.md`.
+- Số liệu v4.3.1 lưu ở `reports/r1_v431/` (do `run_r2_v44.bat` sao lưu trước khi đo lại).

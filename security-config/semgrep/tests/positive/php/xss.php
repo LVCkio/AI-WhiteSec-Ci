@@ -1,7 +1,7 @@
 <?php
 function xss() {
     $name = $_GET['name'];
-    // ruleid: team.php.xss-taint, team.php.xss-html-concat
+    // ruleid: team.php.xss-taint
     echo "<p>Hello " . $name . "</p>";
 }
 

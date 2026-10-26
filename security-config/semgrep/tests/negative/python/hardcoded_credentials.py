@@ -17,3 +17,12 @@ def login(username, password, stored):
     if username == "admin":
         return check_password_hash(stored, password)
     return False
+
+
+# ---- v4.6.1: chuoi/comment khong phai gan gia tri
+# ok: team.hardcoded-credentials
+HELP = "Set password = 'hunter22' in your local config"
+# ok: team.hardcoded-credentials
+api_key = os.getenv("API_KEY", "")
+# ok: team.hardcoded-auth-header
+DOC = '{"Authorization": "Bearer AD3UdRPPgdzUvZ3gpmmICiBlrDp37e"}'

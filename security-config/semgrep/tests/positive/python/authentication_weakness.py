@@ -3,7 +3,7 @@ import jwt
 
 
 def check(token, key, provided_token, expected, password, user):
-    # ruleid: team.authentication-weakness, team.audit.auth-code
+    # ruleid: team.authentication-weakness
     claims = jwt.decode(token, key, options={"verify_signature": False})
     # ruleid: team.auth-secret-equality
     if provided_token == expected:
@@ -18,6 +18,6 @@ def login(user):
     session["user_id"] = user.id
 
 
-# ruleid: team.audit.auth-code
+# retired audit rule assertion retained in tests_disabled/
 def verify_token(token):
     return token

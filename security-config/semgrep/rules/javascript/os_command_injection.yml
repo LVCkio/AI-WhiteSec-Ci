@@ -16,7 +16,7 @@ rules:
     severity: critical
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
     rule_version: 1.0.0
-    ruleset_version: 4.3.1
+    ruleset_version: 4.6.1
   mode: taint
   pattern-sources:
   - pattern: $REQ.query
@@ -52,7 +52,7 @@ rules:
     severity: critical
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
     rule_version: 1.0.0
-    ruleset_version: 4.3.1
+    ruleset_version: 4.6.1
   pattern-either:
   - pattern: $CP.exec("..." + $X, ...)
   - pattern: $CP.execSync("..." + $X, ...)
@@ -75,7 +75,7 @@ rules:
     severity: critical
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
     rule_version: 1.1.0
-    ruleset_version: 4.3.1
+    ruleset_version: 4.6.1
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
     change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
   patterns:

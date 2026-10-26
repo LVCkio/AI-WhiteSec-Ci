@@ -5,17 +5,19 @@ rules:
 - id: team.php.sqli-taint
   languages:
   - php
-  severity: ERROR
+  severity: WARNING
   message: Request data reaches an SQL query.
   metadata:
     cwe: CWE-89
     owasp: A03:2021
     vuln_class: SQL_INJECTION
-    confidence: high
+    confidence: audit
     severity: critical
     scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
-    rule_version: 1.0.0
-    ruleset_version: 4.3.1
+    rule_version: 1.1.0
+    ruleset_version: 4.6.1
+    tier_exception: 'Taint nhung o audit (ngoai le semgrep_tool.md 5.2): train v2.2 dung lop 7/11 = 0,64, dat nguong audit 0,50 nhung chua dat high 0,80 (TC4); val v2.2 < 5 lan bao. Xet lai len high khi do lai tren train/val v2.2 >= 0,80.'
+    change_v44: 'Ha high -> audit theo semgrep_tool.md muc 9 / TC4 (R2, 2026-10-25): train v2.2 7/11 = 0,64 < 0,80. severity ERROR -> WARNING (muc 5.3). Pattern khong doi.'
   mode: taint
   pattern-sources:
   - pattern: $_GET
@@ -57,7 +59,7 @@ rules:
     severity: critical
     scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
     rule_version: 1.0.0
-    ruleset_version: 4.3.1
+    ruleset_version: 4.6.1
   pattern-either:
   - pattern-regex: (?i)["'](?:select\s|insert\s+into|delete\s+from|update\s+\w+\s+set)[^"'\n]*(?:["']\s*\.\s*\$|\$\w)
   - pattern-regex: (?i)["'][^"'\n]*\b(?:where|order\s+by|values\s*\()[^"'\n]*(?:["']\s*\.\s*\$|\$\w)
@@ -74,7 +76,7 @@ rules:
     severity: critical
     scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
     rule_version: 1.1.0
-    ruleset_version: 4.3.1
+    ruleset_version: 4.6.1
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
     change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
   patterns:
@@ -97,3 +99,38 @@ rules:
   - metavariable-regex:
       metavariable: $Q
       regex: (?s).*\$
+
+# ---- v4.5.0: evidence from train v2.2 paired fixes.
+- id: team.php.audit.query-single-dynamic-where
+  languages:
+  - php
+  severity: WARNING
+  message: SQL WHERE text passed to query_single is dynamic; review interpolation and use bound parameters.
+  metadata:
+    cwe: CWE-89
+    owasp: A03:2021
+    vuln_class: SQL_INJECTION
+    confidence: audit
+    severity: critical
+    scope: PHP; Navigate CMS-style query_single(select, table, where, order, bindings)
+    rule_version: 1.0.0
+    ruleset_version: 4.6.1
+    change_v45: 'Train v2.2: query_single WHERE concatenation replaced by named placeholders and bindings in paired
+      fixes. This is an audit of dynamic SQL, not proof that an unknown protect() implementation is unsafe.'
+  patterns:
+  - pattern: $DB->query_single($SELECT, $TABLE, $WHERE, ...)
+  - metavariable-regex:
+      metavariable: $DB
+      regex: (?i)^\$(?:this->)?(?:db|database|conn|pdo)$
+  - pattern-not: $DB->query_single($SELECT, $TABLE, "...", ...)
+  - metavariable-pattern:
+      metavariable: $WHERE
+      patterns:
+      - pattern: $INPUT
+      - metavariable-regex:
+          metavariable: $INPUT
+          regex: ^\$[A-Za-z_]\w*(?:->\w+)*$
+      - pattern-not-inside: intval(...)
+      - pattern-not-inside: (int) $X
+      - pattern-not-inside: floatval(...)
+  - focus-metavariable: $WHERE

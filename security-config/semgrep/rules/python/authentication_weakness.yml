@@ -1,6 +1,4 @@
-# Ruleset AI-WhiteSec-CI v4.2.0 | ngon ngu: python | lop: AUTHENTICATION_WEAKNESS
-# confidence: high = ket luan truc tiep; audit = bat rong, can ra soat (luong SAST doc lap voi CodeBERT).
-# Test: tests/positive/python/authentication_weakness.* (phai bao) va tests/negative/python/authentication_weakness.* (khong duoc bao).
+# Active ruleset v4.6.0; retired broad audit patterns are in rules_disabled/.
 rules:
 - id: team.authentication-weakness
   languages:
@@ -15,39 +13,12 @@ rules:
     severity: high
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.1.0
-    ruleset_version: 4.3.1
+    ruleset_version: 4.6.1
     change_v43: 'severity WARNING -> ERROR (semgrep_tool.md 5.3: severity suy tu confidence high).'
   pattern-either:
   - pattern: 'jwt.decode(..., options={"verify_signature": False}, ...)'
   - pattern: jwt.decode(..., verify=False, ...)
   - pattern: jwt.decode(..., algorithms=["none"], ...)
-- id: team.audit.auth-code
-  languages:
-  - python
-  severity: WARNING
-  message: Authentication-sensitive code (token/session/password/signature checks) (audit hint).
-  metadata:
-    cwe: CWE-287
-    owasp: A07:2021
-    vuln_class: AUTHENTICATION_WEAKNESS
-    confidence: audit
-    severity: high
-    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
-    rule_version: 1.2.0
-    ruleset_version: 4.3.1
-    change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
-    change_v42: Bo hmac.compare_digest/check_password/check_password_hash - day la API AN TOAN duoc khuyen nghi, rule khong duoc bao chinh cach sua.
-  pattern-either:
-  - pattern: jwt.decode(...)
-  - pattern: authenticate(...)
-  - pattern: login_user(...)
-  - pattern: $X.verify_signature(...)
-  - pattern: $X.validate_signature(...)
-  - patterns:
-    - pattern: "def $F(...):\n  ...\n"
-    - metavariable-regex:
-        metavariable: $F
-        regex: (?i)^(login|logout|authenticate|verify_(token|signature|password)|check_(auth|password|token)|is_authenticated|has_perm)
 - id: team.auth-secret-equality
   languages:
   - python
@@ -61,7 +32,7 @@ rules:
     severity: high
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.1.0
-    ruleset_version: 4.3.1
+    ruleset_version: 4.6.1
     change_v4: Chi xet bien/thuoc tinh (khong xet bieu thuc goi ham); bo so sanh voi hang so (chuyen sang rule hardcoded-password-compare).
   patterns:
   - pattern-either:
@@ -92,7 +63,7 @@ rules:
     severity: high
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.0.0
-    ruleset_version: 4.3.1
+    ruleset_version: 4.6.1
   patterns:
   - pattern-inside: "def $FUNC(...):\n  ...\n"
   - metavariable-regex:
@@ -127,7 +98,7 @@ rules:
     severity: high
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.0.0
-    ruleset_version: 4.3.1
+    ruleset_version: 4.6.1
   patterns:
   - pattern-either:
     - pattern: hashlib.md5($X, ...)
