@@ -16,7 +16,7 @@ rules:
     severity: high
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
     rule_version: 1.0.0
-    ruleset_version: 4.3.1
+    ruleset_version: 4.6.1
   pattern-either:
   - pattern: '$JWT.verify($T, $K, {..., algorithms: [..., "none", ...], ...}, ...)'
   - pattern: '$JWT.verify($T, $K, {..., ignoreExpiration: true, ...}, ...)'
@@ -34,7 +34,7 @@ rules:
     severity: high
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
     rule_version: 1.0.0
-    ruleset_version: 4.3.1
+    ruleset_version: 4.6.1
   pattern-either:
   - pattern: jwt.decode($T, ...)
   - pattern: jsonwebtoken.decode($T, ...)
@@ -52,7 +52,7 @@ rules:
     severity: high
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
     rule_version: 1.0.0
-    ruleset_version: 4.3.1
+    ruleset_version: 4.6.1
   pattern-either:
   - pattern: $CRYPTO.createHash("md5")
   - pattern: $CRYPTO.createHash("sha1")

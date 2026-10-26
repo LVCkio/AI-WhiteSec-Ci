@@ -1,0 +1,24 @@
+# Dung khi quet repo ung dung (dat file nay o goc repo duoc quet hoac truyen qua CI).
+# Thu vien ben thu ba va file sinh tu dong: khong phai code cua ung dung.
+node_modules/
+vendor/
+bower_components/
+.venv/
+venv/
+env/
+__pycache__/
+dist/
+build/
+target/
+.git/
+*.min.js
+*.bundle.js
+*.map
+# Du lieu va mo hinh cua do an
+data/
+data_versions/
+models/
+ckpt/
+# Test fixture cua chinh bo rule (co lo hong co chu y)
+security-config/semgrep/tests/
+security-config/semgrep/tests_disabled/

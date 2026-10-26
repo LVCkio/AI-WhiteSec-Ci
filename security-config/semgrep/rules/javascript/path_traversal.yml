@@ -16,7 +16,7 @@ rules:
     severity: high
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
     rule_version: 1.0.0
-    ruleset_version: 4.3.1
+    ruleset_version: 4.6.1
   mode: taint
   pattern-sources:
   - pattern: $REQ.query
@@ -58,7 +58,7 @@ rules:
     severity: high
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
     rule_version: 1.2.0
-    ruleset_version: 4.3.1
+    ruleset_version: 4.6.1
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
     change_v42: Bo duong dan ghep toan hang so (path.resolve('...'), path.join(__dirname, '...')) - Juice Shop angular.ts.
     change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).

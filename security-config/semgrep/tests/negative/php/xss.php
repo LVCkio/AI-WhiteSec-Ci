@@ -3,7 +3,7 @@ function xss() {
     $name = $_GET['name'];
     // ok: team.php.xss-taint
     echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
-    // ok: team.php.xss-taint, team.php.xss-html-concat
+    // ok: team.php.xss-taint
     echo "<p>Hello</p>";
 }
 
@@ -27,3 +27,18 @@ function show_title($row) {
 <td><?= esc_html($row['title']) ?></td>
 // ok: team.php.audit.xss-template-echo
 <td><?= intval($count) ?></td>
+
+// ---- v4.4 (R2): sanitizer bo sung cho team.php.xss-taint
+function show_tag_stripped() {
+    // ok: team.php.xss-taint
+    echo "Modules.php?modname=" . strip_tags(trim($_REQUEST['modname']));
+}
+function show_message_wp() {
+    $msg = $_GET['message'];
+    // ok: team.php.xss-taint
+    echo esc_html($msg);
+}
+function show_id_abs() {
+    // ok: team.php.xss-taint
+    echo absint($_GET['id']);
+}

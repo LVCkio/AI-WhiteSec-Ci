@@ -1,0 +1,24 @@
+# Disabled rules; excluded from the active bundle. See metadata.disabled_v460.
+rules:
+- id: team.php.xss-html-concat
+  languages:
+  - php
+  severity: WARNING
+  message: HTML markup is concatenated with a variable (audit).
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: audit
+    severity: medium
+    scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
+    rule_version: 1.1.0
+    ruleset_version: 4.6.0
+    previous_rule_version: 1.0.0
+    disabled_v460: 'TC4 train v2.2: 39/93 correct class (0.419), 156 negative hits. TC3: regex recognizes HTML string
+      construction, not an unsafe output sink; can match escaped output, comments and numeric formatting. Disabled
+      rather than assuming unlabeled positives are false.'
+    disabled_date: '2026-10-26'
+  pattern-either:
+  - pattern-regex: '["''][^"''\n]*<\/?[a-zA-Z][a-zA-Z0-9]*[\s>/][^"''\n]*["'']\s*\.\s*\$\w'
+  - pattern-regex: '"[^"\n]*<\/?[a-zA-Z][a-zA-Z0-9]*[\s>/][^"\n]*\{?\$\w[^"\n]*"'

@@ -1,4 +1,23 @@
-# Bộ rule Semgrep CE của AI-WhiteSec-CI (ruleset v4.2.0)
+# Bộ rule Semgrep CE của AI-WhiteSec-CI (ruleset v4.6.0)
+
+## Xử lý chất lượng ngày 26/10/2026 — task 1 và 2
+
+79 rule đang bật; Semgrep 1.181.0; **287/287 regression cases đạt**, manifest đã xác minh. Bốn rule audit rộng không đạt TC3/TC4 trên train đã chuyển sang `rules_disabled/`; nguồn và fixture cũ được giữ để khôi phục. Hai rule PHP bổ sung ở v4.5.0 tiếp tục hoạt động ở tầng audit.
+
+Đã rà kỹ thuật 11 mẫu cần xem lại, đối chiếu cả mã upstream đúng phiên bản. Có bốn ca chưa xác nhận SQLi tại finding, sáu ca HOLD và một ca đề xuất cách ly khi xây release dữ liệu đã duyệt. Không tự đổi nhãn gốc hoặc ghi nhận AI là người duyệt.
+
+Xem `reports/task12_v22_2026-10-26/README.md`: số đo trước/sau, độ phủ đánh đổi và bảng ký duyệt 11 mẫu. Bản nguồn trước thay đổi: `archive/semgrep_v4.5.0_before_task12_2026-10-26.zip`.
+
+## Lịch sử v4.5.0 — bổ sung ngày 26/10/2026 trên train v2.2
+
+83 rule; Semgrep 1.181.0; 299/299 regression cases đạt. Hai rule mới đều ở tầng `audit`:
+
+- `team.php.audit.query-single-dynamic-where`: kiểm tra WHERE động trong API `query_single`; bỏ qua literal, placeholder có bindings và biểu thức chỉ nối số qua `intval`/ép kiểu.
+- `team.php.audit.gitphp-unescaped-argument`: trỏ tới dòng thêm giá trị động chưa quote vào danh sách tham số của executor GitPHP `Execute(..., GIT_*, args)`; bỏ qua quote tại chỗ, số nguyên và danh sách bị thay thế trước khi gọi.
+
+Bằng chứng phát triển lấy từ train và các cặp trước/sau sửa; validation chỉ để đo. Xem `reports/r4_v22_2026-10-26/README.md` và hàng chờ review nhãn ở cùng thư mục. Không dùng rule mới để tự động đổi nhãn hoặc tự chặn build. Không dùng test hay bốn ứng dụng mục tiêu trong vòng bổ sung này.
+
+Bản nguồn v4.4.1 đã lưu ở `archive/semgrep_v4.4.1_before_r4_2026-10-26.zip`. Các mục lịch sử bên dưới mô tả những lần xây dựng trước.
 
 Thư mục này là **nguồn chính thức** của custom rule Semgrep cho luồng SAST. Luồng SAST chạy **độc lập, song song** với CodeBERT; hai luồng chỉ gặp nhau ở bước so sánh và Security Gate.
 
