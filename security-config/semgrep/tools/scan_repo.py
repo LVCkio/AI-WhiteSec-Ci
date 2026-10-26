@@ -245,9 +245,11 @@ def post_process(raw, files, classes, alias, strict: bool):
 def git_commit(repo: Path) -> str:
     try:
         r = run(["git", "-C", str(repo), "rev-parse", "HEAD"])
-        return r.stdout.strip() if r.returncode == 0 else ""
+        if r.returncode == 0 and r.stdout.strip():
+            return r.stdout.strip()
     except OSError:
-        return ""
+        pass
+    return os.environ.get("CI_COMMIT_SHA", "")   # GitLab CI (anh Docker khong co git)
 
 
 def main():

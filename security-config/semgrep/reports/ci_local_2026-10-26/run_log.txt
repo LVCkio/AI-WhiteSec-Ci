@@ -1,0 +1,650 @@
+===== bat dau Mon 10/26/2026 17:42:54.49 ===== 
+===== docker version ===== 
+client 28.5.1 / server 28.5.1
+===== docker build ===== 
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 2.64kB 0.0s done
+#1 DONE 0.0s
+
+#2 [auth] docker/dockerfile:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#3 DONE 1.7s
+
+#4 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#4 resolve docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e 0.0s done
+#4 CACHED
+
+#5 [internal] load metadata for docker.io/library/python:3.11-slim
+#5 ...
+
+#6 [auth] library/python:pull token for registry-1.docker.io
+#6 DONE 0.0s
+
+#5 [internal] load metadata for docker.io/library/python:3.11-slim
+#5 DONE 1.3s
+
+#7 [ 1/11] FROM docker.io/library/python:3.11-slim@sha256:b7a9e5f6a93d6d4a31f129bbd4bdee69efccb6ded0fb230d78aafaf37af98377
+#7 resolve docker.io/library/python:3.11-slim@sha256:b7a9e5f6a93d6d4a31f129bbd4bdee69efccb6ded0fb230d78aafaf37af98377 0.0s done
+#7 CACHED
+
+#8 [internal] load build context
+#8 transferring context: 2.60kB done
+#8 DONE 0.0s
+
+#9 [ 2/11] RUN apt-get update  && apt-get install -y --no-install-recommends git  && rm -rf /var/lib/apt/lists/*  && git config --system --add safe.directory '*'
+#9 0.518 Hit:1 http://deb.debian.org/debian trixie InRelease
+#9 0.601 Get:2 http://deb.debian.org/debian trixie-updates InRelease [47.3 kB]
+#9 0.788 Get:3 http://deb.debian.org/debian-security trixie-security InRelease [43.4 kB]
+#9 0.907 Get:4 http://deb.debian.org/debian trixie/main amd64 Packages [9678 kB]
+#9 4.118 Get:5 http://deb.debian.org/debian trixie-updates/main amd64 Packages [720 B]
+#9 4.209 Get:6 http://deb.debian.org/debian-security trixie-security/main amd64 Packages [270 kB]
+#9 4.691 Fetched 10.0 MB in 4s (2246 kB/s)
+#9 4.691 Reading package lists...
+#9 5.184 Reading package lists...
+#9 5.610 Building dependency tree...
+#9 5.722 Reading state information...
+#9 5.875 The following additional packages will be installed:
+#9 5.875   git-man libbrotli1 libcom-err2 libcurl3t64-gnutls liberror-perl libexpat1
+#9 5.875   libgdbm-compat4t64 libgnutls30t64 libgssapi-krb5-2 libidn2-0 libk5crypto3
+#9 5.875   libkeyutils1 libkrb5-3 libkrb5support0 libldap2 libnghttp2-14 libnghttp3-9
+#9 5.876   libngtcp2-16 libngtcp2-crypto-gnutls8 libp11-kit0 libperl5.40 libpsl5t64
+#9 5.877   librtmp1 libsasl2-2 libsasl2-modules-db libssh2-1t64 libtasn1-6
+#9 5.877   libunistring5 perl perl-modules-5.40
+#9 5.878 Suggested packages:
+#9 5.878   gettext-base git-doc git-email git-gui gitk gitweb git-cvs git-mediawiki
+#9 5.878   git-svn gnutls-bin krb5-doc krb5-user sensible-utils perl-doc
+#9 5.878   libterm-readline-gnu-perl | libterm-readline-perl-perl make
+#9 5.878   libtap-harness-archive-perl
+#9 5.878 Recommended packages:
+#9 5.878   patch less ssh-client krb5-locales libldap-common publicsuffix
+#9 5.878   libsasl2-modules
+#9 6.012 The following NEW packages will be installed:
+#9 6.012   git git-man libbrotli1 libcom-err2 libcurl3t64-gnutls liberror-perl
+#9 6.012   libexpat1 libgdbm-compat4t64 libgnutls30t64 libgssapi-krb5-2 libidn2-0
+#9 6.012   libk5crypto3 libkeyutils1 libkrb5-3 libkrb5support0 libldap2 libnghttp2-14
+#9 6.012   libnghttp3-9 libngtcp2-16 libngtcp2-crypto-gnutls8 libp11-kit0 libperl5.40
+#9 6.013   libpsl5t64 librtmp1 libsasl2-2 libsasl2-modules-db libssh2-1t64 libtasn1-6
+#9 6.013   libunistring5 perl perl-modules-5.40
+#9 6.184 0 upgraded, 31 newly installed, 0 to remove and 1 not upgraded.
+#9 6.184 Need to get 23.6 MB of archives.
+#9 6.184 After this operation, 119 MB of additional disk space will be used.
+#9 6.184 Get:1 http://deb.debian.org/debian-security trixie-security/main amd64 libexpat1 amd64 2.9.0-1~deb13u1 [126 kB]
+#9 6.386 Get:2 http://deb.debian.org/debian trixie/main amd64 perl-modules-5.40 all 5.40.1-6+deb13u1 [3014 kB]
+#9 7.276 Get:3 http://deb.debian.org/debian trixie/main amd64 libgdbm-compat4t64 amd64 1.24-2 [50.3 kB]
+#9 7.316 Get:4 http://deb.debian.org/debian trixie/main amd64 libperl5.40 amd64 5.40.1-6+deb13u1 [4326 kB]
+#9 9.075 Get:5 http://deb.debian.org/debian trixie/main amd64 perl amd64 5.40.1-6+deb13u1 [268 kB]
+#9 9.177 Get:6 http://deb.debian.org/debian-security trixie-security/main amd64 libbrotli1 amd64 1.1.0-2+deb13u1 [304 kB]
+#9 9.305 Get:7 http://deb.debian.org/debian trixie/main amd64 libunistring5 amd64 1.3-2 [477 kB]
+#9 9.482 Get:8 http://deb.debian.org/debian trixie/main amd64 libidn2-0 amd64 2.3.8-2 [109 kB]
+#9 9.522 Get:9 http://deb.debian.org/debian trixie/main amd64 libp11-kit0 amd64 0.25.5-3 [425 kB]
+#9 9.679 Get:10 http://deb.debian.org/debian trixie/main amd64 libtasn1-6 amd64 4.20.0-2+deb13u1 [50.1 kB]
+#9 9.695 Get:11 http://deb.debian.org/debian trixie/main amd64 libgnutls30t64 amd64 3.8.9-3+deb13u4 [1469 kB]
+#9 10.26 Get:12 http://deb.debian.org/debian trixie/main amd64 libkrb5support0 amd64 1.21.3-5+deb13u1 [33.1 kB]
+#9 10.28 Get:13 http://deb.debian.org/debian trixie/main amd64 libcom-err2 amd64 1.47.2-3+b12 [25.0 kB]
+#9 10.28 Get:14 http://deb.debian.org/debian trixie/main amd64 libk5crypto3 amd64 1.21.3-5+deb13u1 [81.2 kB]
+#9 10.32 Get:15 http://deb.debian.org/debian trixie/main amd64 libkeyutils1 amd64 1.6.3-6 [9456 B]
+#9 10.32 Get:16 http://deb.debian.org/debian trixie/main amd64 libkrb5-3 amd64 1.21.3-5+deb13u1 [326 kB]
+#9 10.43 Get:17 http://deb.debian.org/debian trixie/main amd64 libgssapi-krb5-2 amd64 1.21.3-5+deb13u1 [138 kB]
+#9 10.49 Get:18 http://deb.debian.org/debian trixie/main amd64 libsasl2-modules-db amd64 2.1.28+dfsg1-9 [19.8 kB]
+#9 10.49 Get:19 http://deb.debian.org/debian trixie/main amd64 libsasl2-2 amd64 2.1.28+dfsg1-9 [57.5 kB]
+#9 10.51 Get:20 http://deb.debian.org/debian trixie/main amd64 libldap2 amd64 2.6.10+dfsg-1 [194 kB]
+#9 10.58 Get:21 http://deb.debian.org/debian trixie/main amd64 libnghttp2-14 amd64 1.64.0-1.1+deb13u1 [76.2 kB]
+#9 10.61 Get:22 http://deb.debian.org/debian trixie/main amd64 libnghttp3-9 amd64 1.8.0-1 [67.7 kB]
+#9 10.63 Get:23 http://deb.debian.org/debian trixie/main amd64 libngtcp2-16 amd64 1.11.0-1+deb13u1 [132 kB]
+#9 10.68 Get:24 http://deb.debian.org/debian trixie/main amd64 libngtcp2-crypto-gnutls8 amd64 1.11.0-1+deb13u1 [29.5 kB]
+#9 10.69 Get:25 http://deb.debian.org/debian trixie/main amd64 libpsl5t64 amd64 0.21.2-1.1+b1 [57.2 kB]
+#9 10.71 Get:26 http://deb.debian.org/debian trixie/main amd64 librtmp1 amd64 2.4+20151223.gitfa8646d.1-2+b5 [58.8 kB]
+#9 10.73 Get:27 http://deb.debian.org/debian trixie/main amd64 libssh2-1t64 amd64 1.11.1-1+deb13u2 [245 kB]
+#9 10.81 Get:28 http://deb.debian.org/debian-security trixie-security/main amd64 libcurl3t64-gnutls amd64 8.14.1-2+deb13u7 [385 kB]
+#9 10.95 Get:29 http://deb.debian.org/debian trixie/main amd64 liberror-perl all 0.17030-1 [26.9 kB]
+#9 10.96 Get:30 http://deb.debian.org/debian trixie/main amd64 git-man all 1:2.47.3-0+deb13u1 [2205 kB]
+#9 11.73 Get:31 http://deb.debian.org/debian trixie/main amd64 git amd64 1:2.47.3-0+deb13u1 [8862 kB]
+#9 15.24 debconf: unable to initialize frontend: Dialog
+#9 15.24 debconf: (TERM is not set, so the dialog frontend is not usable.)
+#9 15.24 debconf: falling back to frontend: Readline
+#9 15.24 debconf: unable to initialize frontend: Readline
+#9 15.24 debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC entries checked: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.40.1 /usr/local/share/perl/5.40.1 /usr/lib/x86_64-linux-gnu/perl5/5.40 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.40 /usr/share/perl/5.40 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 8, <STDIN> line 31.)
+#9 15.24 debconf: falling back to frontend: Teletype
+#9 15.24 debconf: unable to initialize frontend: Teletype
+#9 15.24 debconf: (This frontend requires a controlling tty.)
+#9 15.24 debconf: falling back to frontend: Noninteractive
+#9 16.27 Fetched 23.6 MB in 9s (2613 kB/s)
+#9 16.31 Selecting previously unselected package libexpat1:amd64.
+#9 16.31 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 5658 files and directories currently installed.)
+#9 16.31 Preparing to unpack .../00-libexpat1_2.9.0-1~deb13u1_amd64.deb ...
+#9 16.32 Unpacking libexpat1:amd64 (2.9.0-1~deb13u1) ...
+#9 16.36 Selecting previously unselected package perl-modules-5.40.
+#9 16.36 Preparing to unpack .../01-perl-modules-5.40_5.40.1-6+deb13u1_all.deb ...
+#9 16.37 Unpacking perl-modules-5.40 (5.40.1-6+deb13u1) ...
+#9 16.60 Selecting previously unselected package libgdbm-compat4t64:amd64.
+#9 16.60 Preparing to unpack .../02-libgdbm-compat4t64_1.24-2_amd64.deb ...
+#9 16.61 Unpacking libgdbm-compat4t64:amd64 (1.24-2) ...
+#9 16.65 Selecting previously unselected package libperl5.40:amd64.
+#9 16.65 Preparing to unpack .../03-libperl5.40_5.40.1-6+deb13u1_amd64.deb ...
+#9 16.65 Unpacking libperl5.40:amd64 (5.40.1-6+deb13u1) ...
+#9 16.88 Selecting previously unselected package perl.
+#9 16.89 Preparing to unpack .../04-perl_5.40.1-6+deb13u1_amd64.deb ...
+#9 16.89 Unpacking perl (5.40.1-6+deb13u1) ...
+#9 16.94 Selecting previously unselected package libbrotli1:amd64.
+#9 16.94 Preparing to unpack .../05-libbrotli1_1.1.0-2+deb13u1_amd64.deb ...
+#9 16.95 Unpacking libbrotli1:amd64 (1.1.0-2+deb13u1) ...
+#9 17.01 Selecting previously unselected package libunistring5:amd64.
+#9 17.01 Preparing to unpack .../06-libunistring5_1.3-2_amd64.deb ...
+#9 17.01 Unpacking libunistring5:amd64 (1.3-2) ...
+#9 17.08 Selecting previously unselected package libidn2-0:amd64.
+#9 17.08 Preparing to unpack .../07-libidn2-0_2.3.8-2_amd64.deb ...
+#9 17.09 Unpacking libidn2-0:amd64 (2.3.8-2) ...
+#9 17.14 Selecting previously unselected package libp11-kit0:amd64.
+#9 17.14 Preparing to unpack .../08-libp11-kit0_0.25.5-3_amd64.deb ...
+#9 17.15 Unpacking libp11-kit0:amd64 (0.25.5-3) ...
+#9 17.20 Selecting previously unselected package libtasn1-6:amd64.
+#9 17.20 Preparing to unpack .../09-libtasn1-6_4.20.0-2+deb13u1_amd64.deb ...
+#9 17.21 Unpacking libtasn1-6:amd64 (4.20.0-2+deb13u1) ...
+#9 17.26 Selecting previously unselected package libgnutls30t64:amd64.
+#9 17.26 Preparing to unpack .../10-libgnutls30t64_3.8.9-3+deb13u4_amd64.deb ...
+#9 17.26 Unpacking libgnutls30t64:amd64 (3.8.9-3+deb13u4) ...
+#9 17.35 Selecting previously unselected package libkrb5support0:amd64.
+#9 17.35 Preparing to unpack .../11-libkrb5support0_1.21.3-5+deb13u1_amd64.deb ...
+#9 17.35 Unpacking libkrb5support0:amd64 (1.21.3-5+deb13u1) ...
+#9 17.39 Selecting previously unselected package libcom-err2:amd64.
+#9 17.40 Preparing to unpack .../12-libcom-err2_1.47.2-3+b12_amd64.deb ...
+#9 17.40 Unpacking libcom-err2:amd64 (1.47.2-3+b12) ...
+#9 17.45 Selecting previously unselected package libk5crypto3:amd64.
+#9 17.45 Preparing to unpack .../13-libk5crypto3_1.21.3-5+deb13u1_amd64.deb ...
+#9 17.46 Unpacking libk5crypto3:amd64 (1.21.3-5+deb13u1) ...
+#9 17.51 Selecting previously unselected package libkeyutils1:amd64.
+#9 17.51 Preparing to unpack .../14-libkeyutils1_1.6.3-6_amd64.deb ...
+#9 17.52 Unpacking libkeyutils1:amd64 (1.6.3-6) ...
+#9 17.57 Selecting previously unselected package libkrb5-3:amd64.
+#9 17.57 Preparing to unpack .../15-libkrb5-3_1.21.3-5+deb13u1_amd64.deb ...
+#9 17.57 Unpacking libkrb5-3:amd64 (1.21.3-5+deb13u1) ...
+#9 17.63 Selecting previously unselected package libgssapi-krb5-2:amd64.
+#9 17.63 Preparing to unpack .../16-libgssapi-krb5-2_1.21.3-5+deb13u1_amd64.deb ...
+#9 17.64 Unpacking libgssapi-krb5-2:amd64 (1.21.3-5+deb13u1) ...
+#9 17.68 Selecting previously unselected package libsasl2-modules-db:amd64.
+#9 17.68 Preparing to unpack .../17-libsasl2-modules-db_2.1.28+dfsg1-9_amd64.deb ...
+#9 17.69 Unpacking libsasl2-modules-db:amd64 (2.1.28+dfsg1-9) ...
+#9 17.73 Selecting previously unselected package libsasl2-2:amd64.
+#9 17.73 Preparing to unpack .../18-libsasl2-2_2.1.28+dfsg1-9_amd64.deb ...
+#9 17.73 Unpacking libsasl2-2:amd64 (2.1.28+dfsg1-9) ...
+#9 17.78 Selecting previously unselected package libldap2:amd64.
+#9 17.79 Preparing to unpack .../19-libldap2_2.6.10+dfsg-1_amd64.deb ...
+#9 17.79 Unpacking libldap2:amd64 (2.6.10+dfsg-1) ...
+#9 17.84 Selecting previously unselected package libnghttp2-14:amd64.
+#9 17.85 Preparing to unpack .../20-libnghttp2-14_1.64.0-1.1+deb13u1_amd64.deb ...
+#9 17.85 Unpacking libnghttp2-14:amd64 (1.64.0-1.1+deb13u1) ...
+#9 17.90 Selecting previously unselected package libnghttp3-9:amd64.
+#9 17.90 Preparing to unpack .../21-libnghttp3-9_1.8.0-1_amd64.deb ...
+#9 17.91 Unpacking libnghttp3-9:amd64 (1.8.0-1) ...
+#9 17.95 Selecting previously unselected package libngtcp2-16:amd64.
+#9 17.95 Preparing to unpack .../22-libngtcp2-16_1.11.0-1+deb13u1_amd64.deb ...
+#9 17.96 Unpacking libngtcp2-16:amd64 (1.11.0-1+deb13u1) ...
+#9 18.00 Selecting previously unselected package libngtcp2-crypto-gnutls8:amd64.
+#9 18.00 Preparing to unpack .../23-libngtcp2-crypto-gnutls8_1.11.0-1+deb13u1_amd64.deb ...
+#9 18.01 Unpacking libngtcp2-crypto-gnutls8:amd64 (1.11.0-1+deb13u1) ...
+#9 18.05 Selecting previously unselected package libpsl5t64:amd64.
+#9 18.05 Preparing to unpack .../24-libpsl5t64_0.21.2-1.1+b1_amd64.deb ...
+#9 18.06 Unpacking libpsl5t64:amd64 (0.21.2-1.1+b1) ...
+#9 18.10 Selecting previously unselected package librtmp1:amd64.
+#9 18.10 Preparing to unpack .../25-librtmp1_2.4+20151223.gitfa8646d.1-2+b5_amd64.deb ...
+#9 18.11 Unpacking librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2+b5) ...
+#9 18.15 Selecting previously unselected package libssh2-1t64:amd64.
+#9 18.15 Preparing to unpack .../26-libssh2-1t64_1.11.1-1+deb13u2_amd64.deb ...
+#9 18.16 Unpacking libssh2-1t64:amd64 (1.11.1-1+deb13u2) ...
+#9 18.21 Selecting previously unselected package libcurl3t64-gnutls:amd64.
+#9 18.21 Preparing to unpack .../27-libcurl3t64-gnutls_8.14.1-2+deb13u7_amd64.deb ...
+#9 18.22 Unpacking libcurl3t64-gnutls:amd64 (8.14.1-2+deb13u7) ...
+#9 18.27 Selecting previously unselected package liberror-perl.
+#9 18.27 Preparing to unpack .../28-liberror-perl_0.17030-1_all.deb ...
+#9 18.28 Unpacking liberror-perl (0.17030-1) ...
+#9 18.31 Selecting previously unselected package git-man.
+#9 18.31 Preparing to unpack .../29-git-man_1%3a2.47.3-0+deb13u1_all.deb ...
+#9 18.32 Unpacking git-man (1:2.47.3-0+deb13u1) ...
+#9 18.40 Selecting previously unselected package git.
+#9 18.40 Preparing to unpack .../30-git_1%3a2.47.3-0+deb13u1_amd64.deb ...
+#9 18.41 Unpacking git (1:2.47.3-0+deb13u1) ...
+#9 18.69 Setting up libexpat1:amd64 (2.9.0-1~deb13u1) ...
+#9 18.71 Setting up libkeyutils1:amd64 (1.6.3-6) ...
+#9 18.72 Setting up libgdbm-compat4t64:amd64 (1.24-2) ...
+#9 18.74 Setting up libbrotli1:amd64 (1.1.0-2+deb13u1) ...
+#9 18.75 Setting up libnghttp2-14:amd64 (1.64.0-1.1+deb13u1) ...
+#9 18.77 Setting up libcom-err2:amd64 (1.47.2-3+b12) ...
+#9 18.78 Setting up libkrb5support0:amd64 (1.21.3-5+deb13u1) ...
+#9 18.80 Setting up libsasl2-modules-db:amd64 (2.1.28+dfsg1-9) ...
+#9 18.81 Setting up libp11-kit0:amd64 (0.25.5-3) ...
+#9 18.83 Setting up libunistring5:amd64 (1.3-2) ...
+#9 18.84 Setting up libk5crypto3:amd64 (1.21.3-5+deb13u1) ...
+#9 18.85 Setting up libsasl2-2:amd64 (2.1.28+dfsg1-9) ...
+#9 18.87 Setting up libnghttp3-9:amd64 (1.8.0-1) ...
+#9 18.89 Setting up perl-modules-5.40 (5.40.1-6+deb13u1) ...
+#9 18.90 Setting up libtasn1-6:amd64 (4.20.0-2+deb13u1) ...
+#9 18.92 Setting up git-man (1:2.47.3-0+deb13u1) ...
+#9 18.93 Setting up libngtcp2-16:amd64 (1.11.0-1+deb13u1) ...
+#9 18.95 Setting up libkrb5-3:amd64 (1.21.3-5+deb13u1) ...
+#9 18.96 Setting up libssh2-1t64:amd64 (1.11.1-1+deb13u2) ...
+#9 18.98 Setting up libldap2:amd64 (2.6.10+dfsg-1) ...
+#9 18.99 Setting up libidn2-0:amd64 (2.3.8-2) ...
+#9 19.01 Setting up libperl5.40:amd64 (5.40.1-6+deb13u1) ...
+#9 19.03 Setting up perl (5.40.1-6+deb13u1) ...
+#9 19.05 Setting up libgssapi-krb5-2:amd64 (1.21.3-5+deb13u1) ...
+#9 19.06 Setting up libgnutls30t64:amd64 (3.8.9-3+deb13u4) ...
+#9 19.08 Setting up libpsl5t64:amd64 (0.21.2-1.1+b1) ...
+#9 19.10 Setting up liberror-perl (0.17030-1) ...
+#9 19.11 Setting up librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2+b5) ...
+#9 19.12 Setting up libngtcp2-crypto-gnutls8:amd64 (1.11.0-1+deb13u1) ...
+#9 19.14 Setting up libcurl3t64-gnutls:amd64 (8.14.1-2+deb13u7) ...
+#9 19.16 Setting up git (1:2.47.3-0+deb13u1) ...
+#9 19.18 Processing triggers for libc-bin (2.41-12+deb13u4) ...
+#9 DONE 19.4s
+
+#10 [ 3/11] RUN pip install "semgrep==1.181.0" "pyyaml==6.0.2"
+#10 1.838 Collecting semgrep==1.181.0
+#10 2.123   Downloading semgrep-1.181.0-cp310.cp311.cp312.cp313.cp314.py310.py311.py312.py313.py314-none-manylinux_2_34_x86_64.whl.metadata (22 kB)
+#10 2.273 Collecting pyyaml==6.0.2
+#10 2.335   Downloading PyYAML-6.0.2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (2.1 kB)
+#10 2.454 Collecting attrs>=21.3 (from semgrep==1.181.0)
+#10 2.518   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+#10 2.624 Collecting boltons~=21.0 (from semgrep==1.181.0)
+#10 2.697   Downloading boltons-21.0.0-py2.py3-none-any.whl.metadata (1.5 kB)
+#10 2.798 Collecting click-option-group~=0.5 (from semgrep==1.181.0)
+#10 2.859   Downloading click_option_group-0.5.9-py3-none-any.whl.metadata (5.8 kB)
+#10 2.980 Collecting click~=8.4.2 (from semgrep==1.181.0)
+#10 3.044   Downloading click-8.4.2-py3-none-any.whl.metadata (2.6 kB)
+#10 3.149 Collecting colorama~=0.4.0 (from semgrep==1.181.0)
+#10 3.215   Downloading colorama-0.4.6-py2.py3-none-any.whl.metadata (17 kB)
+#10 3.327 Collecting exceptiongroup~=1.2.0 (from semgrep==1.181.0)
+#10 3.388   Downloading exceptiongroup-1.2.2-py3-none-any.whl.metadata (6.6 kB)
+#10 3.494 Collecting glom>=23.3 (from semgrep==1.181.0)
+#10 3.557   Downloading glom-25.12.0-py3-none-any.whl.metadata (5.2 kB)
+#10 3.678 Collecting jsonschema~=4.25.1 (from semgrep==1.181.0)
+#10 3.739   Downloading jsonschema-4.25.1-py3-none-any.whl.metadata (7.6 kB)
+#10 3.869 Collecting mcp==1.29.0 (from semgrep==1.181.0)
+#10 3.937   Downloading mcp-1.29.0-py3-none-any.whl.metadata (9.3 kB)
+#10 4.060 Collecting opentelemetry-api~=1.37.0 (from semgrep==1.181.0)
+#10 4.126   Downloading opentelemetry_api-1.37.0-py3-none-any.whl.metadata (1.5 kB)
+#10 4.250 Collecting opentelemetry-sdk~=1.37.0 (from semgrep==1.181.0)
+#10 4.317   Downloading opentelemetry_sdk-1.37.0-py3-none-any.whl.metadata (1.5 kB)
+#10 4.426 Collecting opentelemetry-exporter-otlp-proto-http~=1.37.0 (from semgrep==1.181.0)
+#10 4.489   Downloading opentelemetry_exporter_otlp_proto_http-1.37.0-py3-none-any.whl.metadata (2.3 kB)
+#10 4.602 Collecting opentelemetry-instrumentation-requests~=0.58b0 (from semgrep==1.181.0)
+#10 4.669   Downloading opentelemetry_instrumentation_requests-0.66b1-py3-none-any.whl.metadata (2.6 kB)
+#10 4.775 Collecting opentelemetry-instrumentation-threading~=0.58b0 (from semgrep==1.181.0)
+#10 4.843   Downloading opentelemetry_instrumentation_threading-0.66b1-py3-none-any.whl.metadata (2.1 kB)
+#10 4.845 Requirement already satisfied: packaging>=21.0 in /usr/local/lib/python3.11/site-packages (from semgrep==1.181.0) (26.3)
+#10 4.959 Collecting peewee~=3.14 (from semgrep==1.181.0)
+#10 5.021   Downloading peewee-3.19.0-py3-none-any.whl.metadata (7.0 kB)
+#10 5.136 Collecting pyjwt<3,>=2.15.0 (from pyjwt[crypto]<3,>=2.15.0->semgrep==1.181.0)
+#10 5.208   Downloading pyjwt-2.15.1-py3-none-any.whl.metadata (3.5 kB)
+#10 5.349 Collecting requests~=2.22 (from semgrep==1.181.0)
+#10 5.410   Downloading requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+#10 5.557 Collecting rich>=13.5.2 (from semgrep==1.181.0)
+#10 5.620   Downloading rich-15.0.0-py3-none-any.whl.metadata (18 kB)
+#10 5.924 Collecting ruamel.yaml>=0.18.15 (from semgrep==1.181.0)
+#10 5.986   Downloading ruamel_yaml-0.19.1-py3-none-any.whl.metadata (16 kB)
+#10 6.116 Collecting ruamel.yaml.clib==0.2.15 (from semgrep==1.181.0)
+#10 6.177   Downloading ruamel_yaml_clib-0.2.15-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (3.5 kB)
+#10 6.279 Collecting semantic-version~=2.10.0 (from semgrep==1.181.0)
+#10 6.341   Downloading semantic_version-2.10.0-py2.py3-none-any.whl.metadata (9.7 kB)
+#10 6.460 Collecting tomli~=2.4.0 (from semgrep==1.181.0)
+#10 6.519   Downloading tomli-2.4.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (10 kB)
+#10 6.630 Collecting typing-extensions~=4.2 (from semgrep==1.181.0)
+#10 6.691   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+#10 6.809 Collecting urllib3~=2.0 (from semgrep==1.181.0)
+#10 6.868   Downloading urllib3-2.8.0-py3-none-any.whl.metadata (7.4 kB)
+#10 6.988 Collecting wcmatch~=8.3 (from semgrep==1.181.0)
+#10 7.054   Downloading wcmatch-8.5.2-py3-none-any.whl.metadata (4.8 kB)
+#10 7.176 Collecting anyio>=4.5 (from mcp==1.29.0->semgrep==1.181.0)
+#10 7.237   Downloading anyio-4.15.1-py3-none-any.whl.metadata (4.7 kB)
+#10 7.342 Collecting httpx-sse>=0.4 (from mcp==1.29.0->semgrep==1.181.0)
+#10 7.408   Downloading httpx_sse-0.4.3-py3-none-any.whl.metadata (9.7 kB)
+#10 7.523 Collecting httpx<1.0.0,>=0.27.1 (from mcp==1.29.0->semgrep==1.181.0)
+#10 7.588   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#10 7.702 Collecting pydantic-settings>=2.5.2 (from mcp==1.29.0->semgrep==1.181.0)
+#10 7.763   Downloading pydantic_settings-2.16.1-py3-none-any.whl.metadata (4.0 kB)
+#10 8.092 Collecting pydantic<3.0.0,>=2.11.0 (from mcp==1.29.0->semgrep==1.181.0)
+#10 8.152   Downloading pydantic-2.14.1-py3-none-any.whl.metadata (133 kB)
+#10 8.245      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 133.0/133.0 kB 1.5 MB/s eta 0:00:00
+#10 8.350 Collecting python-multipart>=0.0.9 (from mcp==1.29.0->semgrep==1.181.0)
+#10 8.412   Downloading python_multipart-0.0.32-py3-none-any.whl.metadata (2.1 kB)
+#10 8.525 Collecting sse-starlette>=1.6.1 (from mcp==1.29.0->semgrep==1.181.0)
+#10 8.588   Downloading sse_starlette-3.6.0-py3-none-any.whl.metadata (15 kB)
+#10 8.717 Collecting starlette>=0.27 (from mcp==1.29.0->semgrep==1.181.0)
+#10 8.786   Downloading starlette-1.10.0-py3-none-any.whl.metadata (6.6 kB)
+#10 8.890 Collecting typing-inspection>=0.4.1 (from mcp==1.29.0->semgrep==1.181.0)
+#10 8.952   Downloading typing_inspection-0.4.4-py3-none-any.whl.metadata (2.6 kB)
+#10 9.077 Collecting uvicorn>=0.31.1 (from mcp==1.29.0->semgrep==1.181.0)
+#10 9.139   Downloading uvicorn-0.54.0-py3-none-any.whl.metadata (6.6 kB)
+#10 9.257 Collecting face>=20.1.1 (from glom>=23.3->semgrep==1.181.0)
+#10 9.319   Downloading face-26.0.1-py3-none-any.whl.metadata (1.8 kB)
+#10 9.432 Collecting jsonschema-specifications>=2023.03.6 (from jsonschema~=4.25.1->semgrep==1.181.0)
+#10 9.495   Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+#10 9.616 Collecting referencing>=0.28.4 (from jsonschema~=4.25.1->semgrep==1.181.0)
+#10 9.678   Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+#10 10.18 Collecting rpds-py>=0.7.1 (from jsonschema~=4.25.1->semgrep==1.181.0)
+#10 10.24   Downloading rpds_py-2026.9.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.1 kB)
+#10 10.38 Collecting importlib-metadata<8.8.0,>=6.0 (from opentelemetry-api~=1.37.0->semgrep==1.181.0)
+#10 10.44   Downloading importlib_metadata-8.7.1-py3-none-any.whl.metadata (4.7 kB)
+#10 10.56 Collecting googleapis-common-protos~=1.52 (from opentelemetry-exporter-otlp-proto-http~=1.37.0->semgrep==1.181.0)
+#10 10.63   Downloading googleapis_common_protos-1.76.0-py3-none-any.whl.metadata (8.5 kB)
+#10 10.74 Collecting opentelemetry-exporter-otlp-proto-common==1.37.0 (from opentelemetry-exporter-otlp-proto-http~=1.37.0->semgrep==1.181.0)
+#10 10.80   Downloading opentelemetry_exporter_otlp_proto_common-1.37.0-py3-none-any.whl.metadata (1.8 kB)
+#10 10.91 Collecting opentelemetry-proto==1.37.0 (from opentelemetry-exporter-otlp-proto-http~=1.37.0->semgrep==1.181.0)
+#10 10.97   Downloading opentelemetry_proto-1.37.0-py3-none-any.whl.metadata (2.3 kB)
+#10 11.27 Collecting protobuf<7.0,>=5.0 (from opentelemetry-proto==1.37.0->opentelemetry-exporter-otlp-proto-http~=1.37.0->semgrep==1.181.0)
+#10 11.33   Downloading protobuf-6.33.6-cp39-abi3-manylinux2014_x86_64.whl.metadata (593 bytes)
+#10 11.45 Collecting opentelemetry-instrumentation==0.66b1 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 11.51   Downloading opentelemetry_instrumentation-0.66b1-py3-none-any.whl.metadata (7.2 kB)
+#10 11.62 Collecting opentelemetry-semantic-conventions==0.66b1 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 11.68   Downloading opentelemetry_semantic_conventions-0.66b1-py3-none-any.whl.metadata (2.4 kB)
+#10 11.85 Collecting opentelemetry-util-http==0.66b1 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 11.91   Downloading opentelemetry_util_http-0.66b1-py3-none-any.whl.metadata (2.6 kB)
+#10 12.55 Collecting wrapt<3.0.0,>=1.0.0 (from opentelemetry-instrumentation==0.66b1->opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 12.63   Downloading wrapt-2.5.1-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (7.6 kB)
+#10 12.65 INFO: pip is looking at multiple versions of opentelemetry-semantic-conventions to determine which version is compatible with other requirements. This could take a while.
+#10 12.65 Collecting opentelemetry-instrumentation-requests~=0.58b0 (from semgrep==1.181.0)
+#10 12.72   Downloading opentelemetry_instrumentation_requests-0.66b0-py3-none-any.whl.metadata (2.6 kB)
+#10 12.73 Collecting opentelemetry-instrumentation==0.66b0 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 12.80   Downloading opentelemetry_instrumentation-0.66b0-py3-none-any.whl.metadata (7.2 kB)
+#10 12.81 Collecting opentelemetry-semantic-conventions==0.66b0 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 12.87   Downloading opentelemetry_semantic_conventions-0.66b0-py3-none-any.whl.metadata (2.4 kB)
+#10 12.88 Collecting opentelemetry-util-http==0.66b0 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 12.96   Downloading opentelemetry_util_http-0.66b0-py3-none-any.whl.metadata (2.6 kB)
+#10 12.98 Collecting opentelemetry-instrumentation-requests~=0.58b0 (from semgrep==1.181.0)
+#10 13.12   Downloading opentelemetry_instrumentation_requests-0.65b0-py3-none-any.whl.metadata (2.6 kB)
+#10 13.14 Collecting opentelemetry-instrumentation==0.65b0 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 13.20   Downloading opentelemetry_instrumentation-0.65b0-py3-none-any.whl.metadata (7.2 kB)
+#10 13.21 Collecting opentelemetry-semantic-conventions==0.65b0 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 13.30   Downloading opentelemetry_semantic_conventions-0.65b0-py3-none-any.whl.metadata (2.4 kB)
+#10 13.30 Collecting opentelemetry-util-http==0.65b0 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 13.37   Downloading opentelemetry_util_http-0.65b0-py3-none-any.whl.metadata (2.6 kB)
+#10 13.40 Collecting opentelemetry-instrumentation-requests~=0.58b0 (from semgrep==1.181.0)
+#10 13.47   Downloading opentelemetry_instrumentation_requests-0.64b0-py3-none-any.whl.metadata (2.6 kB)
+#10 13.48 Collecting opentelemetry-instrumentation==0.64b0 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 13.58   Downloading opentelemetry_instrumentation-0.64b0-py3-none-any.whl.metadata (7.2 kB)
+#10 13.59 Collecting opentelemetry-semantic-conventions==0.64b0 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 13.66   Downloading opentelemetry_semantic_conventions-0.64b0-py3-none-any.whl.metadata (2.4 kB)
+#10 13.66 Collecting opentelemetry-util-http==0.64b0 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 13.73   Downloading opentelemetry_util_http-0.64b0-py3-none-any.whl.metadata (2.6 kB)
+#10 13.75 Collecting opentelemetry-instrumentation-requests~=0.58b0 (from semgrep==1.181.0)
+#10 13.82   Downloading opentelemetry_instrumentation_requests-0.63b1-py3-none-any.whl.metadata (2.6 kB)
+#10 13.83 Collecting opentelemetry-instrumentation==0.63b1 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 13.90   Downloading opentelemetry_instrumentation-0.63b1-py3-none-any.whl.metadata (7.2 kB)
+#10 13.91 Collecting opentelemetry-semantic-conventions==0.63b1 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 13.97   Downloading opentelemetry_semantic_conventions-0.63b1-py3-none-any.whl.metadata (2.4 kB)
+#10 13.98 Collecting opentelemetry-util-http==0.63b1 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 14.04   Downloading opentelemetry_util_http-0.63b1-py3-none-any.whl.metadata (2.6 kB)
+#10 14.07 Collecting opentelemetry-instrumentation-requests~=0.58b0 (from semgrep==1.181.0)
+#10 14.13   Downloading opentelemetry_instrumentation_requests-0.63b0-py3-none-any.whl.metadata (2.6 kB)
+#10 14.14 Collecting opentelemetry-instrumentation==0.63b0 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 14.21   Downloading opentelemetry_instrumentation-0.63b0-py3-none-any.whl.metadata (7.2 kB)
+#10 14.22 Collecting opentelemetry-semantic-conventions==0.63b0 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 14.29   Downloading opentelemetry_semantic_conventions-0.63b0-py3-none-any.whl.metadata (2.4 kB)
+#10 14.30 Collecting opentelemetry-util-http==0.63b0 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 14.38   Downloading opentelemetry_util_http-0.63b0-py3-none-any.whl.metadata (2.6 kB)
+#10 14.40 Collecting opentelemetry-instrumentation-requests~=0.58b0 (from semgrep==1.181.0)
+#10 14.47   Downloading opentelemetry_instrumentation_requests-0.62b1-py3-none-any.whl.metadata (2.7 kB)
+#10 14.48 Collecting opentelemetry-instrumentation==0.62b1 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 14.55   Downloading opentelemetry_instrumentation-0.62b1-py3-none-any.whl.metadata (7.2 kB)
+#10 14.56 Collecting opentelemetry-semantic-conventions==0.62b1 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 14.64   Downloading opentelemetry_semantic_conventions-0.62b1-py3-none-any.whl.metadata (2.5 kB)
+#10 14.66 Collecting opentelemetry-util-http==0.62b1 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 14.72   Downloading opentelemetry_util_http-0.62b1-py3-none-any.whl.metadata (2.6 kB)
+#10 14.75 Collecting opentelemetry-instrumentation-requests~=0.58b0 (from semgrep==1.181.0)
+#10 14.81   Downloading opentelemetry_instrumentation_requests-0.62b0-py3-none-any.whl.metadata (2.7 kB)
+#10 14.90 Collecting opentelemetry-instrumentation==0.62b0 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 14.97   Downloading opentelemetry_instrumentation-0.62b0-py3-none-any.whl.metadata (7.2 kB)
+#10 14.98 Collecting opentelemetry-semantic-conventions==0.62b0 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 15.05   Downloading opentelemetry_semantic_conventions-0.62b0-py3-none-any.whl.metadata (2.5 kB)
+#10 15.06 Collecting opentelemetry-util-http==0.62b0 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 15.12   Downloading opentelemetry_util_http-0.62b0-py3-none-any.whl.metadata (2.6 kB)
+#10 15.14 INFO: pip is still looking at multiple versions of opentelemetry-semantic-conventions to determine which version is compatible with other requirements. This could take a while.
+#10 15.15 Collecting opentelemetry-instrumentation-requests~=0.58b0 (from semgrep==1.181.0)
+#10 15.21   Downloading opentelemetry_instrumentation_requests-0.61b0-py3-none-any.whl.metadata (2.7 kB)
+#10 15.22 Collecting opentelemetry-instrumentation==0.61b0 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 15.28   Downloading opentelemetry_instrumentation-0.61b0-py3-none-any.whl.metadata (7.2 kB)
+#10 15.29 Collecting opentelemetry-semantic-conventions==0.61b0 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 15.35   Downloading opentelemetry_semantic_conventions-0.61b0-py3-none-any.whl.metadata (2.5 kB)
+#10 15.36 Collecting opentelemetry-util-http==0.61b0 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 15.42   Downloading opentelemetry_util_http-0.61b0-py3-none-any.whl.metadata (2.6 kB)
+#10 15.44 Collecting wrapt<2.0.0,>=1.0.0 (from opentelemetry-instrumentation==0.61b0->opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 15.50   Downloading wrapt-1.17.3-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (6.4 kB)
+#10 15.53 Collecting opentelemetry-instrumentation-requests~=0.58b0 (from semgrep==1.181.0)
+#10 15.59   Downloading opentelemetry_instrumentation_requests-0.60b1-py3-none-any.whl.metadata (2.6 kB)
+#10 15.60 Collecting opentelemetry-instrumentation==0.60b1 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 15.66   Downloading opentelemetry_instrumentation-0.60b1-py3-none-any.whl.metadata (7.2 kB)
+#10 15.67 Collecting opentelemetry-semantic-conventions==0.60b1 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 15.73   Downloading opentelemetry_semantic_conventions-0.60b1-py3-none-any.whl.metadata (2.4 kB)
+#10 15.74 Collecting opentelemetry-util-http==0.60b1 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 15.80   Downloading opentelemetry_util_http-0.60b1-py3-none-any.whl.metadata (2.6 kB)
+#10 15.82 Collecting opentelemetry-instrumentation-requests~=0.58b0 (from semgrep==1.181.0)
+#10 15.88   Downloading opentelemetry_instrumentation_requests-0.60b0-py3-none-any.whl.metadata (2.6 kB)
+#10 15.89 Collecting opentelemetry-instrumentation==0.60b0 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 15.95   Downloading opentelemetry_instrumentation-0.60b0-py3-none-any.whl.metadata (7.2 kB)
+#10 15.96 Collecting opentelemetry-semantic-conventions==0.60b0 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 16.02   Downloading opentelemetry_semantic_conventions-0.60b0-py3-none-any.whl.metadata (2.4 kB)
+#10 16.03 Collecting opentelemetry-util-http==0.60b0 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 16.09   Downloading opentelemetry_util_http-0.60b0-py3-none-any.whl.metadata (2.6 kB)
+#10 16.11 Collecting opentelemetry-instrumentation-requests~=0.58b0 (from semgrep==1.181.0)
+#10 16.17   Downloading opentelemetry_instrumentation_requests-0.59b0-py3-none-any.whl.metadata (2.6 kB)
+#10 16.18 Collecting opentelemetry-instrumentation==0.59b0 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 16.25   Downloading opentelemetry_instrumentation-0.59b0-py3-none-any.whl.metadata (7.1 kB)
+#10 16.26 Collecting opentelemetry-semantic-conventions==0.59b0 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 16.32   Downloading opentelemetry_semantic_conventions-0.59b0-py3-none-any.whl.metadata (2.4 kB)
+#10 16.33 Collecting opentelemetry-util-http==0.59b0 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 16.39   Downloading opentelemetry_util_http-0.59b0-py3-none-any.whl.metadata (2.6 kB)
+#10 16.42 Collecting opentelemetry-instrumentation-requests~=0.58b0 (from semgrep==1.181.0)
+#10 16.48   Downloading opentelemetry_instrumentation_requests-0.58b0-py3-none-any.whl.metadata (2.6 kB)
+#10 16.49 Collecting opentelemetry-instrumentation==0.58b0 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 16.55   Downloading opentelemetry_instrumentation-0.58b0-py3-none-any.whl.metadata (7.1 kB)
+#10 16.56 Collecting opentelemetry-semantic-conventions==0.58b0 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 16.62   Downloading opentelemetry_semantic_conventions-0.58b0-py3-none-any.whl.metadata (2.4 kB)
+#10 16.63 Collecting opentelemetry-util-http==0.58b0 (from opentelemetry-instrumentation-requests~=0.58b0->semgrep==1.181.0)
+#10 16.69   Downloading opentelemetry_util_http-0.58b0-py3-none-any.whl.metadata (2.6 kB)
+#10 16.72 INFO: pip is looking at multiple versions of opentelemetry-instrumentation-threading to determine which version is compatible with other requirements. This could take a while.
+#10 16.73 Collecting opentelemetry-instrumentation-threading~=0.58b0 (from semgrep==1.181.0)
+#10 16.79   Downloading opentelemetry_instrumentation_threading-0.66b0-py3-none-any.whl.metadata (2.1 kB)
+#10 16.86   Downloading opentelemetry_instrumentation_threading-0.65b0-py3-none-any.whl.metadata (2.1 kB)
+#10 16.94   Downloading opentelemetry_instrumentation_threading-0.64b0-py3-none-any.whl.metadata (2.1 kB)
+#10 17.01   Downloading opentelemetry_instrumentation_threading-0.63b1-py3-none-any.whl.metadata (2.1 kB)
+#10 17.08   Downloading opentelemetry_instrumentation_threading-0.63b0-py3-none-any.whl.metadata (2.1 kB)
+#10 17.16   Downloading opentelemetry_instrumentation_threading-0.62b1-py3-none-any.whl.metadata (2.2 kB)
+#10 17.23   Downloading opentelemetry_instrumentation_threading-0.62b0-py3-none-any.whl.metadata (2.2 kB)
+#10 17.24 INFO: pip is still looking at multiple versions of opentelemetry-instrumentation-threading to determine which version is compatible with other requirements. This could take a while.
+#10 17.31   Downloading opentelemetry_instrumentation_threading-0.61b0-py3-none-any.whl.metadata (2.2 kB)
+#10 17.39   Downloading opentelemetry_instrumentation_threading-0.60b1-py3-none-any.whl.metadata (2.1 kB)
+#10 17.46   Downloading opentelemetry_instrumentation_threading-0.60b0-py3-none-any.whl.metadata (2.1 kB)
+#10 17.54   Downloading opentelemetry_instrumentation_threading-0.59b0-py3-none-any.whl.metadata (2.1 kB)
+#10 17.61   Downloading opentelemetry_instrumentation_threading-0.58b0-py3-none-any.whl.metadata (2.1 kB)
+#10 17.99 Collecting cryptography>=3.4.0 (from pyjwt[crypto]<3,>=2.15.0->semgrep==1.181.0)
+#10 18.06   Downloading cryptography-50.0.2-cp311-abi3-manylinux_2_34_x86_64.whl.metadata (4.4 kB)
+#10 18.32 Collecting charset_normalizer<4,>=2 (from requests~=2.22->semgrep==1.181.0)
+#10 18.39   Downloading charset_normalizer-3.5.2-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (46 kB)
+#10 18.39      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 46.4/46.4 kB 22.2 MB/s eta 0:00:00
+#10 18.51 Collecting idna<4,>=2.5 (from requests~=2.22->semgrep==1.181.0)
+#10 18.57   Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+#10 18.70 Collecting certifi>=2023.5.7 (from requests~=2.22->semgrep==1.181.0)
+#10 18.76   Downloading certifi-2026.10.23-py3-none-any.whl.metadata (2.5 kB)
+#10 18.87 Collecting markdown-it-py>=2.2.0 (from rich>=13.5.2->semgrep==1.181.0)
+#10 18.93   Downloading markdown_it_py-4.2.0-py3-none-any.whl.metadata (7.4 kB)
+#10 19.08 Collecting pygments<3.0.0,>=2.13.0 (from rich>=13.5.2->semgrep==1.181.0)
+#10 19.15   Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+#10 19.29 Collecting bracex>=2.1.1 (from wcmatch~=8.3->semgrep==1.181.0)
+#10 19.35   Downloading bracex-3.2-py3-none-any.whl.metadata (3.3 kB)
+#10 19.70 Collecting cffi>=2.0.0 (from cryptography>=3.4.0->pyjwt[crypto]<3,>=2.15.0->semgrep==1.181.0)
+#10 19.76   Downloading cffi-2.1.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.5 kB)
+#10 19.90 Collecting httpcore==1.* (from httpx<1.0.0,>=0.27.1->mcp==1.29.0->semgrep==1.181.0)
+#10 19.96   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#10 20.08 Collecting h11>=0.16 (from httpcore==1.*->httpx<1.0.0,>=0.27.1->mcp==1.29.0->semgrep==1.181.0)
+#10 20.14   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#10 20.27 Collecting zipp>=3.20 (from importlib-metadata<8.8.0,>=6.0->opentelemetry-api~=1.37.0->semgrep==1.181.0)
+#10 20.33   Downloading zipp-4.1.2-py3-none-any.whl.metadata (3.6 kB)
+#10 20.47 Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich>=13.5.2->semgrep==1.181.0)
+#10 20.53   Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+#10 20.64 Collecting annotated-types>=0.6.0 (from pydantic<3.0.0,>=2.11.0->mcp==1.29.0->semgrep==1.181.0)
+#10 20.70   Downloading annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+#10 21.93 Collecting pydantic-core==2.50.1 (from pydantic<3.0.0,>=2.11.0->mcp==1.29.0->semgrep==1.181.0)
+#10 21.99   Downloading pydantic_core-2.50.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.5 kB)
+#10 22.13 Collecting python-dotenv>=1.2.2 (from pydantic-settings>=2.5.2->mcp==1.29.0->semgrep==1.181.0)
+#10 22.19   Downloading python_dotenv-1.2.4-py3-none-any.whl.metadata (29 kB)
+#10 22.41 Collecting pycparser (from cffi>=2.0.0->cryptography>=3.4.0->pyjwt[crypto]<3,>=2.15.0->semgrep==1.181.0)
+#10 22.47   Downloading pycparser-3.12-py3-none-any.whl.metadata (9.7 kB)
+#10 22.60 Downloading semgrep-1.181.0-cp310.cp311.cp312.cp313.cp314.py310.py311.py312.py313.py314-none-manylinux_2_34_x86_64.whl (70.5 MB)
+#10 48.05    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 70.5/70.5 MB 2.5 MB/s eta 0:00:00
+#10 48.11 Downloading PyYAML-6.0.2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (762 kB)
+#10 48.32    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 763.0/763.0 kB 3.6 MB/s eta 0:00:00
+#10 48.38 Downloading mcp-1.29.0-py3-none-any.whl (223 kB)
+#10 48.44    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 223.4/223.4 kB 3.9 MB/s eta 0:00:00
+#10 48.50 Downloading ruamel_yaml_clib-0.2.15-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (777 kB)
+#10 48.72    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 777.6/777.6 kB 3.7 MB/s eta 0:00:00
+#10 48.78 Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+#10 48.80    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 67.5/67.5 kB 4.9 MB/s eta 0:00:00
+#10 48.86 Downloading boltons-21.0.0-py2.py3-none-any.whl (193 kB)
+#10 48.90    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 193.7/193.7 kB 4.3 MB/s eta 0:00:00
+#10 48.96 Downloading click-8.4.2-py3-none-any.whl (119 kB)
+#10 48.99    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 119.2/119.2 kB 4.7 MB/s eta 0:00:00
+#10 49.05 Downloading click_option_group-0.5.9-py3-none-any.whl (11 kB)
+#10 49.12 Downloading colorama-0.4.6-py2.py3-none-any.whl (25 kB)
+#10 49.18 Downloading exceptiongroup-1.2.2-py3-none-any.whl (16 kB)
+#10 49.24 Downloading glom-25.12.0-py3-none-any.whl (103 kB)
+#10 49.27    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 103.3/103.3 kB 5.0 MB/s eta 0:00:00
+#10 49.33 Downloading jsonschema-4.25.1-py3-none-any.whl (90 kB)
+#10 49.36    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 90.0/90.0 kB 2.9 MB/s eta 0:00:00
+#10 49.42 Downloading opentelemetry_api-1.37.0-py3-none-any.whl (65 kB)
+#10 49.44    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 65.7/65.7 kB 4.5 MB/s eta 0:00:00
+#10 49.50 Downloading opentelemetry_exporter_otlp_proto_http-1.37.0-py3-none-any.whl (19 kB)
+#10 49.56 Downloading opentelemetry_exporter_otlp_proto_common-1.37.0-py3-none-any.whl (18 kB)
+#10 49.63 Downloading opentelemetry_proto-1.37.0-py3-none-any.whl (72 kB)
+#10 49.64    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 72.5/72.5 kB 5.5 MB/s eta 0:00:00
+#10 49.70 Downloading opentelemetry_instrumentation_requests-0.58b0-py3-none-any.whl (12 kB)
+#10 49.77 Downloading opentelemetry_instrumentation-0.58b0-py3-none-any.whl (33 kB)
+#10 49.83 Downloading opentelemetry_semantic_conventions-0.58b0-py3-none-any.whl (207 kB)
+#10 49.88    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 208.0/208.0 kB 4.6 MB/s eta 0:00:00
+#10 49.94 Downloading opentelemetry_util_http-0.58b0-py3-none-any.whl (7.7 kB)
+#10 50.00 Downloading opentelemetry_instrumentation_threading-0.58b0-py3-none-any.whl (9.3 kB)
+#10 50.08 Downloading opentelemetry_sdk-1.37.0-py3-none-any.whl (131 kB)
+#10 50.10    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 131.9/131.9 kB 4.7 MB/s eta 0:00:00
+#10 50.17 Downloading peewee-3.19.0-py3-none-any.whl (411 kB)
+#10 50.27    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 411.9/411.9 kB 4.0 MB/s eta 0:00:00
+#10 50.33 Downloading pyjwt-2.15.1-py3-none-any.whl (33 kB)
+#10 50.40 Downloading requests-2.34.2-py3-none-any.whl (73 kB)
+#10 50.41    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.1/73.1 kB 4.8 MB/s eta 0:00:00
+#10 50.47 Downloading rich-15.0.0-py3-none-any.whl (310 kB)
+#10 50.55    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 310.7/310.7 kB 4.0 MB/s eta 0:00:00
+#10 50.61 Downloading ruamel_yaml-0.19.1-py3-none-any.whl (118 kB)
+#10 50.64    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 118.1/118.1 kB 5.1 MB/s eta 0:00:00
+#10 50.70 Downloading semantic_version-2.10.0-py2.py3-none-any.whl (15 kB)
+#10 50.76 Downloading tomli-2.4.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (243 kB)
+#10 50.83    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 243.8/243.8 kB 4.0 MB/s eta 0:00:00
+#10 50.89 Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+#10 50.90    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 45.6/45.6 kB 7.9 MB/s eta 0:00:00
+#10 50.96 Downloading urllib3-2.8.0-py3-none-any.whl (135 kB)
+#10 50.99    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 135.7/135.7 kB 4.3 MB/s eta 0:00:00
+#10 51.06 Downloading wcmatch-8.5.2-py3-none-any.whl (39 kB)
+#10 51.13 Downloading anyio-4.15.1-py3-none-any.whl (132 kB)
+#10 51.16    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 132.1/132.1 kB 4.1 MB/s eta 0:00:00
+#10 51.23 Downloading bracex-3.2-py3-none-any.whl (12 kB)
+#10 51.29 Downloading certifi-2026.10.23-py3-none-any.whl (135 kB)
+#10 51.32    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 135.1/135.1 kB 4.6 MB/s eta 0:00:00
+#10 51.39 Downloading charset_normalizer-3.5.2-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (269 kB)
+#10 51.46    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 270.0/270.0 kB 4.1 MB/s eta 0:00:00
+#10 51.52 Downloading cryptography-50.0.2-cp311-abi3-manylinux_2_34_x86_64.whl (4.8 MB)
+#10 52.65    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.8/4.8 MB 4.2 MB/s eta 0:00:00
+#10 52.72 Downloading face-26.0.1-py3-none-any.whl (57 kB)
+#10 52.73    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 57.6/57.6 kB 7.9 MB/s eta 0:00:00
+#10 52.79 Downloading googleapis_common_protos-1.76.0-py3-none-any.whl (307 kB)
+#10 52.90    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 307.7/307.7 kB 2.9 MB/s eta 0:00:00
+#10 52.96 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#10 52.97    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.5/73.5 kB 4.6 MB/s eta 0:00:00
+#10 53.04 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#10 53.06    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.8/78.8 kB 4.0 MB/s eta 0:00:00
+#10 53.12 Downloading httpx_sse-0.4.3-py3-none-any.whl (9.0 kB)
+#10 53.18 Downloading idna-3.20-py3-none-any.whl (69 kB)
+#10 53.20    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 69.6/69.6 kB 4.7 MB/s eta 0:00:00
+#10 53.26 Downloading importlib_metadata-8.7.1-py3-none-any.whl (27 kB)
+#10 53.33 Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+#10 53.39 Downloading markdown_it_py-4.2.0-py3-none-any.whl (91 kB)
+#10 53.41    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 91.7/91.7 kB 4.4 MB/s eta 0:00:00
+#10 53.47 Downloading pydantic-2.14.1-py3-none-any.whl (488 kB)
+#10 53.61    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 488.1/488.1 kB 3.5 MB/s eta 0:00:00
+#10 53.69 Downloading pydantic_core-2.50.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.2 MB)
+#10 54.32    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.2/2.2 MB 3.5 MB/s eta 0:00:00
+#10 54.38 Downloading pydantic_settings-2.16.1-py3-none-any.whl (80 kB)
+#10 54.39    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 80.8/80.8 kB 5.3 MB/s eta 0:00:00
+#10 54.46 Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+#10 54.76    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 4.1 MB/s eta 0:00:00
+#10 54.82 Downloading python_multipart-0.0.32-py3-none-any.whl (30 kB)
+#10 54.89 Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+#10 54.96 Downloading rpds_py-2026.9.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (375 kB)
+#10 55.04    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 375.4/375.4 kB 4.4 MB/s eta 0:00:00
+#10 55.10 Downloading sse_starlette-3.6.0-py3-none-any.whl (17 kB)
+#10 55.17 Downloading starlette-1.10.0-py3-none-any.whl (80 kB)
+#10 55.18    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 80.6/80.6 kB 6.4 MB/s eta 0:00:00
+#10 55.24 Downloading typing_inspection-0.4.4-py3-none-any.whl (14 kB)
+#10 55.30 Downloading uvicorn-0.54.0-py3-none-any.whl (87 kB)
+#10 55.32    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 87.4/87.4 kB 6.1 MB/s eta 0:00:00
+#10 55.38 Downloading wrapt-1.17.3-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (82 kB)
+#10 55.40    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 82.4/82.4 kB 6.1 MB/s eta 0:00:00
+#10 55.46 Downloading annotated_types-0.8.0-py3-none-any.whl (13 kB)
+#10 55.52 Downloading cffi-2.1.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (217 kB)
+#10 55.56    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 217.8/217.8 kB 5.7 MB/s eta 0:00:00
+#10 55.62 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#10 55.69 Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+#10 55.75 Downloading protobuf-6.33.6-cp39-abi3-manylinux2014_x86_64.whl (323 kB)
+#10 55.83    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 323.4/323.4 kB 4.5 MB/s eta 0:00:00
+#10 55.89 Downloading python_dotenv-1.2.4-py3-none-any.whl (23 kB)
+#10 55.96 Downloading zipp-4.1.2-py3-none-any.whl (10 kB)
+#10 56.02 Downloading pycparser-3.12-py3-none-any.whl (62 kB)
+#10 56.03    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 62.6/62.6 kB 7.0 MB/s eta 0:00:00
+#10 56.29 Installing collected packages: peewee, boltons, zipp, wrapt, urllib3, typing-extensions, tomli, semantic-version, ruamel.yaml.clib, ruamel.yaml, rpds-py, pyyaml, python-multipart, python-dotenv, pyjwt, pygments, pycparser, protobuf, opentelemetry-util-http, mdurl, idna, httpx-sse, h11, face, exceptiongroup, colorama, click, charset_normalizer, certifi, bracex, attrs, annotated-types, wcmatch, uvicorn, typing-inspection, requests, referencing, pydantic-core, opentelemetry-proto, markdown-it-py, importlib-metadata, httpcore, googleapis-common-protos, glom, click-option-group, cffi, anyio, starlette, rich, pydantic, opentelemetry-exporter-otlp-proto-common, opentelemetry-api, jsonschema-specifications, httpx, cryptography, sse-starlette, pydantic-settings, opentelemetry-semantic-conventions, jsonschema, opentelemetry-sdk, opentelemetry-instrumentation, mcp, opentelemetry-instrumentation-threading, opentelemetry-instrumentation-requests, opentelemetry-exporter-otlp-proto-http, semgrep
+#10 61.53 Successfully installed annotated-types-0.8.0 anyio-4.15.1 attrs-26.1.0 boltons-21.0.0 bracex-3.2 certifi-2026.10.23 cffi-2.1.1 charset_normalizer-3.5.2 click-8.4.2 click-option-group-0.5.9 colorama-0.4.6 cryptography-50.0.2 exceptiongroup-1.2.2 face-26.0.1 glom-25.12.0 googleapis-common-protos-1.76.0 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 httpx-sse-0.4.3 idna-3.20 importlib-metadata-8.7.1 jsonschema-4.25.1 jsonschema-specifications-2025.9.1 markdown-it-py-4.2.0 mcp-1.29.0 mdurl-0.1.2 opentelemetry-api-1.37.0 opentelemetry-exporter-otlp-proto-common-1.37.0 opentelemetry-exporter-otlp-proto-http-1.37.0 opentelemetry-instrumentation-0.58b0 opentelemetry-instrumentation-requests-0.58b0 opentelemetry-instrumentation-threading-0.58b0 opentelemetry-proto-1.37.0 opentelemetry-sdk-1.37.0 opentelemetry-semantic-conventions-0.58b0 opentelemetry-util-http-0.58b0 peewee-3.19.0 protobuf-6.33.6 pycparser-3.12 pydantic-2.14.1 pydantic-core-2.50.1 pydantic-settings-2.16.1 pygments-2.21.0 pyjwt-2.15.1 python-dotenv-1.2.4 python-multipart-0.0.32 pyyaml-6.0.2 referencing-0.37.0 requests-2.34.2 rich-15.0.0 rpds-py-2026.9.1 ruamel.yaml-0.19.1 ruamel.yaml.clib-0.2.15 semantic-version-2.10.0 semgrep-1.181.0 sse-starlette-3.6.0 starlette-1.10.0 tomli-2.4.1 typing-extensions-4.16.0 typing-inspection-0.4.4 urllib3-2.8.0 uvicorn-0.54.0 wcmatch-8.5.2 wrapt-1.17.3 zipp-4.1.2
+#10 61.53 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+#10 DONE 62.7s
+
+#11 [ 4/11] WORKDIR /opt/aiws
+#11 DONE 0.1s
+
+#12 [ 5/11] COPY docs/taxonomy.yml docs/taxonomy.yml
+#12 DONE 0.1s
+
+#13 [ 6/11] COPY security-config/semgrep/semgrep.yml      security-config/semgrep/ruleset-manifest.json      security-config/semgrep/.semgrepignore      security-config/semgrep/
+#13 DONE 0.1s
+
+#14 [ 7/11] COPY security-config/semgrep/rules/ security-config/semgrep/rules/
+#14 DONE 0.0s
+
+#15 [ 8/11] COPY security-config/semgrep/tools/ruleset.py      security-config/semgrep/tools/scan_repo.py      security-config/semgrep/tools/
+#15 DONE 0.1s
+
+#16 [ 9/11] RUN test "$(semgrep --version 2>/dev/null | tail -n 1)" = "1.181.0"  && python security-config/semgrep/tools/ruleset.py verify
+#16 3.751 [verify] DAT
+#16 DONE 3.8s
+
+#17 [10/11] RUN useradd --create-home --uid 10001 scanner
+#17 DONE 0.3s
+
+#18 [11/11] WORKDIR /src
+#18 DONE 0.1s
+
+#19 exporting to image
+#19 exporting layers
+#19 exporting layers 9.9s done
+#19 exporting manifest sha256:ed2eeea22646290b2b7b6f153d305c216b57eb69741cbc5b154ba91c08279587 0.0s done
+#19 exporting config sha256:8fdd6ac94e8036da6ecd16819c85633b8265fcf210b823c63964d770f17c08b0 0.0s done
+#19 exporting attestation manifest sha256:c1a7a44980fc3f2f3c1740ce44297d22aa1d8d962d25ff7ce01023f976a3677e 0.0s done
+#19 exporting manifest list sha256:8517cd5a3d61c8b62f29412f15ab3f99d008f4bacdd184f60e76dcc3dbd0aea0 0.0s done
+#19 naming to docker.io/library/aiws-semgrep:4.6.1-semgrep1.181.0 done
+#19 unpacking to docker.io/library/aiws-semgrep:4.6.1-semgrep1.181.0
+#19 unpacking to docker.io/library/aiws-semgrep:4.6.1-semgrep1.181.0 2.8s done
+#19 DONE 12.8s
+build exit: 0 
+===== docker run: quet AI-WhiteSec-Ci ===== 
+[scan_repo] 15 file trong pham vi (loai 6); parse {'ok': 15, 'partial': 0, 'failed': 0, 'not_scanned': 0}; 189 finding (high 0, audit 189); canh bao cau hinh 0 -> /out/semgrep-results.json
+scan exit: 0 
+===== kich thuoc anh ===== 
+REPOSITORY     TAG                    IMAGE ID       CREATED          SIZE
+aiws-semgrep   4.6.1-semgrep1.181.0   8517cd5a3d61   22 seconds ago   791MB
+===== XONG Mon 10/26/2026 17:44:47.28 ===== 

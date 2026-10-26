@@ -1,0 +1,9 @@
+# Chi dua vao anh nhung file can de quet (BuildKit doc file nay vi nam canh Dockerfile)
+*
+!docs/taxonomy.yml
+!security-config/semgrep/semgrep.yml
+!security-config/semgrep/ruleset-manifest.json
+!security-config/semgrep/.semgrepignore
+!security-config/semgrep/rules/**
+!security-config/semgrep/tools/ruleset.py
+!security-config/semgrep/tools/scan_repo.py

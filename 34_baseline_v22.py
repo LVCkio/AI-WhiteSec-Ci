@@ -75,7 +75,7 @@ def short_id(check_id):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--split", choices=["train", "val"], required=True)
-    ap.add_argument("--data", type=Path, default=ROOT / "v2.2")
+    ap.add_argument("--data", type=Path, default=ROOT.parent / "dataset_model" / "dataset" / "v2.3")
     ap.add_argument("--rules", type=Path, default=SEMGREP_DIR / "semgrep.yml")
     ap.add_argument("--keep-raw", action="store_true", help="giu semgrep.json tho trong sast_results/r1_v22/")
     a = ap.parse_args()
@@ -88,7 +88,7 @@ def main():
         raise SystemExit(f"Semgrep {ver} != {REQUIRED_SEMGREP}: dung lai")
     manifest = json.loads((SEMGREP_DIR / "ruleset-manifest.json").read_text(encoding="utf-8"))
     card = a.data / "DATA_CARD.md"
-    head = {"dataset_version": "v2.2", "split": a.split, "split_file": data_file.name,
+    head = {"dataset_version": a.data.name, "split": a.split, "split_file": data_file.name,
             "split_file_sha256": sha256_file(data_file),
             "data_card_sha256": sha256_file(card) if card.is_file() else "",
             "semgrep_version": ver, "ruleset_version": manifest.get("ruleset_version", ""),

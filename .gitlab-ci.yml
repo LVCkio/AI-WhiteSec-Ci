@@ -1,0 +1,12 @@
+# AI-WhiteSec-CI - pipeline GitLab CI (so do P1).
+# Moi phan mot file con; file goc chi khai bao stages va include.
+#   build-image : build/day anh Docker (Semgrep, CodeBERT)
+#   sast        : P2 Semgrep va P3 CodeBERT chay song song tren cung pham vi file (scope.json)
+#   compare     : P4 ghep ket qua theo ham
+#   gate        : BLOCK / REVIEW / PASS (chi finding Semgrep tang high vao gate; audit chi ghi nhan)
+stages: [build-image, sast, compare, gate]
+
+include:
+  - local: security-config/semgrep/ci/gitlab-ci-semgrep.yml   # P2 - Semgrep (nguoi phu trach Semgrep)
+  # - local: codebert/ci/gitlab-ci-codebert.yml              # P3 - CodeBERT (leader): bo comment khi co file
+  # - local: ci/gitlab-ci-gate.yml                           # P4 + Gate: bo comment khi co file

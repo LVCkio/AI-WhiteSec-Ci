@@ -1,4 +1,7 @@
-"""Evaluate local rules on v2.2 train/val; never accepts the held-out test split.
+"""Evaluate local rules on dataset v2.3 train/val; never accepts the held-out test split.
+
+Dataset: v2.3 (ban moi nhat; v2.2 khong con dung de do), read from --data-root
+(default: <thu muc do an>/dataset_model/dataset; fallback main/<version> if present).
 
 Uses the same fragment normalisation and Semgrep mapping as 34_baseline_v22.py.
 Output contains sample IDs and metrics, never source code or replacement labels.
@@ -17,6 +20,15 @@ import tempfile
 import yaml
 
 MAIN = Path(__file__).resolve().parents[3]
+DATA_ROOT = MAIN.parent / 'dataset_model' / 'dataset'
+
+
+def dataset_dir(version, root=None):
+    root = Path(root) if root else DATA_ROOT
+    for d in (root / version, MAIN / version):
+        if (d / 'train.jsonl').is_file():
+            return d
+    raise SystemExit(f'Khong tim thay dataset {version} trong {root} hoac {MAIN}')
 BASE = MAIN / 'security-config' / 'semgrep'
 sys.stdout.reconfigure(encoding='utf-8')
 spec = importlib.util.spec_from_file_location('v22_baseline', MAIN / '34_baseline_v22.py')
@@ -29,12 +41,13 @@ def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def evaluate(split, config, output, baseline_csv=None):
+def evaluate(split, config, output, baseline_csv=None, dataset='v2.3', data_root=None):
     exe = sast.find_executable('semgrep')
     version = sast.run_command([exe, '--version']).stdout.strip().splitlines()[-1].strip()
     if version != '1.181.0':
         raise SystemExit(f'Semgrep {version} != 1.181.0')
-    source = MAIN / 'v2.2' / f'{split}.jsonl'
+    ddir = dataset_dir(dataset, data_root)
+    source = ddir / f'{split}.jsonl'
     rows = baseline.load_rows(source)
     config_hash = digest(config)
     config_rules = yaml.safe_load(config.read_text(encoding='utf-8'))['rules']
@@ -127,8 +140,8 @@ def evaluate(split, config, output, baseline_csv=None):
     neg=[r for r in records if r['class']==baseline.NEG_NAME]
     if digest(config) != config_hash:
         raise RuntimeError('Rule configuration changed during evaluation; discard this run')
-    summary={'split':split,'n':len(rows),'semgrep_version':version,'rules_sha256':config_hash,
-             'data_sha256':digest(source),'data_card_sha256':digest(MAIN/'v2.2/DATA_CARD.md'),
+    summary={'dataset_version':dataset,'dataset_dir':str(ddir),'split':split,'n':len(rows),'semgrep_version':version,'rules_sha256':config_hash,
+             'data_sha256':digest(source),'data_card_sha256':digest(ddir/'DATA_CARD.md'),
              'config':str(config.resolve()),'baseline_csv':str(baseline_csv) if baseline_csv else None,
              'n_positive':len(pos),'n_negative':len(neg),'correct_positive':sum(r['correct_any'] for r in pos),
              'correct_high':sum(r['correct_high'] for r in pos),
@@ -151,5 +164,7 @@ if __name__=='__main__':
     ap.add_argument('--config',required=True,type=Path)
     ap.add_argument('--out',required=True,type=Path)
     ap.add_argument('--baseline',type=Path)
+    ap.add_argument('--dataset',default='v2.3',choices=['v2.3'])
+    ap.add_argument('--data-root',type=Path)
     args=ap.parse_args()
-    evaluate(args.split,args.config.resolve(),args.out.resolve(),args.baseline.resolve() if args.baseline else None)
+    evaluate(args.split,args.config.resolve(),args.out.resolve(),args.baseline.resolve() if args.baseline else None,args.dataset,args.data_root)
