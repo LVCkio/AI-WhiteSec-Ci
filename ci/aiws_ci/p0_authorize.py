@@ -77,6 +77,18 @@ def check_model(repo: Path, store: Path):
     return res
 
 
+def check_code(repo: Path):
+    """Ma P0-P5 chay tu anh Docker (/opt/aiws/ci). Neu repo dang quet chinh la AI-WhiteSec-Ci thi so ma trong anh
+    voi ma trong commit: lech -> anh cu, phai build lai (tranh lan sua code ma job van chay ban cu)."""
+    src = repo / "ci" / "aiws_ci"
+    img = C.CI_HOME / "aiws_ci"
+    if not src.is_dir() or src.resolve() == img.resolve():
+        return {"status": "skipped", "reason": "repo khong chua ci/aiws_ci hoac dang chay truc tiep tu repo"}
+    diff = sorted(p.name for p in src.glob("*.py")
+                  if not (img / p.name).is_file() or C.sha256_file(p) != C.sha256_file(img / p.name))
+    return {"status": "ok" if not diff else "stale", "files_differ": diff}
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--repo", type=Path, required=True)
@@ -87,8 +99,9 @@ def main():
     expected = os.environ.get("AIWS_EXPECTED_SHA") or os.environ.get("CI_COMMIT_SHA", "")
     src = check_source(repo, expected)
     model = check_model(repo, a.model_store)
+    code = check_code(repo)
     out = {"schema": "aiws.p0.authorize.v1", "checked_at": C.now(), "source": src, "model": model,
-           "tools": {"semgrep_image": os.environ.get("AIWS_SEMGREP_IMAGE"),
+           "code": code, "tools": {"semgrep_image": os.environ.get("AIWS_SEMGREP_IMAGE"),
                      "codebert_image": os.environ.get("AIWS_CODEBERT_IMAGE"),
                      "ruleset_version": os.environ.get("AIWS_RULESET_VERSION")},
            "ci": C.ci_context()}
@@ -96,6 +109,10 @@ def main():
     if not src["ok"]:
         C.die(STEP, f"ma nguon khong dung commit duoc giao (HEAD {src['head'][:12]}, "
                     f"mong doi {str(expected)[:12]}, sach={src['clean']}) -> tu choi quet", C.EXIT_CONFIG)
+    if code["status"] == "stale":
+        C.die(STEP, f"anh {os.environ.get('AIWS_CODEBERT_IMAGE', 'aiws-codebert')} chua ma CU (lech: "
+                    f"{', '.join(code['files_differ'])}) -> tren Server 3: git pull roi "
+                    f"docker build -f ci/docker/Dockerfile.codebert -t aiws-codebert:0.1.0 .", C.EXIT_CONFIG)
     C.log(STEP, f"ma nguon OK @ {src['head'][:12]}; model {model.get('name', '?')}: {model['status']}"
                 f"{' (' + model.get('error', '') + ')' if model['status'] != 'ok' else ''}"
                 f"; {model.get('files_checked', 0)} file da kiem SHA-256")

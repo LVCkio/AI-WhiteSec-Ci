@@ -96,6 +96,8 @@ Tài khoản `whitesec_ci` chỉ cần `SELECT, INSERT` trên `public.projects` 
 
 Không cần build lại ảnh `aiws-codebert` khi chỉ đổi model.
 
+**Khi sửa mã `ci/aiws_ci/*.py`**: các job P0–P5 chạy mã đóng trong ảnh `aiws-codebert` (`/opt/aiws/ci`), không chạy mã trong commit. Sau khi merge/push, trên Server 3 chạy `git pull` rồi `docker build -f ci/docker/Dockerfile.codebert -t aiws-codebert:0.1.0 .` (dùng cache, ~1 phút). Nếu quên, `p0-authorize` dừng với thông báo `anh aiws-codebert chua ma CU (lech: ...)`. Đổi `ci/gate-policy.json` hay `ci/model-lock.json` thì không cần build lại (đọc từ commit).
+
 ## 7. Còn chờ nhóm quyết
 
 - Ngưỡng/quy tắc Gate chính thức (Phase 6.2): hiện CodeBERT một mình chỉ đưa vào REVIEW.
