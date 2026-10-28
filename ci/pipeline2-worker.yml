@@ -1,0 +1,126 @@
+# =====================================================================================================
+# AI-WhiteSec-CI - PIPELINE 2 (CON) - chay tren Server 3 (Security Worker, runner Docker tag aiws-worker)
+# Do PIPELINE 1 (CHA, .gitlab-ci.yml) goi qua trigger; KHONG tu chay doc lap.
+#
+#   authorize : P0 cap quyen - dung commit duoc giao, model dung phien ban da duyet (SHA-256 tung file),
+#               ghi lai phien ban cong cu; nhan ke hoach quet (plan.env) tu pipeline cha
+#   prepare   : P1 pham vi file (chung voi Semgrep) + tach ham bang tree-sitter -> danh sach don vi
+#   sast      : P2 Semgrep (anh aiws-semgrep, ruleset ghim) || P3 CodeBERT (anh aiws-codebert, model tu kho)
+#   gate      : P4 Normalize & Merge + Security Gate -> BLOCK lam pipeline that bai (chan merge)
+#   persist   : P5 ghi bao cao schema 3 vao PostgreSQL Server 2 (Dashboard doc)
+#
+# Runner Docker tren Server 3 phai mount kho model: volumes = ["/srv/aiws/models:/models:ro"] (ci/README.md).
+# =====================================================================================================
+
+include:
+  - local: security-config/semgrep/ci/gitlab-ci-semgrep.yml   # dinh nghia aiws-semgrep (P2) va aiws-semgrep-image
+
+variables:
+  AIWS_WORKER_TAG: "aiws-worker"
+  AIWS_CODEBERT_IMAGE: "aiws-codebert:0.1.0"   # build bang ci/servers/server3_pipeline2.sh
+  AIWS_MODEL_STORE: "/models"                  # mount tu /srv/aiws/models tren Server 3
+  AIWS_OUT: "aiws-out"
+  AIWS_UNIT_BACKEND: "treesitter"              # nhom chot 27/10; "lizard" chi de do do lech voi du lieu train
+
+stages: [build-image, authorize, prepare, sast, gate, persist]
+
+.aiws-python:
+  image:
+    name: "$AIWS_CODEBERT_IMAGE"
+    entrypoint: [""]
+  tags: [$AIWS_WORKER_TAG]
+
+p0-authorize:
+  extends: .aiws-python
+  stage: authorize
+  needs:
+    - pipeline: $AIWS_PARENT_PIPELINE_ID      # ke hoach quet do Pipeline 1 lap (dotenv plan.env)
+      job: p1-plan
+  variables:
+    GIT_DEPTH: "1"
+  script:
+    - python -m aiws_ci.p0_authorize --repo "$CI_PROJECT_DIR" --out-dir "$AIWS_OUT"
+    - |
+      {
+        echo "AIWS_SCAN_MODE=${AIWS_SCAN_MODE:-full}"; echo "AIWS_BASE_SHA=${AIWS_BASE_SHA:-}"
+        echo "AIWS_EXPECTED_SHA=${AIWS_EXPECTED_SHA:-$CI_COMMIT_SHA}"; echo "AIWS_PIPELINE_SOURCE=${AIWS_PIPELINE_SOURCE:-}"
+        echo "AIWS_PARENT_PIPELINE_URL=${AIWS_PARENT_PIPELINE_URL:-}"; echo "AIWS_MR_IID=${AIWS_MR_IID:-}"
+      } > aiws.env
+  artifacts:
+    when: always
+    expire_in: 30 days
+    paths: ["$AIWS_OUT/p0-authorize.json"]
+    reports:
+      dotenv: aiws.env
+
+p1-scope:
+  extends: .aiws-python
+  stage: prepare
+  needs: [p0-authorize]
+  variables:
+    GIT_DEPTH: "50"                            # du lich su de git diff voi commit goc (thieu thi tu fetch)
+  script:
+    - python -m aiws_ci.p1_scope --repo "$CI_PROJECT_DIR" --out-dir "$AIWS_OUT"
+  artifacts:
+    when: always
+    expire_in: 30 days
+    paths: ["$AIWS_OUT/p1-scope.json", "$AIWS_OUT/p1-units.jsonl"]
+
+# P2 - Semgrep: job lay tu gitlab-ci-semgrep.yml, chi doi noi chay va thu tu
+aiws-semgrep-image:
+  tags: [$AIWS_WORKER_TAG]
+
+aiws-semgrep:
+  tags: [$AIWS_WORKER_TAG]
+  needs:
+    - job: p0-authorize
+      artifacts: false
+    - job: aiws-semgrep-image
+      optional: true
+  allow_failure: true                          # loi -> Gate chay che do suy giam (chi CodeBERT), bao INCOMPLETE
+
+p3-codebert:
+  extends: .aiws-python
+  stage: sast
+  needs: [p0-authorize, p1-scope]
+  variables:
+    GIT_STRATEGY: none                         # chi doc danh sach don vi tu P1
+  script:
+    - python -m aiws_ci.p3_codebert --out-dir "$AIWS_OUT"
+  allow_failure: true                          # loi -> Gate chay che do suy giam; policy require_model quyet dinh FAILED
+  artifacts:
+    when: always
+    expire_in: 30 days
+    paths: ["$AIWS_OUT/codebert-results.json"]
+
+p4-compare-gate:
+  extends: .aiws-python
+  stage: gate
+  needs: [p0-authorize, p1-scope, aiws-semgrep, p3-codebert]
+  script:
+    - python -m aiws_ci.p4_compare_gate --out-dir "$AIWS_OUT" --semgrep semgrep-results.json
+  artifacts:
+    when: always
+    expire_in: 30 days
+    paths:
+      - "$AIWS_OUT/gate.json"
+      - "$AIWS_OUT/report.json"
+      - "$AIWS_OUT/summary.md"
+      - "$AIWS_OUT/ai-whitesec.sarif"
+    reports:
+      codequality: "$AIWS_OUT/gl-code-quality-report.json"
+
+p5-persist:
+  extends: .aiws-python
+  stage: persist
+  needs: [p4-compare-gate]
+  when: always                                 # ghi ca lan quet BLOCK / INCOMPLETE
+  allow_failure: true                          # loi ghi DB khong doi quyet dinh Gate (bao cao van o artifact)
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - python -m aiws_ci.p5_persist --out-dir "$AIWS_OUT"
+  artifacts:
+    when: always
+    expire_in: 30 days
+    paths: ["$AIWS_OUT/p5-persist.json"]

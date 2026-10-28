@@ -1,23 +1,109 @@
-# AI-WhiteSec-CI - pipeline GitLab CI (so do P1), GitLab CE tu cai.
-# Moi phan mot file con; file goc chi khai bao workflow, stages va include.
-#   build-image : (tuy chon) build/day anh Docker
-#   sast        : P2 Semgrep va P3 CodeBERT chay song song tren cung pham vi file (scope.json)
-#   compare     : P4 ghep ket qua theo ham
-#   gate        : BLOCK / REVIEW / PASS (chi finding Semgrep tang high vao gate; audit chi ghi nhan)
+# =====================================================================================================
+# AI-WhiteSec-CI - PIPELINE 1 (CHA) - chay tren Server 1 (Dashboard & Orchestrator, runner tag aiws-orchestrator)
+#
+#   orchestrate : P1-plan   - xac dinh lan quet: nguon kich hoat, che do diff/full, commit goc, kiem tra API Server 1
+#   scan        : dispatch  - giao viec cho PIPELINE 2 (CON) tren Server 3 (ci/pipeline2-worker.yml), CHO ket qua
+#                             (strategy: depend -> Gate BLOCK hay loi o Server 3 lam pipeline cha that bai, chan merge)
+#   report      : P5-report - doc ket qua da ghi o PostgreSQL Server 2 qua WhiteSec API, in tom tat (luon chay)
+#
+# Pipeline 2 (con) thuc thi: P0 cap quyen (commit + model + cong cu) -> P1 pham vi/tach ham (tree-sitter)
+#   -> P2 Semgrep || P3 CodeBERT -> P4 Compare + Security Gate -> P5 ghi PostgreSQL (Server 2).
+# Cai dat runner va model: ci/README.md.
+# =====================================================================================================
 
-# Chay o MOI lan push (phat hien loi ngay) va merge request; khong chay trung khi nhanh da co MR mo.
 workflow:
   rules:
+    - if: $CI_PIPELINE_SOURCE == "parent_pipeline"
+      when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
       when: never
     - if: $CI_COMMIT_BRANCH
     - if: $CI_PIPELINE_SOURCE == "web"
-    - if: $CI_PIPELINE_SOURCE == "trigger" || $CI_PIPELINE_SOURCE == "api"   # dashboard/orchestrator goi API
+    - if: $CI_PIPELINE_SOURCE == "trigger" || $CI_PIPELINE_SOURCE == "api"   # Dashboard / Orchestrator goi API
 
-stages: [build-image, sast, compare, gate]
+variables:
+  AIWS_ORCH_TAG: "aiws-orchestrator"          # runner shell tren Server 1
+  AIWS_API_URL: "http://127.0.0.1"            # WhiteSec API tren Server 1 (nginx :80 -> uvicorn :8000)
+  AIWS_SCAN_MODE_DEFAULT: ""                  # de trong = tu chon (diff cho push/MR, full cho chay tay/API)
 
-include:
-  - local: security-config/semgrep/ci/gitlab-ci-semgrep.yml   # P2 - Semgrep (nguoi phu trach Semgrep)
-  # - local: codebert/ci/gitlab-ci-codebert.yml              # P3 - CodeBERT (leader): bo comment khi co file
-  # - local: ci/gitlab-ci-gate.yml                           # P4 + Gate: bo comment khi co file
+stages: [orchestrate, scan, report]
+
+p1-plan:
+  stage: orchestrate
+  tags: [$AIWS_ORCH_TAG]
+  variables:
+    GIT_STRATEGY: none                        # Server 1 chi dieu phoi, khong can ma nguon
+  script:
+    - |
+      set -eu
+      ZERO=0000000000000000000000000000000000000000
+      SRC="$CI_PIPELINE_SOURCE"; BASE=""; MODE=""
+      if [ "$SRC" = "merge_request_event" ]; then
+        BASE="${CI_MERGE_REQUEST_DIFF_BASE_SHA:-}"; MODE=diff
+      elif [ "$SRC" = "push" ]; then
+        BASE="${CI_COMMIT_BEFORE_SHA:-}"; MODE=diff
+      else
+        MODE=full
+      fi
+      if [ -n "${AIWS_SCAN_MODE_DEFAULT}" ]; then MODE="$AIWS_SCAN_MODE_DEFAULT"; fi
+      if [ "$MODE" = "diff" ] && { [ -z "$BASE" ] || [ "$BASE" = "$ZERO" ]; }; then MODE=full; BASE=""; fi
+      API="khong goi duoc"
+      if command -v curl >/dev/null && curl -fsS -m 5 "$AIWS_API_URL/api/health" >/dev/null 2>&1; then API=ok; fi
+      {
+        echo "AIWS_SCAN_MODE=$MODE"
+        echo "AIWS_BASE_SHA=$BASE"
+        echo "AIWS_EXPECTED_SHA=$CI_COMMIT_SHA"
+        echo "AIWS_PIPELINE_SOURCE=$SRC"
+        echo "AIWS_PARENT_PIPELINE_ID=$CI_PIPELINE_ID"
+        echo "AIWS_PARENT_PIPELINE_URL=$CI_PIPELINE_URL"
+        echo "AIWS_MR_IID=${CI_MERGE_REQUEST_IID:-}"
+      } > plan.env
+      echo "== Ke hoach quet =="; cat plan.env; echo "WhiteSec API Server 1: $API"
+  artifacts:
+    reports:
+      dotenv: plan.env
+    paths: [plan.env]
+    expire_in: 30 days
+
+dispatch-worker:
+  stage: scan
+  needs: [p1-plan]
+  variables:
+    # Pipeline con lay ke hoach (plan.env) bang needs:pipeline:job tu chinh pipeline cha nay
+    AIWS_PARENT_PIPELINE_ID: $CI_PIPELINE_ID
+  trigger:
+    include:
+      - local: ci/pipeline2-worker.yml
+    strategy: depend
+    forward:
+      yaml_variables: true
+      pipeline_variables: true
+
+p5-report:
+  stage: report
+  tags: [$AIWS_ORCH_TAG]
+  when: always
+  allow_failure: true
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - |
+      python3 - <<'PY'
+      import json, os, urllib.request
+      api, pid = os.environ["AIWS_API_URL"], os.environ["CI_PIPELINE_ID"]
+      try:
+          runs = json.load(urllib.request.urlopen(f"{api}/api/pipeline-runs?limit=100", timeout=10))["runs"]
+      except Exception as e:
+          print(f"Khong doc duoc WhiteSec API ({e}). Xem artifact report.json cua job p4-compare-gate o pipeline con.")
+          raise SystemExit(0)
+      hit = [r for r in runs if str(((r.get("report") or {}).get("ci") or {}).get("parent_pipeline_id")) == pid]
+      if not hit:
+          print("Chua co ban ghi trong PostgreSQL cho pipeline nay (AIWS_DB_DSN chua dat hoac P5 loi).")
+          raise SystemExit(0)
+      r = hit[0]; rep = r["report"]; g = rep["gate"]
+      print(f"pipeline_runs #{r['id']} | {r['status']} | Security Gate: {rep['security_gate']} | che do {g.get('scan_mode')}")
+      print(f"Don vi {g['units_evaluated']}: BLOCK {g['decisions']['BLOCK']} / REVIEW {g['decisions']['REVIEW']} / PASS {g['decisions']['PASS']}")
+      print(f"Model {rep['model'].get('name')} (dataset {rep['model'].get('dataset_version')}) | ruleset {rep['ruleset'].get('ruleset_version')}")
+      print(f"Dashboard: {api}/  (lan quet #{r['id']})")
+      PY
