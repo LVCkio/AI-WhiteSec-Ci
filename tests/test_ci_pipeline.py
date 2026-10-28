@@ -66,7 +66,7 @@ class TestGate(unittest.TestCase):
         mk = lambda name, s, e: {"id": f"a.py::{name}@L{s}", "file": "a.py", "language": "python", "unit": "function",
                                  "name": name, "start": s, "end": e, "in_diff": True, "scored": True, "code": ""}
         units = [mk("agree", 1, 3), mk("sast_high", 5, 7), mk("sast_audit", 9, 11), mk("cb_only", 13, 15),
-                 mk("conflict", 17, 19), mk("clean", 21, 23)]
+                 mk("conflict", 17, 19), mk("clean", 21, 23), mk("agree_audit", 25, 27)]
         C.write_jsonl(d / "p1-units.jsonl", units)
         C.write_json(d / "p1-scope.json", {"mode": "full", "target_files": ["a.py"], "changed_lines": {},
                                            "head": "0" * 40, "created_at": C.now(), "unit_backend": "treesitter",
@@ -75,14 +75,15 @@ class TestGate(unittest.TestCase):
         f = lambda line, cls, conf: {"file": "a.py", "start_line": line, "end_line": line, "class": cls,
                                      "confidence": conf, "rule_id": f"team.{cls.lower()}", "cwes": [], "message": ""}
         C.write_json(d / "semgrep.json", {"run": {"ruleset_version": "4.7.0"}, "findings": [
-            f(2, "SQL_INJECTION", "audit"), f(6, "XSS", "high"), f(10, "PATH_TRAVERSAL", "audit"),
-            f(18, "AUTHENTICATION_WEAKNESS", "high")]})
+            f(2, "SQL_INJECTION", "high"), f(6, "XSS", "high"), f(10, "PATH_TRAVERSAL", "audit"),
+            f(18, "AUTHENTICATION_WEAKNESS", "high"), f(26, "PATH_TRAVERSAL", "audit")]})
         probs = {g: 0.1 for g in C.GROUPS}
         cbu = lambda u, groups: {"id": u["id"], "probs": {**probs, **{g: 0.9 for g in groups}}, "groups": groups,
                                  "truncated": False}
         C.write_json(d / "codebert-results.json", {
             "status": cb_status, "thresholds": {g: 0.5 for g in C.GROUPS}, "model": {"name": "t"},
-            "units": [cbu(units[0], ["SQL_INJECTION"]), cbu(units[3], ["XSS"]), cbu(units[4], ["SQL_INJECTION"])]})
+            "units": [cbu(units[0], ["SQL_INJECTION"]), cbu(units[3], ["XSS"]), cbu(units[4], ["SQL_INJECTION"]),
+                      cbu(units[6], ["PATH_TRAVERSAL"])]})
         env = {**os.environ, "PYTHONPATH": str(ROOT / "ci"), "AIWS_GATE_ENFORCE": "1"}
         r = subprocess.run([sys.executable, "-m", "aiws_ci.p4_compare_gate", "--out-dir", str(d), "--semgrep",
                             str(d / "semgrep.json"), "--policy", str(ROOT / "ci" / "gate-policy.json")],
@@ -98,6 +99,7 @@ class TestGate(unittest.TestCase):
         self.assertEqual(st["cb_only"], ("codebert_only", "REVIEW"))
         self.assertEqual(st["conflict"], ("conflict", "REVIEW"))
         self.assertEqual(st["clean"], ("pass", "PASS"))
+        self.assertEqual(st["agree_audit"], ("agree", "REVIEW"))   # ci-2: audit khong tu chan build
         self.assertEqual(g["decision"], "BLOCK")
         self.assertEqual(code, C.EXIT_BLOCK)
         conflict = next(u for u in g["units"] if u["function"] == "conflict")

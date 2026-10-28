@@ -1,15 +1,24 @@
 {
-  "policy_version": "ci-1",
-  "note": "QUY TAC TAM cho GitLab CI (27/10/2026) - chua phai quy tac chinh thuc Phase 6.2. CodeBERT mot minh khong chan build vi nguong trong thresholds.json la nguong toi da F1, khong phai nguong Gate.",
+  "policy_version": "ci-2",
+  "note": "QUY TAC TAM cho GitLab CI (28/10/2026) - chua phai quy tac chinh thuc Phase 6.2. Chi BLOCK khi co finding Semgrep tang high (rieng hoac CodeBERT dong y); tang audit chi dua vao REVIEW (taxonomy.yml: audit khong tu chan build). CodeBERT mot minh khong chan build vi nguong trong thresholds.json la nguong toi da F1, khong phai nguong Gate.",
   "states": {
-    "agree": "BLOCK",
-    "sast_only": {"high": "BLOCK", "audit": "REVIEW"},
+    "agree": {
+      "high": "BLOCK",
+      "audit": "REVIEW"
+    },
+    "sast_only": {
+      "high": "BLOCK",
+      "audit": "REVIEW"
+    },
     "codebert_only": "REVIEW",
     "conflict": "REVIEW",
     "pass": "PASS"
   },
   "degraded": {
-    "degraded_sast_only": {"high": "BLOCK", "audit": "REVIEW"},
+    "degraded_sast_only": {
+      "high": "BLOCK",
+      "audit": "REVIEW"
+    },
     "degraded_codebert_only": "REVIEW"
   },
   "require_model": true,

@@ -48,11 +48,12 @@ commit / merge request / chạy tay / API
 - Đơn vị `module_snippet` (dòng gán credential ngoài hàm ±5 dòng) chỉ xét `HARDCODED_CREDENTIALS`.
 - Hàm < 2 dòng (`AIWS_MIN_FUNC_LINES`) vẫn dùng để gán finding Semgrep nhưng không đưa vào CodeBERT.
 
-## 4. Security Gate – chính sách tạm `ci-1`
+## 4. Security Gate – chính sách tạm `ci-2`
 
 | Trạng thái | Quyết định |
 |---|---|
-| agree (Semgrep và CodeBERT cùng lớp) | BLOCK |
+| agree – Semgrep tầng high + CodeBERT cùng lớp | BLOCK |
+| agree – Semgrep tầng audit + CodeBERT cùng lớp | REVIEW (audit không tự chặn build – `taxonomy.yml`) |
 | sast_only – Semgrep tầng high | BLOCK |
 | sast_only – Semgrep tầng audit | REVIEW |
 | codebert_only | REVIEW (ngưỡng hiện là ngưỡng tối đa F1, chưa phải ngưỡng Gate) |
