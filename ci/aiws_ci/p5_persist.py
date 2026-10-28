@@ -6,7 +6,8 @@ Ket noi: bien CI/CD AIWS_DB_DSN (Masked + Protected), vd
   host=192.168.12.202 port=5432 dbname=whitesec user=whitesec_ci sslmode=verify-full sslrootcert=$AIWS_DB_CA
 AIWS_DB_CA la bien kieu File (chung chi CA cua PostgreSQL). Tai khoan chi can SELECT/INSERT projects, INSERT pipeline_runs.
 Khong co AIWS_DB_DSN -> bo qua (bao cao van nam trong artifact), ma 0.
-Chay lai cung pipeline -> khong ghi trung (kiem report->ci->pipeline_id).
+Chay lai cung pipeline -> khong ghi trung (run_key = gitlab-<project>-<pipeline id>, UNIQUE).
+Bang co CHECK executor: them 'gitlab_ci' vao rang buoc, hoac dat AIWS_DB_EXECUTOR (ci/README.md).
 """
 import argparse
 import os
@@ -46,19 +47,23 @@ def main():
                 if row is None:
                     C.die(STEP, f"ten project {name} da dung cho repo khac - doi AIWS_DB_PROJECT_NAME", C.EXIT_CONFIG)
             pid = row[0]
-            dup = c.execute("SELECT id FROM public.pipeline_runs WHERE report->'ci'->>'pipeline_id' = %s",
-                            (str(ci.get("pipeline_id")),)).fetchone()
-            if dup:
-                C.log(STEP, f"pipeline {ci.get('pipeline_id')} da ghi (run #{dup[0]}) - bo qua")
-                return
+            # run_key: NOT NULL + UNIQUE trong bang -> chay lai cung pipeline khong ghi trung
+            run_key = f"gitlab-{name}-{ci.get('pipeline_id')}"[:200]
+            sha = rep.get("target_commit")
             run = c.execute(
-                "INSERT INTO public.pipeline_runs (project_id, run_type, executor, worker_id, branch, commit_sha, "
-                "status, report, started_at, finished_at) VALUES (%s,'security_scan',%s,%s,%s,%s,%s,%s,%s,%s) "
-                "RETURNING id",
-                (pid, os.environ.get("AIWS_DB_EXECUTOR", "gitlab_ci"), (ci.get("runner") or "gitlab-runner")[:100],
-                 rep.get("branch"), rep.get("target_commit"), status, Jsonb(rep),
+                "INSERT INTO public.pipeline_runs (project_id, run_key, run_type, executor, worker_id, branch, "
+                "commit_sha, status, report, started_at, finished_at) "
+                "VALUES (%s,%s,'security_scan',%s,%s,%s,%s,%s,%s,%s,%s) "
+                "ON CONFLICT (run_key) DO NOTHING RETURNING id",
+                (pid, run_key, os.environ.get("AIWS_DB_EXECUTOR", "gitlab_ci"),
+                 (ci.get("runner") or "gitlab-runner")[:100], rep.get("branch"),
+                 sha if sha and re.fullmatch(r"[0-9a-f]{40}", sha) else None, status, Jsonb(rep),
                  rep.get("started_at"), rep.get("finished_at"))).fetchone()
-            C.log(STEP, f"da ghi pipeline_runs #{run[0]} (project #{pid}, {status}, Gate {rep['security_gate']})")
+            if run is None:
+                C.log(STEP, f"{run_key} da ghi truoc do - bo qua")
+                return
+            C.log(STEP, f"da ghi pipeline_runs #{run[0]} ({run_key}, project #{pid}, {status}, "
+                        f"Gate {rep['security_gate']})")
             C.write_json(a.out_dir / "p5-persist.json", {"pipeline_run_id": run[0], "project_id": pid})
     except psycopg.Error as e:
         C.die(STEP, f"ghi PostgreSQL loi: {str(e)[:500]}", C.EXIT_TOOL)
