@@ -105,6 +105,18 @@ class TestGate(unittest.TestCase):
         conflict = next(u for u in g["units"] if u["function"] == "conflict")
         self.assertEqual(conflict["sast_classes"], ["AUTHENTICATION_WEAKNESS"])   # ten v4.7.0 quy ve ten leader chot
 
+    def test_snippet_lines(self):
+        from aiws_ci.p4_compare_gate import snippet, _src_cache
+        d = Path(tempfile.mkdtemp())
+        (d / "a.py").write_text("\n".join(f"line{i}" for i in range(1, 31)) + "\n", encoding="utf-8")
+        _src_cache.clear()
+        s = snippet(d, "a.py", 10, 11)
+        self.assertEqual((s["start"], s["end"]), (7, 14))              # +-3 dong quanh dong loi
+        self.assertEqual(s["code"].splitlines()[3], "line10")
+        self.assertEqual(snippet(d, "a.py", 2, 2)["start"], 1)          # khong vuot dau file
+        s = snippet(d, "khong_co.py", 5, 6, ctx=0, unit_code="def f():\n  x\n", unit_start=5)
+        self.assertEqual((s["start"], s["code"]), (5, "def f():\n  x"))  # lay tu p1-units khi khong doc duoc file
+
     def test_degraded_when_codebert_failed(self):
         code, g = self.run_gate(cb_status="failed")
         st = {u["function"]: u["state"] for u in g["units"]}

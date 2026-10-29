@@ -37,6 +37,37 @@ def decide(policy, state, tier):
     return rule or "REVIEW"
 
 
+SNIP_CTX, SNIP_MAX_LINES, SNIP_MAX_CHARS = 3, 40, 240
+_src_cache = {}
+
+
+def src_lines(repo: Path, rel: str):
+    if rel not in _src_cache:
+        try:
+            _src_cache[rel] = (repo / rel).read_text(encoding="utf-8", errors="replace").splitlines()
+        except OSError:
+            _src_cache[rel] = None
+    return _src_cache[rel]
+
+
+def snippet(repo: Path, rel: str, start, end, ctx=SNIP_CTX, unit_code=None, unit_start=None):
+    """Doan ma nguyen van quanh dong loi (Dashboard to dam dong start..end). Doc tu repo da checkout dung commit
+    (p0 da kiem); khong co file -> lay tu code cua don vi trong p1-units.jsonl. Gioi han kich thuoc bao cao."""
+    lines = src_lines(repo, rel)
+    base = 1
+    if lines is None and unit_code is not None:
+        lines, base = unit_code.splitlines(), unit_start or 1
+    if not lines or not start:
+        return None
+    end = max(start, end or start)
+    a = max(base, start - ctx)
+    b = min(base + len(lines) - 1, end + ctx, a + SNIP_MAX_LINES - 1)
+    if b < a:
+        return None
+    out = [ln if len(ln) <= SNIP_MAX_CHARS else ln[:SNIP_MAX_CHARS] + " …" for ln in lines[a - base:b - base + 1]]
+    return {"start": a, "end": b, "code": "\n".join(out)}
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--out-dir", type=Path, default=Path("aiws-out"))
@@ -50,6 +81,7 @@ def main():
     scope = C.read_json(od / "p1-scope.json") or C.die(STEP, "thieu p1-scope.json (P1 loi?)", C.EXIT_CONFIG)
     auth = C.read_json(od / "p0-authorize.json", {})
     units = C.read_jsonl(od / "p1-units.jsonl")
+    repo = Path(os.environ.get("CI_PROJECT_DIR", "."))
     sem = C.read_json(a.semgrep)
     cb = C.read_json(od / "codebert-results.json")
 
@@ -88,7 +120,9 @@ def main():
             continue
         u["in_diff"] = True
         per_unit_sast.setdefault(u["id"], []).append({**f, "class": cls})
-        sem_kept.append({**f, "class": cls, "unit_id": u["id"]})
+        sem_kept.append({**f, "class": cls, "unit_id": u["id"],
+                         "snippet": snippet(repo, f["file"], f.get("start_line"), f.get("end_line"),
+                                            unit_code=u.get("code"), unit_start=u.get("start"))})
 
     cb_units = {r["id"]: r for r in (cb.get("units", []) if cb_ok else [])}
 
@@ -136,6 +170,9 @@ def main():
             "codebert_probs": r["probs"] if r else None,
             "truncated": bool(r and r.get("truncated")),
             "related_classes": sorted(set(S) | set(B)),
+            # CodeBERT chi cham ca ham (khong chi ra dong) -> luu 25 dong dau ham de xem; chi cho ham CodeBERT gan co ma Semgrep khong bao
+            "snippet": snippet(repo, u["file"], u["start"], min(u["end"], u["start"] + 24), ctx=0, unit_code=u.get("code"),
+                               unit_start=u.get("start")) if state == "codebert_only" else None,
         })
 
     if analysis == "failed":
@@ -172,7 +209,7 @@ def main():
                                  "rule_id": f["rule_id"], "classes": [f["class"]],
                                  "cwes": [c.replace("CWE-", "") for c in f.get("cwes", [])],
                                  "confidence": f["confidence"], "severity": f.get("semgrep_severity"),
-                                 "message": f.get("message")} for f in sem_kept],
+                                 "message": f.get("message"), "snippet": f.get("snippet")} for f in sem_kept],
     }, {
         "tool_name": "codebert", "status": "completed" if cb_ok else "failed",
         "tool_version": "transformers (CPU)", "exit_code": None, "image_id": os.environ.get("AIWS_CODEBERT_IMAGE"),
