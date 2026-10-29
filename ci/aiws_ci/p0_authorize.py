@@ -37,6 +37,20 @@ def find_lock(repo: Path) -> Path:
     return None
 
 
+def val_metrics(mdir: Path):
+    """So do cua leader tren tap VALIDATION luc train (metrics_val.json trong goi, da khoa SHA-256)
+    -> dua vao bao cao de man 'Danh gia mo hinh' hien dung checkpoint dang dung. Khong dung tap test."""
+    mv = C.read_json(mdir / "metrics_val.json")
+    if not mv:
+        return None
+    man = C.read_json(mdir / "MANIFEST.json", {})
+    return {"source": "metrics_val.json", "dataset_version": man.get("dataset"), "epoch": mv.get("epoch"),
+            "n": mv.get("n"), "macro_f1": mv.get("macro_f1"), "micro": mv.get("micro"),
+            "all_zero_false_alarm_rate": mv.get("all_zero_false_alarm_rate"), "selection": mv.get("selection"),
+            "per_group": C.canon_keys(mv.get("per_group")),
+            "by_language": {k: C.canon_keys(v) for k, v in ((mv.get("breakdown") or {}).get("language") or {}).items()}}
+
+
 def check_model(repo: Path, store: Path):
     lock_p = find_lock(repo)
     if lock_p is None:
@@ -71,6 +85,8 @@ def check_model(repo: Path, store: Path):
     if [C.canon_class(g) for g in res.get("groups") or []] != C.GROUPS:
         res["problems"].append("thu tu nhom trong model-lock.json khac thu tu cot logits da chot")
     res["thresholds"] = th
+    res["val_metrics"] = val_metrics(mdir)
+    res["infra_verify"] = C.read_json(mdir / "infra_verify.json")      # model_tool verify --save tren Server 3
     if res["problems"]:
         res["status"] = "mismatch"
         res["error"] = "; ".join(res["problems"])

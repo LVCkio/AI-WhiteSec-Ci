@@ -94,7 +94,11 @@ def cmd_verify(a):
             worst = max(worst, float(abs(p - probs[i]).max()))
             same += all((p[j] >= th[g]) == (probs[i][j] >= th[g]) for j, g in enumerate(C.GROUPS))
     ok = worst < a.tol
-    print(json.dumps({"n": n, "max_abs_diff": worst, "same_decision": f"{same}/{n}", "tol": a.tol, "pass": ok}))
+    out = {"n": n, "max_abs_diff": worst, "same_decision": f"{same}/{n}", "tol": a.tol, "pass": ok,
+           "device": "cpu", "torch": torch.__version__, "checked_at": C.now()}
+    print(json.dumps(out))
+    if a.save:                        # P0 doc file nay -> bao cao / Dashboard (doi chieu ha tang voi luc train)
+        C.write_json(mdir / "infra_verify.json", out)
     sys.exit(0 if ok else 1)
 
 
@@ -107,6 +111,7 @@ def main():
     s = sub.add_parser("verify"); s.add_argument("model_dir"); s.add_argument("--package")
     s.add_argument("--val", required=True); s.add_argument("--n", type=int, default=20)
     s.add_argument("--tol", type=float, default=1e-3)
+    s.add_argument("--save", action="store_true", help="ghi infra_verify.json vao thu muc model")
     a = ap.parse_args()
     {"lock": cmd_lock, "install": cmd_install, "verify": cmd_verify}[a.cmd](a)
 

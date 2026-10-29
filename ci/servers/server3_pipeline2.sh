@@ -32,8 +32,8 @@ chmod -R a+rX "$STORE"
 
 if [[ -n "$VAL" ]]; then
   echo "== 3. Cham lai 20 mau val tren CPU, so voi val_probs.npy cua leader (sai so < 1e-3) =="
-  docker run --rm -v "$STORE:/models:ro" -v "$(realpath "$VAL"):/val.jsonl:ro" "$IMG" \
-    python -m aiws_ci.model_tool verify "/models/$NAME" --val /val.jsonl --n 20
+  docker run --rm --user 0 -v "$STORE:/models" -v "$(realpath "$VAL"):/val.jsonl:ro" "$IMG" \
+    python -m aiws_ci.model_tool verify "/models/$NAME" --val /val.jsonl --n 20 --save   # -> infra_verify.json (Dashboard)
 fi
 
 echo "== 4. Thu P0 cap quyen voi kho model =="

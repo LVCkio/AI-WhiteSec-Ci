@@ -75,7 +75,7 @@ def main():
         "schema": "aiws.p3.codebert.v1", "status": "completed", "started_at": started, "finished_at": C.now(),
         "duration_s": round(time.time() - t0, 2), "model_load_s": round(load_s, 2),
         "model": {k: model.get(k) for k in ("name", "path", "dataset_version", "format", "checkpoint_sha256",
-                                            "files_checked", "val_macro_f1")},
+                                            "files_checked", "val_macro_f1", "val_metrics", "infra_verify")},
         "thresholds": th, "groups_order": C.GROUPS, "max_len": 512, "truncation": "head 512 tokens",
         "device": "cpu", "torch_threads": torch.get_num_threads(),
         "units": res_units,

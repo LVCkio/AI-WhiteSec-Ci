@@ -144,7 +144,8 @@ def main():
         decision = max((x["decision"] for x in out_units), key=RANK.get, default="PASS")
     th = (cb or {}).get("thresholds") or (auth.get("model") or {}).get("thresholds") or {}
     model = (cb or {}).get("model") or {k: (auth.get("model") or {}).get(k) for k in
-                                        ("name", "path", "dataset_version", "format", "checkpoint_sha256")}
+                                        ("name", "path", "dataset_version", "format", "checkpoint_sha256",
+                                         "val_macro_f1", "val_metrics", "infra_verify")}
     gate = {
         "mode": "parallel", "scan_mode": mode, "status": "configured", "decision": decision,
         "decisions": decisions, "states": states, "units": out_units,
