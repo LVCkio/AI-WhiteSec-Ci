@@ -112,7 +112,11 @@ def file_units(path: str, text: str, lang: str, backend: str = "treesitter"):
     """-> (danh sach don vi, co loi parse hay khong). path la duong dan tuong doi trong repo (dau '/')."""
     lines = text.splitlines()
     if backend == "lizard":
-        funcs, err = _lizard_functions(path, text)
+        try:
+            funcs, err = _lizard_functions(path, text)
+        except Exception:                       # lizard 1.24.2 co loi parser JS (IndexError) -> dung tree-sitter cho file nay
+            funcs, _ = _ts_functions(text, lang)
+            err = True                          # ghi vao parse_errors cua p1-scope.json de biet file nao phai doi backend
     else:
         funcs, err = _ts_functions(text, lang)
     units, covered = [], set()
