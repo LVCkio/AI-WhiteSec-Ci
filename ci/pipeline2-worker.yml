@@ -20,7 +20,9 @@ variables:
   AIWS_CODEBERT_IMAGE: "aiws-codebert:0.1.0"   # build bang ci/servers/server3_pipeline2.sh
   AIWS_MODEL_STORE: "/models"                  # mount tu /srv/aiws/models tren Server 3
   AIWS_OUT: "aiws-out"
-  AIWS_UNIT_BACKEND: "treesitter"              # nhom chot 27/10; "lizard" chi de do do lech voi du lieu train
+  # Tach ham: nhom quyet dinh (29/10) dung LIZARD tam thoi cho buoi review (giong cach tao dataset train);
+  # sau review doi lai "treesitter". Doi cho mot lan chay: bien AIWS_UNIT_BACKEND khi Run pipeline.
+  AIWS_UNIT_BACKEND: "lizard"
 
 stages: [build-image, authorize, prepare, sast, gate, persist]
 

@@ -1,6 +1,6 @@
 # Pipeline 1 (cha) và Pipeline 2 (con) – AI-WhiteSec-CI
 
-Phiên bản 0.1.0 (27/10/2026). Model: `v24_pair_e5` (dataset v2.4) của leader. Ruleset Semgrep: v4.7.0. Tách hàm: **tree-sitter** (nhóm chốt 27/10).
+Phiên bản 0.1.0 (27/10/2026). Model: `v24_pair_e5` (dataset v2.4) của leader. Ruleset Semgrep: v4.7.0. Tách hàm: **lizard** tạm thời cho buổi review (nhóm quyết định 29/10), sau review chuyển lại **tree-sitter** — đổi `AIWS_UNIT_BACKEND` trong `ci/pipeline2-worker.yml` (không cần build lại ảnh).
 
 ## 1. Cấu trúc
 
