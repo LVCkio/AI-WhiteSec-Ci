@@ -44,7 +44,7 @@ commit / merge request / chạy tay / API
 ## 3. CodeBERT trong pipeline (khớp INFERENCE.md của gói model)
 
 - Đầu vào: code **nguyên văn** của đơn vị, tokenizer của checkpoint, `truncation=True, max_length=512` (giữ 512 token đầu). Không gắn tag ngôn ngữ, không bỏ comment.
-- Đầu ra: sigmoid từng cột theo thứ tự `PATH_TRAVERSAL, XSS, OS_COMMAND_INJECTION, SQL_INJECTION, INSECURE_AUTHENTICATION, HARDCODED_CREDENTIALS` (không đọc `id2label` vì checkpoint ghi `LABEL_0…5`); gắn nhóm khi `p ≥ thresholds.json`.
+- Đầu ra: sigmoid từng cột theo thứ tự `PATH_TRAVERSAL, XSS, OS_COMMAND_INJECTION, SQL_INJECTION, AUTHENTICATION_WEAKNESS, HARDCODED_CREDENTIALS` (không đọc `id2label` vì checkpoint ghi `LABEL_0…5`); gắn nhóm khi `p ≥ thresholds.json`.
 - Đơn vị `module_snippet` (dòng gán credential ngoài hàm ±5 dòng) chỉ xét `HARDCODED_CREDENTIALS`.
 - Hàm < 2 dòng (`AIWS_MIN_FUNC_LINES`) vẫn dùng để gán finding Semgrep nhưng không đưa vào CodeBERT.
 

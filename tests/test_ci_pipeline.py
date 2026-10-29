@@ -76,7 +76,7 @@ class TestGate(unittest.TestCase):
                                      "confidence": conf, "rule_id": f"team.{cls.lower()}", "cwes": [], "message": ""}
         C.write_json(d / "semgrep.json", {"run": {"ruleset_version": "4.7.0"}, "findings": [
             f(2, "SQL_INJECTION", "high"), f(6, "XSS", "high"), f(10, "PATH_TRAVERSAL", "audit"),
-            f(18, "AUTHENTICATION_WEAKNESS", "high"), f(26, "PATH_TRAVERSAL", "audit")]})
+            f(18, "INSECURE_AUTHENTICATION", "high"), f(26, "PATH_TRAVERSAL", "audit")]})
         probs = {g: 0.1 for g in C.GROUPS}
         cbu = lambda u, groups: {"id": u["id"], "probs": {**probs, **{g: 0.9 for g in groups}}, "groups": groups,
                                  "truncated": False}
@@ -103,7 +103,7 @@ class TestGate(unittest.TestCase):
         self.assertEqual(g["decision"], "BLOCK")
         self.assertEqual(code, C.EXIT_BLOCK)
         conflict = next(u for u in g["units"] if u["function"] == "conflict")
-        self.assertEqual(conflict["sast_classes"], ["INSECURE_AUTHENTICATION"])   # ten cu duoc quy ve ten moi
+        self.assertEqual(conflict["sast_classes"], ["AUTHENTICATION_WEAKNESS"])   # ten v4.7.0 quy ve ten leader chot
 
     def test_degraded_when_codebert_failed(self):
         code, g = self.run_gate(cb_status="failed")

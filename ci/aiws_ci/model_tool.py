@@ -84,7 +84,7 @@ def cmd_verify(a):
             recs[r.get("id") or r.get("sample_id")] = r
     tok = AutoTokenizer.from_pretrained(mdir / "checkpoint")
     net = AutoModelForSequenceClassification.from_pretrained(mdir / "checkpoint").eval()
-    th = C.read_json(mdir / "thresholds.json")
+    th = C.canon_keys(C.read_json(mdir / "thresholds.json"))
     worst, same = 0.0, 0
     n = min(a.n, len(ids))
     with torch.inference_mode():

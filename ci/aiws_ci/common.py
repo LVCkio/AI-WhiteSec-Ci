@@ -7,9 +7,11 @@ import sys
 from pathlib import Path
 
 # Thu tu cot logits cua model (INFERENCE.md muc 2; eval_utils.GROUPS). KHONG doc tu config.json (LABEL_0..5).
+# Ten lop Auth: leader chot AUTHENTICATION_WEAKNESS (29/10). Goi model v24_pair_e5 va bo rule v4.7.0 con ghi
+# INSECURE_AUTHENTICATION -> moi ten doc vao deu qua canon_class() (cung cot logits so 4, chi khac ten).
 GROUPS = ["PATH_TRAVERSAL", "XSS", "OS_COMMAND_INJECTION", "SQL_INJECTION",
-          "INSECURE_AUTHENTICATION", "HARDCODED_CREDENTIALS"]
-OLD_NAMES = {"AUTHENTICATION_WEAKNESS": "INSECURE_AUTHENTICATION"}
+          "AUTHENTICATION_WEAKNESS", "HARDCODED_CREDENTIALS"]
+OLD_NAMES = {"INSECURE_AUTHENTICATION": "AUTHENTICATION_WEAKNESS"}
 
 # Ma thoat thong nhat cho moi buoc
 EXIT_OK, EXIT_BLOCK, EXIT_CONFIG, EXIT_TOOL = 0, 1, 2, 3
@@ -61,6 +63,11 @@ def write_jsonl(p, rows):
 
 def canon_class(name: str) -> str:
     return OLD_NAMES.get(name, name)
+
+
+def canon_keys(d: dict) -> dict:
+    """thresholds.json / xac suat theo ten lop -> ten da chot."""
+    return {canon_class(k): v for k, v in (d or {}).items()}
 
 
 def log(step: str, msg: str):

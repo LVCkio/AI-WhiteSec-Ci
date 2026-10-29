@@ -62,13 +62,13 @@ def check_model(repo: Path, store: Path):
             res["problems"].append(f"SHA-256 lech: {rel}")
         if rel.endswith("model.safetensors"):
             res["checkpoint_sha256"] = got
-    th = C.read_json(mdir / "thresholds.json", {})
+    th = C.canon_keys(C.read_json(mdir / "thresholds.json", {}))
     if sorted(th) != sorted(C.GROUPS):
         res["problems"].append(f"thresholds.json phai co dung 6 nhom {C.GROUPS}")
     cfg = C.read_json(mdir / "checkpoint" / "config.json", {})
     if cfg.get("problem_type") != "multi_label_classification" or len(cfg.get("id2label", {})) != 6:
         res["problems"].append("config.json khong phai multi-label 6 nhan")
-    if res.get("groups") != C.GROUPS:
+    if [C.canon_class(g) for g in res.get("groups") or []] != C.GROUPS:
         res["problems"].append("thu tu nhom trong model-lock.json khac thu tu cot logits da chot")
     res["thresholds"] = th
     if res["problems"]:
