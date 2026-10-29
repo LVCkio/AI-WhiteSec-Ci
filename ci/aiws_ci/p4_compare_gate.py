@@ -68,6 +68,18 @@ def snippet(repo: Path, rel: str, start, end, ctx=SNIP_CTX, unit_code=None, unit
     return {"start": a, "end": b, "code": "\n".join(out)}
 
 
+UNIT_MAX_LINES, UNIT_MAX_CHARS = 400, 60000
+
+
+def unit_code(u):
+    code = u.get("code")
+    if not code:
+        return None
+    lines = code.split("\n")[:UNIT_MAX_LINES]
+    out = "\n".join(ln if len(ln) <= SNIP_MAX_CHARS else ln[:SNIP_MAX_CHARS] + " …" for ln in lines)
+    return out[:UNIT_MAX_CHARS]
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--out-dir", type=Path, default=Path("aiws-out"))
@@ -168,6 +180,9 @@ def main():
             "codebert_classes": B,
             "codebert": {g: r["probs"][g] for g in B} if r else {},
             "codebert_probs": r["probs"] if r else None,
+            "codebert_explain": r.get("explain") if r else None,
+            # ma nguyen van CA HAM (du ngu canh) cho ham co tin hieu -> Dashboard to dam dong Semgrep / khoi CodeBERT
+            "code": unit_code(u) if state not in ("pass",) else None,
             "truncated": bool(r and r.get("truncated")),
             "related_classes": sorted(set(S) | set(B)),
             # CodeBERT chi cham ca ham (khong chi ra dong) -> luu 25 dong dau ham de xem; chi cho ham CodeBERT gan co ma Semgrep khong bao
