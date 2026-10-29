@@ -106,11 +106,11 @@ def main():
 
     # Giai thich (occlusion) cho cac ham gan co - loi o day KHONG lam hong ket qua cham
     explain, t_exp = {}, time.time()
-    n_exp = int(os.environ.get("AIWS_CB_EXPLAIN_UNITS", "40"))
+    n_exp = int(os.environ.get("AIWS_CB_EXPLAIN_UNITS", "500"))
     if n_exp > 0:
         try:
             explain = explain_units(tok, net, torch, units, probs, th, n_exp,
-                                    int(os.environ.get("AIWS_CB_EXPLAIN_BLOCKS", "10")), a.batch)
+                                    int(os.environ.get("AIWS_CB_EXPLAIN_BLOCKS", "6")), a.batch)
         except Exception as e:  # noqa: BLE001
             C.log(STEP, f"canh bao: giai thich occlusion loi ({e}) -> bo qua")
     t_exp = round(time.time() - t_exp, 2)
@@ -141,7 +141,8 @@ def main():
     C.write_json(out_p, out)
     s = out["summary"]
     C.log(STEP, f"model {model['name']}: {s['units_scored']} don vi, {s['units_flagged']} vuot nguong, "
-                f"{s['units_truncated_512']} bi cat 512 token; {out['duration_s']} s")
+                f"{s['units_truncated_512']} bi cat 512 token; giai thich {s['units_explained']} ham ({s['explain_s']} s); "
+                f"{out['duration_s']} s")
 
 
 if __name__ == "__main__":
