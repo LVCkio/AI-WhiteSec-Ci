@@ -10,4 +10,5 @@ read -rsp "Mat khau PostgreSQL cua whitesec_ci: " PGPASSWORD; echo; export PGPAS
 docker run --rm --user "$(id -u):$(id -g)" -e PGPASSWORD -e HOME=/tmp \
   -e AIWS_DB_DSN="host=192.168.12.202 port=5432 dbname=whitesec user=whitesec_ci sslmode=verify-full sslrootcert=/ca.pem" \
   -v "$CA:/ca.pem:ro" -v /srv/aiws/models:/models:ro -v "$REPO/ci/tools:/tools:ro" \
+  -v "${AIWS_WORKER_MODEL_STORE:-$HOME/whitesec-work/models/store}:/worker_models:ro" \
   aiws-codebert:0.1.0 python /tools/explain_backfill.py --version "$VID" "${@:2}"

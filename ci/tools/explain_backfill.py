@@ -36,10 +36,32 @@ def find_member(z: zipfile.ZipFile, path: str):
     return names.get(short) if short else None
 
 
+def same_checkpoint(ck: Path, name: str, want: str, worker_store: Path):
+    """Worker ghi checkpoint_sha256 = SHA-256 cua file SHA256SUMS trong kho model cua worker (whitesec-model.py),
+    pipeline CI ghi SHA-256 cua model.safetensors. Chap nhan ca hai, mien la CUNG file model.safetensors."""
+    got = C.sha256_file(ck)
+    if got == want:
+        return True, "SHA-256 model.safetensors trung"
+    sums = worker_store / name / "SHA256SUMS"
+    if not sums.is_file():
+        return False, f"khong co {sums} de doi chieu cach tinh cua worker"
+    if C.sha256_file(sums) != want:
+        return False, "SHA256SUMS cua worker cung khong khop"
+    for line in sums.read_text(encoding="utf-8", errors="replace").splitlines():
+        parts = line.split()
+        if len(parts) >= 2 and parts[-1].lstrip("*").replace("\\", "/").endswith("model.safetensors"):
+            return (parts[0].lower() == got,
+                    "SHA256SUMS cua worker khop luot quet va liet ke dung model.safetensors nay" if parts[0].lower() == got
+                    else "model.safetensors cua worker KHAC file trong kho CI")
+    return False, "SHA256SUMS cua worker khong co dong model.safetensors"
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--version", type=int, required=True, help="id version (project_versions.id, = so trong /api/versions/<id>)")
     ap.add_argument("--model-store", type=Path, default=Path(os.environ.get("AIWS_MODEL_STORE", "/models")))
+    ap.add_argument("--worker-store", type=Path, default=Path(os.environ.get("AIWS_WORKER_MODEL_STORE", "/worker_models")),
+                    help="kho model cua worker (de doi chieu SHA256SUMS)")
     ap.add_argument("--max-blocks", type=int, default=6)
     ap.add_argument("--batch", type=int, default=8)
     ap.add_argument("--dry-run", action="store_true", help="tinh nhung khong ghi DB")
@@ -63,8 +85,12 @@ def main():
         ck = mdir / "checkpoint" / "model.safetensors"
         if not ck.is_file():
             C.die(STEP, f"khong co model {m.get('name')} trong {a.model_store} (luot nay quet bang model khac)", C.EXIT_CONFIG)
-        if m.get("checkpoint_sha256") and C.sha256_file(ck) != m["checkpoint_sha256"]:
-            C.die(STEP, f"checkpoint trong kho khac SHA-256 cua luot quet ({m['checkpoint_sha256'][:12]}) -> khong giai thich", C.EXIT_CONFIG)
+        if m.get("checkpoint_sha256"):
+            ok, how = same_checkpoint(ck, m["name"], m["checkpoint_sha256"], a.worker_store)
+            if not ok:
+                C.die(STEP, f"checkpoint trong kho khac SHA-256 cua luot quet ({m['checkpoint_sha256'][:12]}): {how} -> khong giai thich",
+                      C.EXIT_CONFIG)
+            C.log(STEP, f"checkpoint khop luot quet: {how}")
         z = zipfile.ZipFile(io.BytesIO(bytes(row["content"])))
         files, units, skipped = {}, [], 0
         for u in (rep.get("gate") or {}).get("units") or []:
