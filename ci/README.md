@@ -1,6 +1,6 @@
 # Pipeline 1 (cha) và Pipeline 2 (con) – AI-WhiteSec-CI
 
-Phiên bản 0.1.0 (27/10/2026). Model: `v24_pair_e5` (dataset v2.4) của leader. Ruleset Semgrep: v4.7.0. Tách hàm: **lizard** tạm thời cho buổi review (nhóm quyết định 29/10), sau review chuyển lại **tree-sitter** — đổi `AIWS_UNIT_BACKEND` trong `ci/pipeline2-worker.yml` (không cần build lại ảnh).
+Phiên bản 0.1.0 (27/10/2026). Model: **`V3`** (dataset v2.4, cửa sổ trượt; leader chốt dùng 31/10, thay `v24_pair_e5`). Quy trình đổi model: **`ci/MODEL_UPDATE.md`**. Ruleset Semgrep: v4.7.0. Tách hàm: **lizard** tạm thời cho buổi review (nhóm quyết định 29/10), sau review chuyển lại **tree-sitter** — đổi `AIWS_UNIT_BACKEND` trong `ci/pipeline2-worker.yml` (không cần build lại ảnh).
 
 ## 1. Cấu trúc
 
@@ -96,11 +96,11 @@ Tài khoản `whitesec_ci` chỉ cần `SELECT, INSERT` trên `public.projects` 
 
 Không cần build lại ảnh `aiws-codebert` khi chỉ đổi model.
 
-**Model đọc hàm theo cửa sổ trượt (V3 trở đi).** `model-lock.json` có trường `inference`: `head512` (mặc định, v24_pair_e5: 512 token đầu) hoặc `window` (V3: thân 510 token, stride 256, tối đa 8 cửa sổ, gộp LSE r=5). Với `window`, P3 và `ci/tools/explain_backfill.py` nạp **đúng** `scripts/infer_window.py` (+ `train_codebert_win.py`, `eval_utils.py`) đi kèm gói model — 3 file này được khóa SHA-256 trong lock và P0 kiểm trước khi chạy (mã: `ci/aiws_ci/scoring.py`). Gói V3 không có `MANIFEST.json` → `model_tool lock <thư mục V3> --sums <SHA256SUMS.txt>`.
+**Model đọc hàm theo cửa sổ trượt (V3 trở đi).** `model-lock.json` có trường `inference`: `head512` (v24_pair_e5: 512 token đầu; không ghi = head512) hoặc `window` (V3: thân 510 token, stride 256, tối đa 8 cửa sổ, gộp LSE r=5). Với `window`, P3 và `ci/tools/explain_backfill.py` nạp **đúng** `scripts/infer_window.py` (+ `train_codebert_win.py`, `eval_utils.py`) đi kèm gói model — 3 file này được khóa SHA-256 trong lock và P0 kiểm trước khi chạy (mã: `ci/aiws_ci/scoring.py`). Gói V3 không có `MANIFEST.json` → `model_tool lock <thư mục V3> --sums <SHA256SUMS.txt>`.
 
-- `ci/model-lock.V3.json`: lock của V3 (val v2.4 macro-F1 0,503, báo nhầm 42,8%; v24_pair_e5: 0,4865 / 30,9%). **Chưa phải mặc định** — chờ leader chốt.
-- Chạy thử V3 không đổi mặc định: Run pipeline với biến `AIWS_MODEL_LOCK = ci/model-lock.V3.json` (pipeline con nhận qua `forward: pipeline_variables`).
-- Chuyển hẳn sang V3: chép `ci/model-lock.V3.json` đè `ci/model-lock.json` qua merge request. Chậm hơn khoảng 2–2,5 lần trên CPU.
+- `ci/model-lock.json` = **V3** (val v2.4 macro-F1 0,503, báo nhầm 42,8%). Leader chốt 31/10: dùng luôn V3, đánh giá cả hàm ≤ và > 512 token.
+- `ci/model-lock.v24_pair_e5.json`: model cũ (0,4865 / 30,9%) để quay lại. Chạy 1 lần với model cũ: Run pipeline với biến `AIWS_MODEL_LOCK = ci/model-lock.v24_pair_e5.json` (pipeline con nhận qua `forward: pipeline_variables`).
+- V3 chậm hơn khoảng 2–2,5 lần trên CPU (trung bình ~2,4 cửa sổ mỗi hàm).
 
 **Khi sửa mã `ci/aiws_ci/*.py`**: các job P0–P5 chạy mã đóng trong ảnh `aiws-codebert` (`/opt/aiws/ci`), không chạy mã trong commit. Sau khi merge/push, trên Server 3 chạy `git pull` rồi `docker build -f ci/docker/Dockerfile.codebert -t aiws-codebert:0.1.0 .` (dùng cache, ~1 phút). Nếu quên, `p0-authorize` dừng với thông báo `anh aiws-codebert chua ma CU (lech: ...)`. Đổi `ci/gate-policy.json` hay `ci/model-lock.json` thì không cần build lại (đọc từ commit).
 

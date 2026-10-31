@@ -1,9 +1,17 @@
 {
-  "name": "v24_pair_e5",
-  "package": "model_v24_pair_e5",
+  "name": "V3",
+  "package": "model_V3",
   "dataset_version": "v2.4",
   "epoch": 3,
   "format": "multilabel_sigmoid",
+  "inference": {
+    "mode": "window",
+    "stride": 256,
+    "max_windows": 8,
+    "pool": "lse",
+    "lse_r": 5.0,
+    "truncation": "sliding window: body 510 + <s></s>, stride 256, max 8 windows (K-1 đầu + 1 cuối nếu vượt), pool lse"
+  },
   "groups": [
     "PATH_TRAVERSAL",
     "XSS",
@@ -12,21 +20,23 @@
     "INSECURE_AUTHENTICATION",
     "HARDCODED_CREDENTIALS"
   ],
-  "val_macro_f1": 0.4865,
-  "val_false_alarm": 0.309,
+  "val_macro_f1": 0.503,
+  "val_false_alarm": 0.4277,
   "dataset_sha256": {
     "train": "b93360e91e1a9613a57b1bae3d72f8de2b150529104a51339310e354696e357f",
     "val": "06033fd87b462364b81981d97a6dd4075402e8db99e28e9d1d40a041127ed28c"
   },
-  "packed_at": "2026-10-27T06:20:43+00:00",
+  "packed_at": null,
   "files": {
-    "checkpoint/model.safetensors": "655a9a782ab0004e30aa6033cbbc031312de7a893881711d7c1ecdd17d4d056e",
+    "checkpoint/model.safetensors": "fb82c52d615834862f75f3cc203dff4bc3a76e279a9e3085eeb6e58a2d3cf63b",
     "checkpoint/config.json": "6b02f00d474b700b0fd04e4f4db396baf6d85d5183280db1946a98bd96563fef",
-    "checkpoint/tokenizer.json": "e71b295136a16f22b655a0d644449ec52015e9be77675dd0433adc02f4dd12ed",
-    "checkpoint/tokenizer_config.json": "2f2141028bec1009d3cbce417eb92e8a9019a2e568e309db3991cae3d20a3d22",
-    "thresholds.json": "32832af848b5310c60a41084aa192da20d9863fcaf5da54a48eee29ca5433151",
-    "run_config.json": "66a724bf13b7bef024b5171ac4fde795a78ce6e7cf10ab34ac4b2334644c7386",
-    "metrics_val.json": "36fbfce130aa545826b0201df59b5f6e71ac211a89be84a0107d23751bc691d3"
-  },
-  "note": "val macro-F1 va bao nham lay tu INFERENCE.md cua goi (metrics_val.json khong co trong ban chuyen)"
+    "checkpoint/tokenizer.json": "ca59632112d18bffd237dbfa1f5b5c35d92b30d0587165e473cea7f763d4ad62",
+    "checkpoint/tokenizer_config.json": "a44dff218f8389ebf50ff57dee7bdbfeba7fb43f4d258c8e352086b172c4f7d0",
+    "thresholds.json": "5fad086d408717e7c3a3850ba7b0355a7e1bb0b6f157375800267f9c7d71ccc8",
+    "run_config.json": "e9b8ee74429e6a66cf97864f66fb35a37a2a4622566080b93a30120dedab29ab",
+    "metrics_val.json": "69cea623ebc580f7cbdd3137391de6d1493d2eef00a0f25234785edf482a3f86",
+    "scripts/infer_window.py": "a3f0338508926c98306c50f0604ca8e6068766a2576c9c9674d7619e903849fa",
+    "scripts/train_codebert_win.py": "1f16d7cf17848bfb6b496db8c85657cd217584651f8bad46d9e8d138033b7087",
+    "scripts/eval_utils.py": "588e9e20d047b7dec23a7a2ef77f5692c4b9655dce88ba862ce9693fe70f97b1"
+  }
 }
