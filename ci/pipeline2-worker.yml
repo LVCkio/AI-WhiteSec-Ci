@@ -23,6 +23,9 @@ variables:
   # Tach ham: nhom quyet dinh (29/10) dung LIZARD tam thoi cho buoi review (giong cach tao dataset train);
   # sau review doi lai "treesitter". Doi cho mot lan chay: bien AIWS_UNIT_BACKEND khi Run pipeline.
   AIWS_UNIT_BACKEND: "lizard"
+  # P3 to tim (occlusion) chi cho N ham CodeBERT diem cao nhat: model V3 cham theo cua so -> giai thich ca 235 ham
+  # mat ~20 phut (31/10). 80 ham ~ job P3 10-11 phut. 0 = tat; doi cho mot lan chay: bien khi Run pipeline.
+  AIWS_CB_EXPLAIN_UNITS: "80"
 
 stages: [build-image, authorize, prepare, sast, gate, persist]
 
