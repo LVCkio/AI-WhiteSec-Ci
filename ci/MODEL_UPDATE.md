@@ -47,7 +47,9 @@ handoff_model_V3.zip
 | Server 2 (192.168.12.202, `dataset`) | `~/whitesec-data/datasets/v2.4/` | train/val/test `.jsonl` | Leader |
 | Server 3 (192.168.12.201, `pipeline`) | `~/handoff_model_<TÊN>.zip` (+ `.sha256.txt`) | Gói leader gửi lên | — |
 | Server 3 | `~/whitesec-work/models/store/<TÊN>/` | Kho model của **worker** (luồng tải ZIP lên dashboard) | Worker (Trường) |
-| Server 3 | `~/whitesec-work/models/active.json` | Model worker đang dùng | Worker (Trường) |
+| Server 3 | `~/whitesec-work/models/active.json` | Model worker đang dùng (V3 từ 31/10) | Worker (Trường) |
+| Server 2 | `~/whitesec-data/models/<TÊN>/`, `models/LATEST` | Kho model phát hành cho worker (`whitesec-model`) | Worker kéo về |
+| Server 3 | `~/whitesec-infra/pipeline/codebert/aiws_infer.py` | Code chấm của worker (ảnh `aiws-codebert:cpu`) | Worker (Trường) |
 | Server 3 | **`/srv/aiws/models/<TÊN>/`** | Kho model của **pipeline CI** (runner mount vào job thành `/models`, chỉ đọc) | P0, P3, timer tô tím |
 | Server 3 | `~/val.jsonl` | val v2.4 (SHA-256 `06033fd8…`) để kiểm tra gói | Cường |
 | Server 3 | `~/AI-WhiteSec-Ci/` | Clone repo → build ảnh `aiws-codebert:0.1.0` | Cường |
@@ -119,9 +121,23 @@ docker run --rm --user 0 -e HOME=/tmp -v /srv/aiws/models:/store -v ~/val.jsonl:
 Commit `ci/model-lock.json` (+ lock cũ), push, **Run pipeline MỚI** trên GitLab. Không cần build lại ảnh khi chỉ đổi model.
 `p0-authorize` in `model V4: ok; N file da kiem SHA-256`; `p3-codebert` in số hàm, số bị cắt (window), thời gian.
 
-### Bước 6 — Worker và tô tím
-- Worker (luồng tải ZIP) chuyển model qua `~/whitesec-work/models/active.json` — **Trường làm**, và worker phải suy luận theo `infer_window.py` (cửa sổ trượt) giống pipeline.
-- Timer tô tím (`aiws-explain`) tự dùng `/srv/aiws/models/<tên model của lượt quét>` → làm **Bước 4 trước** khi worker đổi model, nếu không các lượt tải lên sẽ bị ghi "skipped".
+### Bước 6 — Worker (luồng tải ZIP lên dashboard)
+Worker **không** đọc `store/` trực tiếp: mỗi job nó đọc `models/LATEST` trên **Server 2**, rsync `models/<TÊN>/` về `~/whitesec-work/models/store/<TÊN>/`, kiểm `SHA256SUMS` + `MODEL.json`; model MỚI → tự chấm lại **toàn bộ val** của dataset (container `aiws-codebert:cpu`, 2 CPU) và chỉ ghi `active.json` khi macro-F1 lệch ≤ 0,01 so với `MODEL.json`; không đạt → giữ model cũ.
+
+Phát hành trên **Server 2** (công cụ `whitesec-model` của Trường):
+```bash
+# gói đã giải nén ở ~/whitesec-data/incoming/handoff_model_V4 (SHA256SUMS.txt + model_V4/)
+whitesec-model publish V4 ~/whitesec-data/incoming/handoff_model_V4 --dataset v2.4     # chép, khóa chỉ đọc, MODEL.json, LATEST -> V4
+whitesec-model use v24_pair_e5                                                          # quay lại model cũ
+```
+- `publish` từ chối nếu `models/<TÊN>` đã tồn tại → thư mục chép tay dở thì đổi tên (vd `mv models/V3 models/.V3-chep-tay-<ngày>`) rồi publish lại.
+- Script `nap-handoff.sh` của Server 2 dừng ở bước 5 nếu máy thiếu numpy/torch (31/10: `No module named 'numpy'`) — model không lỗi; dùng `whitesec-model publish` như trên.
+- Lượt upload ĐẦU TIÊN sau khi publish có bước "Kiểm tra model mới trên tập validation": V3 mất **1.301 s** (~22 phút) cho 1.225 hàm. Không hủy job giữa chừng.
+- Kết quả: Server 1 `python3 ~/whitesec-infra/server/model_check_report.py` → `TAI TAO DUOC: True`. V3 (31/10): hạ tầng 0,5036 / lúc train 0,503.
+
+Worker đọc theo cửa sổ nhờ bản vá `ci/servers/worker/patch_worker_v3.py` cho `~/whitesec-infra/pipeline/codebert/aiws_infer.py` (đã áp 31/10, sao lưu `aiws_infer.py.bak-20261031-160650`): model có `run_config.max_windows` → nạp `scripts/infer_window.py` của gói; model khác vẫn 512 token đầu. Khi Trường cài lại hạ tầng (ghi đè `aiws_infer.py`) phải vá lại rồi build: `python3 patch_worker_v3.py aiws_infer.py && docker build -q -t aiws-codebert:cpu .` trong thư mục đó.
+
+**Tô tím** (timer `aiws-explain`) dùng `/srv/aiws/models/<tên model của lượt quét>` → làm **Bước 4 trước** khi publish cho worker, nếu không các lượt tải lên bị ghi "skipped".
 
 ---
 
