@@ -229,7 +229,8 @@ def main():
         "tool_name": "codebert", "status": "completed" if cb_ok else "failed",
         "tool_version": "transformers (CPU)", "exit_code": None, "image_id": os.environ.get("AIWS_CODEBERT_IMAGE"),
         "config": {"model": model, "thresholds": th, "model_format": "multilabel_sigmoid", "device": "cpu",
-                   "max_len": 512, "truncation": "head 512 tokens", "model_val_macro_f1": model.get("val_macro_f1"),
+                   "max_len": 512, "truncation": (cb or {}).get("truncation", "head 512 tokens"),
+                   "inference": (cb or {}).get("inference"), "model_val_macro_f1": model.get("val_macro_f1"),
                    "unit_backend": scope.get("unit_backend"), "unit_backend_version": scope.get("unit_backend_version"),
                    "units_by_type": {t: sum(1 for u in units if u["unit"] == t and u["in_diff"] and u["scored"])
                                      for t in ("function", "module_snippet")}},

@@ -23,6 +23,7 @@ from pathlib import Path
 sys.path.insert(0, os.environ.get("AIWS_CI_HOME", "/opt/aiws/ci"))
 from aiws_ci import common as C  # noqa: E402
 from aiws_ci.p3_codebert import explain_units  # noqa: E402
+from aiws_ci.scoring import Scorer  # noqa: E402
 
 STEP = "explain-backfill"
 
@@ -67,13 +68,10 @@ _models = {}
 
 
 def load_model(mdir: Path):
-    import torch
-    from transformers import AutoModelForSequenceClassification, AutoTokenizer
+    """Nap model 1 lan / tien trinh, DUNG cach suy luan ghi trong model-lock.json cua kho (head512 hoac window)."""
     if mdir not in _models:
-        torch.set_num_threads(max(1, int(os.environ.get("AIWS_TORCH_THREADS", os.cpu_count() or 1))))
-        _models[mdir] = (AutoTokenizer.from_pretrained(mdir / "checkpoint"),
-                         AutoModelForSequenceClassification.from_pretrained(mdir / "checkpoint").eval())
-    return torch, *_models[mdir]
+        _models[mdir] = Scorer(mdir)
+    return _models[mdir]
 
 
 def process_version(conn, version_id: int, a, Jsonb):
@@ -114,14 +112,13 @@ def process_version(conn, version_id: int, a, Jsonb):
                 f"{f', bo qua {skipped} (khong thay file)' if skipped else ''}")
     if not units:
         return run_id, 0
-    torch, tok, net = load_model(mdir)
+    scorer = load_model(mdir)
     t0, done = time.time(), 0
     for u in units:
-        with torch.inference_mode():
-            enc = tok(u["code"], truncation=True, max_length=512, return_tensors="pt")
-            p = torch.sigmoid(net(**enc).logits.float())[0].tolist()
+        meta = scorer.score([u["code"]], a.batch, [u["start"]])
+        p = meta[0]["probs"]
         th = {g: (0.0 if g in u["flagged"] else 2.0) for g in C.GROUPS}      # giai thich dung cac lop worker da gan
-        ex = explain_units(tok, net, torch, [u], [p], th, 1, a.max_blocks, a.batch).get(u["id"])
+        ex = explain_units(scorer, [u], [p], th, 1, a.max_blocks, a.batch, meta).get(u["id"])
         if ex is None:
             continue
         ex["p_full"] = {g: round(p[C.GROUPS.index(g)], 4) for g in u["flagged"] if g in C.GROUPS}

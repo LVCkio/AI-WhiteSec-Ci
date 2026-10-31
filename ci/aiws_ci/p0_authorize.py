@@ -5,7 +5,7 @@
 1. Ma nguon (Authorized Source Snapshot): HEAD phai dung commit Pipeline 1 giao (AIWS_EXPECTED_SHA, mac dinh
    CI_COMMIT_SHA) va cay thu muc sach. Sai -> ma 2, KHONG quet.
 2. Model (phan phoi tu Model Artifact Storage): doc model-lock.json (ten run + SHA-256 tung file da duyet),
-   tim thu muc $AIWS_MODEL_STORE/<ten>, kiem SHA-256 tung file, kiem thresholds.json du 6 nhom, config multi-label 6 nhan.
+   tim thu muc $AIWS_MODEL_STORE/<ten>, kiem SHA-256 tung file (ca scripts/ suy luan neu inference = window), kiem thresholds.json du 6 nhom, config multi-label 6 nhan.
    Model loi KHONG dung lan quet: ghi model_status != ok de P3 bao FAILED va Gate chay che do suy giam (chi Semgrep).
 3. Cong cu: ghi phien ban ruleset/Semgrep mong doi (job Semgrep tu `ruleset.py verify` trong anh).
 Dau ra: p0-authorize.json.
@@ -16,6 +16,7 @@ import subprocess
 from pathlib import Path
 
 from . import common as C
+from .scoring import check_window_scripts, inference_of
 
 STEP = "P0-authorize"
 
@@ -37,14 +38,14 @@ def find_lock(repo: Path) -> Path:
     return None
 
 
-def val_metrics(mdir: Path):
+def val_metrics(mdir: Path, dataset_version=None):
     """So do cua leader tren tap VALIDATION luc train (metrics_val.json trong goi, da khoa SHA-256)
     -> dua vao bao cao de man 'Danh gia mo hinh' hien dung checkpoint dang dung. Khong dung tap test."""
     mv = C.read_json(mdir / "metrics_val.json")
     if not mv:
         return None
     man = C.read_json(mdir / "MANIFEST.json", {})
-    return {"source": "metrics_val.json", "dataset_version": man.get("dataset"), "epoch": mv.get("epoch"),
+    return {"source": "metrics_val.json", "dataset_version": man.get("dataset") or dataset_version, "epoch": mv.get("epoch"),
             "n": mv.get("n"), "macro_f1": mv.get("macro_f1"), "micro": mv.get("micro"),
             "all_zero_false_alarm_rate": mv.get("all_zero_false_alarm_rate"), "selection": mv.get("selection"),
             "per_group": C.canon_keys(mv.get("per_group")),
@@ -61,6 +62,7 @@ def check_model(repo: Path, store: Path):
     res = {"status": "ok", "name": name, "path": str(mdir), "lock_file": str(lock_p),
            "dataset_version": lock.get("dataset_version"), "format": lock.get("format", "multilabel_sigmoid"),
            "groups": lock.get("groups", C.GROUPS), "val_macro_f1": lock.get("val_macro_f1"),
+           "inference": inference_of(lock), "lock_files": lock.get("files") or {},
            "files_checked": 0, "problems": []}
     if not mdir.is_dir():
         res.update(status="missing", error=f"khong co thu muc model {mdir} tren worker")
@@ -76,6 +78,10 @@ def check_model(repo: Path, store: Path):
             res["problems"].append(f"SHA-256 lech: {rel}")
         if rel.endswith("model.safetensors"):
             res["checkpoint_sha256"] = got
+    if res["inference"]["mode"] == "window":            # script suy luan cua goi model = ma se chay trong P3
+        res["problems"] += [x for x in check_window_scripts(mdir, lock) if x not in res["problems"]]
+    elif res["inference"]["mode"] != "head512":
+        res["problems"].append(f"cach suy luan '{res['inference']['mode']}' chua ho tro")
     th = C.canon_keys(C.read_json(mdir / "thresholds.json", {}))
     if sorted(th) != sorted(C.GROUPS):
         res["problems"].append(f"thresholds.json phai co dung 6 nhom {C.GROUPS}")
@@ -85,7 +91,7 @@ def check_model(repo: Path, store: Path):
     if [C.canon_class(g) for g in res.get("groups") or []] != C.GROUPS:
         res["problems"].append("thu tu nhom trong model-lock.json khac thu tu cot logits da chot")
     res["thresholds"] = th
-    res["val_metrics"] = val_metrics(mdir)
+    res["val_metrics"] = val_metrics(mdir, lock.get("dataset_version"))
     res["infra_verify"] = C.read_json(mdir / "infra_verify.json")      # model_tool verify --save tren Server 3
     if res["problems"]:
         res["status"] = "mismatch"

@@ -2,9 +2,10 @@
 
   python -m aiws_ci.p3_codebert --out-dir aiws-out
 
-Dung DUNG cach leader suy luan (INFERENCE.md cua goi model):
+Dung DUNG cach leader suy luan (model-lock.json "inference", xem aiws_ci/scoring.py):
   - dau vao = code tho cua don vi, KHONG them tag/ten file, KHONG bo comment;
-  - tokenizer cua checkpoint, truncation=True, max_length=512 (giu 512 token dau);
+  - head512 (v24_pair_e5): truncation=True, max_length=512 (giu 512 token dau);
+    window (V3): cua so truot + gop cua scripts/infer_window.py di kem goi model;
   - sigmoid tung cot; thu tu cot = common.GROUPS; gan nhom j neu p_j >= thresholds.json[j]; khong nhom nao -> PASS;
   - don vi module_snippet chi xet HARDCODED_CREDENTIALS.
 Dau ra: codebert-results.json. Ma thoat: 0 = xong, 2 = model khong dung duoc (P0 bao loi), 3 = loi khi suy luan.
@@ -19,10 +20,12 @@ from . import common as C
 STEP = "P3-codebert"
 
 
-def explain_units(tok, net, torch, units, probs, th, max_units, max_blocks, batch):
+def explain_units(scorer, units, probs, th, max_units, max_blocks, batch, meta=None):
     """Giai thich ham CodeBERT gan co bang OCCLUSION: chia ham thanh toi da max_blocks khoi dong, xoa trang tung khoi
-    (giu so dong), cham lai -> muc GIAM xac suat cua lop da gan = muc model dua vao khoi do. Day la bang chung
-    'model dua vao dong nao', KHONG phai dinh vi lo hong. Kem dong cuoi model doc duoc (512 token dau)."""
+    (giu so dong), cham lai DUNG cach suy luan cua model -> muc GIAM xac suat cua lop da gan = muc model dua vao khoi
+    do. Day la bang chung 'model dua vao dong nao', KHONG phai dinh vi lo hong.
+    head512: chi chia phan model doc duoc (512 token dau), kem seen_until_line.
+    window : chia ca ham; kem khoang dong tung cua so (ham qua K cua so: phan giua khong duoc doc -> 'truncated')."""
     cand = []
     for i, (u, p) in enumerate(zip(units, probs)):
         allowed = u.get("only_groups") or C.GROUPS
@@ -34,29 +37,23 @@ def explain_units(tok, net, torch, units, probs, th, max_units, max_blocks, batc
     for _, i, gs in cand[:max_units]:
         u, code = units[i], units[i]["code"] or ""
         lines = code.split("\n")
-        seen_until = None
-        try:
-            enc = tok(code, truncation=True, max_length=512, return_offsets_mapping=True)
-            last = max((e for _s, e in enc["offset_mapping"] if e), default=0)
-            seen_until = u["start"] + code.count("\n", 0, last)
-        except Exception:  # noqa: BLE001  tokenizer khong ho tro offset
-            pass
-        # chi chia phan model THAT SU doc (512 token dau); phan sau khong anh huong diem
+        seen_until = scorer.seen_until(code, u["start"])
+        # head512: chi chia phan model THAT SU doc (512 token dau); phan sau khong anh huong diem
         n = len(lines) if seen_until is None else max(1, min(len(lines), seen_until - u["start"] + 1))
         k = min(max_blocks, n)
         blocks = []
         if k >= 2:
             bounds = [(round(b * n / k), round((b + 1) * n / k)) for b in range(k)]
             variants = ["\n".join("" if a <= li < b else ln for li, ln in enumerate(lines)) for a, b in bounds]
-            ps = []
-            with torch.inference_mode():
-                for s in range(0, len(variants), batch):
-                    e2 = tok(variants[s:s + batch], truncation=True, max_length=512, padding=True, return_tensors="pt")
-                    ps += torch.sigmoid(net(**e2).logits.float()).tolist()
+            ps = scorer.probs(variants, batch)
             for (a, b), pm in zip(bounds, ps):
                 blocks.append({"start": u["start"] + a, "end": u["start"] + b - 1,
                                "drop": {C.GROUPS[j]: round(probs[i][j] - pm[j], 4) for j in gs}})
-        out[u["id"]] = {"method": "occlusion", "blocks": blocks, "seen_until_line": seen_until}
+        ex = {"method": "occlusion", "inference": scorer.mode, "blocks": blocks, "seen_until_line": seen_until}
+        m = (meta or [None] * len(units))[i]
+        if m and "windows" in m:
+            ex.update(windows=m["windows"], truncated=m["truncated"])
+        out[u["id"]] = ex
     return out
 
 
@@ -81,25 +78,13 @@ def main():
     units = units[:a.max_units]
     t0, started = time.time(), C.now()
     try:
-        import torch
-        from transformers import AutoModelForSequenceClassification, AutoTokenizer
-        torch.set_num_threads(max(1, int(os.environ.get("AIWS_TORCH_THREADS", os.cpu_count() or 1))))
+        from .scoring import Scorer
         mdir = Path(model["path"])
-        tok = AutoTokenizer.from_pretrained(mdir / "checkpoint")
-        net = AutoModelForSequenceClassification.from_pretrained(mdir / "checkpoint").eval()
+        scorer = Scorer(mdir, {"inference": model.get("inference"), "files": model.get("lock_files") or {}})
         th = model["thresholds"]
         load_s = time.time() - t0
-        codes = [u["code"] or "" for u in units]
-        n_tok = [len(ids) for ids in tok(codes, truncation=False)["input_ids"]] if codes else []
-        order = sorted(range(len(units)), key=lambda i: n_tok[i])        # gom hang dai gan nhau -> it dem
-        probs = [None] * len(units)
-        with torch.inference_mode():
-            for s in range(0, len(order), a.batch):
-                idx = order[s:s + a.batch]
-                enc = tok([codes[i] for i in idx], truncation=True, max_length=512, padding=True, return_tensors="pt")
-                p = torch.sigmoid(net(**enc).logits.float()).tolist()
-                for i, row in zip(idx, p):
-                    probs[i] = row
+        meta = scorer.score([u["code"] or "" for u in units], a.batch, [u["start"] for u in units])
+        probs = [m["probs"] for m in meta]
     except Exception as e:  # noqa: BLE001
         C.write_json(out_p, {"status": "failed", "error": f"{type(e).__name__}: {e}"[:2000], "model": model})
         C.die(STEP, f"suy luan loi: {e}", C.EXIT_TOOL)
@@ -109,31 +94,36 @@ def main():
     n_exp = int(os.environ.get("AIWS_CB_EXPLAIN_UNITS", "500"))
     if n_exp > 0:
         try:
-            explain = explain_units(tok, net, torch, units, probs, th, n_exp,
-                                    int(os.environ.get("AIWS_CB_EXPLAIN_BLOCKS", "6")), a.batch)
+            explain = explain_units(scorer, units, probs, th, n_exp,
+                                    int(os.environ.get("AIWS_CB_EXPLAIN_BLOCKS", "6")), a.batch, meta)
         except Exception as e:  # noqa: BLE001
             C.log(STEP, f"canh bao: giai thich occlusion loi ({e}) -> bo qua")
     t_exp = round(time.time() - t_exp, 2)
 
     res_units, flagged = [], 0
-    for u, p, nt in zip(units, probs, n_tok):
+    for u, p, m in zip(units, probs, meta):
         allowed = u.get("only_groups") or C.GROUPS
         pr = {g: round(float(x), 6) for g, x in zip(C.GROUPS, p)}
         groups = [g for g in C.GROUPS if g in allowed and pr[g] >= th[g]]
         flagged += bool(groups)
         res_units.append({"id": u["id"], "file": u["file"], "unit": u["unit"], "start": u["start"], "end": u["end"],
-                          "probs": pr, "groups": groups, "n_tokens": nt, "truncated": nt > 512,
+                          "probs": pr, "groups": groups, "n_tokens": m["n_tokens"], "truncated": m["truncated"],
+                          "n_windows": m.get("n_windows"),
                           "explain": explain.get(u["id"])})
     out = {
         "schema": "aiws.p3.codebert.v1", "status": "completed", "started_at": started, "finished_at": C.now(),
         "duration_s": round(time.time() - t0, 2), "model_load_s": round(load_s, 2),
         "model": {k: model.get(k) for k in ("name", "path", "dataset_version", "format", "checkpoint_sha256",
-                                            "files_checked", "val_macro_f1", "val_metrics", "infra_verify")},
-        "thresholds": th, "groups_order": C.GROUPS, "max_len": 512, "truncation": "head 512 tokens",
-        "device": "cpu", "torch_threads": torch.get_num_threads(),
+                                            "files_checked", "val_macro_f1", "val_metrics", "infra_verify",
+                                            "inference")},
+        "thresholds": th, "groups_order": C.GROUPS, "inference": scorer.describe(),
+        "max_len": 512, "truncation": scorer.describe()["truncation"],
+        "device": "cpu", "torch_threads": scorer.torch.get_num_threads(),
         "units": res_units,
         "summary": {"units_scored": len(res_units), "units_flagged": flagged,
+                    # head512: ham dai hon 512 token (phan sau bi bo); window: ham qua K cua so (phan giua bi bo)
                     "units_truncated_512": sum(r["truncated"] for r in res_units),
+                    "units_windows": sum(r["n_windows"] or 1 for r in res_units),
                     "units_dropped_over_max": truncated_units,
                     "units_explained": len(explain), "explain_s": t_exp,
                     "by_group": {g: sum(g in r["groups"] for r in res_units) for g in C.GROUPS}},
@@ -141,7 +131,7 @@ def main():
     C.write_json(out_p, out)
     s = out["summary"]
     C.log(STEP, f"model {model['name']}: {s['units_scored']} don vi, {s['units_flagged']} vuot nguong, "
-                f"{s['units_truncated_512']} bi cat 512 token; giai thich {s['units_explained']} ham ({s['explain_s']} s); "
+                f"{s['units_truncated_512']} bi cat ({scorer.mode}); giai thich {s['units_explained']} ham ({s['explain_s']} s); "
                 f"{out['duration_s']} s")
 
 
