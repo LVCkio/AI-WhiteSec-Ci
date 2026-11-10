@@ -2,7 +2,7 @@
 
 Leader chốt (31/10/2026): **model train mới là dùng luôn**, kể cả khi có thay đổi; model đánh giá cả hàm **≤ 512** và **> 512 token** (cửa sổ trượt). Tài liệu này ghi: thư mục nằm ở đâu, khi có train mới thì đổi file nào, và từng bước lấy file nào để chạy.
 
-Model đang dùng: **V3** (dataset v2.4) — `ci/model-lock.json`. Model cũ để quay lại: `ci/model-lock.v24_pair_e5.json`.
+Model đang dùng: **V5** (dataset v2.6) — xem mục 6; trước đó **V3** (dataset v2.4) — `ci/model-lock.json`. Model cũ để quay lại: `ci/model-lock.v24_pair_e5.json`.
 
 ---
 
@@ -167,3 +167,9 @@ Lượt tải ZIP lên dashboard: worker quét bằng model trong `active.json`;
 
 ## 5. Khi nào phải build lại ảnh `aiws-codebert`
 Chỉ khi sửa `ci/aiws_ci/*.py`: trên Server 3 `cd ~/AI-WhiteSec-Ci && git pull && docker build -f ci/docker/Dockerfile.codebert -t aiws-codebert:0.1.0 .`, rồi Run pipeline MỚI (không Retry). Đổi model/lock thì **không** cần.
+
+## 6. Quyết định 10/11/2026 — V5 (dataset v2.6), train GPU → chạy CPU
+- V5 train trên GPU (`cuda`, fp16 bật); CI và worker chạy CPU fp32. `--verify-val` với ngưỡng 1e-3 lệch 1,12e-3 (20 hàm) / 2,18e-3 (100 hàm) — do làm tròn GPU fp16 vs CPU fp32, không phải lỗi gói (SHA đúng, cùng torch 2.11.0 / transformers 5.17.0).
+- Nhóm chọn: **chấp nhận V5, ngưỡng `--tol 5e-3` khi model train GPU mà chạy CPU**; điều kiện chính là macro-F1 trên CPU lệch ≤ 0,01 so với lúc train (CPU 0,3747 vs train 0,3757).
+- Val dùng để kiểm: `val.jsonl` của `handoff_v2.6.zip` (1239 mẫu), không phải `~/val.jsonl` (v2.4).
+- Lệnh verify: `model_tool verify /store/V5 --val /val.jsonl --n 100 --tol 5e-3 --save` (chạy với `-e USER=aiws -e LOGNAME=aiws -e TORCHINDUCTOR_CACHE_DIR=/tmp/torchinductor` khi `--user` không phải root).
