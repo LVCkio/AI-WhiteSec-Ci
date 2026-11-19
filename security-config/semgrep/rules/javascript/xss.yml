@@ -1,4 +1,4 @@
-# Ruleset AI-WhiteSec-CI v4.2.0 | ngon ngu: javascript | lop: XSS
+# Ruleset AI-WhiteSec-CI v4.8.1 | ngon ngu: javascript | lop: XSS
 # confidence: high = ket luan truc tiep; audit = bat rong, can ra soat (luong SAST doc lap voi CodeBERT).
 # Test: tests/positive/javascript/xss.* (phai bao) va tests/negative/javascript/xss.* (khong duoc bao).
 rules:
@@ -6,17 +6,19 @@ rules:
   languages:
   - javascript
   - typescript
-  severity: ERROR
+  severity: WARNING
   message: Request data is written into an HTML response or the DOM without encoding.
   metadata:
     cwe: CWE-79
     owasp: A03:2021
     vuln_class: XSS
-    confidence: high
+    confidence: audit
     severity: medium
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
-    rule_version: 1.0.0
-    ruleset_version: 4.7.0
+    rule_version: 1.1.0
+    ruleset_version: 4.8.1
+    change_v481: 'high -> audit (phuong an A, tang high chi giu rule P >= 0.80 tren train). precision mau train v2.6 4/8 = 0.50.'
+    tier_exception: 'Taint giu nguyen nhung ha audit tu v4.8.1: precision mau train v2.6 chi 0.50, Gate ci-2 chan build voi moi finding high.'
   mode: taint
   pattern-sources:
   - pattern: $REQ.query
@@ -53,7 +55,7 @@ rules:
     severity: medium
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
     rule_version: 1.0.0
-    ruleset_version: 4.7.0
+    ruleset_version: 4.8.1
   patterns:
   - pattern-either:
     - pattern: $EL.innerHTML = $X
@@ -80,7 +82,7 @@ rules:
     severity: medium
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
     rule_version: 1.0.0
-    ruleset_version: 4.7.0
+    ruleset_version: 4.8.1
   pattern-either:
   - pattern-regex: '[''"][^''"\n]*<\/?[a-zA-Z][a-zA-Z0-9]*[\s>/][^''"\n]*[''"]\s*\+\s*(?![''"])[\w(]'
   - pattern-regex: '`[^`\n]*<\/?[a-zA-Z][a-zA-Z0-9]*[\s>/][^`\n]*\$\{'
@@ -98,7 +100,7 @@ rules:
     severity: medium
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
     rule_version: 1.0.0
-    ruleset_version: 4.7.0
+    ruleset_version: 4.8.1
     change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
   patterns:
   - pattern-either:

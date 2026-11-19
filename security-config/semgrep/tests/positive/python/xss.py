@@ -11,7 +11,6 @@ def views(user_input, name, url, title):
     link = f'<a href="{url}">{title}</a>'
     # ruleid: team.xss-unsafe-html
     env = jinja2.Environment(loader=None, autoescape=False)
-    # ruleid: team.audit.html-output-api
     return HttpResponse(row)
 
 

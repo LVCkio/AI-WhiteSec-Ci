@@ -8,7 +8,7 @@ set -euo pipefail
 
 GITLAB_URL="${1:-}"
 SRC="${2:-}"
-TAG="aiws-semgrep:4.7.0-semgrep1.181.0"
+TAG="aiws-semgrep:4.8.1-semgrep1.181.0"
 if [[ -z "$GITLAB_URL" || -z "$SRC" ]]; then echo "Dung: sudo bash $0 <URL GitLab> <thu muc AI-WhiteSec-Ci>"; exit 1; fi
 if [[ $EUID -ne 0 ]]; then echo "Can chay bang sudo"; exit 1; fi
 if [[ ! -f "$SRC/docs/taxonomy.yml" || ! -f "$SRC/security-config/semgrep/ci/Dockerfile" ]]; then

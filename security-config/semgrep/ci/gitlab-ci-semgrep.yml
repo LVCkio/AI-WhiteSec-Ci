@@ -13,9 +13,9 @@
 # va AIWS_BUILD_IMAGE = "1" de job aiws-semgrep-image build + day anh.
 
 variables:
-  AIWS_RULESET_VERSION: "4.7.0"
+  AIWS_RULESET_VERSION: "4.8.1"
   AIWS_SEMGREP_VERSION: "1.181.0"
-  AIWS_SEMGREP_IMAGE: "aiws-semgrep:4.7.0-semgrep1.181.0"
+  AIWS_SEMGREP_IMAGE: "aiws-semgrep:4.8.1-semgrep1.181.0"
 
 # Tuy chon: build va day anh len Container Registry (chi khi AIWS_BUILD_IMAGE = "1").
 # Can runner Docker privileged (docker:dind).

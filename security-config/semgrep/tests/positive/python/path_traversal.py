@@ -14,7 +14,6 @@ def unpack(tar, directory):
 
 
 def get_index_path(index):
-    # ruleid: team.path-from-parameter
     return os.path.join(INDEXDIR, index)
 
 

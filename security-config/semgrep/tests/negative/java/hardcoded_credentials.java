@@ -18,3 +18,10 @@ public class SecretNegative {
         return BCrypt.checkpw(password, stored);
     }
 }
+
+class PlaceholderSecrets {
+    // ok: team.java.hardcoded-secret
+    private static final String DB_PASSWORD = "secret";
+    // ok: team.java.hardcoded-secret
+    private static final String CLIENT_KEY_PASSWORD = "client.key.password";
+}

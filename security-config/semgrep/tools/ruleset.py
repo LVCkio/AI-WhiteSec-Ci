@@ -30,11 +30,14 @@ MANIFEST = BASE / "ruleset-manifest.json"
 REGISTRY_SNAPSHOT = MAIN / "rules" / "registry_snapshot"
 TAXONOMY = MAIN / "docs" / "taxonomy.yml"   # chuan chung Semgrep/CodeBERT (semgrep_tool.md muc 3)
 
-RULESET_VERSION = "4.7.0"
+RULESET_VERSION = "4.8.1"
+# Quyet dinh cua nhom 2026-10-30: giu ten lop cu cua Auth (taxonomy.yml van goi INSECURE_AUTHENTICATION va nhan dataset dung ten do;
+# 03_run_sast.py anh xa hai ten ve nhau). Ten cu nay khong bi canh bao la "ten cu".
+ACCEPTED_LEGACY_NAMES = {"AUTHENTICATION_WEAKNESS"}
 PINNED_SEMGREP = "1.181.0"
 LANG_EXT = {"python": ".py", "java": ".java", "javascript": ".js", "php": ".php"}
 CLASSES = {"sql_injection": "SQL_INJECTION", "xss": "XSS", "os_command_injection": "OS_COMMAND_INJECTION",
-           "path_traversal": "PATH_TRAVERSAL", "authentication_weakness": "INSECURE_AUTHENTICATION",
+           "path_traversal": "PATH_TRAVERSAL", "authentication_weakness": "AUTHENTICATION_WEAKNESS",
            "hardcoded_credentials": "HARDCODED_CREDENTIALS"}
 REQUIRED_META = ("cwe", "owasp", "vuln_class", "confidence", "severity", "scope", "rule_version", "ruleset_version")
 ANNOT = re.compile(r"(?:#|//)\s*(ruleid|ok)\s*:\s*([\w.\-, ]+)")
@@ -141,7 +144,7 @@ def cmd_check(_=None) -> dict:
             if not tcls:
                 problems.append(f"{where}: vuln_class {md.get('vuln_class')} khong co trong taxonomy.yml")
             else:
-                if tcls != md.get("vuln_class"):
+                if tcls != md.get("vuln_class") and md.get("vuln_class") not in ACCEPTED_LEGACY_NAMES:
                     warnings.append(f"{where}: vuln_class {md.get('vuln_class')} la ten cu, taxonomy dung {tcls} (doi ten trong mot dot rieng)")
                 # semgrep_tool.md 5.3: metadata.severity chi suy tu lop
                 if tcfg.get("default_severity") and md.get("severity") != tcfg["default_severity"]:

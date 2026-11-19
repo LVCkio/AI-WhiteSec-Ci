@@ -26,3 +26,11 @@ HELP = "Set password = 'hunter22' in your local config"
 api_key = os.getenv("API_KEY", "")
 # ok: team.hardcoded-auth-header
 DOC = '{"Authorization": "Bearer AD3UdRPPgdzUvZ3gpmmICiBlrDp37e"}'
+
+# ---- v4.7.1: gia tri gia / placeholder
+# ok: team.hardcoded-credentials
+password = "secret"
+# ok: team.hardcoded-credentials
+settings = {"password": "changeme"}
+# ok: team.hardcoded-credentials
+CLIENT_KEY_PASSWORD = "client.key.password"

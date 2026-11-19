@@ -14,12 +14,10 @@ def unpack(tar, directory):
 
 
 def get_safe_path(name):
-    # ok: team.path-from-parameter
     return os.path.join(INDEXDIR, os.path.basename(name))
 
 
 def get_fixed_path():
-    # ok: team.path-from-parameter
     return os.path.join(INDEXDIR, "index.json")
 
 
@@ -30,7 +28,6 @@ def download_safe():
 
 
 def avatar(filename):
-    # ok: team.path-from-parameter
     return send_from_directory(AVATAR_DIR, filename)
 
 

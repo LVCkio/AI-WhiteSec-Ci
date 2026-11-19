@@ -1,4 +1,6 @@
-# Bộ rule Semgrep CE của AI-WhiteSec-CI (ruleset v4.6.0)
+# Bộ rule Semgrep CE của AI-WhiteSec-CI (ruleset v4.8.1)
+
+> v4.8.1 (14/11/2026): 71 rule bật (23 high / 48 audit). Trong 23 rule high chỉ 3 rule credential đã kiểm chứng theo TC4 (≥ 5 mẫu train); 20 rule còn lại chưa đủ dữ liệu. Thay đổi v4.8.0 và v4.8.1, tiêu chí TC4 mới: `QUYET_DINH_SEMGREP.md`, `TIEU_CHI_CHON_RULE.md`. Các mục lịch sử phiên bản bên dưới giữ nguyên.
 
 ## Xử lý chất lượng ngày 26/10/2026 — task 1 và 2
 

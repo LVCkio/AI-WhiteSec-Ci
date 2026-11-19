@@ -1,9 +1,7 @@
 <?php
 function sqli($conn) {
     $n = intval($_GET['n']);
-    // ok: team.php.sqli-taint
     $r = mysqli_query($conn, "SELECT * FROM users WHERE id = " . $n);
-    // ok: team.php.sqli-taint, team.php.sqli-string
     $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
 }
 

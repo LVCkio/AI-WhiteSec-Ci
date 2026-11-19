@@ -15,10 +15,7 @@ app.get('/file', (req, res) => {
 
 // ---- v4.1
 function readUpload(name, res) {
-  // ruleid: team.js.audit.fs-path-api
   const data = fs.readFileSync(path.join(UPLOAD_DIR, name));
-  // ruleid: team.js.audit.fs-path-api
   fs.unlink(name, () => {});
-  // ruleid: team.js.audit.fs-path-api
   res.download(name);
 }
