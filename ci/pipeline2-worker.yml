@@ -80,6 +80,10 @@ aiws-semgrep:
   needs:
     - job: p0-authorize
       artifacts: false
+    # 19/11: cho P1 de chi quet target_files (che do diff). Khong lam pipeline cham hon: P3 CodeBERT (~10 phut)
+    # cung cho P1 va P4 cho ca hai, nen thoi gian ca pipeline van do P3 quyet dinh.
+    - job: p1-scope
+      artifacts: true
     - job: aiws-semgrep-image
       optional: true
   allow_failure: true                          # loi -> Gate chay che do suy giam (chi CodeBERT), bao INCOMPLETE

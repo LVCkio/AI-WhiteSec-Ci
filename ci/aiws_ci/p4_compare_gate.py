@@ -23,6 +23,44 @@ STEP = "P4-gate"
 RANK = {"PASS": 0, "REVIEW": 1, "BLOCK": 2}
 
 
+def consistency_checks(sem, sem_ok, scope):
+    """19/11: kiem Semgrep (anh aiws-semgrep) va P1 (anh aiws-codebert) nhin CUNG mot tap file, va do phu ngon ngu.
+    Chi CANH BAO (report.json: consistency + warnings; summary.md), KHONG doi quyet dinh Gate.
+    Dashboard chua hien muc warnings (can them o dashboard/static/js)."""
+    out = {"scope_signature_p1": scope.get("scope_signature"), "scope_signature_semgrep": None,
+           "scope_signature_match": None, "targets_missing_in_semgrep": [], "semgrep_files_outside_p1": [],
+           "files_unsupported_language": scope.get("files_unsupported_language") or {}, "warnings": []}
+    W = out["warnings"]
+    if sem_ok:
+        srun = sem.get("run", {})
+        out["scope_signature_semgrep"] = srun.get("scope_signature")
+        a, b = out["scope_signature_p1"], out["scope_signature_semgrep"]
+        if a and b:
+            out["scope_signature_match"] = a == b
+            if a != b:
+                W.append("Cach chon pham vi file cua P1 (anh aiws-codebert) KHAC Semgrep (anh aiws-semgrep): "
+                         "hai anh build tu hai commit khac nhau -> build lai ca hai tu cung mot commit")
+        else:
+            W.append("Khong so duoc dau van tay pham vi (anh cu chua ghi scope_signature) -> build lai anh")
+        sem_files = {f["path"] for f in sem.get("files", [])}
+        targets = set(scope.get("target_files") or [])
+        p1_files = {f["path"] for f in scope.get("files", [])}
+        miss = sorted(targets - sem_files)
+        extra = sorted(sem_files - p1_files)
+        out["targets_missing_in_semgrep"], out["semgrep_files_outside_p1"] = miss[:50], extra[:50]
+        out["targets_missing_in_semgrep_count"], out["semgrep_files_outside_p1_count"] = len(miss), len(extra)
+        if miss:
+            W.append(f"{len(miss)} file P1 can quet nhung Semgrep KHONG quet (vd {miss[0]}): cac ham nay chi co CodeBERT")
+        if extra:
+            W.append(f"{len(extra)} file Semgrep quet nhung nam ngoai pham vi P1 (vd {extra[0]}): finding o day bi bo")
+    uns = out["files_unsupported_language"]
+    if uns:
+        n = sum(uns.values())
+        W.append(f"{n} file ma nguon ngon ngu chua ho tro ({', '.join(f'{k} {v}' for k, v in uns.items())}) "
+                 f"KHONG duoc Semgrep va CodeBERT quet; PASS khong bao gom cac file nay")
+    return out
+
+
 def load_policy(path: Path):
     p = C.read_json(path)
     if p is None:
@@ -105,6 +143,10 @@ def main():
         analysis = "sast_and_codebert"
     else:
         analysis = "sast_only" if sem_ok else "codebert_only"
+
+    checks = consistency_checks(sem, sem_ok, scope)
+    for w in checks["warnings"]:
+        C.log(STEP, f"CANH BAO: {w}")
 
     mode = scope["mode"]
     targets = set(scope["target_files"])
@@ -252,6 +294,7 @@ def main():
         "branch": ci["ref"], "target_commit": scope.get("head"), "base_commit": scope.get("base"),
         "target_repository_url": ci["project_url"], "executor": "gitlab_ci", "worker_id": ci["runner"],
         "ci": ci, "scope": {k: scope[k] for k in ("mode", "note", "unit_backend", "summary")},
+        "consistency": checks, "warnings": checks["warnings"],
         "authorize": {"source": auth.get("source"), "model_status": (auth.get("model") or {}).get("status")},
         "created_at": scope.get("created_at"), "started_at": scope.get("created_at"), "finished_at": C.now(),
     }
@@ -318,7 +361,10 @@ def write_summary(p, rep):
              f"- Don vi: {g['units_evaluated']} · BLOCK {g['decisions']['BLOCK']} · REVIEW {g['decisions']['REVIEW']} "
              f"· PASS {g['decisions']['PASS']}",
              f"- Semgrep: {s['high_findings']} high, {s['audit_findings']} audit · CodeBERT gan co {s['codebert_flagged']} don vi",
-             "", "| Quyet dinh | Trang thai | Lop | File | Ham | Semgrep | CodeBERT |", "|---|---|---|---|---|---|---|"]
+             ""]
+    if rep.get("warnings"):
+        lines += ["**Canh bao:**", *[f"- {w}" for w in rep["warnings"]], ""]
+    lines += ["| Quyet dinh | Trang thai | Lop | File | Ham | Semgrep | CodeBERT |", "|---|---|---|---|---|---|---|"]
     top = sorted([u for u in g["units"] if u["decision"] != "PASS"], key=lambda u: (-RANK[u["decision"]], u["file"]))
     for u in top[:30]:
         cbs = ", ".join(f"{k} {v:.2f}" for k, v in u["codebert"].items()) or "-"

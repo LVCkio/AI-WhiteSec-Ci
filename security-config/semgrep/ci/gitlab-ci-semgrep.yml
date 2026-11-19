@@ -8,7 +8,8 @@
 # no chi that bai khi loi cau hinh/moi truong (ma 2) hoac Semgrep loi (ma 3). Viec chan do job gate.
 #
 # Anh Docker: mac dinh dung anh CO SAN tren may chay runner (server3), build bang
-# ci/servers/server3_worker.sh; runner dat pull_policy = if-not-present nen khong can registry.
+# security-config/semgrep/ci/servers/server3_worker.sh (tag anh lay tu ruleset-manifest.json); runner dat
+# pull_policy = if-not-present nen khong can registry. Doi ruleset: sua 3 bien duoi + chay lai server3_worker.sh.
 # Neu GitLab co bat Container Registry: dat bien CI/CD AIWS_SEMGREP_IMAGE = $CI_REGISTRY_IMAGE/aiws-semgrep:<tag>
 # va AIWS_BUILD_IMAGE = "1" de job aiws-semgrep-image build + day anh.
 
@@ -34,8 +35,15 @@ aiws-semgrep-image:
         -f security-config/semgrep/ci/Dockerfile -t "$AIWS_SEMGREP_IMAGE" .
     - docker push "$AIWS_SEMGREP_IMAGE"
 
-# P2: quet ca repo bang bo rule team.* dong goi trong anh; xuat semgrep-results.json + scope.json.
+# P2: quet bang bo rule team.* dong goi trong anh; xuat semgrep-results.json + scope.json.
 # Chay o moi pipeline (push moi nhanh, merge request, chay tay) - xem workflow trong .gitlab-ci.yml goc.
+# 19/11/2026:
+#  - Anh phai mang dung AIWS_RULESET_VERSION; neu repo dang quet co security-config/semgrep/ruleset-manifest.json
+#    (chinh la AI-WhiteSec-Ci) thi anh phai khop ca sha256 cua manifest do -> sua rule ma quen build lai anh
+#    thi job dung o ma 2 (loi cau hinh), Gate chay che do suy giam va bao INCOMPLETE thay vi quet bang rule cu.
+#  - Co p1-scope.json (Pipeline 2, job p1-scope) va AIWS_SEMGREP_TARGETS = "p1" (mac dinh): chi quet target_files
+#    cua P1 (che do diff = file bi sua). Semgrep CE phan tich trong tung file nen ket qua tren file do khong doi.
+#    "all" = quet het pham vi nhu truoc.
 aiws-semgrep:
   stage: sast
   image:
@@ -46,12 +54,21 @@ aiws-semgrep:
       optional: true
   variables:
     GIT_DEPTH: "1"
+    AIWS_SEMGREP_TARGETS: "p1"
   script:
-    - python /opt/aiws/security-config/semgrep/tools/scan_repo.py
-        --repo "$CI_PROJECT_DIR"
-        --repo-name "$CI_PROJECT_PATH"
-        --out "$CI_PROJECT_DIR/semgrep-results.json"
-        --scope-out "$CI_PROJECT_DIR/scope.json"
+    - |
+      ONLY=""
+      P1_SCOPE="$CI_PROJECT_DIR/${AIWS_OUT:-aiws-out}/p1-scope.json"
+      if [ "$AIWS_SEMGREP_TARGETS" = "p1" ] && [ -f "$P1_SCOPE" ]; then ONLY="--only-files $P1_SCOPE"; fi
+      echo "Semgrep: anh $AIWS_SEMGREP_IMAGE, ruleset mong doi $AIWS_RULESET_VERSION, pham vi ${ONLY:-ca repo}"
+      python /opt/aiws/security-config/semgrep/tools/scan_repo.py \
+        --repo "$CI_PROJECT_DIR" \
+        --repo-name "$CI_PROJECT_PATH" \
+        --out "$CI_PROJECT_DIR/semgrep-results.json" \
+        --scope-out "$CI_PROJECT_DIR/scope.json" \
+        --expect-ruleset "$AIWS_RULESET_VERSION" \
+        --expect-manifest "$CI_PROJECT_DIR/security-config/semgrep/ruleset-manifest.json" \
+        $ONLY
   artifacts:
     when: always
     expire_in: 30 days

@@ -1,9 +1,10 @@
 # syntax=docker/dockerfile:1
 # Anh Semgrep cho P2 (AI-WhiteSec-CI) - chi nhanh Semgrep, khong co CodeBERT.
 # Build (thu muc goc = main/ hoac goc repo co security-config/ va docs/):
-#   docker build -f security-config/semgrep/ci/Dockerfile -t aiws-semgrep:4.7.0 .
+#   docker build -f security-config/semgrep/ci/Dockerfile -t aiws-semgrep:<ruleset_version>-semgrep<ban semgrep> .
+#   (tag lay tu ruleset-manifest.json - servers/server3_worker.sh va ci/servers/server3_rebuild_images.sh tu dien)
 # Chay:
-#   docker run --rm -v <repo>:/src:ro -v <thu muc ket qua>:/out aiws-semgrep:4.7.0 \
+#   docker run --rm -v <repo>:/src:ro -v <thu muc ket qua>:/out aiws-semgrep:<tag> \
 #       --repo /src --out /out/semgrep-results.json --scope-out /out/scope.json
 # Quyet dinh: QUYET_DINH_SEMGREP.md (GitLab CI, Docker, Semgrep ghim 1.181.0, audit khong chan build).
 FROM python:3.11-slim

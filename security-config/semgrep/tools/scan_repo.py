@@ -17,6 +17,16 @@ Cac buoc:
  6. Xuat semgrep-results.json (run / files / findings / config_warnings / summary).
 Ma thoat: 0 = quet xong (co hay khong co finding; Gate quyet dinh sau), 2 = loi cau hinh, 3 = Semgrep loi khi quet.
 --raw-json <file>: bo qua buoc 1 va 3, chi hau xu ly mot ket qua Semgrep co san (dung de kiem thu).
+
+Bo sung 19/11/2026:
+  --expect-ruleset <ver>   anh phai mang dung ruleset_version nay (bien AIWS_RULESET_VERSION cua job), lech -> ma 2.
+  --expect-manifest <file> neu file ton tai (repo dang quet chinh la AI-WhiteSec-Ci): ruleset_version va
+                           ruleset_sha256 cua anh phai khop manifest trong commit -> phat hien anh chua build lai
+                           sau khi sua rule. File khong ton tai (repo khac) -> bo qua, ghi vao run.ruleset_check.
+  --only-files <file>      chi quet cac file trong danh sach (p1-scope.json: target_files, hoac mang JSON duong dan),
+                           giao voi pham vi da chon. Che do diff -> chi quet file bi sua. File khong ton tai -> quet het.
+  run.scope_signature      sha256 cua cach chon pham vi (duoi file, .semgrepignore, nguong dong) -> P4 so voi P1.
+  summary.files_unsupported_language  so file ma nguon ngon ngu chua ho tro (vd TypeScript) -> canh bao do phu.
 """
 import argparse, datetime, fnmatch, hashlib, json, os, re, shutil, subprocess, sys, tempfile
 from pathlib import Path
@@ -32,6 +42,10 @@ REQUIRED_SEMGREP = "1.181.0"
 EXT_LANG = {".py": "python", ".java": "java", ".js": "javascript", ".jsx": "javascript", ".mjs": "javascript",
             ".cjs": "javascript", ".php": "php"}
 MAX_AVG_LINE = 300          # phia CodeBERT loai file co dong trung binh > 300 ky tu
+# Ma nguon ngon ngu CHUA ho tro (khong co rule, model khong train): chi dem de canh bao do phu, khong quet.
+UNSUPPORTED_EXT = {".ts": "typescript", ".tsx": "typescript", ".mts": "typescript", ".cts": "typescript",
+                   ".vue": "vue", ".svelte": "svelte", ".kt": "kotlin", ".go": "go", ".rb": "ruby",
+                   ".cs": "csharp", ".phtml": "php_template", ".c": "c", ".cpp": "cpp", ".rs": "rust"}
 CWE_RE = re.compile(r"CWE-?0*(\d+)", re.I)
 
 
@@ -76,6 +90,28 @@ def check_config(exe: str, skip_verify: bool) -> str:
         if v.returncode != 0:
             raise ConfigError("ruleset.py verify KHONG DAT:\n" + (v.stdout + v.stderr).strip())
     return ver
+
+
+def check_expected_ruleset(expect_ver: str, expect_manifest):
+    """Anh dong goi rule rieng (khong doc rule trong repo dang quet). Kiem anh dung ban rule mong doi."""
+    m = json.loads(MANIFEST.read_text(encoding="utf-8")) if MANIFEST.is_file() else {}
+    have_ver, have_sha = m.get("ruleset_version", ""), m.get("ruleset_sha256", "")
+    res = {"image_ruleset_version": have_ver, "expected_version": expect_ver or None, "repo_manifest": None}
+    if expect_ver and expect_ver != have_ver:
+        raise ConfigError(f"anh mang ruleset {have_ver or '?'} nhung job yeu cau {expect_ver} "
+                          f"(AIWS_RULESET_VERSION) -> build lai anh hoac sua bien")
+    if expect_manifest:
+        if expect_manifest.is_file():
+            rm = json.loads(expect_manifest.read_text(encoding="utf-8"))
+            res["repo_manifest"] = {"ruleset_version": rm.get("ruleset_version"),
+                                    "ruleset_sha256": rm.get("ruleset_sha256")}
+            if (rm.get("ruleset_version"), rm.get("ruleset_sha256")) != (have_ver, have_sha):
+                raise ConfigError(f"anh mang ruleset {have_ver} ({have_sha[:12]}) KHAC manifest trong commit "
+                                  f"{rm.get('ruleset_version')} ({str(rm.get('ruleset_sha256'))[:12]}) -> rule da sua "
+                                  f"nhung anh chua build lai (server3_worker.sh)")
+        else:
+            res["repo_manifest"] = "absent"
+    return res
 
 
 def load_taxonomy():
@@ -127,7 +163,27 @@ def avg_line_len(p: Path) -> float:
     return len(data) / max(n, 1)
 
 
-def select_scope(repo: Path, pats):
+def scope_signature(pats) -> str:
+    """Dau van tay cua CACH chon pham vi. P1 (anh aiws-codebert) va P2 (anh aiws-semgrep) phai ra cung gia tri,
+    neu khong hai ben nhin hai tap file khac nhau (anh build tu hai commit khac nhau)."""
+    blob = json.dumps({"ext_lang": EXT_LANG, "max_avg_line": MAX_AVG_LINE, "excludes": list(pats)},
+                      sort_keys=True, ensure_ascii=False)
+    return hashlib.sha256(blob.encode("utf-8")).hexdigest()
+
+
+def load_only_files(p: Path):
+    """Danh sach file can quet tu P1: p1-scope.json (target_files) hoac mang JSON. None = quet het."""
+    if p is None or not p.is_file():
+        return None
+    d = json.loads(p.read_text(encoding="utf-8"))
+    lst = d.get("target_files") if isinstance(d, dict) else d
+    if not isinstance(lst, list):
+        raise ConfigError(f"{p}: khong co danh sach target_files")
+    return {norm_path(str(x)) for x in lst}
+
+
+def select_scope(repo: Path, pats, unsupported=None):
+    """unsupported: dict tuy chon, duoc dem {ngon ngu: so file} cho file ngon ngu chua ho tro (khong bi ignore)."""
     files, excluded = [], []
     for dirpath, dirnames, filenames in os.walk(repo):
         reld = Path(dirpath).relative_to(repo).as_posix()
@@ -145,6 +201,9 @@ def select_scope(repo: Path, pats):
             rel = f"{reld}/{f}" if reld else f
             lang = EXT_LANG.get(Path(f).suffix.lower())
             if not lang:
+                ul = UNSUPPORTED_EXT.get(Path(f).suffix.lower())
+                if ul and unsupported is not None and not ignored(rel, pats):
+                    unsupported[ul] = unsupported.get(ul, 0) + 1
                 continue
             why = ignored(rel, pats)
             if why:
@@ -262,6 +321,9 @@ def main():
     ap.add_argument("--strict", action="store_true", help="CWE lech taxonomy -> loi cau hinh (ma 2)")
     ap.add_argument("--skip-verify", action="store_true", help="chi de kiem thu; CI KHONG dung")
     ap.add_argument("--raw-json", type=Path, help="hau xu ly ket qua Semgrep co san, khong chay Semgrep")
+    ap.add_argument("--expect-ruleset", default="", help="ruleset_version bat buoc cua anh (lech -> ma 2)")
+    ap.add_argument("--expect-manifest", type=Path, help="manifest trong repo dang quet; co file thi phai khop anh")
+    ap.add_argument("--only-files", type=Path, help="p1-scope.json (target_files) hoac mang JSON: chi quet cac file nay")
     a = ap.parse_args()
     repo = a.repo.resolve()
     if not repo.is_dir():
@@ -269,10 +331,16 @@ def main():
     try:
         tax_ver, classes, alias = load_taxonomy()
         ver = "" if a.raw_json else check_config(find_semgrep(), a.skip_verify)
+        ruleset_check = check_expected_ruleset(a.expect_ruleset, a.expect_manifest)
+        only = load_only_files(a.only_files)
     except ConfigError as e:
         print(f"[scan_repo] LOI CAU HINH VA MOI TRUONG SAST: {e}", file=sys.stderr); sys.exit(2)
     pats = load_ignore(a.ignore_file)
-    files, excluded = select_scope(repo, pats)
+    unsupported = {}
+    files, excluded = select_scope(repo, pats, unsupported)
+    files_total = len(files)
+    if only is not None:
+        files = [f for f in files if f["path"] in only]
     started = datetime.datetime.now().astimezone()
     if a.raw_json:
         raw, command = json.loads(a.raw_json.read_text(encoding="utf-8")), f"(hau xu ly {a.raw_json.name})"
@@ -304,6 +372,9 @@ def main():
             "scanned_at": started.isoformat(timespec="seconds"),
             "duration_s": round((datetime.datetime.now().astimezone() - started).total_seconds(), 1),
             "excludes": pats, "max_avg_line_len": MAX_AVG_LINE, "command": command,
+            "scope_signature": scope_signature(pats), "ruleset_check": ruleset_check,
+            "targets": "p1_target_files" if only is not None else "all_in_scope",
+            "files_in_scope_total": files_total,
         },
         "files": [{**f, "parse_status": status[f["path"]]} for f in files],
         "findings": findings,
@@ -314,6 +385,7 @@ def main():
             "findings_audit": count(lambda f: f["confidence"] == "audit"),
             "by_class": {c: count(lambda f, c=c: f["class"] == c) for c in classes},
             "dropped_out_of_scope_classes": dropped, "scan_errors": len(errors),
+            "files_unsupported_language": dict(sorted(unsupported.items())),
         },
     }
     a.out.parent.mkdir(parents=True, exist_ok=True)

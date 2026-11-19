@@ -2,7 +2,7 @@
 
 Theo `QUYET_DINH_SEMGREP.md`: **GitLab CE tự cài trong máy ảo** (server1), runner **Docker** trên server3, Semgrep ghim **1.181.0**, finding tầng **audit chỉ ghi nhận, không chặn build**.
 
-**Cài server:** xem `servers/README.md` (script `server1_gitlab.sh`, `server3_worker.sh`). Mặc định job dùng ảnh **có sẵn trên server3** (`aiws-semgrep:4.7.0-semgrep1.181.0`, runner `pull_policy = if-not-present`), không cần registry. Pipeline chạy ở **mọi lần push** và merge request (workflow trong `.gitlab-ci.yml` gốc).
+**Cài server:** xem `servers/README.md` (script `server1_gitlab.sh`, `server3_worker.sh`). Mặc định job dùng ảnh **có sẵn trên server3** (`aiws-semgrep:<ruleset_version>-semgrep1.181.0`, hiện `4.8.1-semgrep1.181.0`; runner `pull_policy = if-not-present`), không cần registry. Pipeline chạy ở **mọi lần push** và merge request (workflow trong `.gitlab-ci.yml` gốc).
 
 ## File
 
@@ -37,7 +37,7 @@ Chạy khi: merge request, nhánh mặc định, hoặc chạy tay (Run pipeline
 
 - GitLab Runner **Docker executor**.
 - Job `aiws-semgrep-image` dùng `docker:27-dind` → runner cần `privileged = true`. Nếu runner không cho privileged, build ảnh trên máy rồi `docker push` tay lên registry với đúng tag `$AIWS_SEMGREP_IMAGE`.
-- Tag ảnh = `aiws-semgrep:<ruleset_version>-semgrep<semgrep_version>` (hiện `4.7.0-semgrep1.181.0`). Đổi bộ rule → tăng `AIWS_RULESET_VERSION` trong `gitlab-ci-semgrep.yml`.
+- Tag ảnh = `aiws-semgrep:<ruleset_version>-semgrep<semgrep_version>` (hiện `4.8.1-semgrep1.181.0`). Đổi bộ rule → tăng `AIWS_RULESET_VERSION` và `AIWS_SEMGREP_IMAGE` trong `gitlab-ci-semgrep.yml`; `server3_worker.sh` lấy tag từ `ruleset-manifest.json` và dừng nếu biến trong yml lệch. Job kiểm ảnh mang đúng ruleset (`--expect-ruleset`, `--expect-manifest`), lệch → mã 2.
 
 ## Chạy thử trên máy (Docker Desktop)
 
