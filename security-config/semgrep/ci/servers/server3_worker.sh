@@ -2,17 +2,30 @@
 # server3 - Security Worker: Docker + GitLab Runner (Docker executor) + anh aiws-semgrep.
 # Dung:  sudo bash server3_worker.sh <URL GitLab, vd http://192.168.150.10> <thu muc ma nguon AI-WhiteSec-Ci>
 #   Thu muc ma nguon phai co docs/taxonomy.yml va security-config/semgrep/ (clone tu GitLab hoac chep bang scp).
-#   Token runner (glrt-...) lay tren GitLab: project -> Settings -> CI/CD -> Runners -> New project runner
-#   (tick "Run untagged jobs"). Script hoi token o dang AN, khong ghi ra man hinh hay log.
+#   Token runner (glrt-...) lay tren GitLab: project -> Settings -> CI/CD -> Runners -> New project runner,
+#   o o Tags dien: aiws-worker (Pipeline 2 chi chay tren runner co tag nay; voi token glrt- tag dat tren GitLab,
+#   khong dat duoc tu lenh register). Script hoi token o dang AN, khong ghi ra man hinh hay log.
+# 19/11/2026: tag anh lay tu ruleset-manifest.json (khong ghi tay); dang ky runner kem mount kho model
+#   /srv/aiws/models:/models:ro (truoc day phai sua config.toml bang tay theo ci/servers/server3_pipeline2.sh);
+#   runner da dang ky thi kiem config.toml va bao neu thieu.
+#   Thu tu cai Server 3: (1) script nay  (2) ci/servers/server3_pipeline2.sh (anh aiws-codebert + model)
+#   Sau moi lan sua rule hoac ma ci/aiws_ci: ci/servers/server3_rebuild_images.sh (build CA HAI anh tu mot commit).
 set -euo pipefail
 
 GITLAB_URL="${1:-}"
 SRC="${2:-}"
-TAG="aiws-semgrep:4.8.1-semgrep1.181.0"
+MODEL_STORE="/srv/aiws/models"
 if [[ -z "$GITLAB_URL" || -z "$SRC" ]]; then echo "Dung: sudo bash $0 <URL GitLab> <thu muc AI-WhiteSec-Ci>"; exit 1; fi
 if [[ $EUID -ne 0 ]]; then echo "Can chay bang sudo"; exit 1; fi
 if [[ ! -f "$SRC/docs/taxonomy.yml" || ! -f "$SRC/security-config/semgrep/ci/Dockerfile" ]]; then
   echo "Thieu $SRC/docs/taxonomy.yml hoac security-config/semgrep/ci/Dockerfile"; exit 1; fi
+MANIFEST="$SRC/security-config/semgrep/ruleset-manifest.json"
+RV=$(python3 -c "import json,sys;print(json.load(open(sys.argv[1]))['ruleset_version'])" "$MANIFEST")
+SV=$(python3 -c "import json,sys;print(json.load(open(sys.argv[1]))['semgrep_version_pinned'])" "$MANIFEST")
+TAG="aiws-semgrep:${RV}-semgrep${SV}"
+CI_RV=$(sed -n 's/^ *AIWS_RULESET_VERSION: *"\(.*\)".*/\1/p' "$SRC/security-config/semgrep/ci/gitlab-ci-semgrep.yml")
+if [[ "$CI_RV" != "$RV" ]]; then
+  echo "LECH: manifest ruleset $RV nhung gitlab-ci-semgrep.yml dat AIWS_RULESET_VERSION=$CI_RV -> sua yml truoc"; exit 1; fi
 
 echo "== Kiem tra ket noi toi GitLab =="
 curl -fsS -o /dev/null -w "HTTP %{http_code}\n" "$GITLAB_URL/users/sign_in" || { echo "Khong goi duoc $GITLAB_URL"; exit 1; }
@@ -41,7 +54,9 @@ fi
 gitlab-runner --version | head -2
 
 echo "== Build anh $TAG (chi build duoc khi ruleset.py verify DAT) =="
-( cd "$SRC" && DOCKER_BUILDKIT=1 docker build -f security-config/semgrep/ci/Dockerfile -t "$TAG" . )
+COMMIT=$(git -C "$SRC" rev-parse HEAD 2>/dev/null || echo unknown)
+( cd "$SRC" && DOCKER_BUILDKIT=1 docker build --label "aiws.commit=$COMMIT" \
+    -f security-config/semgrep/ci/Dockerfile -t "$TAG" . )
 
 echo "== Thu anh: quet chinh ma nguon =="
 OUT=$(mktemp -d); chmod 777 "$OUT"   # user scanner (uid 10001) trong anh can ghi ket qua
@@ -59,8 +74,16 @@ else
     --url "$GITLAB_URL" --token "$RUNNER_TOKEN" \
     --name "aiws-server3" \
     --executor docker --docker-image alpine:3.20 \
-    --docker-pull-policy if-not-present
+    --docker-pull-policy if-not-present \
+    --docker-volumes "/cache" \
+    --docker-volumes "$MODEL_STORE:/models:ro"
   unset RUNNER_TOKEN
+fi
+mkdir -p "$MODEL_STORE"
+if ! grep -q "$MODEL_STORE:/models" /etc/gitlab-runner/config.toml 2>/dev/null; then
+  echo "CANH BAO: runner trong /etc/gitlab-runner/config.toml chua mount kho model. Trong [runners.docker] them:"
+  echo "    volumes = [\"/cache\", \"$MODEL_STORE:/models:ro\"]"
+  echo "  roi: sudo gitlab-runner restart   (thieu mount -> P0 bao model 'missing', Gate FAILED)"
 fi
 systemctl enable --now gitlab-runner
 gitlab-runner verify || true
@@ -68,4 +91,5 @@ gitlab-runner verify || true
 echo
 echo "== Xong =="
 docker image ls "$TAG"
-echo "Kiem tra tren GitLab: Settings -> CI/CD -> Runners: runner aiws-server3 phai Online."
+echo "Kiem tra tren GitLab: Settings -> CI/CD -> Runners: runner aiws-server3 phai Online va co tag aiws-worker."
+echo "Buoc tiep: sudo bash ci/servers/server3_pipeline2.sh $SRC <goi model> [val.jsonl]  (anh aiws-codebert + model)"

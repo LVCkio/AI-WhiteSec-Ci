@@ -1,8 +1,11 @@
 @echo off
 chcp 65001 >nul
 cd /d "%~dp0"
-set LOCAL=aiws-semgrep:4.6.1-semgrep1.181.0
-set REMOTE=registry.gitlab.com/fpt-edu-kltn-group/ai-whitesec-ci/aiws-semgrep:4.6.1-semgrep1.181.0
+rem 19/11/2026: tag anh lay tu ruleset-manifest.json (truoc day ghi tay, da lech voi ruleset that)
+for /f "usebackq delims=" %%v in (`powershell -NoProfile -Command "$m = Get-Content 'security-config\semgrep\ruleset-manifest.json' -Raw | ConvertFrom-Json; $m.ruleset_version + '-semgrep' + $m.semgrep_version_pinned"`) do set VER=%%v
+if not defined VER (echo Khong doc duoc security-config\semgrep\ruleset-manifest.json & pause & exit /b 1)
+set LOCAL=aiws-semgrep:%VER%
+set REMOTE=registry.gitlab.com/fpt-edu-kltn-group/ai-whitesec-ci/aiws-semgrep:%VER%
 set LOG=%~dp0security-config\semgrep\reports\ci_local_2026-10-26\push_registry_log.txt
 echo Day image Semgrep len GitLab Container Registry.
 echo Buoc 1: dang nhap registry.gitlab.com

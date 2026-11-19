@@ -43,12 +43,13 @@ r=check_model(Path('/src'), Path('/models')); print(json.dumps({k:r.get(k) for k
 
 cat <<EOF
 
-== 5. Sua runner aiws-server3 (lam MOT lan) ==
-  a) /etc/gitlab-runner/config.toml, trong [runners.docker] cua runner aiws-server3, them dong:
+== 5. Kiem runner aiws-server3 (19/11: security-config/semgrep/ci/servers/server3_worker.sh da dang ky san
+       mount kho model; runner dang ky TRUOC 19/11 thi lam tay) ==
+  a) /etc/gitlab-runner/config.toml, trong [runners.docker] cua runner aiws-server3 phai co:
         volumes = ["/cache", "$STORE:/models:ro"]
-     roi: sudo gitlab-runner restart
+     (them neu thieu, roi: sudo gitlab-runner restart)
   b) GitLab -> Settings -> CI/CD -> Runners -> aiws-server3 -> Edit -> Tags: aiws-worker
-     (giu "Run untagged jobs" neu job aiws-semgrep cu con chay tren nhanh khac)
+  c) Tu nay sau moi lan sua rule / scan_repo.py / ci/aiws_ci: sudo bash ci/servers/server3_rebuild_images.sh $SRC
 Xong. Doi model sau nay: leader giao goi moi -> 'python -m aiws_ci.model_tool lock <goi> --out ci/model-lock.json'
 tren may dev, mo merge request; tren Server 3 chay lai script nay voi goi moi (khong can build lai anh neu ma khong doi).
 EOF

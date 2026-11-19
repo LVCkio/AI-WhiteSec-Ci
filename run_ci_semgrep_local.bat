@@ -1,8 +1,11 @@
 @echo off
 chcp 65001 >nul
 cd /d "%~dp0"
-set TAG=aiws-semgrep:4.7.0-semgrep1.181.0
-set OUT=%~dp0security-config\semgrep\reports\ci_local_v470_2026-10-26
+rem 19/11/2026: tag anh lay tu ruleset-manifest.json (truoc day ghi tay, da lech voi ruleset that)
+for /f "usebackq delims=" %%v in (`powershell -NoProfile -Command "$m = Get-Content 'security-config\semgrep\ruleset-manifest.json' -Raw | ConvertFrom-Json; $m.ruleset_version + '-semgrep' + $m.semgrep_version_pinned"`) do set VER=%%v
+if not defined VER (echo Khong doc duoc security-config\semgrep\ruleset-manifest.json & pause & exit /b 1)
+set TAG=aiws-semgrep:%VER%
+set OUT=%~dp0security-config\semgrep\reports\ci_local_%VER%
 if not exist "%OUT%" mkdir "%OUT%"
 set LOG=%OUT%\run_log.txt
 echo Chay thu anh Docker Semgrep: build anh roi quet repo AI-WhiteSec-Ci trong container. Lan dau khoang 3-8 phut.

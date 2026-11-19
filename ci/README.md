@@ -22,13 +22,15 @@ commit / merge request / chạy tay / API
 
 | File | Vai trò |
 |---|---|
-| `.gitlab-ci.yml` | Pipeline 1 (cha) |
+| `.gitlab-ci.yml` | Pipeline 1 (cha) của chính repo này: include `ci/pipeline1-orchestrator.yml` + job `dispatch-worker` |
+| `ci/pipeline1-orchestrator.yml` | Job Pipeline 1 dùng chung (19/11/2026) |
+| `ci/templates/target-project.gitlab-ci.yml` | Mẫu `.gitlab-ci.yml` cho **project khác** muốn được quét (mục 7) |
 | `ci/pipeline2-worker.yml` | Pipeline 2 (con); include job Semgrep có sẵn `security-config/semgrep/ci/gitlab-ci-semgrep.yml` |
 | `ci/aiws_ci/` | Mã P0–P5 (`p0_authorize`, `p1_scope`, `units`, `p3_codebert`, `p4_compare_gate`, `p5_persist`, `model_tool`) |
 | `ci/gate-policy.json` | Chính sách Gate (có phiên bản; SHA-256 ghi vào báo cáo) |
 | `ci/model-lock.json` | Model đang dùng: tên run + SHA-256 từng file đã duyệt |
 | `ci/docker/Dockerfile.codebert` | Ảnh `aiws-codebert` (không chứa model) |
-| `ci/servers/*.sh` | Cài runner Server 1, ảnh + kho model Server 3 |
+| `ci/servers/*.sh` | Cài runner Server 1, ảnh + kho model Server 3; `server3_rebuild_images.sh` build lại **cả hai** ảnh từ một commit |
 | `tests/test_ci_pipeline.py` | Kiểm thử tách hàm và Gate |
 
 ## 2. Chế độ quét
@@ -77,7 +79,7 @@ Tạo runner trên GitLab: Tags `aiws-orchestrator`, không tick "Run untagged j
 ```bash
 sudo bash ci/servers/server3_pipeline2.sh ~/AI-WhiteSec-Ci ~/model_v24_pair_e5 ~/val.jsonl
 ```
-Sau đó sửa `/etc/gitlab-runner/config.toml` của runner `aiws-server3`: `volumes = ["/cache", "/srv/aiws/models:/models:ro"]`, restart runner, và thêm tag `aiws-worker` trên GitLab. Ảnh `aiws-semgrep:4.7.0-semgrep1.181.0` dùng lại như cũ.
+Thứ tự (19/11/2026): (1) `sudo bash security-config/semgrep/ci/servers/server3_worker.sh <URL GitLab> ~/AI-WhiteSec-Ci` — Docker, GitLab Runner, ảnh `aiws-semgrep` (tag lấy từ `ruleset-manifest.json`), đăng ký runner **kèm** `volumes = ["/cache", "/srv/aiws/models:/models:ro"]`; khi tạo runner trên GitLab điền Tags `aiws-worker`. (2) lệnh `server3_pipeline2.sh` ở trên — ảnh `aiws-codebert` + model. Runner đăng ký trước 19/11 thì vẫn phải thêm `volumes` vào `config.toml` bằng tay (script (1) sẽ cảnh báo nếu thiếu).
 
 **Biến CI/CD (Settings → CI/CD → Variables)** – chỉ cần cho P5 ghi PostgreSQL:
 
@@ -109,3 +111,18 @@ Không cần build lại ảnh `aiws-codebert` khi chỉ đổi model.
 - Ngưỡng/quy tắc Gate chính thức (Phase 6.2): hiện CodeBERT một mình chỉ đưa vào REVIEW.
 - Dataset huấn luyện vẫn tách hàm theo CVEfixes `method_change` + lizard; pipeline đã chuyển sang tree-sitter. Trên `flask_vuln_app` ranh giới hàm tree-sitter và lizard trùng 36/36; nên đo thêm trên Java/JS/PHP (`AIWS_UNIT_BACKEND=lizard` để so).
 - `executor` ghi vào `pipeline_runs` là `gitlab_ci`; nếu bảng có ràng buộc giá trị, đặt `AIWS_DB_EXECUTOR`.
+
+
+## 7. Bổ sung 19/11/2026
+
+**Quét project khác.** Chép `ci/templates/target-project.gitlab-ci.yml` vào gốc project cần quét, đặt tên `.gitlab-ci.yml`. Pipeline 1, Pipeline 2 và job Semgrep đều lấy từ AI-WhiteSec-Ci (`include: project`), không chép file nào khác. Lý do không dùng được `trigger: include: local`: GitLab tìm file đó trong project **gốc** đang chạy pipeline (gitlab-org/gitlab#219342). Điều kiện: người kích hoạt có quyền đọc AI-WhiteSec-Ci; hai runner `aiws-orchestrator` / `aiws-worker` được bật cho project đó (Settings → CI/CD → Runners → Enable); biến `AIWS_DB_DSN` đặt ở project hoặc group; ref `main` của AI-WhiteSec-Ci đã có bản `ci/` và `security-config/semgrep/` cần dùng.
+
+**Semgrep chỉ quét file P1 chọn.** `aiws-semgrep` chờ `p1-scope` và truyền `--only-files aiws-out/p1-scope.json` (biến `AIWS_SEMGREP_TARGETS`: `p1` mặc định, `all` = quét hết như cũ). Chế độ diff → chỉ quét file bị sửa. Thời gian cả pipeline không tăng vì P3 cũng chờ P1 và P4 chờ cả hai.
+
+**Kiểm ảnh đúng phiên bản.** `aiws-semgrep` gọi `scan_repo.py --expect-ruleset $AIWS_RULESET_VERSION --expect-manifest <repo>/security-config/semgrep/ruleset-manifest.json`: ảnh mang ruleset khác biến, hoặc (khi quét chính AI-WhiteSec-Ci) khác sha256 manifest trong commit → mã 2, Gate báo INCOMPLETE thay vì âm thầm quét bằng rule cũ. `p0-authorize` so thêm `scan_repo.py` và `.semgrepignore` trong ảnh `aiws-codebert` với commit.
+
+**Kiểm hai ảnh nhìn cùng tập file.** `scan_repo.py` ghi `run.scope_signature` (sha256 của đuôi file, `.semgrepignore`, ngưỡng dòng); P1 ghi cùng giá trị vào `p1-scope.json`; P4 so hai giá trị và so danh sách file, lệch → mục `warnings` trong `report.json` và `summary.md` (không đổi quyết định Gate). Sửa: `sudo bash ci/servers/server3_rebuild_images.sh ~/AI-WhiteSec-Ci`.
+
+**Độ phủ ngôn ngữ.** P1 và Semgrep đếm file mã nguồn ngôn ngữ chưa hỗ trợ (`.ts/.tsx`, `.vue`, `.go`, `.kt`…; `files_unsupported_language`). Có → cảnh báo trong báo cáo: PASS không bao gồm các file đó. Chưa thêm TypeScript vào phạm vi quét: cần rule/test TS, dữ liệu đo và quyết định của leader (model chưa train trên TS).
+
+**Xuống dòng.** `.gitattributes` giữ LF cho rule, `semgrep.yml`, manifest, `ci/`, `*.sh`. Trước đó Git for Windows (`core.autocrlf=true`) đổi sang CRLF → `ruleset.py verify` KHÔNG ĐẠT và build ảnh từ bản Windows (`run_ci_semgrep_local.bat`) thất bại.

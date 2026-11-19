@@ -79,7 +79,13 @@ def main():
     repo = a.repo.resolve()
     sr = load_scan_repo()
     pats = sr.load_ignore(sr.IGNORE_FILE)
-    files, excluded = sr.select_scope(repo, pats)
+    unsupported = {}
+    try:
+        files, excluded = sr.select_scope(repo, pats, unsupported)
+    except TypeError:                     # scan_repo.py cu (truoc 19/11) chua nhan tham so unsupported
+        files, excluded = sr.select_scope(repo, pats)
+    # dau van tay cach chon pham vi -> P4 so voi semgrep-results.json (hai anh build tu hai commit khac nhau?)
+    scope_sig = sr.scope_signature(pats) if hasattr(sr, "scope_signature") else None
 
     head = git(repo, "rev-parse", "HEAD").stdout.strip() or os.environ.get("CI_COMMIT_SHA", "")
     mode, base, note, changed = a.mode, a.base.strip(), "", None
@@ -116,12 +122,14 @@ def main():
         "repo": os.environ.get("CI_PROJECT_PATH") or repo.name, "head": head,
         "mode": mode, "requested_mode": a.mode, "base": base if mode == "diff" else None, "note": note,
         "unit_backend": a.backend, "unit_backend_version": treesitter_version() if a.backend == "treesitter" else "lizard",
+        "scope_signature": scope_sig, "files_unsupported_language": dict(sorted(unsupported.items())),
         "files": files, "excluded": excluded, "target_files": targets,
         "changed_lines": {k: sorted(v) for k, v in (changed or {}).items() if k in in_scope},
         "parse_errors": parse_errors,
         "summary": {"files_in_scope": len(files), "target_files": len(targets), "units": len(units),
                     "units_in_diff": sum(u["in_diff"] for u in units), "units_to_codebert": len(scored),
                     "module_snippets": sum(u["unit"] == "module_snippet" for u in units),
+                    "files_unsupported_language": sum(unsupported.values()),
                     "duration_s": round(time.time() - t0, 2)},
     }
     C.write_json(a.out_dir / "p1-scope.json", scope)
@@ -129,7 +137,9 @@ def main():
     s = scope["summary"]
     C.log(STEP, f"che do {mode}{' (' + note + ')' if note else ''}; {s['files_in_scope']} file trong pham vi, "
                 f"{s['target_files']} file can quet, {s['units']} don vi ({s['units_in_diff']} trong diff, "
-                f"{s['units_to_codebert']} dua vao CodeBERT); loi parse {len(parse_errors)} file")
+                f"{s['units_to_codebert']} dua vao CodeBERT); loi parse {len(parse_errors)} file"
+                + (f"; CANH BAO {s['files_unsupported_language']} file ngon ngu chua ho tro "
+                   f"{dict(sorted(unsupported.items()))} KHONG duoc quet" if unsupported else ""))
 
 
 if __name__ == "__main__":

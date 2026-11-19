@@ -108,6 +108,14 @@ def check_code(repo: Path):
         return {"status": "skipped", "reason": "repo khong chua ci/aiws_ci hoac dang chay truc tiep tu repo"}
     diff = sorted(p.name for p in src.glob("*.py")
                   if not (img / p.name).is_file() or C.sha256_file(p) != C.sha256_file(img / p.name))
+    # 19/11: P1 chon pham vi bang scan_repo.py + .semgrepignore DONG GOI TRONG ANH NAY; lech commit -> P1 va
+    # Semgrep (anh aiws-semgrep) nhin hai tap file khac nhau. So them hai file do.
+    sem_src = repo / "security-config" / "semgrep"
+    for rel, img_p in (("tools/scan_repo.py", C.SEMGREP_TOOLS / "scan_repo.py"),
+                       (".semgrepignore", C.SEMGREP_TOOLS.parent / ".semgrepignore")):
+        rp = sem_src / rel
+        if rp.is_file() and (not img_p.is_file() or C.sha256_file(rp) != C.sha256_file(img_p)):
+            diff.append(f"security-config/semgrep/{rel}")
     return {"status": "ok" if not diff else "stale", "files_differ": diff}
 
 
