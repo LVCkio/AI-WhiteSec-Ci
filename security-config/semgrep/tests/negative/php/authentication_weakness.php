@@ -11,12 +11,12 @@ function auth($user, $stored, $not_pass_update, $passport) {
 }
 
 // ---- v4.1
-// ok: team.php.audit.auth-code
+// retired audit rule assertion retained in tests_disabled/
 function renderPage($title) {
     return $title;
 }
 
 function theme($t) {
-    // ok: team.php.audit.auth-code
+    // retired audit rule assertion retained in tests_disabled/
     $_SESSION['theme'] = $t;
 }

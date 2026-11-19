@@ -26,11 +26,11 @@ def login_safe(user):
     session["user_id"] = user.id
 
 
-# ok: team.audit.auth-code
+# retired audit rule assertion retained in tests_disabled/
 def render_page(title):
     return title
 
 
 # ---- v4.2: API so sanh/kiem tra an toan khong bi coi la diem yeu
-# ok: team.audit.auth-code
+# retired audit rule assertion retained in tests_disabled/
 SAME = hmac.compare_digest(b"a", b"b")

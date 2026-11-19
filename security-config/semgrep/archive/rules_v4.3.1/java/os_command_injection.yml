@@ -1,0 +1,125 @@
+# Ruleset AI-WhiteSec-CI v4.2.0 | ngon ngu: java | lop: OS_COMMAND_INJECTION
+# confidence: high = ket luan truc tiep; audit = bat rong, can ra soat (luong SAST doc lap voi CodeBERT).
+# Test: tests/positive/java/os_command_injection.* (phai bao) va tests/negative/java/os_command_injection.* (khong duoc bao).
+rules:
+- id: team.java.cmdi-taint
+  languages:
+  - java
+  severity: ERROR
+  message: Request data reaches an OS command.
+  metadata:
+    cwe: CWE-78
+    owasp: A03:2021
+    vuln_class: OS_COMMAND_INJECTION
+    confidence: high
+    severity: critical
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.0.0
+    ruleset_version: 4.3.1
+  mode: taint
+  pattern-sources:
+  - pattern: (javax.servlet.http.HttpServletRequest $R).$GET(...)
+  - pattern: (jakarta.servlet.http.HttpServletRequest $R).$GET(...)
+  - pattern: (HttpServletRequest $R).$GET(...)
+  - patterns:
+    - pattern-inside: '$RT $METHOD(..., @$ANNO(...) $TYPE $PARAM, ...) { ... }
+
+        '
+    - pattern: $PARAM
+    - metavariable-regex:
+        metavariable: $ANNO
+        regex: ^(RequestParam|PathVariable|RequestBody|RequestHeader|CookieValue)$
+  - patterns:
+    - pattern-inside: '$RT $METHOD(..., @$ANNO $TYPE $PARAM, ...) { ... }
+
+        '
+    - pattern: $PARAM
+    - metavariable-regex:
+        metavariable: $ANNO
+        regex: ^(RequestParam|PathVariable|RequestBody|RequestHeader|CookieValue)$
+  pattern-sinks:
+  - patterns:
+    - pattern-either:
+      - pattern: Runtime.getRuntime().exec($X, ...)
+      - pattern: (Runtime $RT).exec($X, ...)
+      - pattern: new ProcessBuilder($X, ...)
+      - pattern: (ProcessBuilder $PB).command($X, ...)
+    - focus-metavariable: $X
+  pattern-sanitizers:
+  - pattern: Integer.parseInt(...)
+  - pattern: Long.parseLong(...)
+  - pattern: Integer.valueOf(...)
+  - pattern: UUID.fromString(...)
+- id: team.java.audit.process-api
+  languages:
+  - java
+  severity: WARNING
+  message: A process API is used (audit hint).
+  metadata:
+    cwe: CWE-78
+    owasp: A03:2021
+    vuln_class: OS_COMMAND_INJECTION
+    confidence: audit
+    severity: critical
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.2.0
+    ruleset_version: 4.3.1
+    change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
+    change_v4: Bo lenh la hang chuoi (khong the bi chen du lieu).
+  patterns:
+  - pattern-either:
+    - pattern: Runtime.getRuntime().exec(...)
+    - pattern: (Runtime $R).exec(...)
+    - pattern: new ProcessBuilder(...)
+  - pattern-not: Runtime.getRuntime().exec("...")
+  - pattern-not: new ProcessBuilder("...")
+- id: team.java.cmd-string
+  languages:
+  - java
+  severity: WARNING
+  message: An OS command is built from a concatenated string (audit).
+  metadata:
+    cwe: CWE-78
+    owasp: A03:2021
+    vuln_class: OS_COMMAND_INJECTION
+    confidence: audit
+    severity: critical
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.0.0
+    ruleset_version: 4.3.1
+  pattern-either:
+  - pattern: Runtime.getRuntime().exec("..." + $X, ...)
+  - pattern: Runtime.getRuntime().exec($X + "...", ...)
+  - pattern: new ProcessBuilder("sh", "-c", ...)
+  - pattern: new ProcessBuilder("bash", "-c", ...)
+  - pattern: new ProcessBuilder("cmd", "/c", ...)
+- id: team.java.audit.commandline-api
+  languages:
+  - java
+  severity: WARNING
+  message: A command line is built from a non-literal value (Apache Commons Exec / command builders) (audit hint).
+  metadata:
+    cwe: CWE-78
+    owasp: A03:2021
+    vuln_class: OS_COMMAND_INJECTION
+    confidence: audit
+    severity: critical
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.1.0
+    ruleset_version: 4.3.1
+    change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
+    change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
+  patterns:
+  - pattern-either:
+    - pattern: new CommandLine($X, ...)
+    - pattern: CommandLine.parse($X, ...)
+    - pattern: $CL.addArgument($X, ...)
+    - pattern: $CL.addArguments($X, ...)
+    - pattern: $CL.withArg($X)
+    - pattern: $CL.withArgs(...)
+    - pattern: CommandLine.createCommandLine($X)
+  - pattern-not: new CommandLine("...", ...)
+  - pattern-not: CommandLine.parse("...", ...)
+  - pattern-not: $CL.addArgument("...", ...)
+  - pattern-not: $CL.withArg("...")
+  - pattern-not: CommandLine.createCommandLine("...")

@@ -1,21 +1,23 @@
-# Ruleset AI-WhiteSec-CI v4.2.0 | ngon ngu: python | lop: OS_COMMAND_INJECTION
+# Ruleset AI-WhiteSec-CI v4.8.1 | ngon ngu: python | lop: OS_COMMAND_INJECTION
 # confidence: high = ket luan truc tiep; audit = bat rong, can ra soat (luong SAST doc lap voi CodeBERT).
 # Test: tests/positive/python/os_command_injection.* (phai bao) va tests/negative/python/os_command_injection.* (khong duoc bao).
 rules:
 - id: team.os-command-injection
   languages:
   - python
-  severity: ERROR
+  severity: WARNING
   message: A shell command is constructed or invoked through an unsafe API.
   metadata:
     cwe: CWE-78
     owasp: A03:2021
     vuln_class: OS_COMMAND_INJECTION
-    confidence: high
+    confidence: audit
     severity: critical
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
-    rule_version: 1.2.0
-    ruleset_version: 4.3.1
+    rule_version: 1.4.0
+    ruleset_version: 4.8.1
+    change_v481: 'high -> audit (phuong an A, tang high chi giu rule P >= 0.80 tren train). precision mau train v2.6 12/23 = 0.52; doc tay 13 mau am: 11 rule bao nham (sanitizer o dong tren: sanitizeInput, quote, secure_filename), 1 loi that, 1 chua ro (DOC_TAY_high_os_sql.md).'
+    change_v461: 'Bo nhanh regex tho subprocess shell=True (da co pattern AST subprocess.$F(..., shell=True, ...)).'
     change_v43: 'severity WARNING -> ERROR (semgrep_tool.md 5.3: severity suy tu confidence high).'
     change_v4: Bo qua lenh la hang chuoi (vi du os.system("service nginx restart")).
   patterns:
@@ -29,7 +31,6 @@ rules:
       - metavariable-regex:
           metavariable: $EXEC
           regex: ^(?:exec[lv]p?e?|spawn[lv]p?e?)$
-    - pattern-regex: (?i)\bsubprocess\.(?:Popen|run|call|check_call|check_output|getoutput|getstatusoutput)\s*\([^)\n]*shell\s*=\s*True
   - pattern-not: os.system("...")
   - pattern-not: os.popen("...", ...)
   - pattern-not: subprocess.$F("...", ..., shell=True, ...)
@@ -37,17 +38,18 @@ rules:
 - id: team.os-command-string-building
   languages:
   - python
-  severity: ERROR
+  severity: WARNING
   message: A process command is built from interpolated strings.
   metadata:
     cwe: CWE-78
     owasp: A03:2021
     vuln_class: OS_COMMAND_INJECTION
-    confidence: high
+    confidence: audit
     severity: critical
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
-    rule_version: 1.1.0
-    ruleset_version: 4.3.1
+    rule_version: 1.2.0
+    ruleset_version: 4.8.1
+    change_v481: 'high -> audit (phuong an A, tang high chi giu rule P >= 0.80 tren train). precision mau train v2.6 4/10 = 0.40.'
     change_v43: 'severity WARNING -> ERROR (semgrep_tool.md 5.3: severity suy tu confidence high).'
   pattern-either:
   - pattern: subprocess.$F(f"...", ...)
@@ -70,7 +72,7 @@ rules:
     severity: critical
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.0.0
-    ruleset_version: 4.3.1
+    ruleset_version: 4.8.1
     change_v4: Rule moi trong v4.
   mode: taint
   pattern-sources:
@@ -121,7 +123,7 @@ rules:
     severity: critical
     scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
     rule_version: 1.2.0
-    ruleset_version: 4.3.1
+    ruleset_version: 4.8.1
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
     change_v4: Bo lenh la hang chuoi (khong the bi chen du lieu).
   patterns:

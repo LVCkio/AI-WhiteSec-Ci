@@ -5,7 +5,7 @@ from markupsafe import escape
 
 def page():
     name = request.args.get("name", "")
-    # ok: team.py.xss-taint, team.audit.html-output-api
+    # ok: team.py.xss-taint
     return render_template("hello.html", name=name)
 
 
@@ -22,7 +22,7 @@ def plain(user_input):
     env = jinja2.Environment(loader=None, autoescape=True)
     # ok: team.xss-html-string-building
     title = "Report for " + user_input
-    # ok: team.audit.html-output-api, team.xss-response-formatting
+    # ok: team.xss-response-formatting
     return HttpResponse("Saved")
 
 

@@ -1,0 +1,35 @@
+# Disabled rules; excluded from the active bundle. See metadata.disabled_v460.
+rules:
+- id: team.audit.auth-code
+  languages:
+  - python
+  severity: WARNING
+  message: Authentication-sensitive code (token/session/password/signature checks) (audit hint).
+  metadata:
+    cwe: CWE-287
+    owasp: A07:2021
+    vuln_class: AUTHENTICATION_WEAKNESS
+    confidence: audit
+    severity: high
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.3.0
+    ruleset_version: 4.6.0
+    change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
+    change_v42: Bo hmac.compare_digest/check_password/check_password_hash - day la API AN TOAN duoc khuyen nghi,
+      rule khong duoc bao chinh cach sua.
+    previous_rule_version: 1.2.0
+    disabled_v460: 'TC4 train v2.2: 3/8 correct class (0.375), 9 negative hits. TC3: authenticate/login_user/verify_signature
+      or auth-like function names may be correct defensive code; narrower insecure JWT/hash/session rules remain
+      active.'
+    disabled_date: '2026-10-26'
+  pattern-either:
+  - pattern: jwt.decode(...)
+  - pattern: authenticate(...)
+  - pattern: login_user(...)
+  - pattern: $X.verify_signature(...)
+  - pattern: $X.validate_signature(...)
+  - patterns:
+    - pattern: "def $F(...):\n  ...\n"
+    - metavariable-regex:
+        metavariable: $F
+        regex: (?i)^(login|logout|authenticate|verify_(token|signature|password)|check_(auth|password|token)|is_authenticated|has_perm)

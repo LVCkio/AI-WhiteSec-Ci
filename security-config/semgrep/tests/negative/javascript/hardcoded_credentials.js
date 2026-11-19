@@ -24,3 +24,20 @@ function changePassword(newPassword) {
   if (!newPassword || newPassword === 'undefined') { return false; }
   return true;
 }
+
+// ok: team.js.hardcoded-secret
+const password = "changeme";
+// ok: team.js.hardcoded-secret
+const cfg = { jwtSecret: "secret" };
+
+// ---- v4.8.0: gia tri gia lap (co khoang trang, snake_case chu thuong) va literal placeholder trong jwt.sign
+// ok: team.js.hardcoded-secret
+app.use(session({ resave: false, secret: 'keyboard cat' }));
+// ok: team.js.hardcoded-secret
+const labels = { 'form.password.placeholder': 'Confirm password' };
+// ok: team.js.hardcoded-secret
+const clients = { foo: { id: 'foo_id', secret: 'foo_secret' } };
+// ok: team.js.hardcoded-secret
+const errors = { PasswordStrengthError: 'password_strength_error' };
+// ok: team.js.hardcoded-secret
+const t2 = jwt.sign({ aud: 'my-audience' }, 'secret');

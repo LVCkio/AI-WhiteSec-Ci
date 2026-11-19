@@ -1,4 +1,4 @@
-# Ruleset AI-WhiteSec-CI v4.2.0 | ngon ngu: javascript | lop: AUTHENTICATION_WEAKNESS
+# Ruleset AI-WhiteSec-CI v4.8.1 | ngon ngu: javascript | lop: INSECURE_AUTHENTICATION (ten cu AUTHENTICATION_WEAKNESS, doi o v4.7.0)
 # confidence: high = ket luan truc tiep; audit = bat rong, can ra soat (luong SAST doc lap voi CodeBERT).
 # Test: tests/positive/javascript/authentication_weakness.* (phai bao) va tests/negative/javascript/authentication_weakness.* (khong duoc bao).
 rules:
@@ -15,8 +15,10 @@ rules:
     confidence: high
     severity: high
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
-    rule_version: 1.0.0
-    ruleset_version: 4.3.1
+    rule_version: 1.2.0
+    ruleset_version: 4.8.1
+    change_v472: 'Giu ten lop cu AUTHENTICATION_WEAKNESS theo quyet dinh cua nhom 2026-10-30 (hoan tac doi ten cua v4.7.0). Pattern khong doi.'
+    change_v470: 'vuln_class AUTHENTICATION_WEAKNESS -> INSECURE_AUTHENTICATION (ten lop theo taxonomy.yml v0.3.0 / vector nhan CodeBERT). Logic khong doi.'
   pattern-either:
   - pattern: '$JWT.verify($T, $K, {..., algorithms: [..., "none", ...], ...}, ...)'
   - pattern: '$JWT.verify($T, $K, {..., ignoreExpiration: true, ...}, ...)'
@@ -33,8 +35,10 @@ rules:
     confidence: audit
     severity: high
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
-    rule_version: 1.0.0
-    ruleset_version: 4.3.1
+    rule_version: 1.2.0
+    ruleset_version: 4.8.1
+    change_v472: 'Giu ten lop cu AUTHENTICATION_WEAKNESS theo quyet dinh cua nhom 2026-10-30 (hoan tac doi ten cua v4.7.0). Pattern khong doi.'
+    change_v470: 'vuln_class AUTHENTICATION_WEAKNESS -> INSECURE_AUTHENTICATION (ten lop theo taxonomy.yml v0.3.0 / vector nhan CodeBERT). Logic khong doi.'
   pattern-either:
   - pattern: jwt.decode($T, ...)
   - pattern: jsonwebtoken.decode($T, ...)
@@ -51,8 +55,10 @@ rules:
     confidence: audit
     severity: high
     scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
-    rule_version: 1.0.0
-    ruleset_version: 4.3.1
+    rule_version: 1.2.0
+    ruleset_version: 4.8.1
+    change_v472: 'Giu ten lop cu AUTHENTICATION_WEAKNESS theo quyet dinh cua nhom 2026-10-30 (hoan tac doi ten cua v4.7.0). Pattern khong doi.'
+    change_v470: 'vuln_class AUTHENTICATION_WEAKNESS -> INSECURE_AUTHENTICATION (ten lop theo taxonomy.yml v0.3.0 / vector nhan CodeBERT). Logic khong doi.'
   pattern-either:
   - pattern: $CRYPTO.createHash("md5")
   - pattern: $CRYPTO.createHash("sha1")

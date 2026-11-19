@@ -15,3 +15,19 @@ def login(username, password):
     if password == "Winter2024!":
         return True
     return False
+
+
+# ---- v4.6.1: rule AST (thay pattern-regex)
+# ruleid: team.hardcoded-credentials
+DB_CONFIG = {"password": "S3cr3tPass"}
+# ruleid: team.hardcoded-credentials
+conn = connect(host="db", api_key="AKIA1234ABCD")
+
+
+def configure(settings):
+    # ruleid: team.hardcoded-credentials
+    settings.secret_key = "flask-secret-0042"
+
+
+# ruleid: team.hardcoded-auth-header
+session.headers["Authorization"] = "Token 9f8e7d6c5b4a3f2e"

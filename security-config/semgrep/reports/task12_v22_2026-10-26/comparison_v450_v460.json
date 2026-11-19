@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-26",
+  "baseline": "4.5.0",
+  "current": "4.6.0",
+  "retired_rules": [
+    "team.audit.auth-code",
+    "team.audit.file-path-api",
+    "team.php.audit.auth-code",
+    "team.php.xss-html-concat"
+  ],
+  "retained_rule_logic_unchanged": 79,
+  "evaluation": "fresh full-bundle Semgrep 1.181.0 scans on train/val; frozen labels; no held-out test or target applications",
+  "splits": {
+    "train": {
+      "n_positive": 3042,
+      "n_negative": 5757,
+      "before_correct": 836,
+      "after_correct": 805,
+      "before_negative_flagged": 1135,
+      "after_negative_flagged": 1008,
+      "high_correct_unchanged": 169,
+      "high_negative_flagged_unchanged": 80,
+      "data_sha256": "dbf9cdf24edacda0f3af67115d5b3ecae800ba6aa05c54ae02db4411c496f77f",
+      "parse_after": {
+        "partial": 460,
+        "ok": 8247,
+        "error": 92
+      },
+      "lost_coverage_by_class": {
+        "XSS": 22,
+        "PATH_TRAVERSAL": 5,
+        "INSECURE_AUTHENTICATION": 4
+      }
+    },
+    "val": {
+      "n_positive": 391,
+      "n_negative": 854,
+      "before_correct": 144,
+      "after_correct": 135,
+      "before_negative_flagged": 182,
+      "after_negative_flagged": 161,
+      "high_correct_unchanged": 19,
+      "high_negative_flagged_unchanged": 13,
+      "data_sha256": "f59df7639a39c2fa72168f6fe2de01add4b850cde9839c01e0b2c7786e4ce305",
+      "parse_after": {
+        "partial": 94,
+        "ok": 1136,
+        "error": 15
+      },
+      "lost_coverage_by_class": {
+        "XSS": 4,
+        "INSECURE_AUTHENTICATION": 4,
+        "PATH_TRAVERSAL": 1
+      }
+    }
+  }
+}

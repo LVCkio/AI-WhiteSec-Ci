@@ -8,12 +8,12 @@ function auth($user, $stored) {
 }
 
 // ---- v4.1
-// ruleid: team.php.audit.auth-code
+// retired audit rule assertion retained in tests_disabled/
 function checkLogin($user, $password) {
     return false;
 }
 
 function start($user) {
-    // ruleid: team.php.audit.auth-code
+    // retired audit rule assertion retained in tests_disabled/
     $_SESSION['user_id'] = $user;
 }

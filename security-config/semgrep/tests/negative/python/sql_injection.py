@@ -18,3 +18,14 @@ def lookup(cursor):
     name = validate_username(request.args["name"])
     # ok: team.py.sqli-taint
     cursor.execute("SELECT * FROM users WHERE name = '" + name + "'")
+
+
+# ---- v4.6.1: chuoi/comment chua code SQL khong phai loi goi that
+def docs_v461(cursor):
+    # ok: team.sql-injection
+    example = "cur.execute('SELECT %s' % q)"
+    # ok: team.sql-injection
+    cursor.execute(f"SELECT 1")
+    # ok: team.sql-injection
+    cursor.execute("SELECT * FROM users WHERE id = %(id)s", {"id": 1})
+    return example

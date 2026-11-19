@@ -17,3 +17,11 @@ function login(username, password) {
   // ruleid: team.js.hardcoded-password-compare
   return username === "admin" && password === "Winter3708@";
 }
+
+// ---- v4.8.0: khoa PEM co khoang trang van phai bao; gia tri ngau nhien khong phai snake_case van bao
+// ruleid: team.js.hardcoded-secret
+const privateKey = '-----BEGIN RSA PRIVATE KEY-----\nMIICXAIBAAKBgQDNwqLEe9wgTXCb\n-----END RSA PRIVATE KEY-----';
+// ruleid: team.js.hardcoded-secret
+const settings = { clientSecret: 'q8Zr2LxW7vTn' };
+// ruleid: team.js.hardcoded-secret
+const t3 = jwt.verify(token, 'Zx81-signing-Key');

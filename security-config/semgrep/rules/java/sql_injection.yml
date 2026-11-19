@@ -1,4 +1,4 @@
-# Ruleset AI-WhiteSec-CI v4.2.0 | ngon ngu: java | lop: SQL_INJECTION
+# Ruleset AI-WhiteSec-CI v4.8.1 | ngon ngu: java | lop: SQL_INJECTION
 # confidence: high = ket luan truc tiep; audit = bat rong, can ra soat (luong SAST doc lap voi CodeBERT).
 # Test: tests/positive/java/sql_injection.* (phai bao) va tests/negative/java/sql_injection.* (khong duoc bao).
 rules:
@@ -15,7 +15,7 @@ rules:
     severity: critical
     scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
     rule_version: 1.1.0
-    ruleset_version: 4.3.1
+    ruleset_version: 4.8.1
     change_v42: Bo super.execute(...) khoi sink (WebGoat ProfileUpload - goi lop cha, khong phai JDBC; 2 bao nham + 1 sai lop).
   mode: taint
   pattern-sources:
@@ -73,7 +73,7 @@ rules:
     severity: critical
     scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
     rule_version: 1.1.0
-    ruleset_version: 4.3.1
+    ruleset_version: 4.8.1
     change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
   patterns:
   - pattern-either:
@@ -99,7 +99,7 @@ rules:
     severity: critical
     scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
     rule_version: 1.0.0
-    ruleset_version: 4.3.1
+    ruleset_version: 4.8.1
   pattern-either:
   - pattern-regex: (?i)"\s*(?:select\s|insert\s+into|delete\s+from|update\s+\w+\s+set|where\s|order\s+by)[^"\n]*"\s*\+\s*[\w(]
   - pattern-regex: (?i)"[^"\n]*\b(?:where|order\s+by|values\s*\()[^"\n]*"\s*\+\s*[\w(]

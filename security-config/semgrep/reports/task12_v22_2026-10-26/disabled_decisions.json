@@ -1,0 +1,16 @@
+{
+  "version": "4.6.0",
+  "basis": "Train v2.2 only; existing TC3/TC4. No validation feedback used to tune patterns.",
+  "rules": {
+    "team.php.xss-html-concat": "TC4 train v2.2: 39/93 correct class (0.419), 156 negative hits. TC3: regex recognizes HTML string construction, not an unsafe output sink; can match escaped output, comments and numeric formatting. Disabled rather than assuming unlabeled positives are false.",
+    "team.audit.file-path-api": "TC4 train v2.2: 9/28 correct class (0.321), 36 negative hits. Dynamic open/remove/copy/makedirs alone gives no evidence of traversal or external control; existing narrower path/taint rules remain active.",
+    "team.php.audit.auth-code": "TC4 train v2.2: 3/9 correct class (0.333), 13 negative hits. TC3: isGranted/is_granted, session assignment and login-like function names identify authentication functionality, not an authentication weakness.",
+    "team.audit.auth-code": "TC4 train v2.2: 3/8 correct class (0.375), 9 negative hits. TC3: authenticate/login_user/verify_signature or auth-like function names may be correct defensive code; narrower insecure JWT/hash/session rules remain active."
+  },
+  "retired_assertions": {
+    "team.php.audit.auth-code": 4,
+    "team.php.xss-html-concat": 2,
+    "team.audit.auth-code": 4,
+    "team.audit.file-path-api": 2
+  }
+}

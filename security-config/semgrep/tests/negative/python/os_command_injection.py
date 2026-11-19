@@ -25,3 +25,8 @@ def ping_checked():
     host = validate_host(request.args["host"])
     # ok: team.py.cmdi-taint
     os.system("ping -c 1 " + host)
+
+
+# ---- v4.6.1: chuoi chua code khong phai loi goi that
+# ok: team.os-command-injection
+EXAMPLE = "subprocess.run(cmd, shell=True)"
