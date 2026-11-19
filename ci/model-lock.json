@@ -1,8 +1,8 @@
 {
-  "name": "V5",
-  "package": "model_V5",
-  "dataset_version": "v2.6",
-  "epoch": 4,
+  "name": "V15",
+  "package": "model_V15",
+  "dataset_version": "v2.8",
+  "epoch": 3,
   "format": "multilabel_sigmoid",
   "inference": {
     "mode": "window",
@@ -10,7 +10,7 @@
     "max_windows": 8,
     "pool": "lse",
     "lse_r": 5.0,
-    "truncation": "sliding window: body 510 + <s></s>, stride 256, max 8 windows (K-1 đầu + 1 cuối nếu vượt), pool lse"
+    "truncation": "sliding window: body 510 + <s></s>, stride 256, max 8 windows, pin_header 0 (K-1 đầu + 1 cuối nếu vượt), pool lse"
   },
   "groups": [
     "PATH_TRAVERSAL",
@@ -20,23 +20,34 @@
     "INSECURE_AUTHENTICATION",
     "HARDCODED_CREDENTIALS"
   ],
-  "val_macro_f1": 0.3757,
-  "val_false_alarm": 0.0999,
+  "val_macro_f1": 0.3968,
+  "val_false_alarm": 0.0984,
   "dataset_sha256": {
-    "train": "8f0572d91136ef5f080dce1c87cbda4a06f06159a5e0bed3eab4b02b7e6a8094",
-    "val": "a1456e7a862e2d8a054b07e68f6668b40d929ea4068991bae6e48441ed2af69c"
+    "train": "a611434ed7508a5f173bc1973f64694a1affea7dc7abcbb70ced18d215a29408",
+    "val": "da97ded5d2e3b8a5b736a236bfc5ce5bb695eea47ca06e747de92af8efa2fb7b"
   },
-  "packed_at": null,
+  "packed_at": "2026-11-19T10:59:18",
   "files": {
-    "checkpoint/model.safetensors": "27209b6b9d28afa153a06db13dd2cee890ca15cffac551e1cb47eca002a38bc4",
+    "history.json": "71cc46b3209c1806e202e193688bb2b15fa64742e8ae1b0c66cfb2f8bfdf1837",
+    "metrics_val.json": "94561407237516e0da010622229fa388a0514a521fc9bbcc04f91b6df1d282b0",
+    "metrics_val_f1_train.json": "a99352e07c4d6efadcb8aceeaab777919901f1a68ebd920cd09b671d6661a4ef",
+    "report_val.md": "ba6e5c7bcdbe2577dc00542b30cd1e1d6955e11465feb60f3f5bc9b08da7d39f",
+    "run_config.json": "2f8e84b2299d4ef516e62a7ffd0dadc13a7887418a075e19990237c29a717f78",
+    "thresholds.json": "cb3358f98cb32c39ed36f7b54e3c1ba80c0af6592a5c879d5a33af7676ef366c",
+    "thresholds_f1_train.json": "5b86694209baae8ab3853dec7b86090b4121db1816c6f21fe508347f4f8b5eca",
+    "THRESHOLDS_NOTE.md": "d97ebcba6caea67bd1b5ecbeb90d475c9c39dda289c7358f94f13f73469f268b",
+    "thresholds_np_candidates.json": "53789400572aef9f996a601ae35ab9b07285545952914c00cdef16a7c361ade1",
+    "threshold_np_val.md": "078089973a801fbf473e82823fdfd174dbe2e403b1f453866480d24e42fc32cf",
+    "val_probs.npy": "bcd040c57796f9679289488c3c21d2c104db5472a9bc6562c8729a695c53e84d",
     "checkpoint/config.json": "6b02f00d474b700b0fd04e4f4db396baf6d85d5183280db1946a98bd96563fef",
+    "checkpoint/line_head.pt": "340f62f533cfad8ea3b567c2448977974d72575d456ed5cc4c486342b8de93a2",
+    "checkpoint/model.safetensors": "51564f0435e993fcb3019d281bd772080237bf2d2c9ac867cbdcd1693e3f8108",
     "checkpoint/tokenizer.json": "ca59632112d18bffd237dbfa1f5b5c35d92b30d0587165e473cea7f763d4ad62",
     "checkpoint/tokenizer_config.json": "a44dff218f8389ebf50ff57dee7bdbfeba7fb43f4d258c8e352086b172c4f7d0",
-    "thresholds.json": "912562cce2ee24f052474506c9bf44a8d97b9759788c46ff6be7c5a0a3acee07",
-    "run_config.json": "85cb2904e7f237d71caa8c85d1154a71419eadb730b9a960ed1816dcea8c6d61",
-    "metrics_val.json": "23c7f77519643085ed023e3a0794fd6a3f151cd793a7048d5b78c204636ae4ff",
-    "scripts/infer_window.py": "a3f0338508926c98306c50f0604ca8e6068766a2576c9c9674d7619e903849fa",
-    "scripts/train_codebert_win.py": "1f16d7cf17848bfb6b496db8c85657cd217584651f8bad46d9e8d138033b7087",
-    "scripts/eval_utils.py": "588e9e20d047b7dec23a7a2ef77f5692c4b9655dce88ba862ce9693fe70f97b1"
+    "scripts/eval_utils.py": "588e9e20d047b7dec23a7a2ef77f5692c4b9655dce88ba862ce9693fe70f97b1",
+    "scripts/infer_window.py": "efb53b51bf50ee7247ca862010ca429e64449c79ce3d7a86f70848962a425574",
+    "scripts/localize_lines.py": "c579980ff00c40d7880f90bcd7908e8d72917939bf64e5f8e766da9407aedba8",
+    "scripts/sink_patterns.py": "05e6d77f6814d7329a20a903cee34fe2b8a9db0ac5a6ce75bee5910d0b4935a2",
+    "scripts/train_codebert_win.py": "1840d3937fd9262a54c21cffb52555fdc3d98964bd7b816491134f662b73bd29"
   }
 }
