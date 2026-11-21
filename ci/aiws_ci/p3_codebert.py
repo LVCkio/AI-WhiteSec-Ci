@@ -20,6 +20,17 @@ from . import common as C
 STEP = "P3-codebert"
 
 
+def weak_thresholds(model):
+    """Gate 3x3: vach Thap = alpha20 (thresholds_np_candidates.json['candidates']['0.20']) trong goi model. Khong co -> None
+    (P4 dung fallback cua gate_3x3: lop vuot thresholds.json = Cao, con lai Khong)."""
+    try:
+        d = C.read_json(Path(model["path"]) / "thresholds_np_candidates.json") or {}
+        t = (d.get("candidates") or {}).get("0.20", {}).get("thresholds")
+        return C.canon_keys(t) if t else None
+    except (KeyError, TypeError, OSError):
+        return None
+
+
 def explain_units(scorer, units, probs, th, max_units, max_blocks, batch, meta=None):
     """Giai thich ham CodeBERT gan co bang OCCLUSION: chia ham thanh toi da max_blocks khoi dong, xoa trang tung khoi
     (giu so dong), cham lai DUNG cach suy luan cua model -> muc GIAM xac suat cua lop da gan = muc model dua vao khoi
@@ -116,7 +127,7 @@ def main():
         "model": {k: model.get(k) for k in ("name", "path", "dataset_version", "format", "checkpoint_sha256",
                                             "files_checked", "val_macro_f1", "val_metrics", "infra_verify",
                                             "inference")},
-        "thresholds": th, "groups_order": C.GROUPS, "inference": scorer.describe(),
+        "thresholds": th, "thresholds_weak": weak_thresholds(model), "groups_order": C.GROUPS, "inference": scorer.describe(),
         "max_len": 512, "truncation": scorer.describe()["truncation"],
         "device": "cpu", "torch_threads": scorer.torch.get_num_threads(),
         "units": res_units,

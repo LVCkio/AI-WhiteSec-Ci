@@ -1,4 +1,4 @@
-"""P4 - Normalize & Merge Findings + Security Gate (BLOCK / REVIEW / PASS).
+"""P4 - Normalize & Merge Findings + Security Gate 3x3 (FAIL / BLOCK / REVIEW / INFO / PASS).
 
   python -m aiws_ci.p4_compare_gate --out-dir aiws-out --semgrep semgrep-results.json
 
@@ -6,10 +6,11 @@
 2. Gan finding Semgrep vao ham NHO NHAT chua dong bat dau (theo danh sach don vi P1); nam ngoai moi ham ->
    don vi "module" rieng. Che do diff: chi xet don vi trong diff va finding tren dong bi sua.
 3. Compare tung don vi: agree (cung lop) | conflict (ca hai bao, khac lop) | sast_only | codebert_only | pass.
-4. Gate theo ci/gate-policy.json (co phien ban, SHA-256 ghi vao bao cao). Mot luong loi -> che do suy giam.
+4. Gate 3x3 theo ci/gate-policy.json (= gate_3x3.json): moi lop xet o (muc Semgrep x muc CodeBERT); quyet dinh don vi =
+   o nang nhat. Mot luong loi -> tran REVIEW; ca hai loi -> FAIL. "state" cu van ghi de dashboard doc.
 Dau ra: gate.json, report.json (schema_version 3, dung dinh dang dashboard dang doc), ai-whitesec.sarif,
         gl-code-quality-report.json (widget merge request), summary.md.
-Ma thoat: 0 = PASS/REVIEW, 1 = BLOCK (khi enforce_block), 2 = thieu model ma policy bat buoc, 3 = ca hai luong loi.
+Ma thoat: 0 = PASS/INFO/REVIEW, 1 = BLOCK (khi enforce_block), 2 = thieu model ma policy bat buoc, 3 = ca hai luong loi.
 """
 import argparse
 import hashlib
@@ -20,7 +21,7 @@ from . import common as C
 from .units import innermost_function
 
 STEP = "P4-gate"
-RANK = {"PASS": 0, "REVIEW": 1, "BLOCK": 2}
+RANK = {"PASS": 0, "INFO": 1, "REVIEW": 2, "BLOCK": 3, "FAIL": 4}
 
 
 def consistency_checks(sem, sem_ok, scope):
@@ -68,11 +69,54 @@ def load_policy(path: Path):
     return p, C.sha256_file(path)
 
 
-def decide(policy, state, tier):
-    rule = policy["states"].get(state) if not state.startswith("degraded_") else policy["degraded"].get(state)
-    if isinstance(rule, dict):
-        return rule.get(tier or "audit", "REVIEW")
-    return rule or "REVIEW"
+def cb_level(c, probs, th, weak, flagged):
+    """Cao >= alpha10 (thresholds.json); Thap >= alpha20; Khong. Khong co vach Thap -> fallback gate_3x3."""
+    p = (probs or {}).get(c)
+    if p is None or c not in th:
+        return "Cao" if c in flagged else "Khong"
+    if p >= th[c]:
+        return "Cao"
+    if weak and c in weak and p >= weak[c]:
+        return "Thap"
+    return "Khong"
+
+
+def decide_3x3(policy, sf, r, th, weak, analysis, path):
+    """Tra ve (quyet dinh don vi, danh sach o). sf: finding Semgrep cua don vi; r: ket qua CodeBERT cua don vi."""
+    other = policy.get("other_class", "OTHER")
+    prop = policy.get("team_overrides") or policy.get("proposals_not_approved") or {}
+    on = bool(prop.get("enabled"))
+    th = dict(th or {})
+    if on:
+        for c, t in (prop.get("class_thresholds") or {}).items():
+            th[c] = t.get("Cao", th.get(c))
+    probs = (r or {}).get("probs") or {}
+    flagged = set((r or {}).get("groups") or [])
+    sem_map = policy["semgrep_levels"]["map"]
+    sem_cls = {}
+    for f in sf:
+        c = f["class"] if f["class"] in C.GROUPS else other
+        lv = sem_map.get(f.get("confidence"), policy["semgrep_levels"].get("default", "Audit"))
+        sem_cls[c] = "High" if "High" in (sem_cls.get(c), lv) else lv
+    classes = set(sem_cls)
+    if analysis != "sast_only":
+        classes |= {c for c in C.GROUPS if cb_level(c, probs, th, weak, flagged) != "Khong"}
+    cells, best = [], "PASS"
+    for c in sorted(classes):
+        s_lv = sem_cls.get(c, "Khong")
+        b_lv = cb_level(c, probs, th, weak, flagged) if (c in C.GROUPS and analysis != "sast_only") else "Khong"
+        d = policy["matrix"][s_lv][b_lv]
+        if on:
+            d = (prop.get("class_cell_overrides") or {}).get(c, {}).get(f"{s_lv}/{b_lv}", d)
+        if analysis in ("sast_only", "codebert_only") and RANK[d] > RANK[policy["tool_status"]["degraded_cap"]]:
+            d = policy["tool_status"]["degraded_cap"]
+        cells.append({"class": c, "semgrep": s_lv, "codebert": b_lv,
+                      "codebert_p": probs.get(c), "decision": d})
+        best = max(best, d, key=RANK.get)
+    pm = prop.get("path_max_decision") if on else None
+    if pm and any(__import__("re").search(x, path) for x in pm["patterns"]) and RANK[best] > RANK[pm["max"]]:
+        best = pm["max"]
+    return best, cells
 
 
 SNIP_CTX, SNIP_MAX_LINES, SNIP_MAX_CHARS = 3, 40, 240
@@ -181,7 +225,9 @@ def main():
     cb_units = {r["id"]: r for r in (cb.get("units", []) if cb_ok else [])}
 
     # ---- compare + gate tung don vi
-    out_units, states, decisions = [], {}, {"PASS": 0, "REVIEW": 0, "BLOCK": 0}
+    out_units, states, decisions = [], {}, {k: 0 for k in RANK}
+    weak = C.canon_keys((cb or {}).get("thresholds_weak")) if cb_ok else None
+    th_cb = C.canon_keys((cb or {}).get("thresholds")) if cb_ok else {}
     considered = [u for u in by_id.values() if u.get("in_diff")]
     for u in sorted(considered, key=lambda x: (x["file"], x["start"], x["id"])):
         sf = per_unit_sast.get(u["id"], [])
@@ -204,8 +250,11 @@ def main():
             state = "codebert_only"
         else:
             state = "pass"
-        dec = decide(policy, state, tier) if state != "pass" else "PASS"
-        if state == "agree":
+        dec, cells = decide_3x3(policy, sf, r, th_cb, weak, analysis, u["file"])
+        top_cells = [x for x in cells if x["decision"] == dec]
+        if top_cells and dec != "PASS":
+            vclass = top_cells[0]["class"]
+        elif state == "agree":
             vclass = common[0]
         elif S:
             vclass = sorted(S, key=lambda c: (c not in {f["class"] for f in sf if f["confidence"] == "high"}, c))[0]
@@ -217,7 +266,7 @@ def main():
         decisions[dec] += 1
         out_units.append({
             "id": u["id"], "file": u["file"], "unit": u["unit"], "function": u.get("name"),
-            "start": u["start"], "end": u["end"], "state": state, "decision": dec, "vuln_class": vclass,
+            "start": u["start"], "end": u["end"], "state": state, "decision": dec, "vuln_class": vclass, "cells": cells,
             "sast_tier": tier, "sast_classes": S, "sast_rules": sorted({f["rule_id"] for f in sf}),
             "codebert_classes": B,
             "codebert": {g: r["probs"][g] for g in B} if r else {},
@@ -233,9 +282,11 @@ def main():
         })
 
     if analysis == "failed":
-        decision = None
+        decision = policy["tool_status"]["both_failed"]          # FAIL
     else:
         decision = max((x["decision"] for x in out_units), key=RANK.get, default="PASS")
+        if analysis != "sast_and_codebert":                      # mot luong loi -> it nhat REVIEW
+            decision = max(decision, policy["tool_status"]["one_failed"], key=RANK.get)
     th = (cb or {}).get("thresholds") or (auth.get("model") or {}).get("thresholds") or {}
     model = (cb or {}).get("model") or {k: (auth.get("model") or {}).get(k) for k in
                                         ("name", "path", "dataset_version", "format", "checkpoint_sha256",
@@ -245,7 +296,8 @@ def main():
         "decisions": decisions, "states": states, "units": out_units,
         "units_evaluated": len(out_units),
         "units_truncated": sum(u["truncated"] for u in out_units),
-        "policy": policy["states"], "degraded_policy": policy["degraded"], "policy_version": policy["policy_version"],
+        "policy": policy["matrix"], "tool_status": policy["tool_status"], "policy_version": policy["policy_version"],
+        "pipeline_action": policy["pipeline"].get(decision), "thresholds_weak_available": bool(weak),
         "policy_note": policy.get("note"), "gate_config_sha256": policy_sha, "model_format": "multilabel_sigmoid",
     }
     C.write_json(od / "gate.json", gate)
@@ -304,7 +356,7 @@ def main():
     write_summary(od / "summary.md", report)
 
     C.log(STEP, f"phan tich {analysis}; {len(out_units)} don vi ({mode}); quyet dinh {decision}; "
-                f"BLOCK {decisions['BLOCK']} / REVIEW {decisions['REVIEW']} / PASS {decisions['PASS']}; "
+                f"BLOCK {decisions['BLOCK']} / REVIEW {decisions['REVIEW']} / INFO {decisions['INFO']} / PASS {decisions['PASS']}; "
                 f"trang thai {states}")
     print((od / "summary.md").read_text(encoding="utf-8"))
     if analysis == "failed":
@@ -316,7 +368,8 @@ def main():
         C.die(STEP, "Security Gate = BLOCK", C.EXIT_BLOCK)
 
 
-SEV = {"BLOCK": ("error", "critical"), "REVIEW": ("warning", "major"), "PASS": ("note", "info")}
+SEV = {"FAIL": ("error", "blocker"), "BLOCK": ("error", "critical"), "REVIEW": ("warning", "major"),
+       "INFO": ("note", "minor"), "PASS": ("note", "info")}
 
 
 def write_sarif(p, units, report):
@@ -359,7 +412,7 @@ def write_summary(p, rep):
              f"- Model: `{rep['model'].get('name')}` (dataset {rep['model'].get('dataset_version')}) · "
              f"ruleset Semgrep `{rep['ruleset'].get('ruleset_version')}`",
              f"- Don vi: {g['units_evaluated']} · BLOCK {g['decisions']['BLOCK']} · REVIEW {g['decisions']['REVIEW']} "
-             f"· PASS {g['decisions']['PASS']}",
+             f"· INFO {g['decisions']['INFO']} · PASS {g['decisions']['PASS']} · pipeline: {g.get('pipeline_action')}",
              f"- Semgrep: {s['high_findings']} high, {s['audit_findings']} audit · CodeBERT gan co {s['codebert_flagged']} don vi",
              ""]
     if rep.get("warnings"):
