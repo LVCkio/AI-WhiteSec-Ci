@@ -1,26 +1,147 @@
 {
-  "policy_version": "ci-2",
-  "note": "QUY TAC TAM cho GitLab CI (28/10/2026) - chua phai quy tac chinh thuc Phase 6.2. Chi BLOCK khi co finding Semgrep tang high (rieng hoac CodeBERT dong y); tang audit chi dua vao REVIEW (taxonomy.yml: audit khong tu chan build). CodeBERT mot minh khong chan build vi nguong trong thresholds.json la nguong toi da F1, khong phai nguong Gate.",
-  "states": {
-    "agree": {
-      "high": "BLOCK",
-      "audit": "REVIEW"
+  "policy_version": "3x3-2026-11-20+ov1",
+  "note": "Gate 3x3 theo gate_3x3.json (nhom chot 17/11, sua 20/11). Xet tung (don vi, lop): muc Semgrep (confidence high/audit) x muc CodeBERT (Cao >= thresholds.json = alpha10; Thap >= alpha20 lay tu thresholds_np_candidates.json['0.20']; Khong). thresholds.json la nguong trien khai Neyman-Pearson alpha10, KHONG phai nguong toi da F1 (ban F1 nam o thresholds_f1_train.json). Quyet dinh don vi = o nang nhat.",
+  "source_gate_3x3": {
+    "version": "3x3-2026-11-20",
+    "note": "Gate 3x3 (nhom chot 17/11, sua 20/11/2026). Xet theo (don vi ma, lop). Dac ta: security-gate-truong-hop-3x3.md.",
+    "codebert_levels": {
+      "source": "aiws_infer levels",
+      "map": {
+        "strong": "Cao",
+        "weak": "Thap",
+        "none": "Khong"
+      },
+      "definition": "Cao = diem >= alpha10; Thap = alpha20 <= diem < alpha10; Khong = < alpha20",
+      "fallback_without_levels": "flagged_classes -> Cao, con lai Khong"
     },
-    "sast_only": {
-      "high": "BLOCK",
-      "audit": "REVIEW"
+    "semgrep_levels": {
+      "field": "confidence",
+      "map": {
+        "high": "High",
+        "audit": "Audit"
+      },
+      "default": "Audit"
     },
-    "codebert_only": "REVIEW",
-    "conflict": "REVIEW",
-    "pass": "PASS"
+    "matrix": {
+      "High": {
+        "Cao": "BLOCK",
+        "Thap": "REVIEW",
+        "Khong": "REVIEW"
+      },
+      "Audit": {
+        "Cao": "REVIEW",
+        "Thap": "INFO",
+        "Khong": "INFO"
+      },
+      "Khong": {
+        "Cao": "REVIEW",
+        "Thap": "INFO",
+        "Khong": "PASS"
+      }
+    },
+    "other_class": "OTHER",
+    "not_scored_as": "Khong",
+    "tool_status": {
+      "one_failed": "REVIEW",
+      "both_failed": "FAIL",
+      "degraded_cap": "REVIEW"
+    },
+    "severity_order": [
+      "FAIL",
+      "BLOCK",
+      "REVIEW",
+      "INFO",
+      "PASS"
+    ],
+    "pipeline": {
+      "FAIL": "fail",
+      "BLOCK": "fail",
+      "REVIEW": "hold",
+      "INFO": "pass_with_notes",
+      "PASS": "pass"
+    }
   },
-  "degraded": {
-    "degraded_sast_only": {
-      "high": "BLOCK",
-      "audit": "REVIEW"
+  "matrix": {
+    "High": {
+      "Cao": "BLOCK",
+      "Thap": "REVIEW",
+      "Khong": "REVIEW"
     },
-    "degraded_codebert_only": "REVIEW"
+    "Audit": {
+      "Cao": "REVIEW",
+      "Thap": "INFO",
+      "Khong": "INFO"
+    },
+    "Khong": {
+      "Cao": "REVIEW",
+      "Thap": "INFO",
+      "Khong": "PASS"
+    }
+  },
+  "semgrep_levels": {
+    "field": "confidence",
+    "map": {
+      "high": "High",
+      "audit": "Audit"
+    },
+    "default": "Audit"
+  },
+  "codebert_levels": {
+    "source": "aiws_infer levels",
+    "map": {
+      "strong": "Cao",
+      "weak": "Thap",
+      "none": "Khong"
+    },
+    "definition": "Cao = diem >= alpha10; Thap = alpha20 <= diem < alpha10; Khong = < alpha20",
+    "fallback_without_levels": "flagged_classes -> Cao, con lai Khong"
+  },
+  "other_class": "OTHER",
+  "tool_status": {
+    "one_failed": "REVIEW",
+    "both_failed": "FAIL",
+    "degraded_cap": "REVIEW"
+  },
+  "severity_order": [
+    "FAIL",
+    "BLOCK",
+    "REVIEW",
+    "INFO",
+    "PASS"
+  ],
+  "pipeline": {
+    "FAIL": "fail",
+    "BLOCK": "fail",
+    "REVIEW": "hold",
+    "INFO": "pass_with_notes",
+    "PASS": "pass"
   },
   "require_model": true,
-  "enforce_block": true
+  "enforce_block": true,
+  "team_overrides": {
+    "enabled": true,
+    "note": "Bat 21/11/2026 theo yeu cau nhom (Cuong). Can dong bo len gate_3x3.json tren server de worker cung ket luan.",
+    "class_thresholds": {
+      "HARDCODED_CREDENTIALS": {
+        "Cao": 0.95
+      }
+    },
+    "class_cell_overrides": {
+      "HARDCODED_CREDENTIALS": {
+        "Khong/Cao": "INFO"
+      }
+    },
+    "path_max_decision": {
+      "patterns": [
+        "(^|/)tests?/",
+        "(^|/)__tests__/",
+        "(^|/)test_[^/]*\\.py$"
+      ],
+      "max": "INFO"
+    },
+    "evidence": {
+      "HARDCODED": "LangChain v23: 0/40 o CodeBERT-only la bi mat that; V15 val v2.8: Cao 0.95 giu 19/23 mau (alpha10 20/23), mau sach bi bao 14 -> 6/823",
+      "tests": "LangChain v23: 299/586 o REVIEW nam trong tests/"
+    }
+  }
 }
