@@ -1,6 +1,6 @@
 {
-  "policy_version": "3x3-2026-11-20+ov1",
-  "note": "Gate 3x3 theo gate_3x3.json (nhom chot 17/11, sua 20/11). Xet tung (don vi, lop): muc Semgrep (confidence high/audit) x muc CodeBERT (Cao >= thresholds.json = alpha10; Thap >= alpha20 lay tu thresholds_np_candidates.json['0.20']; Khong). thresholds.json la nguong trien khai Neyman-Pearson alpha10, KHONG phai nguong toi da F1 (ban F1 nam o thresholds_f1_train.json). Quyet dinh don vi = o nang nhat.",
+  "policy_version": "5x3-2026-11-22+ov1",
+  "note": "Gate 5x3 (nhom chot 22/11/2026, cau 6): xet tung (don vi, lop): MUC TOOL Semgrep 4 bac (tool_level = metadata.severity x confidence: Critical / High / Medium / Low, xem ci/README.md muc 8) x muc CodeBERT (Cao >= thresholds.json = alpha10; Thap >= alpha20 lay tu thresholds_np_candidates.json['0.20']; Khong). Khac bang 3x3 (20/11): Critical x Thap = BLOCK (truoc REVIEW); rule confidence high cua lop muc medium (XSS) nam o hang Medium. Quyet dinh don vi = o nang nhat. Bang 3x3 cu giu o matrix_3x3_truoc_2211.",
   "source_gate_3x3": {
     "version": "3x3-2026-11-20",
     "note": "Gate 3x3 (nhom chot 17/11, sua 20/11/2026). Xet theo (don vi ma, lop). Dac ta: security-gate-truong-hop-3x3.md.",
@@ -62,6 +62,33 @@
     }
   },
   "matrix": {
+    "Critical": {
+      "Cao": "BLOCK",
+      "Thap": "BLOCK",
+      "Khong": "REVIEW"
+    },
+    "High": {
+      "Cao": "BLOCK",
+      "Thap": "REVIEW",
+      "Khong": "REVIEW"
+    },
+    "Medium": {
+      "Cao": "REVIEW",
+      "Thap": "INFO",
+      "Khong": "INFO"
+    },
+    "Low": {
+      "Cao": "REVIEW",
+      "Thap": "INFO",
+      "Khong": "INFO"
+    },
+    "Khong": {
+      "Cao": "REVIEW",
+      "Thap": "INFO",
+      "Khong": "PASS"
+    }
+  },
+  "matrix_3x3_truoc_2211": {
     "High": {
       "Cao": "BLOCK",
       "Thap": "REVIEW",
@@ -79,12 +106,29 @@
     }
   },
   "semgrep_levels": {
-    "field": "confidence",
+    "field": "tool_level",
     "map": {
-      "high": "High",
-      "audit": "Audit"
+      "Critical": "Critical",
+      "High": "High",
+      "Medium": "Medium",
+      "Low": "Low"
     },
-    "default": "Audit"
+    "order": [
+      "Critical",
+      "High",
+      "Medium",
+      "Low"
+    ],
+    "default": "Medium",
+    "definition": "tool_level = metadata.severity (thieu -> default_severity cua lop trong docs/taxonomy.yml) x confidence: high giu muc; audit: critical/high -> Medium, medium/low -> Low",
+    "truoc_2211": {
+      "field": "confidence",
+      "map": {
+        "high": "High",
+        "audit": "Audit"
+      },
+      "default": "Audit"
+    }
   },
   "codebert_levels": {
     "source": "aiws_infer levels",

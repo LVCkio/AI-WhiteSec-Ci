@@ -6,8 +6,8 @@
 2. Gan finding Semgrep vao ham NHO NHAT chua dong bat dau (theo danh sach don vi P1); nam ngoai moi ham ->
    don vi "module" rieng. Che do diff: chi xet don vi trong diff va finding tren dong bi sua.
 3. Compare tung don vi: agree (cung lop) | conflict (ca hai bao, khac lop) | sast_only | codebert_only | pass.
-4. Gate 3x3 theo ci/gate-policy.json (= gate_3x3.json): moi lop xet o (muc Semgrep x muc CodeBERT); quyet dinh don vi =
-   o nang nhat. Mot luong loi -> tran REVIEW; ca hai loi -> FAIL. "state" cu van ghi de dashboard doc.
+4. Gate theo ci/gate-policy.json: moi lop xet o (muc Semgrep x muc CodeBERT); quyet dinh don vi = o nang nhat.
+   Tu 22/11/2026 truc Semgrep = muc tool 4 bac (Critical/High/Medium/Low) -> bang 5x3; truoc do High/Audit (3x3). Mot luong loi -> tran REVIEW; ca hai loi -> FAIL. "state" cu van ghi de dashboard doc.
 Dau ra: gate.json, report.json (schema_version 3, dung dinh dang dashboard dang doc), ai-whitesec.sarif,
         gl-code-quality-report.json (widget merge request), summary.md.
 Ma thoat: 0 = PASS/INFO/REVIEW, 1 = BLOCK (khi enforce_block), 2 = thieu model ma policy bat buoc, 3 = ca hai luong loi.
@@ -69,6 +69,12 @@ def load_policy(path: Path):
     return p, C.sha256_file(path)
 
 
+def max_tool_level(*levels):
+    """Muc tool nang nhat (Critical > High > Medium > Low); None neu khong co."""
+    xs = [x for x in levels if x in C.TOOL_LEVELS]
+    return min(xs, key=C.TOOL_LEVELS.index) if xs else None
+
+
 def cb_level(c, probs, th, weak, flagged):
     """Cao >= alpha10 (thresholds.json); Thap >= alpha20; Khong. Khong co vach Thap -> fallback gate_3x3."""
     p = (probs or {}).get(c)
@@ -92,12 +98,16 @@ def decide_3x3(policy, sf, r, th, weak, analysis, path):
             th[c] = t.get("Cao", th.get(c))
     probs = (r or {}).get("probs") or {}
     flagged = set((r or {}).get("groups") or [])
-    sem_map = policy["semgrep_levels"]["map"]
-    sem_cls = {}
+    # Truc Semgrep doc tu gate-policy.json: tu 22/11 = tool_level (Critical/High/Medium/Low); bang 3x3 cu = confidence.
+    sl = policy["semgrep_levels"]
+    sem_map, field = sl["map"], sl.get("field", "confidence")
+    order = sl.get("order") or [x for x in policy["matrix"] if x != "Khong"]
+    sem_cls, sem_tool = {}, {}
     for f in sf:
         c = f["class"] if f["class"] in C.GROUPS else other
-        lv = sem_map.get(f.get("confidence"), policy["semgrep_levels"].get("default", "Audit"))
-        sem_cls[c] = "High" if "High" in (sem_cls.get(c), lv) else lv
+        lv = sem_map.get(f.get(field), sl.get("default", order[-1]))
+        sem_cls[c] = min((x for x in (sem_cls.get(c), lv) if x in order), key=order.index)   # muc nang nhat
+        sem_tool[c] = max_tool_level(sem_tool.get(c), f.get("tool_level"))
     classes = set(sem_cls)
     if analysis != "sast_only":
         classes |= {c for c in C.GROUPS if cb_level(c, probs, th, weak, flagged) != "Khong"}
@@ -110,7 +120,7 @@ def decide_3x3(policy, sf, r, th, weak, analysis, path):
             d = (prop.get("class_cell_overrides") or {}).get(c, {}).get(f"{s_lv}/{b_lv}", d)
         if analysis in ("sast_only", "codebert_only") and RANK[d] > RANK[policy["tool_status"]["degraded_cap"]]:
             d = policy["tool_status"]["degraded_cap"]
-        cells.append({"class": c, "semgrep": s_lv, "codebert": b_lv,
+        cells.append({"class": c, "semgrep": s_lv, "semgrep_tool_level": sem_tool.get(c), "codebert": b_lv,
                       "codebert_p": probs.get(c), "decision": d})
         best = max(best, d, key=RANK.get)
     pm = prop.get("path_max_decision") if on else None
@@ -203,6 +213,9 @@ def main():
         if f["file"] not in targets:
             continue
         cls = C.canon_class(f["class"])
+        # muc tool 4 bac (22/11); semgrep-results cu (truoc 22/11) chua co -> tinh lai tu impact_severity x confidence
+        f = {**f, "tool_level": f.get("tool_level") or C.tool_level(
+            f.get("impact_severity") or C.class_default_severity(cls), f.get("confidence"))}
         line = f.get("start_line") or 0
         u = innermost_function(units, f["file"], line)
         if u is None:   # ngoai moi ham: thuoc doan module neu co, neu khong tao don vi "module"
@@ -267,7 +280,7 @@ def main():
         out_units.append({
             "id": u["id"], "file": u["file"], "unit": u["unit"], "function": u.get("name"),
             "start": u["start"], "end": u["end"], "state": state, "decision": dec, "vuln_class": vclass, "cells": cells,
-            "sast_tier": tier, "sast_classes": S, "sast_rules": sorted({f["rule_id"] for f in sf}),
+            "sast_tier": tier, "sast_level": max_tool_level(*(f.get("tool_level") for f in sf)), "sast_classes": S, "sast_rules": sorted({f["rule_id"] for f in sf}),
             "codebert_classes": B,
             "codebert": {g: r["probs"][g] for g in B} if r else {},
             "codebert_probs": r["probs"] if r else None,
@@ -315,6 +328,7 @@ def main():
         "error_message": None if sem_ok else "khong co semgrep-results.json (job Semgrep loi)",
         "summary": (sem or {}).get("summary"),
         "normalized_findings": [{"file": f["file"], "line": f.get("start_line"), "end_line": f.get("end_line"),
+                                 "level": f.get("tool_level"), "impact_severity": f.get("impact_severity"),
                                  "rule_id": f["rule_id"], "classes": [f["class"]],
                                  "cwes": [c.replace("CWE-", "") for c in f.get("cwes", [])],
                                  "confidence": f["confidence"], "severity": f.get("semgrep_severity"),
@@ -340,6 +354,7 @@ def main():
         "ruleset": {"ruleset_version": srun.get("ruleset_version"), "ruleset_sha256": srun.get("bundle_sha256"),
                     "semgrep_version_pinned": srun.get("semgrep_version")},
         "summary": {"gate_decision": decision, "high_findings": sum(f["confidence"] == "high" for f in sem_kept),
+                    "semgrep_levels": {lv: sum(f.get("tool_level") == lv for f in sem_kept) for lv in C.TOOL_LEVELS},
                     "audit_findings": sum(f["confidence"] == "audit" for f in sem_kept),
                     "codebert_flagged": sum(bool(u["codebert_classes"]) for u in out_units),
                     "scan_mode": mode, "units_in_scope": len(out_units)},
@@ -414,6 +429,8 @@ def write_summary(p, rep):
              f"- Don vi: {g['units_evaluated']} · BLOCK {g['decisions']['BLOCK']} · REVIEW {g['decisions']['REVIEW']} "
              f"· INFO {g['decisions']['INFO']} · PASS {g['decisions']['PASS']} · pipeline: {g.get('pipeline_action')}",
              f"- Semgrep: {s['high_findings']} high, {s['audit_findings']} audit · CodeBERT gan co {s['codebert_flagged']} don vi",
+             "- Muc tool Semgrep (metadata.severity x confidence): " + " · ".join(
+                 f"{lv} {(s.get('semgrep_levels') or {}).get(lv, 0)}" for lv in C.TOOL_LEVELS),
              ""]
     if rep.get("warnings"):
         lines += ["**Canh bao:**", *[f"- {w}" for w in rep["warnings"]], ""]

@@ -126,3 +126,31 @@ Không cần build lại ảnh `aiws-codebert` khi chỉ đổi model.
 **Độ phủ ngôn ngữ.** P1 và Semgrep đếm file mã nguồn ngôn ngữ chưa hỗ trợ (`.ts/.tsx`, `.vue`, `.go`, `.kt`…; `files_unsupported_language`). Có → cảnh báo trong báo cáo: PASS không bao gồm các file đó. Chưa thêm TypeScript vào phạm vi quét: cần rule/test TS, dữ liệu đo và quyết định của leader (model chưa train trên TS).
 
 **Xuống dòng.** `.gitattributes` giữ LF cho rule, `semgrep.yml`, manifest, `ci/`, `*.sh`. Trước đó Git for Windows (`core.autocrlf=true`) đổi sang CRLF → `ruleset.py verify` KHÔNG ĐẠT và build ảnh từ bản Windows (`run_ci_semgrep_local.bat`) thất bại.
+
+## 8. Mức tool Semgrep 4 bậc (22/11/2026, câu 6 nhóm thống nhất)
+
+Mỗi finding Semgrep có thêm `tool_level` (Critical / High / Medium / Low), ghép từ `metadata.severity` của rule (mức nghiêm trọng của **loại** lỗ hổng, gắn khi viết rule; thiếu thì lấy `default_severity` của lớp trong `docs/taxonomy.yml`) × `metadata.confidence`:
+
+| `metadata.severity` | `confidence: high` | `confidence: audit` |
+|---|---|---|
+| critical | Critical | Medium |
+| high | High | Medium |
+| medium | Medium | Low |
+
+Rule audit không bao giờ lên Critical/High. Không dùng `severity` cấp rule (ERROR/WARNING/INFO) vì ở bộ rule nhóm nó chỉ là bản sao của `confidence` (ERROR = high, WARNING = audit) nên ghép chỉ ra 2 mức. Bộ v4.8.1 (71 rule): Critical 7 · High 13 · Medium 39 · Low 12. **Không sửa rule, không đổi SHA bộ rule.**
+
+Ở đâu: `semgrep-results.json` (`findings[].tool_level`, `summary.by_tool_level`), `report.json` (`summary.semgrep_levels`, `tools[semgrep].normalized_findings[].level`, `gate.units[].sast_level`, `gate.units[].cells[].semgrep_tool_level`), `summary.md` (dòng "Mức tool Semgrep"). Bảng nằm ở `ci/aiws_ci/common.py` (`tool_level`) và bản chép trong `scan_repo.py` (ảnh `aiws-semgrep` không có `aiws_ci`); `tests/test_tool_level_20261122.py` kiểm hai bản khớp nhau.
+
+**Gate 5×3 (nhóm chốt 22/11)**: trục Semgrep của Gate là mức tool (`gate-policy.json`: `semgrep_levels.field = tool_level`, `policy_version` `5x3-2026-11-22+ov1`):
+
+| Mức tool \ CodeBERT | Cao (≥ α10) | Thấp (α20…α10) | Không |
+|---|---|---|---|
+| Critical | BLOCK | **BLOCK** | REVIEW |
+| High | BLOCK | REVIEW | REVIEW |
+| Medium | REVIEW | INFO | INFO |
+| Low | REVIEW | INFO | INFO |
+| Không | REVIEW | INFO | PASS |
+
+Khác bảng 3×3 (20/11): Critical × Thấp = BLOCK (trước REVIEW); 3 rule confidence high của lớp mức medium (XSS) nằm ở hàng Medium (trước hàng High). Bảng cũ giữ ở `matrix_3x3_truoc_2211`; quay lại = đặt `semgrep_levels` về `truoc_2211` và `matrix` về bảng cũ (P4 đọc trục theo cấu hình). `team_overrides` (HARDCODED, thư mục tests) giữ nguyên. Finding thiếu `impact_severity` → mức mặc định của lớp trong `docs/taxonomy.yml`. **Worker trên server đọc `gate_3x3.json` riêng → phải đồng bộ bảng này lên server để hai nơi cùng kết luận.** Mức của Model (CodeBERT) 4 bậc theo "bảng điểm" chưa có định nghĩa, làm sau khi nhóm chốt.
+
+Sửa `scan_repo.py` và `ci/aiws_ci/*.py` → trên Server 3 chạy `sudo bash ci/servers/server3_rebuild_images.sh ~/AI-WhiteSec-Ci` sau khi merge (nếu quên, `p0-authorize` dừng vì ảnh `aiws-codebert` chứa mã cũ).

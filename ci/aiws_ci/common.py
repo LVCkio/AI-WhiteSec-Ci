@@ -61,6 +61,49 @@ def write_jsonl(p, rows):
             fh.write(json.dumps(r, ensure_ascii=False) + "\n")
 
 
+# Muc TOOL (Semgrep) - huong nhom thong nhat 22/11/2026 (cau 6): 4 muc Critical / High / Medium / Low ghep tu
+#   metadata.severity cua rule (muc nghiem trong cua LOAI lo hong, gan khi viet rule: critical / high / medium; thieu ->
+#   default_severity cua lop trong docs/taxonomy.yml) x metadata.confidence (high / audit).
+#   confidence high : giu nguyen muc (critical -> Critical, high -> High, medium -> Medium, low -> Low)
+#   confidence audit: critical / high -> Medium; medium / low -> Low   (rule audit KHONG BAO GIO len Critical / High)
+#   Khong dung severity cap rule (ERROR / WARNING / INFO): o bo rule nhom, no chi la ban sao cua confidence.
+#   Chi de BAO CAO / hien thi: quyet dinh Gate 3x3 van dung truc Semgrep High / Audit (confidence) trong gate-policy.json.
+TOOL_LEVELS = ["Critical", "High", "Medium", "Low"]
+_TOOL_IMPACT = {"critical": "Critical", "high": "High", "medium": "Medium", "low": "Low"}
+
+
+def tool_level(impact, confidence) -> str:
+    base = _TOOL_IMPACT.get(str(impact or "").strip().lower(), "Medium")
+    if str(confidence or "").strip().lower() == "high":
+        return base
+    return "Medium" if base in ("Critical", "High") else "Low"
+
+
+# Muc nghiem trong mac dinh cua lop (docs/taxonomy.yml, default_severity) - dung khi finding Semgrep thieu impact_severity
+# (semgrep-results cu / du lieu dung tay). Doc tu taxonomy.yml neu co (anh aiws-codebert co chep file nay), khong thi bang duoi.
+_CLASS_SEVERITY_FALLBACK = {"SQL_INJECTION": "critical", "OS_COMMAND_INJECTION": "critical", "XSS": "medium",
+                            "PATH_TRAVERSAL": "high", "AUTHENTICATION_WEAKNESS": "high", "HARDCODED_CREDENTIALS": "high"}
+_class_severity_cache = None
+
+
+def class_default_severity(cls):
+    global _class_severity_cache
+    if _class_severity_cache is None:
+        m = dict(_CLASS_SEVERITY_FALLBACK)
+        for p in (CI_HOME.parent / "docs" / "taxonomy.yml", Path(os.environ.get("CI_PROJECT_DIR", ".")) / "docs" / "taxonomy.yml"):
+            try:
+                import yaml
+                t = yaml.safe_load(p.read_text(encoding="utf-8")) or {}
+                for name, c in (t.get("classes") or {}).items():
+                    if c.get("default_severity"):
+                        m[canon_class(name)] = str(c["default_severity"]).lower()
+                break
+            except Exception:
+                continue
+        _class_severity_cache = m
+    return _class_severity_cache.get(canon_class(cls))
+
+
 def canon_class(name: str) -> str:
     return OLD_NAMES.get(name, name)
 
