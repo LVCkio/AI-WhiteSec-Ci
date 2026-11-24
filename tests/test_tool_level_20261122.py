@@ -126,8 +126,25 @@ class TestP4(unittest.TestCase):
         self.assertIn("Muc tool Semgrep", (d / "summary.md").read_text(encoding="utf-8"))
 
 
+def policy_5x3():
+    """gate-policy.json tu 23/11 la 5x5; bang 5x3 (22/11) giu o truoc_2311 -> dung lai de kiem decide_3x3 khong doi."""
+    pol = json.loads((ROOT / "ci" / "gate-policy.json").read_text(encoding="utf-8"))
+    old = pol["truoc_2311"]
+    p = {k: v for k, v in pol.items() if k not in ("model_levels", "levels", "truoc_2311")}
+    p.update(policy_version=old["policy_version"], matrix=old["matrix"], codebert_levels=old["codebert_levels"],
+             team_overrides=old["team_overrides"])
+    path = Path(tempfile.mkdtemp()) / "gate-policy-5x3.json"
+    path.write_text(json.dumps(p), encoding="utf-8")
+    return path
+
+
 class TestGate5x3(unittest.TestCase):
-    """Bang 5x3 (nhom chot 22/11): Critical x Thap = BLOCK; XSS confidence high -> hang Medium."""
+    """Bang 5x3 (nhom chot 22/11, nay o truoc_2311): Critical x Thap = BLOCK; XSS confidence high -> hang Medium."""
+    POLICY = None
+
+    @classmethod
+    def setUpClass(cls):
+        cls.POLICY = policy_5x3()
 
     def run_cells(self, findings, probs, th=0.5, weak=0.2):
         d = Path(tempfile.mkdtemp())
@@ -148,7 +165,7 @@ class TestGate5x3(unittest.TestCase):
                                                    "units": [{"id": unit["id"], "probs": p, "groups": [], "truncated": False}]})
         env = {**os.environ, "PYTHONPATH": str(ROOT / "ci"), "AIWS_GATE_ENFORCE": "0"}
         subprocess.run([sys.executable, "-m", "aiws_ci.p4_compare_gate", "--out-dir", str(d), "--semgrep",
-                        str(d / "semgrep.json"), "--policy", str(ROOT / "ci" / "gate-policy.json")],
+                        str(d / "semgrep.json"), "--policy", str(self.POLICY)],
                        capture_output=True, text=True, env=env)
         u = json.loads((d / "gate.json").read_text(encoding="utf-8"))["units"][0]
         return u["decision"], {c["class"]: (c["semgrep"], c["codebert"], c["decision"]) for c in u["cells"]}
@@ -180,7 +197,7 @@ class TestGate5x3(unittest.TestCase):
         self.assertEqual(cells["OS_COMMAND_INJECTION"], ("Critical", "Khong", "REVIEW"))
 
     def test_policy_matrix_is_agreed_table(self):
-        pol = json.loads((ROOT / "ci" / "gate-policy.json").read_text(encoding="utf-8"))
+        pol = json.loads(self.POLICY.read_text(encoding="utf-8"))
         self.assertEqual(pol["semgrep_levels"]["field"], "tool_level")
         m = {r: [pol["matrix"][r][c] for c in ("Cao", "Thap", "Khong")] for r in pol["matrix"]}
         self.assertEqual(m, {"Critical": ["BLOCK", "BLOCK", "REVIEW"], "High": ["BLOCK", "REVIEW", "REVIEW"],

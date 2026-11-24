@@ -1,108 +1,54 @@
 {
-  "policy_version": "5x3-2026-11-22+ov1",
-  "note": "Gate 5x3 (nhom chot 22/11/2026, cau 6): xet tung (don vi, lop): MUC TOOL Semgrep 4 bac (tool_level = metadata.severity x confidence: Critical / High / Medium / Low, xem ci/README.md muc 8) x muc CodeBERT (Cao >= thresholds.json = alpha10; Thap >= alpha20 lay tu thresholds_np_candidates.json['0.20']; Khong). Khac bang 3x3 (20/11): Critical x Thap = BLOCK (truoc REVIEW); rule confidence high cua lop muc medium (XSS) nam o hang Medium. Quyet dinh don vi = o nang nhat. Bang 3x3 cu giu o matrix_3x3_truoc_2211.",
-  "source_gate_3x3": {
-    "version": "3x3-2026-11-20",
-    "note": "Gate 3x3 (nhom chot 17/11, sua 20/11/2026). Xet theo (don vi ma, lop). Dac ta: security-gate-truong-hop-3x3.md.",
-    "codebert_levels": {
-      "source": "aiws_infer levels",
-      "map": {
-        "strong": "Cao",
-        "weak": "Thap",
-        "none": "Khong"
-      },
-      "definition": "Cao = diem >= alpha10; Thap = alpha20 <= diem < alpha10; Khong = < alpha20",
-      "fallback_without_levels": "flagged_classes -> Cao, con lai Khong"
-    },
-    "semgrep_levels": {
-      "field": "confidence",
-      "map": {
-        "high": "High",
-        "audit": "Audit"
-      },
-      "default": "Audit"
-    },
-    "matrix": {
-      "High": {
-        "Cao": "BLOCK",
-        "Thap": "REVIEW",
-        "Khong": "REVIEW"
-      },
-      "Audit": {
-        "Cao": "REVIEW",
-        "Thap": "INFO",
-        "Khong": "INFO"
-      },
-      "Khong": {
-        "Cao": "REVIEW",
-        "Thap": "INFO",
-        "Khong": "PASS"
-      }
-    },
-    "other_class": "OTHER",
-    "not_scored_as": "Khong",
-    "tool_status": {
-      "one_failed": "REVIEW",
-      "both_failed": "FAIL",
-      "degraded_cap": "REVIEW"
-    },
-    "severity_order": [
-      "FAIL",
-      "BLOCK",
-      "REVIEW",
-      "INFO",
-      "PASS"
-    ],
-    "pipeline": {
-      "FAIL": "fail",
-      "BLOCK": "fail",
-      "REVIEW": "hold",
-      "INFO": "pass_with_notes",
-      "PASS": "pass"
-    }
+  "policy_version": "5x5-2026-11-23",
+  "note": "Gate 5x5 (nhom chot 23/11/2026, dung chung voi worker Server 3): xet tung (don vi, lop): MUC TOOL Semgrep 4 bac (tool_level = metadata.severity x confidence, giong 5x3) hoac None x MUC CodeBERT 5 bac (muc CVSS cua lop: strong >= alpha10 giu muc, weak alpha20..alpha10 ha 1 bac, con lai None). Quyet dinh don vi = o nang nhat. matrix / model_levels / team_overrides chep NGUYEN tu security-config/gate/gate_5x5.json (source_gate_5x5). Bang 5x3 (22/11) giu o truoc_2311, bang 3x3 cu o matrix_3x3_truoc_2211.",
+  "source_gate_5x5": {
+    "file": "~/whitesec-infra/security-config/gate/gate_5x5.json (Server 3)",
+    "version": "5x5-2026-11-23",
+    "sha256": "e7beee1a14a783ab5caa30339b73d5bf1082ee440676944ed392a630c116d72e",
+    "note": "Gate 5x5 (chot 22/11/2026, dung tren ban 5x3+ov1 dang chay 23/11). Xet theo (don vi ma, lop). Truc Semgrep GIU NGUYEN cach 5x3: tool_level = metadata.severity cua rule (thieu -> muc cua lop) x confidence. Truc CodeBERT doi tu Cao/Thap/Khong sang 5 muc: muc CVSS theo nhom (strong giu, weak ha 1 bac, none -> None). Giu team_overrides 21/11 (da chuyen sang truc 5 muc). Bo file nay -> worker quay ve gate_3x3.json (5x3)."
   },
+  "levels": [
+    "Critical",
+    "High",
+    "Medium",
+    "Low",
+    "None"
+  ],
   "matrix": {
     "Critical": {
-      "Cao": "BLOCK",
-      "Thap": "BLOCK",
-      "Khong": "REVIEW"
+      "Critical": "BLOCK",
+      "High": "BLOCK",
+      "Medium": "BLOCK",
+      "Low": "REVIEW",
+      "None": "REVIEW"
     },
     "High": {
-      "Cao": "BLOCK",
-      "Thap": "REVIEW",
-      "Khong": "REVIEW"
+      "Critical": "BLOCK",
+      "High": "BLOCK",
+      "Medium": "REVIEW",
+      "Low": "REVIEW",
+      "None": "REVIEW"
     },
     "Medium": {
-      "Cao": "REVIEW",
-      "Thap": "INFO",
-      "Khong": "INFO"
+      "Critical": "BLOCK",
+      "High": "REVIEW",
+      "Medium": "REVIEW",
+      "Low": "INFO",
+      "None": "INFO"
     },
     "Low": {
-      "Cao": "REVIEW",
-      "Thap": "INFO",
-      "Khong": "INFO"
+      "Critical": "REVIEW",
+      "High": "REVIEW",
+      "Medium": "INFO",
+      "Low": "INFO",
+      "None": "INFO"
     },
-    "Khong": {
-      "Cao": "REVIEW",
-      "Thap": "INFO",
-      "Khong": "PASS"
-    }
-  },
-  "matrix_3x3_truoc_2211": {
-    "High": {
-      "Cao": "BLOCK",
-      "Thap": "REVIEW",
-      "Khong": "REVIEW"
-    },
-    "Audit": {
-      "Cao": "REVIEW",
-      "Thap": "INFO",
-      "Khong": "INFO"
-    },
-    "Khong": {
-      "Cao": "REVIEW",
-      "Thap": "INFO",
-      "Khong": "PASS"
+    "None": {
+      "Critical": "REVIEW",
+      "High": "REVIEW",
+      "Medium": "INFO",
+      "Low": "INFO",
+      "None": "PASS"
     }
   },
   "semgrep_levels": {
@@ -130,17 +76,29 @@
       "default": "Audit"
     }
   },
-  "codebert_levels": {
-    "source": "aiws_infer levels",
-    "map": {
-      "strong": "Cao",
-      "weak": "Thap",
-      "none": "Khong"
+  "model_levels": {
+    "source": "aiws_infer levels (strong / weak / none theo nguong da chot cua model)",
+    "severity_by_class": {
+      "SQL_INJECTION": "Critical",
+      "HARDCODED_CREDENTIALS": "Critical",
+      "OS_COMMAND_INJECTION": "High",
+      "PATH_TRAVERSAL": "High",
+      "AUTHENTICATION_WEAKNESS": "High",
+      "XSS": "Medium"
     },
-    "definition": "Cao = diem >= alpha10; Thap = alpha20 <= diem < alpha10; Khong = < alpha20",
-    "fallback_without_levels": "flagged_classes -> Cao, con lai Khong"
+    "severity_source": {
+      "file": "model_severity_cvss.json",
+      "version": "cvss-2026-11-22",
+      "rule": "trung vi CVSS v3 moi nhom (CVEfixes) -> dai muc FIRST v3"
+    },
+    "strong": "keep",
+    "weak": "down_one",
+    "none": "None",
+    "fallback_without_levels": "flagged_classes -> strong, con lai none",
+    "ci_confidence": "strong = p >= thresholds.json (alpha10); weak = alpha20 <= p < alpha10 (codebert-results.json thresholds_weak); con lai none. Khong co probs -> groups = strong."
   },
   "other_class": "OTHER",
+  "not_scored_as": "None",
   "tool_status": {
     "one_failed": "REVIEW",
     "both_failed": "FAIL",
@@ -164,15 +122,14 @@
   "enforce_block": true,
   "team_overrides": {
     "enabled": true,
-    "note": "Bat 21/11/2026 theo yeu cau nhom (Cuong). Can dong bo len gate_3x3.json tren server de worker cung ket luan.",
-    "class_thresholds": {
-      "HARDCODED_CREDENTIALS": {
-        "Cao": 0.95
-      }
+    "note": "Chuyen tu 5x3 (21/11): Cao HARD can p >= 0.95 (thieu -> coi la weak); HARD chi model bao (Semgrep None) -> INFO nhu 5x3 (Khong/Cao, Khong/Thap); don vi trong tests/ toi da INFO. Trong CI: strong = p >= thresholds.json (alpha10), weak = alpha20 <= p < alpha10 (thresholds_weak); class_strong_min_p thay class_thresholds.Cao cua 5x3.",
+    "class_strong_min_p": {
+      "HARDCODED_CREDENTIALS": 0.95
     },
     "class_cell_overrides": {
       "HARDCODED_CREDENTIALS": {
-        "Khong/Cao": "INFO"
+        "None/Critical": "INFO",
+        "None/High": "INFO"
       }
     },
     "path_max_decision": {
@@ -186,6 +143,90 @@
     "evidence": {
       "HARDCODED": "LangChain v23: 0/40 o CodeBERT-only la bi mat that; V15 val v2.8: Cao 0.95 giu 19/23 mau (alpha10 20/23), mau sach bi bao 14 -> 6/823",
       "tests": "LangChain v23: 299/586 o REVIEW nam trong tests/"
+    }
+  },
+  "truoc_2311": {
+    "policy_version": "5x3-2026-11-22+ov1",
+    "note": "Gate 5x3 (nhom chot 22/11/2026, cau 6): xet tung (don vi, lop): MUC TOOL Semgrep 4 bac (tool_level = metadata.severity x confidence: Critical / High / Medium / Low, xem ci/README.md muc 8) x muc CodeBERT (Cao >= thresholds.json = alpha10; Thap >= alpha20 lay tu thresholds_np_candidates.json['0.20']; Khong). Khac bang 3x3 (20/11): Critical x Thap = BLOCK (truoc REVIEW); rule confidence high cua lop muc medium (XSS) nam o hang Medium. Quyet dinh don vi = o nang nhat. Bang 3x3 cu giu o matrix_3x3_truoc_2211.",
+    "matrix": {
+      "Critical": {
+        "Cao": "BLOCK",
+        "Thap": "BLOCK",
+        "Khong": "REVIEW"
+      },
+      "High": {
+        "Cao": "BLOCK",
+        "Thap": "REVIEW",
+        "Khong": "REVIEW"
+      },
+      "Medium": {
+        "Cao": "REVIEW",
+        "Thap": "INFO",
+        "Khong": "INFO"
+      },
+      "Low": {
+        "Cao": "REVIEW",
+        "Thap": "INFO",
+        "Khong": "INFO"
+      },
+      "Khong": {
+        "Cao": "REVIEW",
+        "Thap": "INFO",
+        "Khong": "PASS"
+      }
+    },
+    "codebert_levels": {
+      "source": "aiws_infer levels",
+      "map": {
+        "strong": "Cao",
+        "weak": "Thap",
+        "none": "Khong"
+      },
+      "definition": "Cao = diem >= alpha10; Thap = alpha20 <= diem < alpha10; Khong = < alpha20",
+      "fallback_without_levels": "flagged_classes -> Cao, con lai Khong"
+    },
+    "team_overrides": {
+      "enabled": true,
+      "note": "Bat 21/11/2026 theo yeu cau nhom (Cuong). Can dong bo len gate_3x3.json tren server de worker cung ket luan.",
+      "class_thresholds": {
+        "HARDCODED_CREDENTIALS": {
+          "Cao": 0.95
+        }
+      },
+      "class_cell_overrides": {
+        "HARDCODED_CREDENTIALS": {
+          "Khong/Cao": "INFO"
+        }
+      },
+      "path_max_decision": {
+        "patterns": [
+          "(^|/)tests?/",
+          "(^|/)__tests__/",
+          "(^|/)test_[^/]*\\.py$"
+        ],
+        "max": "INFO"
+      },
+      "evidence": {
+        "HARDCODED": "LangChain v23: 0/40 o CodeBERT-only la bi mat that; V15 val v2.8: Cao 0.95 giu 19/23 mau (alpha10 20/23), mau sach bi bao 14 -> 6/823",
+        "tests": "LangChain v23: 299/586 o REVIEW nam trong tests/"
+      }
+    }
+  },
+  "matrix_3x3_truoc_2211": {
+    "High": {
+      "Cao": "BLOCK",
+      "Thap": "REVIEW",
+      "Khong": "REVIEW"
+    },
+    "Audit": {
+      "Cao": "REVIEW",
+      "Thap": "INFO",
+      "Khong": "INFO"
+    },
+    "Khong": {
+      "Cao": "REVIEW",
+      "Thap": "INFO",
+      "Khong": "PASS"
     }
   }
 }

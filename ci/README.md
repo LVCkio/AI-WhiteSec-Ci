@@ -154,3 +154,24 @@ Rule audit không bao giờ lên Critical/High. Không dùng `severity` cấp ru
 Khác bảng 3×3 (20/11): Critical × Thấp = BLOCK (trước REVIEW); 3 rule confidence high của lớp mức medium (XSS) nằm ở hàng Medium (trước hàng High). Bảng cũ giữ ở `matrix_3x3_truoc_2211`; quay lại = đặt `semgrep_levels` về `truoc_2211` và `matrix` về bảng cũ (P4 đọc trục theo cấu hình). `team_overrides` (HARDCODED, thư mục tests) giữ nguyên. Finding thiếu `impact_severity` → mức mặc định của lớp trong `docs/taxonomy.yml`. **Worker trên server đọc `gate_3x3.json` riêng → phải đồng bộ bảng này lên server để hai nơi cùng kết luận.** Mức của Model (CodeBERT) 4 bậc theo "bảng điểm" chưa có định nghĩa, làm sau khi nhóm chốt.
 
 Sửa `scan_repo.py` và `ci/aiws_ci/*.py` → trên Server 3 chạy `sudo bash ci/servers/server3_rebuild_images.sh ~/AI-WhiteSec-Ci` sau khi merge (nếu quên, `p0-authorize` dừng vì ảnh `aiws-codebert` chứa mã cũ).
+
+## 9. Gate 5×5 (23/11/2026, nhóm chốt – dùng chung với worker Server 3)
+
+`gate-policy.json` `policy_version` `5x5-2026-11-23`: `matrix`, `model_levels`, `team_overrides` chép **nguyên** từ `security-config/gate/gate_5x5.json` của worker (`source_gate_5x5.sha256` = `e7beee1a…`), nên lượt CI và lượt tải lên dashboard cho cùng một kết luận (đã đối chiếu `decide_5x5` với `security_gate_5x5` của worker trên 30.000 kịch bản ngẫu nhiên: 0 lệch).
+
+- **Trục Semgrep**: giữ như 5×3 (mục 8), hàng `None` = không có finding.
+- **Trục CodeBERT 5 mức**: mức CVSS của lớp (`model_levels.severity_by_class`: SQLi, Hardcoded = Critical; OS command, Path traversal, Auth = High; XSS = Medium). Điểm ≥ `thresholds.json` (α10) = *strong* → giữ mức; α20 ≤ điểm < α10 (`thresholds_weak`) = *weak* → hạ 1 bậc; còn lại → `None`.
+
+| Semgrep \ CodeBERT | Critical | High | Medium | Low | None |
+|---|---|---|---|---|---|
+| Critical | BLOCK | BLOCK | BLOCK | REVIEW | REVIEW |
+| High | BLOCK | BLOCK | REVIEW | REVIEW | REVIEW |
+| Medium | BLOCK | REVIEW | REVIEW | INFO | INFO |
+| Low | REVIEW | REVIEW | INFO | INFO | INFO |
+| None | REVIEW | REVIEW | INFO | INFO | PASS |
+
+`team_overrides`: Hardcoded *strong* cần p ≥ 0,95 (thấp hơn → *weak*); Hardcoded chỉ model báo (`None/Critical`, `None/High`) → INFO; đơn vị trong `tests/` tối đa INFO. Một luồng lỗi → tối đa REVIEW; cả hai lỗi → FAIL.
+
+Mỗi ô trong `gate.units[].cells[]` có thêm `tool`, `model`, `model_base`, `model_confidence`, `tool_rule` (giữ `semgrep` / `codebert` cho dashboard cũ); `gate.gate_kind` = `5x5`, `gate.model_severity`. P4 chọn bảng theo cấu hình: có `model_levels` → `decide_5x5`, không có → `decide_3x3` (5×3 / 3×3 cũ). Bảng 5×3 giữ ở `truoc_2311`; quay lại 5×3 = khôi phục `gate-policy.json` của commit `70263d6`. **Đổi bảng ở một nơi phải đổi cả `gate_5x5.json` trên Server 3.** Test: `tests/test_gate_5x5_20261123.py`.
+
+Chỉ sửa `ci/aiws_ci/p4_compare_gate.py` → sau khi merge vẫn phải build lại ảnh trên Server 3 (`server3_rebuild_images.sh`), vì `p0-authorize` so mã trong ảnh với commit.

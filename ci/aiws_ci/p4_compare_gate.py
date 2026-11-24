@@ -1,4 +1,4 @@
-"""P4 - Normalize & Merge Findings + Security Gate 3x3 (FAIL / BLOCK / REVIEW / INFO / PASS).
+"""P4 - Normalize & Merge Findings + Security Gate 5x5 (FAIL / BLOCK / REVIEW / INFO / PASS).
 
   python -m aiws_ci.p4_compare_gate --out-dir aiws-out --semgrep semgrep-results.json
 
@@ -7,7 +7,10 @@
    don vi "module" rieng. Che do diff: chi xet don vi trong diff va finding tren dong bi sua.
 3. Compare tung don vi: agree (cung lop) | conflict (ca hai bao, khac lop) | sast_only | codebert_only | pass.
 4. Gate theo ci/gate-policy.json: moi lop xet o (muc Semgrep x muc CodeBERT); quyet dinh don vi = o nang nhat.
-   Tu 22/11/2026 truc Semgrep = muc tool 4 bac (Critical/High/Medium/Low) -> bang 5x3; truoc do High/Audit (3x3). Mot luong loi -> tran REVIEW; ca hai loi -> FAIL. "state" cu van ghi de dashboard doc.
+   Tu 22/11/2026 truc Semgrep = muc tool 4 bac (Critical/High/Medium/Low) -> bang 5x3; truoc do High/Audit (3x3).
+   Tu 23/11/2026 (policy co "model_levels") truc CodeBERT = 5 muc: muc CVSS cua lop (strong >= alpha10 giu, weak
+   alpha20..alpha10 ha 1 bac, con lai None) -> bang 5x5, CUNG bang/luat voi gate_5x5.json cua worker Server 3.
+   Mot luong loi -> tran REVIEW; ca hai loi -> FAIL. "state" cu van ghi de dashboard doc.
 Dau ra: gate.json, report.json (schema_version 3, dung dinh dang dashboard dang doc), ai-whitesec.sarif,
         gl-code-quality-report.json (widget merge request), summary.md.
 Ma thoat: 0 = PASS/INFO/REVIEW, 1 = BLOCK (khi enforce_block), 2 = thieu model ma policy bat buoc, 3 = ca hai luong loi.
@@ -15,6 +18,7 @@ Ma thoat: 0 = PASS/INFO/REVIEW, 1 = BLOCK (khi enforce_block), 2 = thieu model m
 import argparse
 import hashlib
 import os
+import re
 from pathlib import Path
 
 from . import common as C
@@ -124,13 +128,81 @@ def decide_3x3(policy, sf, r, th, weak, analysis, path):
                       "codebert_p": probs.get(c), "decision": d})
         best = max(best, d, key=RANK.get)
     pm = prop.get("path_max_decision") if on else None
-    if pm and any(__import__("re").search(x, path) for x in pm["patterns"]) and RANK[best] > RANK[pm["max"]]:
+    if pm and any(re.search(x, path) for x in pm["patterns"]) and RANK[best] > RANK[pm["max"]]:
         best = pm["max"]
     return best, cells
 
 
 SNIP_CTX, SNIP_MAX_LINES, SNIP_MAX_CHARS = 3, 40, 240
 _src_cache = {}
+
+
+LV5 = ["Critical", "High", "Medium", "Low", "None"]
+_STEP = {"keep": 0, "down_one": 1}
+
+
+def model_level5(c, conf, ml):
+    """Muc CodeBERT 5 bac (gate 5x5): muc CVSS cua lop (model_levels.severity_by_class), strong giu, weak ha 1 bac
+    (khong duoi Low), none -> None. Giong _model_level5 cua worker Server 3."""
+    base = (ml.get("severity_by_class") or {}).get(c, "Medium")
+    if conf not in ("strong", "weak") or base not in LV5[:4]:
+        return "None"
+    return LV5[min(LV5.index(base) + _STEP.get(ml.get(conf), 0 if conf == "strong" else 1), LV5.index("Low"))]
+
+
+def decide_5x5(policy, sf, r, th, weak, analysis, path):
+    """Gate 5x5 (23/11/2026): (muc tool Semgrep | None) x (muc CodeBERT 5 bac). Cung dau vao/dau ra voi decide_3x3.
+    team_overrides: class_strong_min_p (strong ma p < vach -> weak), class_cell_overrides "Hang/Cot", path_max_decision."""
+    other = policy.get("other_class", "OTHER")
+    ov = policy.get("team_overrides") or {}
+    on = bool(ov.get("enabled"))
+    min_p = (ov.get("class_strong_min_p") or {}) if on else {}
+    cell_ov = (ov.get("class_cell_overrides") or {}) if on else {}
+    ml = policy["model_levels"]
+    probs = (r or {}).get("probs") or {}
+    flagged = set((r or {}).get("groups") or [])
+    sl = policy["semgrep_levels"]
+    field, smap, order = sl.get("field", "tool_level"), sl.get("map") or {}, sl["order"]
+    sdef = sl.get("default", "Medium")
+    sem, sem_rule = {}, {}
+    for f in sf:
+        c = f["class"] if f["class"] in C.GROUPS else other
+        lv = smap.get(f.get(field), f.get(field))
+        lv = lv if lv in order else sdef
+        if c not in sem or order.index(lv) < order.index(sem[c]):      # muc nang nhat cua lop trong don vi
+            sem[c], sem_rule[c] = lv, f.get("rule_id")
+    conf = {}
+    if analysis != "sast_only":
+        for c in C.GROUPS:
+            k = {"Cao": "strong", "Thap": "weak"}.get(cb_level(c, probs, th, weak, flagged), "none")
+            t, p = min_p.get(c), probs.get(c)
+            if k == "strong" and t is not None and isinstance(p, (int, float)) and p < t:
+                k = "weak"
+            if k != "none":
+                conf[c] = k
+    cells, best = [], "PASS"
+    for c in sorted(set(sem) | set(conf)):
+        s_lv = sem.get(c, "None")
+        m_lv = model_level5(c, conf[c], ml) if c in conf and c != other else "None"
+        d = policy["matrix"][s_lv][m_lv]
+        d = (cell_ov.get(c) or {}).get(f"{s_lv}/{m_lv}", d)
+        if analysis in ("sast_only", "codebert_only") and RANK[d] > RANK[policy["tool_status"]["degraded_cap"]]:
+            d = policy["tool_status"]["degraded_cap"]
+        cells.append({"class": c, "semgrep": s_lv, "codebert": m_lv, "tool": s_lv, "model": m_lv,
+                      "semgrep_tool_level": None if s_lv == "None" else s_lv, "tool_rule": sem_rule.get(c),
+                      "model_base": (ml.get("severity_by_class") or {}).get(c), "model_confidence": conf.get(c, "none"),
+                      "codebert_p": probs.get(c), "decision": d})
+        best = max(best, d, key=RANK.get)
+    pm = ov.get("path_max_decision") if on else None
+    if pm and any(re.search(x, path or "") for x in pm.get("patterns", [])) and RANK[best] > RANK[pm.get("max", "INFO")]:
+        best = pm.get("max", "INFO")
+    return best, cells
+
+
+def decide_gate(policy, sf, r, th, weak, analysis, path):
+    """Chon bang theo gate-policy.json: co "model_levels" -> 5x5 (tu 23/11); khong -> 5x3 / 3x3 cu."""
+    fn = decide_5x5 if policy.get("model_levels") else decide_3x3
+    return fn(policy, sf, r, th, weak, analysis, path)
 
 
 def src_lines(repo: Path, rel: str):
@@ -263,7 +335,7 @@ def main():
             state = "codebert_only"
         else:
             state = "pass"
-        dec, cells = decide_3x3(policy, sf, r, th_cb, weak, analysis, u["file"])
+        dec, cells = decide_gate(policy, sf, r, th_cb, weak, analysis, u["file"])
         top_cells = [x for x in cells if x["decision"] == dec]
         if top_cells and dec != "PASS":
             vclass = top_cells[0]["class"]
@@ -312,6 +384,8 @@ def main():
         "policy": policy["matrix"], "tool_status": policy["tool_status"], "policy_version": policy["policy_version"],
         "pipeline_action": policy["pipeline"].get(decision), "thresholds_weak_available": bool(weak),
         "policy_note": policy.get("note"), "gate_config_sha256": policy_sha, "model_format": "multilabel_sigmoid",
+        "gate_kind": "5x5" if policy.get("model_levels") else ("5x3" if "Critical" in policy["matrix"] else "3x3"),
+        "model_severity": (policy.get("model_levels") or {}).get("severity_by_class"),
     }
     C.write_json(od / "gate.json", gate)
 
