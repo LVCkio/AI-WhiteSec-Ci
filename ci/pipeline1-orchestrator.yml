@@ -27,8 +27,11 @@ workflow:
   rules:
     - if: $CI_PIPELINE_SOURCE == "parent_pipeline"
       when: never
+    # 26/11/2026: chi chay pipeline NHANH (nhanh duoc bao ve moi co runner deploy + bien Protected) -> CD hoat dong.
+    # Pipeline merge request bi bo: ref refs/merge-requests/* khong phai nhanh -> pipeline con rong, khong co bien
+    # Protected. Trang MR van hien trang thai pipeline nhanh nguon. Truoc 26/11: chay pipeline MR, bo pipeline nhanh
+    # khi nhanh dang co MR mo -> push len develop luc co MR mo thi khong len staging.
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
       when: never
     - if: $CI_COMMIT_BRANCH
     - if: $CI_PIPELINE_SOURCE == "web"
@@ -123,14 +126,23 @@ p5-report:
               fh.write(f"AIWS_GATE={gate}\nAIWS_RUN_ID={run_id}\n")
 
       gate_env("UNKNOWN")
-      try:
-          runs = json.load(urllib.request.urlopen(f"{api}/api/pipeline-runs?limit=100", timeout=10))["runs"]
-      except Exception as e:
-          print(f"Khong doc duoc WhiteSec API ({e}). Xem artifact report.json cua job p4-compare-gate o pipeline con.")
-          raise SystemExit(0)
-      hit = [r for r in runs if str(((r.get("report") or {}).get("ci") or {}).get("parent_pipeline_id")) == pid]
+      import time
+      hit, err = [], None
+      for lan in range(6):                    # 26/11: thu lai toi da 6 lan x 10 s (ban ghi P5 co the chua toi)
+          try:
+              runs = json.load(urllib.request.urlopen(f"{api}/api/pipeline-runs?limit=100", timeout=10))["runs"]
+              err = None
+          except Exception as e:
+              runs, err = [], e
+          hit = [r for r in runs if str(((r.get("report") or {}).get("ci") or {}).get("parent_pipeline_id")) == pid]
+          if hit:
+              break
+          time.sleep(10)
       if not hit:
-          print("Chua co ban ghi trong PostgreSQL cho pipeline nay (AIWS_DB_DSN chua dat hoac P5 loi).")
+          if err:
+              print(f"Khong doc duoc WhiteSec API ({err}). Xem artifact report.json cua job p4-compare-gate o pipeline con.")
+          else:
+              print("Chua co ban ghi trong PostgreSQL cho pipeline nay sau 60 s (AIWS_DB_DSN/PGPASSWORD chua dat hoac P5 loi).")
           raise SystemExit(0)
       r = hit[0]; rep = r["report"]; g = rep["gate"]
       gate_env(str(rep.get("security_gate") or "UNKNOWN").upper(), r["id"])
