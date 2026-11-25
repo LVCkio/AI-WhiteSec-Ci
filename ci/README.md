@@ -159,7 +159,7 @@ Sửa `scan_repo.py` và `ci/aiws_ci/*.py` → trên Server 3 chạy `sudo bash 
 
 `gate-policy.json` `policy_version` `5x5-2026-11-23`: `matrix`, `model_levels`, `team_overrides` chép **nguyên** từ `security-config/gate/gate_5x5.json` của worker (`source_gate_5x5.sha256` = `e7beee1a…`), nên lượt CI và lượt tải lên dashboard cho cùng một kết luận (đã đối chiếu `decide_5x5` với `security_gate_5x5` của worker trên 30.000 kịch bản ngẫu nhiên: 0 lệch).
 
-- **Trục Semgrep**: giữ như 5×3 (mục 8), hàng `None` = không có finding.
+- **Trục Semgrep** (từ 25/11/2026, `policy_version` `5x5-2026-11-25+dongbo`, `semgrep_levels.rule = class_cvss`): **cùng mức CVSS của lớp như CodeBERT** (`model_levels.severity_by_class`) × confidence của rule: `high` giữ mức, `audit` hạ 1 bậc (không dưới Low). `metadata.severity` của rule không còn quyết định mức. Hàng `None` = không có finding. Trước 25/11: như 5×3 (mục 8), xem `semgrep_levels.truoc_2511`. Worker Server 3 vá cùng luật bằng gói `worker_5x5_dongbo`.
 - **Trục CodeBERT 5 mức**: mức CVSS của lớp (`model_levels.severity_by_class`: SQLi, Hardcoded = Critical; OS command, Path traversal, Auth = High; XSS = Medium). Điểm ≥ `thresholds.json` (α10) = *strong* → giữ mức; α20 ≤ điểm < α10 (`thresholds_weak`) = *weak* → hạ 1 bậc; còn lại → `None`.
 
 | Semgrep \ CodeBERT | Critical | High | Medium | Low | None |

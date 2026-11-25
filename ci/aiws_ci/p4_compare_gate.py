@@ -150,6 +150,18 @@ def model_level5(c, conf, ml):
     return LV5[min(LV5.index(base) + _STEP.get(ml.get(conf), 0 if conf == "strong" else 1), LV5.index("Low"))]
 
 
+def sem_level_cvss(c, confidence, policy):
+    """Muc tool Semgrep khi semgrep_levels.rule = class_cvss (nhom chot 25/11/2026): muc CVSS cua lop
+    (model_levels.severity_by_class - CUNG bang CodeBERT) x confidence rule: high giu, audit ha 1 bac (khong duoi Low).
+    Giong sem_level5 cua worker Server 3 (worker_5x5_dongbo)."""
+    ml = policy.get("model_levels") or {}
+    base = (ml.get("severity_by_class") or {}).get(c) or (policy.get("semgrep_levels") or {}).get("default", "Medium")
+    if base not in LV5[:4]:
+        base = "Medium"
+    step = 0 if str(confidence or "").strip().lower() == "high" else 1
+    return LV5[min(LV5.index(base) + step, LV5.index("Low"))]
+
+
 def decide_5x5(policy, sf, r, th, weak, analysis, path):
     """Gate 5x5 (23/11/2026): (muc tool Semgrep | None) x (muc CodeBERT 5 bac). Cung dau vao/dau ra voi decide_3x3.
     team_overrides: class_strong_min_p (strong ma p < vach -> weak), class_cell_overrides "Hang/Cot", path_max_decision."""
@@ -286,8 +298,11 @@ def main():
             continue
         cls = C.canon_class(f["class"])
         # muc tool 4 bac (22/11); semgrep-results cu (truoc 22/11) chua co -> tinh lai tu impact_severity x confidence
-        f = {**f, "tool_level": f.get("tool_level") or C.tool_level(
-            f.get("impact_severity") or C.class_default_severity(cls), f.get("confidence"))}
+        if policy.get("model_levels") and (policy.get("semgrep_levels") or {}).get("rule") == "class_cvss":   # 25/11 (5x5): cung muc CVSS lop voi CodeBERT
+            f = {**f, "tool_level": sem_level_cvss(cls, f.get("confidence"), policy)}
+        else:
+            f = {**f, "tool_level": f.get("tool_level") or C.tool_level(
+                f.get("impact_severity") or C.class_default_severity(cls), f.get("confidence"))}
         line = f.get("start_line") or 0
         u = innermost_function(units, f["file"], line)
         if u is None:   # ngoai moi ham: thuoc doan module neu co, neu khong tao don vi "module"
@@ -381,7 +396,7 @@ def main():
         "decisions": decisions, "states": states, "units": out_units,
         "units_evaluated": len(out_units),
         "units_truncated": sum(u["truncated"] for u in out_units),
-        "policy": policy["matrix"], "tool_status": policy["tool_status"], "policy_version": policy["policy_version"],
+        "policy": policy["matrix"], "tool_status": policy["tool_status"], "policy_version": policy["policy_version"], "semgrep_rule": (policy.get("semgrep_levels") or {}).get("rule") or "metadata_severity",
         "pipeline_action": policy["pipeline"].get(decision), "thresholds_weak_available": bool(weak),
         "policy_note": policy.get("note"), "gate_config_sha256": policy_sha, "model_format": "multilabel_sigmoid",
         "gate_kind": "5x5" if policy.get("model_levels") else ("5x3" if "Critical" in policy["matrix"] else "3x3"),

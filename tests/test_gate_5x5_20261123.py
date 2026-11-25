@@ -61,7 +61,8 @@ class TestPolicy5x5(unittest.TestCase):
             "Medium": ["BLOCK", "REVIEW", "REVIEW", "INFO", "INFO"],
             "Low": ["REVIEW", "REVIEW", "INFO", "INFO", "INFO"],
             "None": ["REVIEW", "REVIEW", "INFO", "INFO", "PASS"]})
-        self.assertEqual(pol["policy_version"], "5x5-2026-11-23")
+        self.assertEqual(pol["policy_version"], "5x5-2026-11-25+dongbo")
+        self.assertEqual(pol["semgrep_levels"]["rule"], "class_cvss")
         self.assertEqual(pol["source_gate_5x5"]["sha256"],
                          "e7beee1a14a783ab5caa30339b73d5bf1082ee440676944ed392a630c116d72e")
         self.assertEqual(pol["model_levels"]["severity_by_class"], {
@@ -77,15 +78,16 @@ class TestPolicy5x5(unittest.TestCase):
 class TestGate5x5(unittest.TestCase):
     """Cac truong hop doi quyet dinh so voi 5x3 (bang so sanh gui nhom 23/11)."""
 
-    def test_sql_audit_x_strong_block(self):           # 5x3: Medium x Cao = REVIEW
+    def test_sql_audit_x_strong_block(self):           # 5x3: Medium x Cao = REVIEW; 25/11: Semgrep audit Critical -> High
         g, dec, cells = run_unit([{"class": SQL, "confidence": "audit", "impact_severity": "critical"}], {SQL: 0.9})
-        self.assertEqual(cells[SQL], ("Medium", "Critical", "BLOCK"))
-        self.assertEqual((g["gate_kind"], g["policy_version"]), ("5x5", "5x5-2026-11-23"))
+        self.assertEqual(cells[SQL], ("High", "Critical", "BLOCK"))
+        self.assertEqual((g["gate_kind"], g["policy_version"]), ("5x5", "5x5-2026-11-25+dongbo"))
+        self.assertEqual(g["semgrep_rule"], "class_cvss")
         self.assertIn("None", g["policy"])
 
-    def test_sql_audit_x_weak_review(self):            # 5x3: Medium x Thap = INFO
+    def test_sql_audit_x_weak_block(self):             # 5x3: Medium x Thap = INFO; 23/11: REVIEW; 25/11: High x High
         _, _, cells = run_unit([{"class": SQL, "confidence": "audit", "impact_severity": "critical"}], {SQL: 0.3})
-        self.assertEqual(cells[SQL], ("Medium", "High", "REVIEW"))
+        self.assertEqual(cells[SQL], ("High", "High", "BLOCK"))
 
     def test_sql_model_weak_only_review(self):         # 5x3: Khong x Thap = INFO
         _, dec, cells = run_unit([], {SQL: 0.3})
@@ -97,13 +99,13 @@ class TestGate5x5(unittest.TestCase):
 
     def test_hardcoded_high_x_weak_block(self):        # 5x3: High x Thap = REVIEW
         _, _, cells = run_unit([{"class": HARD, "confidence": "high", "impact_severity": "high"}], {HARD: 0.3})
-        self.assertEqual(cells[HARD], ("High", "High", "BLOCK"))
+        self.assertEqual(cells[HARD], ("Critical", "High", "BLOCK"))   # 25/11: Hardcoded = Critical (CVSS lop)
 
     def test_hardcoded_strong_needs_095(self):         # team_overrides: strong ma p < 0.95 -> weak
         _, _, cells = run_unit([{"class": HARD, "confidence": "high", "impact_severity": "high"}], {HARD: 0.9})
-        self.assertEqual(cells[HARD], ("High", "High", "BLOCK"))
+        self.assertEqual(cells[HARD], ("Critical", "High", "BLOCK"))
         _, _, cells = run_unit([{"class": HARD, "confidence": "audit", "impact_severity": "high"}], {HARD: 0.97})
-        self.assertEqual(cells[HARD], ("Medium", "Critical", "BLOCK"))
+        self.assertEqual(cells[HARD], ("High", "Critical", "BLOCK"))
 
     def test_hardcoded_model_only_info(self):          # team_overrides: None/Critical, None/High -> INFO
         for p in (0.97, 0.9, 0.3):
@@ -116,6 +118,31 @@ class TestGate5x5(unittest.TestCase):
                                  file="tests/test_db.py")
         self.assertEqual(cells[SQL], ("Critical", "Critical", "BLOCK"))
         self.assertEqual(dec, "INFO")
+
+
+class TestSemgrepClassCvss(unittest.TestCase):
+    """25/11/2026: truc Semgrep = muc CVSS cua lop (cung bang CodeBERT) x confidence: high giu, audit ha 1 bac."""
+
+    def test_sem_level_cvss_table(self):
+        from aiws_ci.p4_compare_gate import sem_level_cvss
+        pol = json.loads(POLICY.read_text(encoding="utf-8"))
+        got = {c: (sem_level_cvss(c, "high", pol), sem_level_cvss(c, "audit", pol))
+               for c in (SQL, HARD, "OS_COMMAND_INJECTION", PATH, "AUTHENTICATION_WEAKNESS", XSS)}
+        self.assertEqual(got, {SQL: ("Critical", "High"), HARD: ("Critical", "High"),
+                               "OS_COMMAND_INJECTION": ("High", "Medium"), PATH: ("High", "Medium"),
+                               "AUTHENTICATION_WEAKNESS": ("High", "Medium"), XSS: ("Medium", "Low")})
+
+    def test_semgrep_equals_codebert_axis(self):       # cung lop, cung do tin cay -> cung muc
+        from aiws_ci.p4_compare_gate import sem_level_cvss
+        pol = json.loads(POLICY.read_text(encoding="utf-8"))
+        for c in pol["model_levels"]["severity_by_class"]:
+            self.assertEqual(sem_level_cvss(c, "high", pol), model_level5(c, "strong", pol["model_levels"]))
+            self.assertEqual(sem_level_cvss(c, "audit", pol), model_level5(c, "weak", pol["model_levels"]))
+
+    def test_impact_severity_ignored(self):            # metadata.severity cua rule khong con quyet dinh muc
+        _, _, cells = run_unit([{"class": "OS_COMMAND_INJECTION", "confidence": "high", "impact_severity": "critical",
+                                 "tool_level": "Critical"}], {})
+        self.assertEqual(cells["OS_COMMAND_INJECTION"][0], "High")
 
 
 if __name__ == "__main__":

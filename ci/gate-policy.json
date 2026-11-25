@@ -1,6 +1,6 @@
 {
-  "policy_version": "5x5-2026-11-23",
-  "note": "Gate 5x5 (nhom chot 23/11/2026, dung chung voi worker Server 3): xet tung (don vi, lop): MUC TOOL Semgrep 4 bac (tool_level = metadata.severity x confidence, giong 5x3) hoac None x MUC CodeBERT 5 bac (muc CVSS cua lop: strong >= alpha10 giu muc, weak alpha20..alpha10 ha 1 bac, con lai None). Quyet dinh don vi = o nang nhat. matrix / model_levels / team_overrides chep NGUYEN tu security-config/gate/gate_5x5.json (source_gate_5x5). Bang 5x3 (22/11) giu o truoc_2311, bang 3x3 cu o matrix_3x3_truoc_2211.",
+  "policy_version": "5x5-2026-11-25+dongbo",
+  "note": "Gate 5x5 (nhom chot 23/11/2026, dung chung voi worker Server 3): xet tung (don vi, lop): MUC TOOL Semgrep 4 bac (tool_level = metadata.severity x confidence, giong 5x3) hoac None x MUC CodeBERT 5 bac (muc CVSS cua lop: strong >= alpha10 giu muc, weak alpha20..alpha10 ha 1 bac, con lai None). Quyet dinh don vi = o nang nhat. matrix / model_levels / team_overrides chep NGUYEN tu security-config/gate/gate_5x5.json (source_gate_5x5). Bang 5x3 (22/11) giu o truoc_2311, bang 3x3 cu o matrix_3x3_truoc_2211. | 25/11/2026: truc Semgrep dong bo voi truc CodeBERT (muc CVSS cua lop x do tin cay, audit ha 1 bac) - giong worker_5x5_dongbo tren Server 3.",
   "source_gate_5x5": {
     "file": "~/whitesec-infra/security-config/gate/gate_5x5.json (Server 3)",
     "version": "5x5-2026-11-23",
@@ -52,6 +52,7 @@
     }
   },
   "semgrep_levels": {
+    "rule": "class_cvss",
     "field": "tool_level",
     "map": {
       "Critical": "Critical",
@@ -66,7 +67,24 @@
       "Low"
     ],
     "default": "Medium",
-    "definition": "tool_level = metadata.severity (thieu -> default_severity cua lop trong docs/taxonomy.yml) x confidence: high giu muc; audit: critical/high -> Medium, medium/low -> Low",
+    "definition": "25/11/2026: tool_level = muc CVSS cua lop (model_levels.severity_by_class, cung bang CodeBERT) x confidence rule: high giu muc, audit ha 1 bac (khong duoi Low) - giong CodeBERT strong/weak",
+    "truoc_2511": {
+      "field": "tool_level",
+      "map": {
+        "Critical": "Critical",
+        "High": "High",
+        "Medium": "Medium",
+        "Low": "Low"
+      },
+      "order": [
+        "Critical",
+        "High",
+        "Medium",
+        "Low"
+      ],
+      "default": "Medium",
+      "definition": "tool_level = metadata.severity (thieu -> default_severity cua lop trong docs/taxonomy.yml) x confidence: high giu muc; audit: critical/high -> Medium, medium/low -> Low"
+    },
     "truoc_2211": {
       "field": "confidence",
       "map": {

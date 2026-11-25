@@ -115,14 +115,14 @@ class TestP4(unittest.TestCase):
         g = rep["gate"]
         by = {x["function"]: x for x in g["units"]}
         self.assertEqual(by["f1"]["sast_level"], "Critical")
-        self.assertEqual(by["f2"]["sast_level"], "Medium")
+        self.assertEqual(by["f2"]["sast_level"], "High")      # 25/11 class_cvss: SQLi audit = Critical ha 1 bac
         self.assertEqual(by["f1"]["cells"][0]["semgrep_tool_level"], "Critical")
         # quyet dinh Gate 3x3 KHONG doi: High x Khong -> REVIEW; Audit x Khong -> INFO
         self.assertEqual(by["f1"]["decision"], "REVIEW")
-        self.assertEqual(by["f2"]["decision"], "INFO")
-        self.assertEqual(rep["summary"]["semgrep_levels"], {"Critical": 1, "High": 0, "Medium": 1, "Low": 0})
+        self.assertEqual(by["f2"]["decision"], "REVIEW")     # 5x5: High x None
+        self.assertEqual(rep["summary"]["semgrep_levels"], {"Critical": 1, "High": 1, "Medium": 0, "Low": 0})
         levels = sorted(x["level"] for x in rep["tools"][0]["normalized_findings"])
-        self.assertEqual(levels, ["Critical", "Medium"])
+        self.assertEqual(levels, ["Critical", "High"])
         self.assertIn("Muc tool Semgrep", (d / "summary.md").read_text(encoding="utf-8"))
 
 
