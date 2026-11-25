@@ -199,5 +199,6 @@ p5-report:
     name: production
     url: $AIWS_PROD_URL
   script:
-    - echo "Duyet boi $GITLAB_USER_LOGIN ($GITLAB_USER_NAME) - commit $CI_COMMIT_SHORT_SHA, lan quet #${AIWS_RUN_ID:-?}"
+    # 26/11: boc ca dong trong nhay don - trong YAML, " #" mo dau chu thich va cat mat lenh
+    - 'echo "Duyet boi $GITLAB_USER_LOGIN ($GITLAB_USER_NAME) - commit $CI_COMMIT_SHORT_SHA, lan quet #${AIWS_RUN_ID:-?}"'
     - $AIWS_DEPLOY_SCRIPT production
