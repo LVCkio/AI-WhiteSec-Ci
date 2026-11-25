@@ -40,7 +40,18 @@ export function decisionBadge(d) {
   return `<span class="badge b-muted">${esc(d || '—')}</span>`;
 }
 export const badge = (text, kind='b-muted', ic='') => `<span class="badge ${kind}">${ic?icon(ic):''}${esc(text)}</span>`;
-export const tierBadge = t => t === 'high' ? badge('high', 'b-high', 'flame') : badge(t || 'audit', 'b-audit');
+export const severityBadge = s => {
+  const key = String(s || '').toLowerCase();
+  if (!key) return '';
+  const map = {critical:'b-crit', high:'b-high', medium:'b-review', low:'b-muted'};
+  const iconName = {critical:'shield-alert', high:'flame', medium:'triangle-alert', low:'info'}[key] || '';
+  return badge(key, map[key] || 'b-muted', iconName);
+};
+export const tierBadge = t => {
+  const key = String(t || 'audit').toLowerCase();
+  if (['critical', 'high', 'medium', 'low'].includes(key)) return severityBadge(key);
+  return key === 'high' ? badge('high', 'b-high', 'flame') : badge(key || 'audit', 'b-audit');
+};
 export function gtBadge(u) {
   const g = u.gt;
   if (!g) return '';

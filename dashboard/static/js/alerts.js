@@ -1,4 +1,4 @@
-import { esc, icon, int, num, pct, decisionBadge, gtBadge, tierBadge, badge, cls, CLASS_LABEL, STATE_LABEL, unitName, unitLoc, appName, sourceLabel, download, csv } from './ui.js';
+import { esc, icon, int, num, pct, decisionBadge, gtBadge, tierBadge, severityBadge, badge, cls, CLASS_LABEL, STATE_LABEL, unitName, unitLoc, appName, sourceLabel, download, csv } from './ui.js';
 import { allUnits, flagged, unitLang, gateReason, DEC } from './agg.js';
 
 const patch = o => esc(JSON.stringify(o));
@@ -37,7 +37,7 @@ function streams(u, run) {
   const sem = (u.findings || []);
   return `<div class="streams">
     <div class="card"><div class="card-body"><div class="stream-head"><h3>${icon('scan-search')}Luồng Semgrep CE</h3>${sem.length ? badge(`${sem.length} finding`, 'b-info') : badge('không báo', 'b-outline')}</div>
-      ${sem.length ? sem.map(f => `<div class="finding"><div class="f-top"><span class="f-rule">${esc(f.rule)}</span>${tierBadge(f.confidence)}</div>
+      ${sem.length ? sem.map(f => `<div class="finding"><div class="f-top"><span class="f-rule">${esc(f.rule)}</span>${tierBadge(f.confidence)}${u.severity ? severityBadge(u.severity) : ''}</div>
         <div class="f-msg">${esc(f.message || '')}</div>
         <div class="f-msg">Dòng ${esc(f.line ?? '—')} · ${esc((f.classes || []).map(c => CLASS_LABEL[c] || c).join(', ') || 'ngoài 6 lớp')}${(f.cwes || []).length ? ` · CWE-${esc(f.cwes.join(', CWE-'))}` : ''}</div></div>`).join('')
         : `<div class="empty" style="padding:18px">${icon('circle-dashed')}Không có finding Semgrep thuộc 6 lớp cho đơn vị này.</div>`}
@@ -104,6 +104,7 @@ export function renderAlerts(data, state, {scopeRuns}) {
     <label class="field grow"><span>Tìm</span><input class="input" data-input="q" value="${esc(state.q)}" placeholder="File, hàm, CWE hoặc rule Semgrep" autocomplete="off"></label>
   </div>
   <div class="alerts-layout">
+    <div class="card alert-detail">${detail(data, sel)}</div>
     <div class="card alert-list"><div class="list-head"><span>${int(items.length)} đơn vị</span><span class="muted">${runs.length} lượt quét</span></div>
       <div class="alert-scroll">${items.length ? items.slice(0, 500).map(u => `<button class="alert-item${sel && u.key === sel.key ? ' selected' : ''}" data-action="set" data-replace="1" data-patch="${patch({unit:u.key})}">
         <span class="prio ${esc(u.priority?.level || 'none')}">${esc(u.priority?.level || '—')}</span>
@@ -112,7 +113,6 @@ export function renderAlerts(data, state, {scopeRuns}) {
         <span class="ai-tags">${badge(cls(u.vuln_class || u.codebert_class), 'b-muted')}${badge(sourceLabel(u), 'b-outline')}${gtBadge(u)}</span></span></button>`).join('')
         + (items.length > 500 ? `<div class="empty">Hiển thị 500/${int(items.length)}; thu hẹp bộ lọc để xem thêm.</div>` : '')
         : `<div class="empty">${icon('filter-x')}<strong>Không có đơn vị khớp bộ lọc</strong></div>`}</div></div>
-    ${detail(data, sel)}
   </div>`;
 }
 
