@@ -126,3 +126,74 @@ Không cần build lại ảnh `aiws-codebert` khi chỉ đổi model.
 **Độ phủ ngôn ngữ.** P1 và Semgrep đếm file mã nguồn ngôn ngữ chưa hỗ trợ (`.ts/.tsx`, `.vue`, `.go`, `.kt`…; `files_unsupported_language`). Có → cảnh báo trong báo cáo: PASS không bao gồm các file đó. Chưa thêm TypeScript vào phạm vi quét: cần rule/test TS, dữ liệu đo và quyết định của leader (model chưa train trên TS).
 
 **Xuống dòng.** `.gitattributes` giữ LF cho rule, `semgrep.yml`, manifest, `ci/`, `*.sh`. Trước đó Git for Windows (`core.autocrlf=true`) đổi sang CRLF → `ruleset.py verify` KHÔNG ĐẠT và build ảnh từ bản Windows (`run_ci_semgrep_local.bat`) thất bại.
+
+## 8. Mức tool Semgrep 4 bậc (22/11/2026, câu 6 nhóm thống nhất)
+
+Mỗi finding Semgrep có thêm `tool_level` (Critical / High / Medium / Low), ghép từ `metadata.severity` của rule (mức nghiêm trọng của **loại** lỗ hổng, gắn khi viết rule; thiếu thì lấy `default_severity` của lớp trong `docs/taxonomy.yml`) × `metadata.confidence`:
+
+| `metadata.severity` | `confidence: high` | `confidence: audit` |
+|---|---|---|
+| critical | Critical | Medium |
+| high | High | Medium |
+| medium | Medium | Low |
+
+Rule audit không bao giờ lên Critical/High. Không dùng `severity` cấp rule (ERROR/WARNING/INFO) vì ở bộ rule nhóm nó chỉ là bản sao của `confidence` (ERROR = high, WARNING = audit) nên ghép chỉ ra 2 mức. Bộ v4.8.1 (71 rule): Critical 7 · High 13 · Medium 39 · Low 12. **Không sửa rule, không đổi SHA bộ rule.**
+
+Ở đâu: `semgrep-results.json` (`findings[].tool_level`, `summary.by_tool_level`), `report.json` (`summary.semgrep_levels`, `tools[semgrep].normalized_findings[].level`, `gate.units[].sast_level`, `gate.units[].cells[].semgrep_tool_level`), `summary.md` (dòng "Mức tool Semgrep"). Bảng nằm ở `ci/aiws_ci/common.py` (`tool_level`) và bản chép trong `scan_repo.py` (ảnh `aiws-semgrep` không có `aiws_ci`); `tests/test_tool_level_20261122.py` kiểm hai bản khớp nhau.
+
+**Gate 5×3 (nhóm chốt 22/11)**: trục Semgrep của Gate là mức tool (`gate-policy.json`: `semgrep_levels.field = tool_level`, `policy_version` `5x3-2026-11-22+ov1`):
+
+| Mức tool \ CodeBERT | Cao (≥ α10) | Thấp (α20…α10) | Không |
+|---|---|---|---|
+| Critical | BLOCK | **BLOCK** | REVIEW |
+| High | BLOCK | REVIEW | REVIEW |
+| Medium | REVIEW | INFO | INFO |
+| Low | REVIEW | INFO | INFO |
+| Không | REVIEW | INFO | PASS |
+
+Khác bảng 3×3 (20/11): Critical × Thấp = BLOCK (trước REVIEW); 3 rule confidence high của lớp mức medium (XSS) nằm ở hàng Medium (trước hàng High). Bảng cũ giữ ở `matrix_3x3_truoc_2211`; quay lại = đặt `semgrep_levels` về `truoc_2211` và `matrix` về bảng cũ (P4 đọc trục theo cấu hình). `team_overrides` (HARDCODED, thư mục tests) giữ nguyên. Finding thiếu `impact_severity` → mức mặc định của lớp trong `docs/taxonomy.yml`. **Worker trên server đọc `gate_3x3.json` riêng → phải đồng bộ bảng này lên server để hai nơi cùng kết luận.** Mức của Model (CodeBERT) 4 bậc theo "bảng điểm" chưa có định nghĩa, làm sau khi nhóm chốt.
+
+Sửa `scan_repo.py` và `ci/aiws_ci/*.py` → trên Server 3 chạy `sudo bash ci/servers/server3_rebuild_images.sh ~/AI-WhiteSec-Ci` sau khi merge (nếu quên, `p0-authorize` dừng vì ảnh `aiws-codebert` chứa mã cũ).
+
+## 9. Gate 5×5 (23/11/2026, nhóm chốt – dùng chung với worker Server 3)
+
+`gate-policy.json` `policy_version` `5x5-2026-11-23`: `matrix`, `model_levels`, `team_overrides` chép **nguyên** từ `security-config/gate/gate_5x5.json` của worker (`source_gate_5x5.sha256` = `e7beee1a…`), nên lượt CI và lượt tải lên dashboard cho cùng một kết luận (đã đối chiếu `decide_5x5` với `security_gate_5x5` của worker trên 30.000 kịch bản ngẫu nhiên: 0 lệch).
+
+- **Trục Semgrep** (từ 25/11/2026, `policy_version` `5x5-2026-11-25+dongbo`, `semgrep_levels.rule = class_cvss`): **cùng mức CVSS của lớp như CodeBERT** (`model_levels.severity_by_class`) × confidence của rule: `high` giữ mức, `audit` hạ 1 bậc (không dưới Low). `metadata.severity` của rule không còn quyết định mức. Hàng `None` = không có finding. Trước 25/11: như 5×3 (mục 8), xem `semgrep_levels.truoc_2511`. Worker Server 3 vá cùng luật bằng gói `worker_5x5_dongbo`.
+- **Trục CodeBERT 5 mức**: mức CVSS của lớp (`model_levels.severity_by_class`: SQLi, Hardcoded = Critical; OS command, Path traversal, Auth = High; XSS = Medium). Điểm ≥ `thresholds.json` (α10) = *strong* → giữ mức; α20 ≤ điểm < α10 (`thresholds_weak`) = *weak* → hạ 1 bậc; còn lại → `None`.
+
+| Semgrep \ CodeBERT | Critical | High | Medium | Low | None |
+|---|---|---|---|---|---|
+| Critical | BLOCK | BLOCK | BLOCK | REVIEW | REVIEW |
+| High | BLOCK | BLOCK | REVIEW | REVIEW | REVIEW |
+| Medium | BLOCK | REVIEW | REVIEW | INFO | INFO |
+| Low | REVIEW | REVIEW | INFO | INFO | INFO |
+| None | REVIEW | REVIEW | INFO | INFO | PASS |
+
+`team_overrides`: Hardcoded *strong* cần p ≥ 0,95 (thấp hơn → *weak*); Hardcoded chỉ model báo (`None/Critical`, `None/High`) → INFO; đơn vị trong `tests/` tối đa INFO. Một luồng lỗi → tối đa REVIEW; cả hai lỗi → FAIL.
+
+Mỗi ô trong `gate.units[].cells[]` có thêm `tool`, `model`, `model_base`, `model_confidence`, `tool_rule` (giữ `semgrep` / `codebert` cho dashboard cũ); `gate.gate_kind` = `5x5`, `gate.model_severity`. P4 chọn bảng theo cấu hình: có `model_levels` → `decide_5x5`, không có → `decide_3x3` (5×3 / 3×3 cũ). Bảng 5×3 giữ ở `truoc_2311`; quay lại 5×3 = khôi phục `gate-policy.json` của commit `70263d6`. **Đổi bảng ở một nơi phải đổi cả `gate_5x5.json` trên Server 3.** Test: `tests/test_gate_5x5_20261123.py`.
+
+Chỉ sửa `ci/aiws_ci/p4_compare_gate.py` → sau khi merge vẫn phải build lại ảnh trên Server 3 (`server3_rebuild_images.sh`), vì `p0-authorize` so mã trong ảnh với commit.
+
+## 10. Giữ mức Critical/High + CD staging → production (25/11/2026, nhóm chốt)
+
+**Gate (`policy_version` `5x5-2026-11-25+dongbo+giucao`).** Mức Critical hoặc High của CodeBERT hay Semgrep **không bao giờ** bị `team_overrides` hạ xuống INFO:
+- Bỏ `HARDCODED_CREDENTIALS` `None/Critical`, `None/High` → INFO (bản cũ giữ ở `class_cell_overrides_truoc_2511`). Hai ô này về bảng gốc: REVIEW.
+- `path_max_decision` (thư mục `tests/`) thêm `except_levels: [Critical, High]`: chỉ ép tối đa INFO khi không ô nào của đơn vị có mức Critical/High.
+- Worker Server 3 phải vá cùng lúc (`gate_giucao_2511/server3/trien_khai.sh`, chạy sau `worker_5x5_dongbo`). Đối chiếu CI và worker: 20.000 kịch bản, 0 lệch, 0 trường hợp Critical/High ra INFO/PASS.
+
+**CD.**
+- `p5-report` ghi `gate.env` (`AIWS_GATE`, `AIWS_RUN_ID`) làm artifact dotenv. Không đọc được API thì `AIWS_GATE=UNKNOWN`, và deploy bị chặn.
+- `deploy-staging` (stage `staging`): chỉ chạy tiếp khi `AIWS_GATE` là **PASS hoặc INFO**, trên nhánh khớp `AIWS_STAGING_BRANCH_RE` (mặc định `develop|main`), không chạy trên pipeline MR.
+- REVIEW / BLOCK / FAIL / UNKNOWN bị chặn trước staging. Dev xem và sửa trên Dashboard, rồi quét lại commit mới.
+- `deploy-production` (stage `production`): `when: manual`, chỉ trên `AIWS_PROD_BRANCH` (mặc định `main`). Pipeline đứng ở trạng thái chờ duyệt cho tới khi có người bấm.
+  - GitLab CE không có protected environments hay deployment approvals (bản Premium). Quyền bấm vì vậy là quyền chạy job trên nhánh `main` được bảo vệ (Maintainer).
+  - Lịch sử ai bấm, lúc nào, commit nào nằm ở Operate → Environments.
+- Hai job là mẫu ẩn `.aiws-deploy-staging` / `.aiws-deploy-production` trong `pipeline1-orchestrator.yml`. Project cần quét khai báo job thật (xem `ci/templates/target-project.gitlab-ci.yml`), và giữ đúng tên `deploy-staging` / `deploy-production`.
+- `deploy.sh` của project nhận tham số `staging | production`. Mẫu: `ci/templates/deploy.example.sh`.
+  - Production không build lại: đẩy đúng ảnh đã chạy ở staging (cùng commit).
+  - Chỉ mở cổng trên IP nội bộ / WireGuard (`DEPLOY_BIND_IP`).
+  - App không trả lời thì tự quay lại container trước.
+- Cần một runner shell có Docker, tag `aiws-deploy`, đăng ký riêng cho deploy (không dùng chung runner quét `aiws-worker`), và bật cho project cần quét.
+- Repo AI-WhiteSec-Ci không deploy. Stage `staging` / `production` trống thì GitLab bỏ qua.

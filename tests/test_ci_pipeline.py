@@ -93,13 +93,16 @@ class TestGate(unittest.TestCase):
     def test_states_and_decisions(self):
         code, g = self.run_gate()
         st = {u["function"]: (u["state"], u["decision"]) for u in g["units"]}
-        self.assertEqual(st["agree"], ("agree", "BLOCK"))
-        self.assertEqual(st["sast_high"], ("sast_only", "BLOCK"))
-        self.assertEqual(st["sast_audit"], ("sast_only", "REVIEW"))
-        self.assertEqual(st["cb_only"], ("codebert_only", "REVIEW"))
-        self.assertEqual(st["conflict"], ("conflict", "REVIEW"))
+        # Gate 5x5 (gate-policy.json, nhom chot 23/11): truc Semgrep = muc tool (metadata.severity x confidence; du lieu
+        # dung tay khong co impact_severity -> muc mac dinh cua lop: SQL critical, XSS medium, PATH/AUTH high);
+        # truc CodeBERT = muc CVSS cua lop khi strong (SQL Critical, XSS Medium, PATH High)
+        self.assertEqual(st["agree"], ("agree", "BLOCK"))              # SQL high -> Critical x Critical
+        self.assertEqual(st["sast_high"], ("sast_only", "INFO"))       # XSS high -> Medium x None (3x3: REVIEW, ci-2: BLOCK)
+        self.assertEqual(st["sast_audit"], ("sast_only", "INFO"))      # PATH audit -> Medium x None
+        self.assertEqual(st["cb_only"], ("codebert_only", "INFO"))     # XSS strong -> None x Medium (5x3: REVIEW)
+        self.assertEqual(st["conflict"], ("conflict", "REVIEW"))       # AUTH High x None + SQL None x Critical
         self.assertEqual(st["clean"], ("pass", "PASS"))
-        self.assertEqual(st["agree_audit"], ("agree", "REVIEW"))   # ci-2: audit khong tu chan build
+        self.assertEqual(st["agree_audit"], ("agree", "REVIEW"))       # PATH audit -> Medium x High
         self.assertEqual(g["decision"], "BLOCK")
         self.assertEqual(code, C.EXIT_BLOCK)
         conflict = next(u for u in g["units"] if u["function"] == "conflict")

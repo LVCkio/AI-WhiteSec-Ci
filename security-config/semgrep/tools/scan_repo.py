@@ -27,6 +27,8 @@ Bo sung 19/11/2026:
                            giao voi pham vi da chon. Che do diff -> chi quet file bi sua. File khong ton tai -> quet het.
   run.scope_signature      sha256 cua cach chon pham vi (duoi file, .semgrepignore, nguong dong) -> P4 so voi P1.
   summary.files_unsupported_language  so file ma nguon ngon ngu chua ho tro (vd TypeScript) -> canh bao do phu.
+Bo sung 22/11/2026: moi finding co tool_level (Critical / High / Medium / Low = metadata.severity x confidence, xem
+  TOOL_LEVELS); summary.by_tool_level dem theo muc. Khong sua rule, khong doi SHA bo rule.
 """
 import argparse, datetime, fnmatch, hashlib, json, os, re, shutil, subprocess, sys, tempfile
 from pathlib import Path
@@ -46,6 +48,24 @@ MAX_AVG_LINE = 300          # phia CodeBERT loai file co dong trung binh > 300 k
 UNSUPPORTED_EXT = {".ts": "typescript", ".tsx": "typescript", ".mts": "typescript", ".cts": "typescript",
                    ".vue": "vue", ".svelte": "svelte", ".kt": "kotlin", ".go": "go", ".rb": "ruby",
                    ".cs": "csharp", ".phtml": "php_template", ".c": "c", ".cpp": "cpp", ".rs": "rust"}
+# Muc TOOL (Semgrep) - huong nhom thong nhat 22/11/2026 (cau 6): 4 muc Critical / High / Medium / Low ghep tu
+#   metadata.severity cua rule (muc nghiem trong cua LOAI lo hong, gan khi viet rule: critical / high / medium; thieu ->
+#   default_severity cua lop trong docs/taxonomy.yml) x metadata.confidence (high / audit).
+#   confidence high : giu nguyen muc (critical -> Critical, high -> High, medium -> Medium, low -> Low)
+#   confidence audit: critical / high -> Medium; medium / low -> Low   (rule audit KHONG BAO GIO len Critical / High)
+#   Khong dung severity cap rule (ERROR / WARNING / INFO): o bo rule nhom, no chi la ban sao cua confidence.
+#   Chi de BAO CAO / hien thi: quyet dinh Gate 3x3 van dung truc Semgrep High / Audit (confidence) trong gate-policy.json.
+TOOL_LEVELS = ["Critical", "High", "Medium", "Low"]
+_TOOL_IMPACT = {"critical": "Critical", "high": "High", "medium": "Medium", "low": "Low"}
+
+
+def tool_level(impact, confidence) -> str:
+    base = _TOOL_IMPACT.get(str(impact or "").strip().lower(), "Medium")
+    if str(confidence or "").strip().lower() == "high":
+        return base
+    return "Medium" if base in ("Critical", "High") else "Low"
+
+
 CWE_RE = re.compile(r"CWE-?0*(\d+)", re.I)
 
 
@@ -291,6 +311,7 @@ def post_process(raw, files, classes, alias, strict: bool):
             "cwes": [f"CWE-{c}" for c in cwes], "confidence": conf,
             "semgrep_severity": extra.get("severity", ""),
             "impact_severity": md.get("severity") or classes[cls]["default_severity"],
+            "tool_level": tool_level(md.get("severity") or classes[cls]["default_severity"], conf),
             "start_line": start, "end_line": item.get("end", {}).get("line"),
             "message": (extra.get("message") or "").strip(),
             "rule_version": md.get("rule_version", ""),
@@ -373,6 +394,7 @@ def main():
             "duration_s": round((datetime.datetime.now().astimezone() - started).total_seconds(), 1),
             "excludes": pats, "max_avg_line_len": MAX_AVG_LINE, "command": command,
             "scope_signature": scope_signature(pats), "ruleset_check": ruleset_check,
+            "tool_level_rule": "metadata.severity x confidence (nhom chot 22/11/2026)",
             "targets": "p1_target_files" if only is not None else "all_in_scope",
             "files_in_scope_total": files_total,
         },
@@ -386,6 +408,7 @@ def main():
             "by_class": {c: count(lambda f, c=c: f["class"] == c) for c in classes},
             "dropped_out_of_scope_classes": dropped, "scan_errors": len(errors),
             "files_unsupported_language": dict(sorted(unsupported.items())),
+            "by_tool_level": {lv: count(lambda f, lv=lv: f.get("tool_level") == lv) for lv in TOOL_LEVELS},
         },
     }
     a.out.parent.mkdir(parents=True, exist_ok=True)
