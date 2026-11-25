@@ -28,3 +28,20 @@ dispatch-worker:
       - project: "root/ai-whitesec-ci"
         ref: main
         file: "/ci/pipeline2-worker.yml"
+
+# ------------------------------------------------------------------------------------------------------------
+# CD (nhom chot 25/11/2026): Gate PASS/INFO -> staging tu dong; dev xem staging -> bam tay len production (nhanh main).
+# REVIEW / BLOCK bi chan truoc staging (xem va sua tren Dashboard, quet lai commit moi).
+# Can: (1) file deploy.sh o goc project (mau: ci/templates/deploy.example.sh cua AI-WhiteSec-Ci), nhan tham so
+#      staging | production; (2) runner tag aiws-deploy duoc bat cho project nay; (3) ten job GIU NGUYEN
+#      deploy-staging / deploy-production (job production needs deploy-staging). Doi URL/nhanh qua variables.
+# Project chi muon quet, khong deploy: xoa hai job duoi.
+variables:
+  AIWS_STAGING_URL: "http://10.0.0.1:8081"     # sua theo noi chay staging (chi trong mang noi bo / WireGuard)
+  AIWS_PROD_URL: "http://10.0.0.1:8082"
+
+deploy-staging:
+  extends: .aiws-deploy-staging
+
+deploy-production:
+  extends: .aiws-deploy-production

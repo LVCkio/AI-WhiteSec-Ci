@@ -61,7 +61,7 @@ class TestPolicy5x5(unittest.TestCase):
             "Medium": ["BLOCK", "REVIEW", "REVIEW", "INFO", "INFO"],
             "Low": ["REVIEW", "REVIEW", "INFO", "INFO", "INFO"],
             "None": ["REVIEW", "REVIEW", "INFO", "INFO", "PASS"]})
-        self.assertEqual(pol["policy_version"], "5x5-2026-11-25+dongbo")
+        self.assertEqual(pol["policy_version"], "5x5-2026-11-25+dongbo+giucao")
         self.assertEqual(pol["semgrep_levels"]["rule"], "class_cvss")
         self.assertEqual(pol["source_gate_5x5"]["sha256"],
                          "e7beee1a14a783ab5caa30339b73d5bf1082ee440676944ed392a630c116d72e")
@@ -81,7 +81,7 @@ class TestGate5x5(unittest.TestCase):
     def test_sql_audit_x_strong_block(self):           # 5x3: Medium x Cao = REVIEW; 25/11: Semgrep audit Critical -> High
         g, dec, cells = run_unit([{"class": SQL, "confidence": "audit", "impact_severity": "critical"}], {SQL: 0.9})
         self.assertEqual(cells[SQL], ("High", "Critical", "BLOCK"))
-        self.assertEqual((g["gate_kind"], g["policy_version"]), ("5x5", "5x5-2026-11-25+dongbo"))
+        self.assertEqual((g["gate_kind"], g["policy_version"]), ("5x5", "5x5-2026-11-25+dongbo+giucao"))
         self.assertEqual(g["semgrep_rule"], "class_cvss")
         self.assertIn("None", g["policy"])
 
@@ -107,17 +107,39 @@ class TestGate5x5(unittest.TestCase):
         _, _, cells = run_unit([{"class": HARD, "confidence": "audit", "impact_severity": "high"}], {HARD: 0.97})
         self.assertEqual(cells[HARD], ("High", "Critical", "BLOCK"))
 
-    def test_hardcoded_model_only_info(self):          # team_overrides: None/Critical, None/High -> INFO
-        for p in (0.97, 0.9, 0.3):
+    def test_hardcoded_model_only_review(self):        # 25/11 (giucao): bo None/Critical, None/High -> INFO
+        for p, lv in ((0.97, "Critical"), (0.9, "High"), (0.3, "High")):
             _, dec, cells = run_unit([], {HARD: p})
-            self.assertEqual(cells[HARD][2], "INFO", p)
-            self.assertEqual(dec, "INFO")
+            self.assertEqual(cells[HARD], ("None", lv, "REVIEW"), p)
+            self.assertEqual(dec, "REVIEW")
 
-    def test_tests_dir_max_info(self):
+    def test_tests_dir_keeps_critical_high(self):     # 25/11 (giucao): Critical/High trong tests/ khong ha INFO
         _, dec, cells = run_unit([{"class": SQL, "confidence": "high", "impact_severity": "critical"}], {SQL: 0.9},
                                  file="tests/test_db.py")
         self.assertEqual(cells[SQL], ("Critical", "Critical", "BLOCK"))
-        self.assertEqual(dec, "INFO")
+        self.assertEqual(dec, "BLOCK")
+        _, dec, cells = run_unit([], {SQL: 0.9}, file="tests/test_db.py")            # chi CodeBERT Critical
+        self.assertEqual((cells[SQL], dec), (("None", "Critical", "REVIEW"), "REVIEW"))
+        _, dec, cells = run_unit([{"class": PATH, "confidence": "high"}], {}, file="tests/test_io.py")  # chi Semgrep High
+        self.assertEqual((cells[PATH], dec), (("High", "None", "REVIEW"), "REVIEW"))
+
+    def test_tests_dir_medium_still_info(self):        # o Medium x Medium (REVIEW) trong tests/ van toi da INFO
+        OS = "OS_COMMAND_INJECTION"
+        _, dec, cells = run_unit([{"class": OS, "confidence": "audit"}], {OS: 0.3}, file="tests/test_cmd.py")
+        self.assertEqual((cells[OS], dec), (("Medium", "Medium", "REVIEW"), "INFO"))
+        _, dec, _ = run_unit([{"class": OS, "confidence": "audit"}], {OS: 0.3}, file="app/cmd.py")
+        self.assertEqual(dec, "REVIEW")
+
+    def test_no_critical_high_cell_is_info_or_pass(self):   # quy uoc nhom: Critical/High -> chi REVIEW/BLOCK
+        pol = json.loads(POLICY.read_text(encoding="utf-8"))
+        for r, row in pol["matrix"].items():
+            for c, d in row.items():
+                if r in ("Critical", "High") or c in ("Critical", "High"):
+                    self.assertIn(d, ("REVIEW", "BLOCK"), f"{r}/{c}")
+        for cls, cells in (pol["team_overrides"].get("class_cell_overrides") or {}).items():
+            for k, d in cells.items():
+                if set(k.split("/")) & {"Critical", "High"}:
+                    self.assertIn(d, ("REVIEW", "BLOCK"), f"{cls} {k}")
 
 
 class TestSemgrepClassCvss(unittest.TestCase):

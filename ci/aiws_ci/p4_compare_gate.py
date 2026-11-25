@@ -164,7 +164,8 @@ def sem_level_cvss(c, confidence, policy):
 
 def decide_5x5(policy, sf, r, th, weak, analysis, path):
     """Gate 5x5 (23/11/2026): (muc tool Semgrep | None) x (muc CodeBERT 5 bac). Cung dau vao/dau ra voi decide_3x3.
-    team_overrides: class_strong_min_p (strong ma p < vach -> weak), class_cell_overrides "Hang/Cot", path_max_decision."""
+    team_overrides: class_strong_min_p (strong ma p < vach -> weak), class_cell_overrides "Hang/Cot", path_max_decision
+    (25/11/2026: except_levels - don vi co o muc Critical/High khong bi ep xuong INFO)."""
     other = policy.get("other_class", "OTHER")
     ov = policy.get("team_overrides") or {}
     on = bool(ov.get("enabled"))
@@ -206,7 +207,9 @@ def decide_5x5(policy, sf, r, th, weak, analysis, path):
                       "codebert_p": probs.get(c), "decision": d})
         best = max(best, d, key=RANK.get)
     pm = ov.get("path_max_decision") if on else None
-    if pm and any(re.search(x, path or "") for x in pm.get("patterns", [])) and RANK[best] > RANK[pm.get("max", "INFO")]:
+    exc = set((pm or {}).get("except_levels") or [])      # 25/11/2026: o co muc Critical/High -> khong ep xuong INFO
+    if pm and any(re.search(x, path or "") for x in pm.get("patterns", [])) and RANK[best] > RANK[pm.get("max", "INFO")] \
+            and not any(x["semgrep"] in exc or x["codebert"] in exc for x in cells):
         best = pm.get("max", "INFO")
     return best, cells
 

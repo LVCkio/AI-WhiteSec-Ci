@@ -175,3 +175,25 @@ Sửa `scan_repo.py` và `ci/aiws_ci/*.py` → trên Server 3 chạy `sudo bash 
 Mỗi ô trong `gate.units[].cells[]` có thêm `tool`, `model`, `model_base`, `model_confidence`, `tool_rule` (giữ `semgrep` / `codebert` cho dashboard cũ); `gate.gate_kind` = `5x5`, `gate.model_severity`. P4 chọn bảng theo cấu hình: có `model_levels` → `decide_5x5`, không có → `decide_3x3` (5×3 / 3×3 cũ). Bảng 5×3 giữ ở `truoc_2311`; quay lại 5×3 = khôi phục `gate-policy.json` của commit `70263d6`. **Đổi bảng ở một nơi phải đổi cả `gate_5x5.json` trên Server 3.** Test: `tests/test_gate_5x5_20261123.py`.
 
 Chỉ sửa `ci/aiws_ci/p4_compare_gate.py` → sau khi merge vẫn phải build lại ảnh trên Server 3 (`server3_rebuild_images.sh`), vì `p0-authorize` so mã trong ảnh với commit.
+
+## 10. Giữ mức Critical/High + CD staging → production (25/11/2026, nhóm chốt)
+
+**Gate (`policy_version` `5x5-2026-11-25+dongbo+giucao`).** Mức Critical hoặc High của CodeBERT hay Semgrep **không bao giờ** bị `team_overrides` hạ xuống INFO:
+- Bỏ `HARDCODED_CREDENTIALS` `None/Critical`, `None/High` → INFO (bản cũ giữ ở `class_cell_overrides_truoc_2511`). Hai ô này về bảng gốc: REVIEW.
+- `path_max_decision` (thư mục `tests/`) thêm `except_levels: [Critical, High]`: chỉ ép tối đa INFO khi không ô nào của đơn vị có mức Critical/High.
+- Worker Server 3 phải vá cùng lúc (`gate_giucao_2511/server3/trien_khai.sh`, chạy sau `worker_5x5_dongbo`). Đối chiếu CI và worker: 20.000 kịch bản, 0 lệch, 0 trường hợp Critical/High ra INFO/PASS.
+
+**CD.**
+- `p5-report` ghi `gate.env` (`AIWS_GATE`, `AIWS_RUN_ID`) làm artifact dotenv. Không đọc được API thì `AIWS_GATE=UNKNOWN`, và deploy bị chặn.
+- `deploy-staging` (stage `staging`): chỉ chạy tiếp khi `AIWS_GATE` là **PASS hoặc INFO**, trên nhánh khớp `AIWS_STAGING_BRANCH_RE` (mặc định `develop|main`), không chạy trên pipeline MR.
+- REVIEW / BLOCK / FAIL / UNKNOWN bị chặn trước staging. Dev xem và sửa trên Dashboard, rồi quét lại commit mới.
+- `deploy-production` (stage `production`): `when: manual`, chỉ trên `AIWS_PROD_BRANCH` (mặc định `main`). Pipeline đứng ở trạng thái chờ duyệt cho tới khi có người bấm.
+  - GitLab CE không có protected environments hay deployment approvals (bản Premium). Quyền bấm vì vậy là quyền chạy job trên nhánh `main` được bảo vệ (Maintainer).
+  - Lịch sử ai bấm, lúc nào, commit nào nằm ở Operate → Environments.
+- Hai job là mẫu ẩn `.aiws-deploy-staging` / `.aiws-deploy-production` trong `pipeline1-orchestrator.yml`. Project cần quét khai báo job thật (xem `ci/templates/target-project.gitlab-ci.yml`), và giữ đúng tên `deploy-staging` / `deploy-production`.
+- `deploy.sh` của project nhận tham số `staging | production`. Mẫu: `ci/templates/deploy.example.sh`.
+  - Production không build lại: đẩy đúng ảnh đã chạy ở staging (cùng commit).
+  - Chỉ mở cổng trên IP nội bộ / WireGuard (`DEPLOY_BIND_IP`).
+  - App không trả lời thì tự quay lại container trước.
+- Cần một runner shell có Docker, tag `aiws-deploy`, đăng ký riêng cho deploy (không dùng chung runner quét `aiws-worker`), và bật cho project cần quét.
+- Repo AI-WhiteSec-Ci không deploy. Stage `staging` / `production` trống thì GitLab bỏ qua.

@@ -12,6 +12,11 @@
 #   scan        : dispatch  - giao viec cho PIPELINE 2 (CON) tren Server 3 (ci/pipeline2-worker.yml), CHO ket qua
 #                             (strategy: depend -> Gate BLOCK hay loi o Server 3 lam pipeline cha that bai, chan merge)
 #   report      : P5-report - doc ket qua da ghi o PostgreSQL Server 2 qua WhiteSec API, in tom tat (luon chay)
+#                             + ghi gate.env (AIWS_GATE = quyet dinh Gate cua ca luot) cho cac job deploy
+#   staging     : .aiws-deploy-staging    (CD, 25/11/2026) - CHI khi AIWS_GATE la PASS hoac INFO
+#   production  : .aiws-deploy-production (CD) - bam tay sau khi dev xem staging, chi tren nhanh main
+#   Hai job deploy la mau an (dau cham): project can quet tu khai bao trong .gitlab-ci.yml cua no
+#   (ci/templates/target-project.gitlab-ci.yml). Repo AI-WhiteSec-Ci khong deploy.
 #
 # Pipeline 2 (con) thuc thi: P0 cap quyen (commit + model + cong cu) -> P1 pham vi/tach ham (tree-sitter)
 #   -> P2 Semgrep || P3 CodeBERT -> P4 Compare + Security Gate -> P5 ghi PostgreSQL (Server 2).
@@ -34,8 +39,15 @@ variables:
   AIWS_API_URL: "http://192.168.12.200"      # WhiteSec API tren Server 1 (goi duoc tu ca Server 1 va Server 3)
   AIWS_REPORT_IMAGE: "aiws-codebert:0.1.0"    # runner Docker can anh co python3; runner shell bo qua image
   AIWS_SCAN_MODE_DEFAULT: ""                  # de trong = tu chon (diff cho push/MR, full cho chay tay/API)
+  # CD (25/11/2026) - project can quet co the ghi de trong .gitlab-ci.yml cua no
+  AIWS_DEPLOY_TAG: "aiws-deploy"              # runner rieng cho deploy (khong dung chung runner quet)
+  AIWS_DEPLOY_SCRIPT: "./deploy.sh"           # script cua project: <script> staging | production
+  AIWS_STAGING_BRANCH_RE: '/^(develop|main)$/'
+  AIWS_PROD_BRANCH: "main"
+  AIWS_STAGING_URL: ""
+  AIWS_PROD_URL: ""
 
-stages: [orchestrate, scan, report]
+stages: [orchestrate, scan, report, staging, production]
 
 p1-plan:
   stage: orchestrate
@@ -105,6 +117,12 @@ p5-report:
       python3 - <<'PY'
       import json, os, urllib.request
       api, pid = os.environ["AIWS_API_URL"], os.environ["CI_PIPELINE_ID"]
+
+      def gate_env(gate, run_id=""):          # 25/11: cho job deploy; khong doc duoc -> UNKNOWN (deploy bi chan)
+          with open("gate.env", "w") as fh:
+              fh.write(f"AIWS_GATE={gate}\nAIWS_RUN_ID={run_id}\n")
+
+      gate_env("UNKNOWN")
       try:
           runs = json.load(urllib.request.urlopen(f"{api}/api/pipeline-runs?limit=100", timeout=10))["runs"]
       except Exception as e:
@@ -115,8 +133,59 @@ p5-report:
           print("Chua co ban ghi trong PostgreSQL cho pipeline nay (AIWS_DB_DSN chua dat hoac P5 loi).")
           raise SystemExit(0)
       r = hit[0]; rep = r["report"]; g = rep["gate"]
+      gate_env(str(rep.get("security_gate") or "UNKNOWN").upper(), r["id"])
       print(f"pipeline_runs #{r['id']} | {r['status']} | Security Gate: {rep['security_gate']} | che do {g.get('scan_mode')}")
-      print(f"Don vi {g['units_evaluated']}: BLOCK {g['decisions']['BLOCK']} / REVIEW {g['decisions']['REVIEW']} / PASS {g['decisions']['PASS']}")
+      dc = g.get("decisions") or {}
+      print("Don vi {}: ".format(g.get("units_evaluated")) + " / ".join(f"{k} {dc.get(k, 0)}" for k in ("BLOCK", "REVIEW", "INFO", "PASS")))
       print(f"Model {rep['model'].get('name')} (dataset {rep['model'].get('dataset_version')}) | ruleset {rep['ruleset'].get('ruleset_version')}")
       print(f"Dashboard: {api}/  (lan quet #{r['id']})")
       PY
+  artifacts:
+    reports:
+      dotenv: gate.env
+    paths: [gate.env]
+    expire_in: 30 days
+
+# ------------------------------------------------------------------------------------------------------------
+# CD (nhom chot 25/11/2026). Mau an - project can quet khai bao job that (xem ci/templates/target-project.gitlab-ci.yml).
+#   Len staging: CHI khi Gate cua ca luot la PASS hoac INFO. REVIEW / BLOCK / FAIL / UNKNOWN bi chan truoc staging:
+#   dev xem va sua ngay tren Dashboard roi quet lai commit moi (khong co nut duyet tay de REVIEW di tiep).
+#   BLOCK con lam dispatch-worker that bai (strategy: depend) nen job staging khong chay.
+#   Production: dev xem staging, bam tay; chi tren AIWS_PROD_BRANCH. GitLab CE khong co protected environments /
+#   deployment approvals (Premium) -> quyen bam = quyen chay job tren nhanh main duoc bao ve (Maintainer).
+.aiws-deploy-staging:
+  stage: staging
+  tags: [$AIWS_DEPLOY_TAG]
+  needs: [dispatch-worker, p5-report]
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+    - if: $CI_COMMIT_BRANCH =~ $AIWS_STAGING_BRANCH_RE
+  resource_group: staging
+  environment:
+    name: staging
+    url: $AIWS_STAGING_URL
+  script:
+    - |
+      case "${AIWS_GATE:-UNKNOWN}" in
+        PASS|INFO) echo "Security Gate = $AIWS_GATE (lan quet #${AIWS_RUN_ID:-?}) -> len staging" ;;
+        *) echo "Security Gate = ${AIWS_GATE:-UNKNOWN} -> CHAN truoc staging. Xem va sua tren Dashboard (lan quet #${AIWS_RUN_ID:-?}), roi quet lai commit moi."
+           exit 1 ;;
+      esac
+    - $AIWS_DEPLOY_SCRIPT staging
+
+.aiws-deploy-production:
+  stage: production
+  tags: [$AIWS_DEPLOY_TAG]
+  needs: [deploy-staging]
+  rules:
+    - if: $CI_COMMIT_BRANCH == $AIWS_PROD_BRANCH
+      when: manual
+      allow_failure: false     # pipeline dung o trang thai "cho duyet" toi khi co nguoi bam
+  resource_group: production
+  environment:
+    name: production
+    url: $AIWS_PROD_URL
+  script:
+    - echo "Duyet boi $GITLAB_USER_LOGIN ($GITLAB_USER_NAME) - commit $CI_COMMIT_SHORT_SHA, lan quet #${AIWS_RUN_ID:-?}"
+    - $AIWS_DEPLOY_SCRIPT production

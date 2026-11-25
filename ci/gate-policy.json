@@ -1,11 +1,12 @@
 {
-  "policy_version": "5x5-2026-11-25+dongbo",
-  "note": "Gate 5x5 (nhom chot 23/11/2026, dung chung voi worker Server 3): xet tung (don vi, lop): MUC TOOL Semgrep 4 bac (tool_level = metadata.severity x confidence, giong 5x3) hoac None x MUC CodeBERT 5 bac (muc CVSS cua lop: strong >= alpha10 giu muc, weak alpha20..alpha10 ha 1 bac, con lai None). Quyet dinh don vi = o nang nhat. matrix / model_levels / team_overrides chep NGUYEN tu security-config/gate/gate_5x5.json (source_gate_5x5). Bang 5x3 (22/11) giu o truoc_2311, bang 3x3 cu o matrix_3x3_truoc_2211. | 25/11/2026: truc Semgrep dong bo voi truc CodeBERT (muc CVSS cua lop x do tin cay, audit ha 1 bac) - giong worker_5x5_dongbo tren Server 3.",
+  "policy_version": "5x5-2026-11-25+dongbo+giucao",
+  "note": "Gate 5x5 (nhom chot 23/11/2026, dung chung voi worker Server 3): xet tung (don vi, lop): MUC TOOL Semgrep 4 bac (tool_level = metadata.severity x confidence, giong 5x3) hoac None x MUC CodeBERT 5 bac (muc CVSS cua lop: strong >= alpha10 giu muc, weak alpha20..alpha10 ha 1 bac, con lai None). Quyet dinh don vi = o nang nhat. matrix / model_levels / team_overrides chep NGUYEN tu security-config/gate/gate_5x5.json (source_gate_5x5). Bang 5x3 (22/11) giu o truoc_2311, bang 3x3 cu o matrix_3x3_truoc_2211. | 25/11/2026: truc Semgrep dong bo voi truc CodeBERT (muc CVSS cua lop x do tin cay, audit ha 1 bac) - giong worker_5x5_dongbo tren Server 3. | 25/11/2026 (nhom chot): muc Critical/High cua CodeBERT hoac Semgrep KHONG bao gio bi ha xuong INFO - bo HARDCODED None/Critical, None/High -> INFO (ban cu: class_cell_overrides_truoc_2511); tests/ chi ep toi da INFO khi khong o nao co muc Critical/High (path_max_decision.except_levels). REVIEW/BLOCK chan truoc staging.",
   "source_gate_5x5": {
     "file": "~/whitesec-infra/security-config/gate/gate_5x5.json (Server 3)",
     "version": "5x5-2026-11-23",
     "sha256": "e7beee1a14a783ab5caa30339b73d5bf1082ee440676944ed392a630c116d72e",
-    "note": "Gate 5x5 (chot 22/11/2026, dung tren ban 5x3+ov1 dang chay 23/11). Xet theo (don vi ma, lop). Truc Semgrep GIU NGUYEN cach 5x3: tool_level = metadata.severity cua rule (thieu -> muc cua lop) x confidence. Truc CodeBERT doi tu Cao/Thap/Khong sang 5 muc: muc CVSS theo nhom (strong giu, weak ha 1 bac, none -> None). Giu team_overrides 21/11 (da chuyen sang truc 5 muc). Bo file nay -> worker quay ve gate_3x3.json (5x3)."
+    "note": "Gate 5x5 (chot 22/11/2026, dung tren ban 5x3+ov1 dang chay 23/11). Xet theo (don vi ma, lop). Truc Semgrep GIU NGUYEN cach 5x3: tool_level = metadata.severity cua rule (thieu -> muc cua lop) x confidence. Truc CodeBERT doi tu Cao/Thap/Khong sang 5 muc: muc CVSS theo nhom (strong giu, weak ha 1 bac, none -> None). Giu team_overrides 21/11 (da chuyen sang truc 5 muc). Bo file nay -> worker quay ve gate_3x3.json (5x3).",
+    "sau_2511": "25/11/2026: gate_5x5.json tren Server 3 da doi qua worker_5x5_dongbo (+dongbo) va gate_giucao_2511 (+giucao); sha256 o tren la ban goc 23/11 cua leader. sha256 ban moi do server3/trien_khai.sh cua goi gate_cd_2511 in ra."
   },
   "levels": [
     "Critical",
@@ -140,27 +141,32 @@
   "enforce_block": true,
   "team_overrides": {
     "enabled": true,
-    "note": "Chuyen tu 5x3 (21/11): Cao HARD can p >= 0.95 (thieu -> coi la weak); HARD chi model bao (Semgrep None) -> INFO nhu 5x3 (Khong/Cao, Khong/Thap); don vi trong tests/ toi da INFO. Trong CI: strong = p >= thresholds.json (alpha10), weak = alpha20 <= p < alpha10 (thresholds_weak); class_strong_min_p thay class_thresholds.Cao cua 5x3.",
+    "note": "Chuyen tu 5x3 (21/11): Cao HARD can p >= 0.95 (thieu -> coi la weak); HARD chi model bao (Semgrep None) -> INFO nhu 5x3 (Khong/Cao, Khong/Thap); don vi trong tests/ toi da INFO. Trong CI: strong = p >= thresholds.json (alpha10), weak = alpha20 <= p < alpha10 (thresholds_weak); class_strong_min_p thay class_thresholds.Cao cua 5x3. | 25/11/2026 (nhom chot): muc Critical/High cua CodeBERT hoac Semgrep KHONG bao gio bi ha xuong INFO - bo HARDCODED None/Critical, None/High -> INFO (ban cu: class_cell_overrides_truoc_2511); tests/ chi ep toi da INFO khi khong o nao co muc Critical/High (path_max_decision.except_levels). REVIEW/BLOCK chan truoc staging.",
     "class_strong_min_p": {
       "HARDCODED_CREDENTIALS": 0.95
     },
-    "class_cell_overrides": {
-      "HARDCODED_CREDENTIALS": {
-        "None/Critical": "INFO",
-        "None/High": "INFO"
-      }
-    },
+    "class_cell_overrides": {},
     "path_max_decision": {
       "patterns": [
         "(^|/)tests?/",
         "(^|/)__tests__/",
         "(^|/)test_[^/]*\\.py$"
       ],
-      "max": "INFO"
+      "max": "INFO",
+      "except_levels": [
+        "Critical",
+        "High"
+      ]
     },
     "evidence": {
       "HARDCODED": "LangChain v23: 0/40 o CodeBERT-only la bi mat that; V15 val v2.8: Cao 0.95 giu 19/23 mau (alpha10 20/23), mau sach bi bao 14 -> 6/823",
       "tests": "LangChain v23: 299/586 o REVIEW nam trong tests/"
+    },
+    "class_cell_overrides_truoc_2511": {
+      "HARDCODED_CREDENTIALS": {
+        "None/Critical": "INFO",
+        "None/High": "INFO"
+      }
     }
   },
   "truoc_2311": {
