@@ -1,0 +1,19 @@
+# =====================================================================================================
+# AI-WhiteSec-CI - PIPELINE 1 (CHA) cho chinh repo AI-WhiteSec-Ci. Noi dung job o ci/pipeline1-orchestrator.yml
+# (dung chung voi project khac, 19/11/2026). Project khac muon duoc quet: chep ci/templates/target-project.gitlab-ci.yml.
+#
+#   orchestrate : P1-plan   - xac dinh lan quet: nguon kich hoat, che do diff/full, commit goc, kiem tra API Server 1
+#   scan        : dispatch  - giao viec cho PIPELINE 2 (CON) tren Server 3 (ci/pipeline2-worker.yml), CHO ket qua
+#                             (strategy: depend -> Gate BLOCK hay loi o Server 3 lam pipeline cha that bai, chan merge)
+#   report      : P5-report - doc ket qua da ghi o PostgreSQL Server 2 qua WhiteSec API, in tom tat (luon chay)
+# Cai dat runner va model: ci/README.md.
+# =====================================================================================================
+
+include:
+  - local: ci/pipeline1-orchestrator.yml
+
+dispatch-worker:
+  extends: .aiws-dispatch
+  trigger:
+    include:
+      - local: ci/pipeline2-worker.yml

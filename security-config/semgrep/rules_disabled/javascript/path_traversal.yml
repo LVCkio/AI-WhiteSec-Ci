@@ -1,0 +1,45 @@
+# Disabled rules; excluded from the active bundle. See metadata.disabled_v480.
+rules:
+- id: team.js.audit.fs-path-api
+  languages:
+  - javascript
+  - typescript
+  severity: WARNING
+  message: A file system API receives a non-literal path (audit hint).
+  metadata:
+    cwe: CWE-22
+    owasp: A01:2021
+    vuln_class: PATH_TRAVERSAL
+    confidence: audit
+    severity: high
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.2.0
+    ruleset_version: 4.8.0
+    disabled_v480: 'Tat trong v4.8.0 (vai tro Semgrep la ve tinh cho CodeBERT; tieu chi TC4 v4.8 tinh precision mau gom ca mau am, nguong audit 0.25). precision mau train 12/63 = 0.19 (bo hneg 0.20); val 5/12. Do tren dataset v2.6 (Semgrep 1.181.0, ruleset 4.7.1): Claude outputs/semgrep_v471_val_v26/DE_XUAT_CAT_TIA_v4.7.1.md'
+    disabled_date: '2026-11-14'
+    change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
+    change_v42: Bo duong dan ghep toan hang so (path.resolve('...'), path.join(__dirname, '...')) - Juice Shop angular.ts.
+    change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
+  pattern-either:
+  - patterns:
+    - pattern: $FS.$FN($P, ...)
+    - pattern-not: $FS.$FN("...", ...)
+    - pattern-not: $X.$F(path.$J("..."), ...)
+    - pattern-not: $X.$F(path.$J("...", "..."), ...)
+    - pattern-not: $X.$F(path.$J(__dirname, "..."), ...)
+    - pattern-not: $X.$F(path.$J(__dirname, "...", "..."), ...)
+    - metavariable-regex:
+        metavariable: $FS
+        regex: ^(fs|fse|fsp|fsExtra|fs\.promises|fsPromises|fspath|promises)$
+    - metavariable-regex:
+        metavariable: $FN
+        regex: ^(readFile|readFileSync|createReadStream|writeFile|writeFileSync|createWriteStream|unlink|unlinkSync|readdir|readdirSync|stat|statSync|lstat|lstatSync|existsSync|access|accessSync|mkdir|mkdirSync|rmdir|rmdirSync|rm|rmSync|rename|renameSync|copyFile|copyFileSync|appendFile|appendFileSync|remove|removeSync|outputFile|outputFileSync)$
+  - patterns:
+    - pattern-either:
+      - pattern: $RES.sendFile($P, ...)
+      - pattern: $RES.download($P, ...)
+    - pattern-not: $RES.$M("...", ...)
+    - pattern-not: $X.$F(path.$J("..."), ...)
+    - pattern-not: $X.$F(path.$J("...", "..."), ...)
+    - pattern-not: $X.$F(path.$J(__dirname, "..."), ...)
+    - pattern-not: $X.$F(path.$J(__dirname, "...", "..."), ...)

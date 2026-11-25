@@ -1,0 +1,59 @@
+# Ruleset AI-WhiteSec-CI v4.2.0 | ngon ngu: javascript | lop: AUTHENTICATION_WEAKNESS
+# confidence: high = ket luan truc tiep; audit = bat rong, can ra soat (luong SAST doc lap voi CodeBERT).
+# Test: tests/positive/javascript/authentication_weakness.* (phai bao) va tests/negative/javascript/authentication_weakness.* (khong duoc bao).
+rules:
+- id: team.js.auth-jwt-unverified
+  languages:
+  - javascript
+  - typescript
+  severity: ERROR
+  message: A JWT is decoded or verified without a real signature check.
+  metadata:
+    cwe: CWE-287
+    owasp: A07:2021
+    vuln_class: AUTHENTICATION_WEAKNESS
+    confidence: high
+    severity: high
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.0.0
+    ruleset_version: 4.3.1
+  pattern-either:
+  - pattern: '$JWT.verify($T, $K, {..., algorithms: [..., "none", ...], ...}, ...)'
+  - pattern: '$JWT.verify($T, $K, {..., ignoreExpiration: true, ...}, ...)'
+- id: team.js.auth-jwt-decode
+  languages:
+  - javascript
+  - typescript
+  severity: WARNING
+  message: jwt.decode() does not verify the signature; check it is not used for authentication (audit).
+  metadata:
+    cwe: CWE-287
+    owasp: A07:2021
+    vuln_class: AUTHENTICATION_WEAKNESS
+    confidence: audit
+    severity: high
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.0.0
+    ruleset_version: 4.3.1
+  pattern-either:
+  - pattern: jwt.decode($T, ...)
+  - pattern: jsonwebtoken.decode($T, ...)
+- id: team.js.auth-weak-password-hash
+  languages:
+  - javascript
+  - typescript
+  severity: WARNING
+  message: A fast/broken hash is used, possibly for passwords (audit).
+  metadata:
+    cwe: CWE-916
+    owasp: A02:2021
+    vuln_class: AUTHENTICATION_WEAKNESS
+    confidence: audit
+    severity: high
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.0.0
+    ruleset_version: 4.3.1
+  pattern-either:
+  - pattern: $CRYPTO.createHash("md5")
+  - pattern: $CRYPTO.createHash("sha1")
+  - pattern: md5($X)

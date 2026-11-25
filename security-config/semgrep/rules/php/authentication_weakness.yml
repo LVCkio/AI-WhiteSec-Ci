@@ -1,0 +1,34 @@
+# Active ruleset v4.6.0; retired broad audit patterns are in rules_disabled/.
+rules:
+- id: team.php.auth-weak-password-hash
+  languages:
+  - php
+  severity: WARNING
+  message: md5()/sha1() used on a password (audit).
+  metadata:
+    cwe: CWE-916
+    owasp: A02:2021
+    vuln_class: AUTHENTICATION_WEAKNESS
+    confidence: audit
+    severity: high
+    scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
+    rule_version: 1.3.0
+    ruleset_version: 4.8.1
+    change_v472: 'Giu ten lop cu AUTHENTICATION_WEAKNESS theo quyet dinh cua nhom 2026-10-30 (hoan tac doi ten cua v4.7.0). Pattern khong doi.'
+    change_v470: 'vuln_class AUTHENTICATION_WEAKNESS -> INSECURE_AUTHENTICATION (ten lop theo taxonomy.yml v0.3.0 / vector nhan CodeBERT). Logic khong doi.'
+    change_v4: Ten bien phai la mot tu ve mat khau ($pass, $user_password), khong khop chuoi con.
+  pattern-either:
+  - patterns:
+    - pattern-either:
+      - pattern: md5($P)
+      - pattern: sha1($P)
+    - metavariable-regex:
+        metavariable: $P
+        regex: (?i)^['"$]?(\w*_)?(pass|password|passwd|pwd|secret)(_\w*)?['"]?$
+  - patterns:
+    - pattern-either:
+      - pattern: md5($ARR[$K])
+      - pattern: sha1($ARR[$K])
+    - metavariable-regex:
+        metavariable: $K
+        regex: (?i)^['"$]?(\w*_)?(pass|password|passwd|pwd|secret)(_\w*)?['"]?$

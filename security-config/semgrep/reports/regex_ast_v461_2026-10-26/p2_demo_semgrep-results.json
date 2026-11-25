@@ -1,0 +1,3163 @@
+{
+  "run": {
+    "semgrep_version": "1.181.0",
+    "ruleset_version": "4.6.1",
+    "bundle_sha256": "70e1b3b406b6f6d0e19ac3287d814dea1efb4113be5c93a0a6d861f175cc703c",
+    "taxonomy_version": "0.3.0",
+    "repo": "AI-WhiteSec-Ci",
+    "commit": "f36aa6c1e5e8af2f36266e1739fe3dc70827d29d",
+    "scanned_at": "2026-10-26T12:46:54+07:00",
+    "duration_s": 4.2,
+    "excludes": [
+      "node_modules/",
+      "vendor/",
+      "bower_components/",
+      ".venv/",
+      "venv/",
+      "env/",
+      "__pycache__/",
+      "dist/",
+      "build/",
+      "target/",
+      ".git/",
+      "*.min.js",
+      "*.bundle.js",
+      "*.map",
+      "data/",
+      "data_versions/",
+      "models/",
+      "ckpt/",
+      "security-config/semgrep/tests/",
+      "security-config/semgrep/tests_disabled/"
+    ],
+    "max_avg_line_len": 300,
+    "command": "D:\\Đồ án FCA26IA18\\main\\.venv\\Scripts\\semgrep.EXE scan --metrics=off --disable-version-check --config D:\\Đồ án FCA26IA18\\main\\security-config\\semgrep\\semgrep.yml --json --output C:\\Users\\vinhc\\AppData\\Local\\Temp\\aiws_raw_48kk5mt7\\semgrep.json <pham vi>"
+  },
+  "files": [
+    {
+      "path": "dashboard/collect.py",
+      "language": "python",
+      "parse_status": "ok"
+    },
+    {
+      "path": "dashboard/project_info.py",
+      "language": "python",
+      "parse_status": "ok"
+    },
+    {
+      "path": "dashboard/server.py",
+      "language": "python",
+      "parse_status": "ok"
+    },
+    {
+      "path": "dashboard/static/js/agg.js",
+      "language": "javascript",
+      "parse_status": "ok"
+    },
+    {
+      "path": "dashboard/static/js/alerts.js",
+      "language": "javascript",
+      "parse_status": "ok"
+    },
+    {
+      "path": "dashboard/static/js/charts.js",
+      "language": "javascript",
+      "parse_status": "ok"
+    },
+    {
+      "path": "dashboard/static/js/comparison.js",
+      "language": "javascript",
+      "parse_status": "ok"
+    },
+    {
+      "path": "dashboard/static/js/config.js",
+      "language": "javascript",
+      "parse_status": "ok"
+    },
+    {
+      "path": "dashboard/static/js/evaluation.js",
+      "language": "javascript",
+      "parse_status": "ok"
+    },
+    {
+      "path": "dashboard/static/js/main.js",
+      "language": "javascript",
+      "parse_status": "ok"
+    },
+    {
+      "path": "dashboard/static/js/monitoring.js",
+      "language": "javascript",
+      "parse_status": "ok"
+    },
+    {
+      "path": "dashboard/static/js/overview.js",
+      "language": "javascript",
+      "parse_status": "ok"
+    },
+    {
+      "path": "dashboard/static/js/ui.js",
+      "language": "javascript",
+      "parse_status": "ok"
+    },
+    {
+      "path": "security-config/semgrep/tools/ruleset.py",
+      "language": "python",
+      "parse_status": "ok"
+    },
+    {
+      "path": "tests/test_dashboard.py",
+      "language": "python",
+      "parse_status": "ok"
+    }
+  ],
+  "findings": [
+    {
+      "file": "dashboard/collect.py",
+      "language": "python",
+      "rule_id": "team.py.audit.pathlib-api",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 35,
+      "end_line": 35,
+      "message": "A pathlib/shutil/os file operation receives a non-literal path (audit hint).",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "dashboard/collect.py",
+      "language": "python",
+      "rule_id": "team.py.audit.pathlib-api",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 53,
+      "end_line": 53,
+      "message": "A pathlib/shutil/os file operation receives a non-literal path (audit hint).",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "dashboard/collect.py",
+      "language": "python",
+      "rule_id": "team.py.audit.pathlib-api",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 55,
+      "end_line": 55,
+      "message": "A pathlib/shutil/os file operation receives a non-literal path (audit hint).",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "dashboard/collect.py",
+      "language": "python",
+      "rule_id": "team.py.audit.pathlib-api",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 59,
+      "end_line": 59,
+      "message": "A pathlib/shutil/os file operation receives a non-literal path (audit hint).",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "dashboard/collect.py",
+      "language": "python",
+      "rule_id": "team.py.audit.pathlib-api",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 107,
+      "end_line": 107,
+      "message": "A pathlib/shutil/os file operation receives a non-literal path (audit hint).",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "dashboard/collect.py",
+      "language": "python",
+      "rule_id": "team.path-from-parameter",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 134,
+      "end_line": 134,
+      "message": "A function argument is used to build a filesystem path without normalisation.",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "dashboard/collect.py",
+      "language": "python",
+      "rule_id": "team.path-from-parameter",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 137,
+      "end_line": 137,
+      "message": "A function argument is used to build a filesystem path without normalisation.",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "dashboard/collect.py",
+      "language": "python",
+      "rule_id": "team.py.audit.pathlib-api",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 236,
+      "end_line": 236,
+      "message": "A pathlib/shutil/os file operation receives a non-literal path (audit hint).",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "dashboard/collect.py",
+      "language": "python",
+      "rule_id": "team.py.audit.pathlib-api",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 303,
+      "end_line": 303,
+      "message": "A pathlib/shutil/os file operation receives a non-literal path (audit hint).",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "dashboard/collect.py",
+      "language": "python",
+      "rule_id": "team.path-from-parameter",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 312,
+      "end_line": 312,
+      "message": "A function argument is used to build a filesystem path without normalisation.",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "dashboard/collect.py",
+      "language": "python",
+      "rule_id": "team.path-from-parameter",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 339,
+      "end_line": 339,
+      "message": "A function argument is used to build a filesystem path without normalisation.",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "dashboard/collect.py",
+      "language": "python",
+      "rule_id": "team.py.audit.pathlib-api",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 396,
+      "end_line": 396,
+      "message": "A pathlib/shutil/os file operation receives a non-literal path (audit hint).",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "dashboard/collect.py",
+      "language": "python",
+      "rule_id": "team.path-from-parameter",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 397,
+      "end_line": 397,
+      "message": "A function argument is used to build a filesystem path without normalisation.",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "dashboard/collect.py",
+      "language": "python",
+      "rule_id": "team.path-from-parameter",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 406,
+      "end_line": 406,
+      "message": "A function argument is used to build a filesystem path without normalisation.",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "dashboard/collect.py",
+      "language": "python",
+      "rule_id": "team.py.audit.pathlib-api",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 432,
+      "end_line": 432,
+      "message": "A pathlib/shutil/os file operation receives a non-literal path (audit hint).",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "dashboard/collect.py",
+      "language": "python",
+      "rule_id": "team.path-from-parameter",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 458,
+      "end_line": 458,
+      "message": "A function argument is used to build a filesystem path without normalisation.",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "dashboard/project_info.py",
+      "language": "python",
+      "rule_id": "team.py.audit.pathlib-api",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 19,
+      "end_line": 19,
+      "message": "A pathlib/shutil/os file operation receives a non-literal path (audit hint).",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "dashboard/project_info.py",
+      "language": "python",
+      "rule_id": "team.py.audit.pathlib-api",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 26,
+      "end_line": 26,
+      "message": "A pathlib/shutil/os file operation receives a non-literal path (audit hint).",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "dashboard/project_info.py",
+      "language": "python",
+      "rule_id": "team.py.audit.pathlib-api",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 122,
+      "end_line": 122,
+      "message": "A pathlib/shutil/os file operation receives a non-literal path (audit hint).",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "dashboard/project_info.py",
+      "language": "python",
+      "rule_id": "team.path-from-parameter",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 139,
+      "end_line": 139,
+      "message": "A function argument is used to build a filesystem path without normalisation.",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "dashboard/project_info.py",
+      "language": "python",
+      "rule_id": "team.path-from-parameter",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 143,
+      "end_line": 143,
+      "message": "A function argument is used to build a filesystem path without normalisation.",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "dashboard/project_info.py",
+      "language": "python",
+      "rule_id": "team.py.audit.pathlib-api",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 185,
+      "end_line": 185,
+      "message": "A pathlib/shutil/os file operation receives a non-literal path (audit hint).",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "dashboard/project_info.py",
+      "language": "python",
+      "rule_id": "team.py.audit.pathlib-api",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 221,
+      "end_line": 221,
+      "message": "A pathlib/shutil/os file operation receives a non-literal path (audit hint).",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "dashboard/project_info.py",
+      "language": "python",
+      "rule_id": "team.path-from-parameter",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 247,
+      "end_line": 247,
+      "message": "A function argument is used to build a filesystem path without normalisation.",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "dashboard/project_info.py",
+      "language": "python",
+      "rule_id": "team.py.audit.pathlib-api",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 304,
+      "end_line": 304,
+      "message": "A pathlib/shutil/os file operation receives a non-literal path (audit hint).",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "dashboard/project_info.py",
+      "language": "python",
+      "rule_id": "team.py.audit.pathlib-api",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 340,
+      "end_line": 340,
+      "message": "A pathlib/shutil/os file operation receives a non-literal path (audit hint).",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "dashboard/project_info.py",
+      "language": "python",
+      "rule_id": "team.py.audit.pathlib-api",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 342,
+      "end_line": 342,
+      "message": "A pathlib/shutil/os file operation receives a non-literal path (audit hint).",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "dashboard/server.py",
+      "language": "python",
+      "rule_id": "team.py.audit.pathlib-api",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 36,
+      "end_line": 36,
+      "message": "A pathlib/shutil/os file operation receives a non-literal path (audit hint).",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "dashboard/server.py",
+      "language": "python",
+      "rule_id": "team.py.audit.pathlib-api",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 82,
+      "end_line": 82,
+      "message": "A pathlib/shutil/os file operation receives a non-literal path (audit hint).",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "dashboard/static/js/alerts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 28,
+      "end_line": 28,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/alerts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 40,
+      "end_line": 40,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/alerts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 43,
+      "end_line": 43,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/alerts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 46,
+      "end_line": 46,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/alerts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 47,
+      "end_line": 47,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/alerts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 48,
+      "end_line": 48,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/alerts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 56,
+      "end_line": 56,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/alerts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 70,
+      "end_line": 70,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/alerts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 71,
+      "end_line": 71,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/alerts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 76,
+      "end_line": 76,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/alerts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 79,
+      "end_line": 79,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/alerts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 84,
+      "end_line": 84,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/alerts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 85,
+      "end_line": 85,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/alerts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 86,
+      "end_line": 86,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/alerts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 109,
+      "end_line": 109,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/alerts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 114,
+      "end_line": 114,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/alerts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 115,
+      "end_line": 115,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/alerts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-dom-sink",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 137,
+      "end_line": 138,
+      "message": "A value is inserted as raw HTML into the page (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/alerts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 137,
+      "end_line": 137,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/alerts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-dom-sink",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 140,
+      "end_line": 140,
+      "message": "A value is inserted as raw HTML into the page (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/alerts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 140,
+      "end_line": 140,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/alerts.js",
+      "language": "javascript",
+      "rule_id": "team.js.audit.fs-path-api",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 151,
+      "end_line": 151,
+      "message": "A file system API receives a non-literal path (audit hint).",
+      "rule_version": "1.2.0"
+    },
+    {
+      "file": "dashboard/static/js/charts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 5,
+      "end_line": 5,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/charts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 6,
+      "end_line": 6,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/charts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 7,
+      "end_line": 7,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/charts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 16,
+      "end_line": 16,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/charts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 17,
+      "end_line": 17,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/charts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 18,
+      "end_line": 18,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/charts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 21,
+      "end_line": 21,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/charts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 27,
+      "end_line": 27,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/charts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 30,
+      "end_line": 30,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/charts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 31,
+      "end_line": 31,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/charts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 33,
+      "end_line": 33,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/charts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 35,
+      "end_line": 35,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/charts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 47,
+      "end_line": 47,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/charts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 48,
+      "end_line": 48,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/charts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 49,
+      "end_line": 49,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/charts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 51,
+      "end_line": 51,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/charts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 52,
+      "end_line": 52,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/charts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 54,
+      "end_line": 54,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/charts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 55,
+      "end_line": 55,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/charts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 59,
+      "end_line": 59,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/charts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 61,
+      "end_line": 61,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/charts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 67,
+      "end_line": 67,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/charts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 80,
+      "end_line": 80,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/charts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 81,
+      "end_line": 81,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/charts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 83,
+      "end_line": 83,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/charts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 88,
+      "end_line": 88,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/charts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 97,
+      "end_line": 97,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/charts.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 98,
+      "end_line": 98,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/comparison.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 54,
+      "end_line": 54,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/comparison.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 64,
+      "end_line": 64,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/comparison.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 74,
+      "end_line": 74,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/comparison.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 75,
+      "end_line": 75,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/comparison.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 81,
+      "end_line": 81,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/comparison.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 89,
+      "end_line": 89,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/comparison.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 92,
+      "end_line": 92,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/comparison.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 94,
+      "end_line": 94,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/comparison.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 95,
+      "end_line": 95,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/comparison.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 97,
+      "end_line": 97,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/comparison.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 98,
+      "end_line": 98,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/comparison.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 101,
+      "end_line": 101,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/comparison.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 106,
+      "end_line": 106,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/comparison.js",
+      "language": "javascript",
+      "rule_id": "team.js.audit.fs-path-api",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 115,
+      "end_line": 115,
+      "message": "A file system API receives a non-literal path (audit hint).",
+      "rule_version": "1.2.0"
+    },
+    {
+      "file": "dashboard/static/js/config.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 12,
+      "end_line": 12,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/config.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 13,
+      "end_line": 13,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/config.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 14,
+      "end_line": 14,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/config.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 26,
+      "end_line": 26,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/config.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 30,
+      "end_line": 30,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/config.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 32,
+      "end_line": 32,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/config.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 47,
+      "end_line": 47,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/config.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 49,
+      "end_line": 49,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/config.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 64,
+      "end_line": 64,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/config.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 93,
+      "end_line": 93,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/config.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 94,
+      "end_line": 94,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/config.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 96,
+      "end_line": 96,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/config.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 97,
+      "end_line": 97,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/config.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 106,
+      "end_line": 106,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/config.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 112,
+      "end_line": 112,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/config.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 113,
+      "end_line": 113,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/config.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-dom-sink",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 115,
+      "end_line": 115,
+      "message": "A value is inserted as raw HTML into the page (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/config.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 115,
+      "end_line": 115,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/config.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 122,
+      "end_line": 122,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/config.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 123,
+      "end_line": 123,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/config.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 124,
+      "end_line": 124,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/config.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 144,
+      "end_line": 144,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/config.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 146,
+      "end_line": 146,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/config.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 148,
+      "end_line": 148,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/config.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 150,
+      "end_line": 150,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/config.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 151,
+      "end_line": 151,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/config.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 157,
+      "end_line": 157,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/config.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 163,
+      "end_line": 163,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/evaluation.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 9,
+      "end_line": 9,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/evaluation.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 10,
+      "end_line": 10,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/evaluation.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 11,
+      "end_line": 11,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/evaluation.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 12,
+      "end_line": 12,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/evaluation.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 24,
+      "end_line": 24,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/evaluation.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 48,
+      "end_line": 48,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/evaluation.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 55,
+      "end_line": 55,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/evaluation.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 56,
+      "end_line": 56,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/evaluation.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 70,
+      "end_line": 70,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/evaluation.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 82,
+      "end_line": 82,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/evaluation.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 86,
+      "end_line": 86,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/evaluation.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 87,
+      "end_line": 87,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/evaluation.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 90,
+      "end_line": 90,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/evaluation.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 91,
+      "end_line": 91,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/evaluation.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 104,
+      "end_line": 104,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/evaluation.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 115,
+      "end_line": 115,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/evaluation.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 117,
+      "end_line": 117,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/evaluation.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 120,
+      "end_line": 120,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/evaluation.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 122,
+      "end_line": 122,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/evaluation.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 123,
+      "end_line": 123,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/evaluation.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 168,
+      "end_line": 168,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/evaluation.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 169,
+      "end_line": 169,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/evaluation.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 180,
+      "end_line": 180,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/main.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 74,
+      "end_line": 74,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/main.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 86,
+      "end_line": 86,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/main.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 89,
+      "end_line": 89,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/main.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 94,
+      "end_line": 94,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/main.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 95,
+      "end_line": 95,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/main.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-dom-sink",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 105,
+      "end_line": 105,
+      "message": "A value is inserted as raw HTML into the page (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/main.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 105,
+      "end_line": 105,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/main.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 116,
+      "end_line": 116,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/main.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-dom-sink",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 118,
+      "end_line": 118,
+      "message": "A value is inserted as raw HTML into the page (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/main.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-dom-sink",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 179,
+      "end_line": 179,
+      "message": "A value is inserted as raw HTML into the page (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/monitoring.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 12,
+      "end_line": 12,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/monitoring.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 19,
+      "end_line": 19,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/monitoring.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 24,
+      "end_line": 24,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/monitoring.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 36,
+      "end_line": 36,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/monitoring.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 46,
+      "end_line": 46,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/monitoring.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 67,
+      "end_line": 67,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/monitoring.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 69,
+      "end_line": 69,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/monitoring.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 71,
+      "end_line": 71,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/overview.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 12,
+      "end_line": 12,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/overview.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 33,
+      "end_line": 33,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/overview.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 65,
+      "end_line": 65,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/overview.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 71,
+      "end_line": 71,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/overview.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 99,
+      "end_line": 99,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/overview.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 105,
+      "end_line": 105,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/ui.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 3,
+      "end_line": 3,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/ui.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 37,
+      "end_line": 37,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/ui.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 38,
+      "end_line": 38,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/ui.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 39,
+      "end_line": 39,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/ui.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 40,
+      "end_line": 40,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/ui.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 42,
+      "end_line": 42,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/ui.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 69,
+      "end_line": 69,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/ui.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 70,
+      "end_line": 70,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/ui.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-html-concat",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 75,
+      "end_line": 75,
+      "message": "HTML markup is concatenated with a value (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "dashboard/static/js/ui.js",
+      "language": "javascript",
+      "rule_id": "team.js.xss-jquery-insert",
+      "class": "XSS",
+      "cwes": [
+        "CWE-79"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "medium",
+      "start_line": 80,
+      "end_line": 80,
+      "message": "A non-literal value is inserted into the DOM with jQuery append/prepend/after/before/replaceWith (audit).",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "security-config/semgrep/tools/ruleset.py",
+      "language": "python",
+      "rule_id": "team.path-from-parameter",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 168,
+      "end_line": 168,
+      "message": "A function argument is used to build a filesystem path without normalisation.",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "security-config/semgrep/tools/ruleset.py",
+      "language": "python",
+      "rule_id": "team.py.audit.pathlib-api",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 168,
+      "end_line": 168,
+      "message": "A pathlib/shutil/os file operation receives a non-literal path (audit hint).",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "security-config/semgrep/tools/ruleset.py",
+      "language": "python",
+      "rule_id": "team.audit.process-api",
+      "class": "OS_COMMAND_INJECTION",
+      "cwes": [
+        "CWE-78"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "critical",
+      "start_line": 180,
+      "end_line": 181,
+      "message": "A process/shell API is used (audit hint).",
+      "rule_version": "1.2.0"
+    },
+    {
+      "file": "security-config/semgrep/tools/ruleset.py",
+      "language": "python",
+      "rule_id": "team.py.audit.pathlib-api",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 195,
+      "end_line": 195,
+      "message": "A pathlib/shutil/os file operation receives a non-literal path (audit hint).",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "security-config/semgrep/tools/ruleset.py",
+      "language": "python",
+      "rule_id": "team.audit.process-api",
+      "class": "OS_COMMAND_INJECTION",
+      "cwes": [
+        "CWE-78"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "critical",
+      "start_line": 206,
+      "end_line": 207,
+      "message": "A process/shell API is used (audit hint).",
+      "rule_version": "1.2.0"
+    },
+    {
+      "file": "security-config/semgrep/tools/ruleset.py",
+      "language": "python",
+      "rule_id": "team.py.audit.pathlib-api",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 214,
+      "end_line": 214,
+      "message": "A pathlib/shutil/os file operation receives a non-literal path (audit hint).",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "security-config/semgrep/tools/ruleset.py",
+      "language": "python",
+      "rule_id": "team.py.audit.pathlib-api",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 220,
+      "end_line": 220,
+      "message": "A pathlib/shutil/os file operation receives a non-literal path (audit hint).",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "security-config/semgrep/tools/ruleset.py",
+      "language": "python",
+      "rule_id": "team.audit.process-api",
+      "class": "OS_COMMAND_INJECTION",
+      "cwes": [
+        "CWE-78"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "critical",
+      "start_line": 248,
+      "end_line": 248,
+      "message": "A process/shell API is used (audit hint).",
+      "rule_version": "1.2.0"
+    },
+    {
+      "file": "tests/test_dashboard.py",
+      "language": "python",
+      "rule_id": "team.py.audit.pathlib-api",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 53,
+      "end_line": 53,
+      "message": "A pathlib/shutil/os file operation receives a non-literal path (audit hint).",
+      "rule_version": "1.1.0"
+    },
+    {
+      "file": "tests/test_dashboard.py",
+      "language": "python",
+      "rule_id": "team.sql-string-building",
+      "class": "SQL_INJECTION",
+      "cwes": [
+        "CWE-89"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "critical",
+      "start_line": 55,
+      "end_line": 55,
+      "message": "SQL text is built by interpolating or concatenating values.",
+      "rule_version": "1.0.0"
+    },
+    {
+      "file": "tests/test_dashboard.py",
+      "language": "python",
+      "rule_id": "team.py.audit.pathlib-api",
+      "class": "PATH_TRAVERSAL",
+      "cwes": [
+        "CWE-22"
+      ],
+      "confidence": "audit",
+      "semgrep_severity": "WARNING",
+      "impact_severity": "high",
+      "start_line": 147,
+      "end_line": 147,
+      "message": "A pathlib/shutil/os file operation receives a non-literal path (audit hint).",
+      "rule_version": "1.1.0"
+    }
+  ],
+  "config_warnings": [],
+  "summary": {
+    "files_in_scope": 15,
+    "files_excluded": 6,
+    "parse_status": {
+      "ok": 15,
+      "partial": 0,
+      "failed": 0,
+      "not_scanned": 0
+    },
+    "findings": 189,
+    "findings_high": 0,
+    "findings_audit": 189,
+    "by_class": {
+      "SQL_INJECTION": 1,
+      "XSS": 147,
+      "OS_COMMAND_INJECTION": 3,
+      "PATH_TRAVERSAL": 38,
+      "INSECURE_AUTHENTICATION": 0,
+      "HARDCODED_CREDENTIALS": 0
+    },
+    "dropped_out_of_scope_classes": 0,
+    "scan_errors": 0
+  }
+}

@@ -1,0 +1,99 @@
+# Ruleset AI-WhiteSec-CI v4.2.0 | ngon ngu: javascript | lop: OS_COMMAND_INJECTION
+# confidence: high = ket luan truc tiep; audit = bat rong, can ra soat (luong SAST doc lap voi CodeBERT).
+# Test: tests/positive/javascript/os_command_injection.* (phai bao) va tests/negative/javascript/os_command_injection.* (khong duoc bao).
+rules:
+- id: team.js.cmdi-taint
+  languages:
+  - javascript
+  - typescript
+  severity: ERROR
+  message: Request data reaches a shell command.
+  metadata:
+    cwe: CWE-78
+    owasp: A03:2021
+    vuln_class: OS_COMMAND_INJECTION
+    confidence: high
+    severity: critical
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.0.0
+    ruleset_version: 4.3.0
+  mode: taint
+  pattern-sources:
+  - pattern: $REQ.query
+  - pattern: $REQ.body
+  - pattern: $REQ.params
+  - pattern: $REQ.headers
+  - pattern: $REQ.cookies
+  pattern-sinks:
+  - patterns:
+    - pattern-either:
+      - pattern: $CP.exec($X, ...)
+      - pattern: $CP.execSync($X, ...)
+      - pattern: exec($X, ...)
+      - pattern: execSync($X, ...)
+      - pattern: $CP.spawn($X, ...)
+    - focus-metavariable: $X
+  pattern-sanitizers:
+  - pattern: parseInt(...)
+  - pattern: Number(...)
+  - pattern: parseFloat(...)
+  - pattern: $DB.escape(...)
+- id: team.js.cmd-shell
+  languages:
+  - javascript
+  - typescript
+  severity: WARNING
+  message: A process is started through a shell with a dynamic command (audit).
+  metadata:
+    cwe: CWE-78
+    owasp: A03:2021
+    vuln_class: OS_COMMAND_INJECTION
+    confidence: audit
+    severity: critical
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.0.0
+    ruleset_version: 4.3.0
+  pattern-either:
+  - pattern: $CP.exec("..." + $X, ...)
+  - pattern: $CP.execSync("..." + $X, ...)
+  - pattern: exec("..." + $X, ...)
+  - pattern: execSync("..." + $X, ...)
+  - pattern: $CP.exec(`...${$X}...`, ...)
+  - pattern: exec(`...${$X}...`, ...)
+  - pattern: '$CP.spawn($C, $ARGS, {..., shell: true, ...})'
+- id: team.js.audit.process-api
+  languages:
+  - javascript
+  - typescript
+  severity: WARNING
+  message: A child process is started with a non-literal command (audit hint).
+  metadata:
+    cwe: CWE-78
+    owasp: A03:2021
+    vuln_class: OS_COMMAND_INJECTION
+    confidence: audit
+    severity: critical
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.1.0
+    ruleset_version: 4.3.0
+    change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
+    change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
+  patterns:
+  - pattern-either:
+    - patterns:
+      - pattern-either:
+        - pattern: $CP.exec($X, ...)
+        - pattern: $CP.execSync($X, ...)
+        - pattern: $CP.spawn($X, ...)
+        - pattern: $CP.spawnSync($X, ...)
+        - pattern: $CP.execFile($X, ...)
+        - pattern: $CP.execFileSync($X, ...)
+      - metavariable-regex:
+          metavariable: $CP
+          regex: ^(cp|child_process|childProcess|child|proc|shell|shelljs|sh|execa|childprocess|this)$
+    - pattern: exec($X, ...)
+    - pattern: execSync($X, ...)
+    - pattern: spawn($X, ...)
+    - pattern: execa($X, ...)
+  - pattern-not: $CP.$F("...", ...)
+  - pattern-not: $F("...", ...)

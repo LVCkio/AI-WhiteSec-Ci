@@ -1,0 +1,135 @@
+# Ruleset AI-WhiteSec-CI v4.2.0 | ngon ngu: java | lop: XSS
+# confidence: high = ket luan truc tiep; audit = bat rong, can ra soat (luong SAST doc lap voi CodeBERT).
+# Test: tests/positive/java/xss.* (phai bao) va tests/negative/java/xss.* (khong duoc bao).
+rules:
+- id: team.java.xss-taint
+  languages:
+  - java
+  severity: ERROR
+  message: Request data is written into the HTTP response without encoding.
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: high
+    severity: medium
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  mode: taint
+  pattern-sources:
+  - pattern: (javax.servlet.http.HttpServletRequest $R).$GET(...)
+  - pattern: (jakarta.servlet.http.HttpServletRequest $R).$GET(...)
+  - pattern: (HttpServletRequest $R).$GET(...)
+  - patterns:
+    - pattern-inside: '$RT $METHOD(..., @$ANNO(...) $TYPE $PARAM, ...) { ... }
+
+        '
+    - pattern: $PARAM
+    - metavariable-regex:
+        metavariable: $ANNO
+        regex: ^(RequestParam|PathVariable|RequestBody|RequestHeader|CookieValue)$
+  - patterns:
+    - pattern-inside: '$RT $METHOD(..., @$ANNO $TYPE $PARAM, ...) { ... }
+
+        '
+    - pattern: $PARAM
+    - metavariable-regex:
+        metavariable: $ANNO
+        regex: ^(RequestParam|PathVariable|RequestBody|RequestHeader|CookieValue)$
+  pattern-sinks:
+  - patterns:
+    - pattern-either:
+      - pattern: $RESP.getWriter().$W($X)
+      - pattern: (java.io.PrintWriter $PW).$W($X)
+      - pattern: (PrintWriter $PW).$W($X)
+      - pattern: (javax.servlet.jsp.JspWriter $JW).$W($X)
+    - metavariable-regex:
+        metavariable: $W
+        regex: ^(print|println|write|append|format|printf)$
+    - focus-metavariable: $X
+  pattern-sanitizers:
+  - pattern: Encode.forHtml(...)
+  - pattern: Encode.forHtmlContent(...)
+  - pattern: Encode.forHtmlAttribute(...)
+  - pattern: HtmlUtils.htmlEscape(...)
+  - pattern: StringEscapeUtils.escapeHtml4(...)
+  - pattern: ESAPI.encoder().encodeForHTML(...)
+  - pattern: Integer.parseInt(...)
+- id: team.java.audit.response-output
+  languages:
+  - java
+  severity: INFO
+  message: A non-literal value is written to the HTTP response (audit hint).
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: audit
+    severity: medium
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  patterns:
+  - pattern-either:
+    - pattern: $RESP.getWriter().$W($X)
+    - pattern: (PrintWriter $PW).$W($X)
+    - pattern: (javax.servlet.jsp.JspWriter $JW).$W($X)
+    - pattern: $RESP.getOutputStream().write($X)
+  - metavariable-regex:
+      metavariable: $W
+      regex: ^(print|println|write|append)$
+  - pattern-not: $RESP.getWriter().$W("...")
+  - pattern-not: (PrintWriter $PW).$W("...")
+- id: team.java.xss-html-concat
+  languages:
+  - java
+  severity: WARNING
+  message: HTML markup is concatenated with a variable (audit).
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: audit
+    severity: medium
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  pattern-regex: '"[^"\n]*<\/?[a-zA-Z][a-zA-Z0-9]*[\s>/][^"\n]*"\s*\+\s*(?!")[\w(]'
+- id: team.java.xss-writer-output
+  languages:
+  - java
+  severity: WARNING
+  message: A non-literal value is written to an HTML/XML writer or set as Jsoup element HTML (audit).
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: audit
+    severity: medium
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.1.0
+    ruleset_version: 4.2.0
+    change_v4: 'Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5). 1.1.0: write()
+      chi cho writer HTML/XML (FileWriter ghi file gay bao sai lop, train: 2/8).'
+  pattern-either:
+  - patterns:
+    - pattern-either:
+      - pattern: $P.print($X)
+      - pattern: $P.println($X)
+      - pattern: $P.printRaw($X)
+    - metavariable-regex:
+        metavariable: $P
+        regex: (?i)^(.*(printer|html|xml|jsp)\w*|out|.*(getprinter|getout)\(\))$
+    - pattern-not: $P.$W("...")
+    - pattern-not: System.out.$W(...)
+    - pattern-not: System.err.$W(...)
+  - patterns:
+    - pattern: $P.write($X)
+    - metavariable-regex:
+        metavariable: $P
+        regex: (?i)^(.*(html|xml)\w*|.*getprinter\(\))$
+    - pattern-not: $P.write("...")
+  - patterns:
+    - pattern: $EL.html($X)
+    - pattern-not: $EL.html("...")

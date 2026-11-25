@@ -1,0 +1,87 @@
+# Ruleset AI-WhiteSec-CI v4.2.0 | ngon ngu: javascript | lop: PATH_TRAVERSAL
+# confidence: high = ket luan truc tiep; audit = bat rong, can ra soat (luong SAST doc lap voi CodeBERT).
+# Test: tests/positive/javascript/path_traversal.* (phai bao) va tests/negative/javascript/path_traversal.* (khong duoc bao).
+rules:
+- id: team.js.path-taint
+  languages:
+  - javascript
+  - typescript
+  severity: ERROR
+  message: Request data is used as a file system path.
+  metadata:
+    cwe: CWE-22
+    owasp: A01:2021
+    vuln_class: PATH_TRAVERSAL
+    confidence: high
+    severity: high
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.0.0
+    ruleset_version: 4.3.0
+  mode: taint
+  pattern-sources:
+  - pattern: $REQ.query
+  - pattern: $REQ.body
+  - pattern: $REQ.params
+  - pattern: $REQ.headers
+  - pattern: $REQ.cookies
+  pattern-sinks:
+  - patterns:
+    - pattern-either:
+      - pattern: $FS.$FN($X, ...)
+      - pattern: $RES.sendFile($X, ...)
+      - pattern: $RES.download($X, ...)
+      - pattern: $PATH.join($BASE, ..., $X, ...)
+      - pattern: $PATH.resolve($BASE, ..., $X, ...)
+    - metavariable-regex:
+        metavariable: $FN
+        regex: ^(readFile|readFileSync|createReadStream|writeFile|writeFileSync|createWriteStream|unlink|unlinkSync|appendFile|readdir|stat|access)$
+    - focus-metavariable: $X
+  - patterns:
+    - pattern-either:
+      - pattern: $RES.sendFile($X, ...)
+      - pattern: $RES.download($X, ...)
+    - focus-metavariable: $X
+  pattern-sanitizers:
+  - pattern: $PATH.basename(...)
+  - pattern: basename(...)
+- id: team.js.audit.fs-path-api
+  languages:
+  - javascript
+  - typescript
+  severity: WARNING
+  message: A file system API receives a non-literal path (audit hint).
+  metadata:
+    cwe: CWE-22
+    owasp: A01:2021
+    vuln_class: PATH_TRAVERSAL
+    confidence: audit
+    severity: high
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.2.0
+    ruleset_version: 4.3.0
+    change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
+    change_v42: Bo duong dan ghep toan hang so (path.resolve('...'), path.join(__dirname, '...')) - Juice Shop angular.ts.
+    change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
+  pattern-either:
+  - patterns:
+    - pattern: $FS.$FN($P, ...)
+    - pattern-not: $FS.$FN("...", ...)
+    - pattern-not: $X.$F(path.$J("..."), ...)
+    - pattern-not: $X.$F(path.$J("...", "..."), ...)
+    - pattern-not: $X.$F(path.$J(__dirname, "..."), ...)
+    - pattern-not: $X.$F(path.$J(__dirname, "...", "..."), ...)
+    - metavariable-regex:
+        metavariable: $FS
+        regex: ^(fs|fse|fsp|fsExtra|fs\.promises|fsPromises|fspath|promises)$
+    - metavariable-regex:
+        metavariable: $FN
+        regex: ^(readFile|readFileSync|createReadStream|writeFile|writeFileSync|createWriteStream|unlink|unlinkSync|readdir|readdirSync|stat|statSync|lstat|lstatSync|existsSync|access|accessSync|mkdir|mkdirSync|rmdir|rmdirSync|rm|rmSync|rename|renameSync|copyFile|copyFileSync|appendFile|appendFileSync|remove|removeSync|outputFile|outputFileSync)$
+  - patterns:
+    - pattern-either:
+      - pattern: $RES.sendFile($P, ...)
+      - pattern: $RES.download($P, ...)
+    - pattern-not: $RES.$M("...", ...)
+    - pattern-not: $X.$F(path.$J("..."), ...)
+    - pattern-not: $X.$F(path.$J("...", "..."), ...)
+    - pattern-not: $X.$F(path.$J(__dirname, "..."), ...)
+    - pattern-not: $X.$F(path.$J(__dirname, "...", "..."), ...)

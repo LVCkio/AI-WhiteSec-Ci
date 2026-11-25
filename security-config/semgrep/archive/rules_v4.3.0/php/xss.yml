@@ -1,0 +1,138 @@
+# Ruleset AI-WhiteSec-CI v4.2.0 | ngon ngu: php | lop: XSS
+# confidence: high = ket luan truc tiep; audit = bat rong, can ra soat (luong SAST doc lap voi CodeBERT).
+# Test: tests/positive/php/xss.* (phai bao) va tests/negative/php/xss.* (khong duoc bao).
+rules:
+- id: team.php.xss-taint
+  languages:
+  - php
+  severity: ERROR
+  message: Request data is echoed into the page without encoding.
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: high
+    severity: medium
+    scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
+    rule_version: 1.0.0
+    ruleset_version: 4.3.0
+  mode: taint
+  pattern-sources:
+  - pattern: $_GET
+  - pattern: $_POST
+  - pattern: $_REQUEST
+  - pattern: $_COOKIE
+  - pattern: $_SERVER['PHP_SELF']
+  - pattern: $_SERVER['REQUEST_URI']
+  - pattern: $_SERVER['QUERY_STRING']
+  pattern-sinks:
+  - patterns:
+    - pattern-either:
+      - pattern: echo $X;
+      - pattern: print($X);
+      - pattern: printf($X, ...);
+      - pattern: die($X);
+      - pattern: exit($X);
+    - focus-metavariable: $X
+  pattern-sanitizers:
+  - pattern: htmlspecialchars(...)
+  - pattern: htmlentities(...)
+  - pattern: intval(...)
+  - pattern: (int) $X
+  - pattern: urlencode(...)
+  - pattern: json_encode(...)
+- id: team.php.xss-html-concat
+  languages:
+  - php
+  severity: WARNING
+  message: HTML markup is concatenated with a variable (audit).
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: audit
+    severity: medium
+    scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
+    rule_version: 1.0.0
+    ruleset_version: 4.3.0
+  pattern-either:
+  - pattern-regex: '["''][^"''\n]*<\/?[a-zA-Z][a-zA-Z0-9]*[\s>/][^"''\n]*["'']\s*\.\s*\$\w'
+  - pattern-regex: '"[^"\n]*<\/?[a-zA-Z][a-zA-Z0-9]*[\s>/][^"\n]*\{?\$\w[^"\n]*"'
+- id: team.php.audit.echo-unescaped
+  languages:
+  - php
+  severity: WARNING
+  message: A variable is echoed into the page without an escaping function (audit hint).
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: audit
+    severity: medium
+    scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
+    rule_version: 1.1.0
+    ruleset_version: 4.3.0
+    change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
+    change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
+  patterns:
+  - pattern-either:
+    - pattern: echo $X;
+    - pattern: print($X);
+  - metavariable-regex:
+      metavariable: $X
+      regex: (?s).*\$\w
+  - pattern-not: echo htmlspecialchars(...);
+  - pattern-not: echo htmlentities(...);
+  - pattern-not: echo esc_html(...);
+  - pattern-not: echo esc_attr(...);
+  - pattern-not: echo esc_url(...);
+  - pattern-not: echo intval(...);
+  - pattern-not: echo json_encode(...);
+  - pattern-not: echo (int) $Y;
+- id: team.php.xss-template-request
+  languages:
+  - regex
+  paths:
+    include:
+    - '*.php'
+    - '*.phtml'
+  severity: ERROR
+  message: A PHP template prints request data ($_GET/$_POST/$_REQUEST/$_COOKIE or a request $_SERVER key)
+    directly with <?= / echo / print, without an escaping function.
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: high
+    severity: medium
+    scope: PHP template (HTML + <?= ?>, <?php echo ?>); regex rule because Semgrep's PHP parser fails on
+      mixed HTML/PHP fragments (PARSE_ERROR/PARTIAL_PARSE)
+    rule_version: 1.0.0
+    ruleset_version: 4.3.0
+    change_v42: Rule moi trong v4.2.0. Mau PHP XSS bi bo sot tren train v5 phan lon la file template khong parse
+      duoc nen moi rule php (ke ca pattern-regex) deu khong chay. Train v5 - 44 lan bao, 43 dung lop XSS; cap
+      a01 train - bao 44 ban loi, 2 ban da va.
+  pattern-regex: '<\?(?:=|php\s+(?:echo|print)\b)\s*(?:isset\s*\([^()\n]*\)\s*\?\s*)?(?:[''"][^''"\n]*[''"]\s*\.\s*)?(?:(?:trim|ltrim|rtrim|ucfirst|ucwords|strtolower|strtoupper|stripslashes|urldecode|rawurldecode|base64_decode|nl2br|substr|str_replace|sprintf)\s*\(\s*)?\(?\s*(?:\$_(?:GET|POST|REQUEST|COOKIE)\b|\$_SERVER\s*\[\s*[''"](?:PHP_SELF|REQUEST_URI|QUERY_STRING|HTTP_REFERER|HTTP_USER_AGENT|HTTP_HOST|PATH_INFO))'
+- id: team.php.audit.xss-template-echo
+  languages:
+  - regex
+  paths:
+    include:
+    - '*.php'
+    - '*.phtml'
+  severity: WARNING
+  message: A PHP template prints a variable with <?= / echo / print without an escaping function (audit hint).
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: audit
+    severity: medium
+    scope: PHP template (HTML + <?= ?>, <?php echo ?>); regex rule because Semgrep's PHP parser fails on
+      mixed HTML/PHP fragments (PARSE_ERROR/PARTIAL_PARSE)
+    rule_version: 1.1.0
+    ruleset_version: 4.3.0
+    change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
+    change_v42: Rule moi trong v4.2.0. Train v5 - 120 lan bao, 114 dung lop XSS (0,95); khong phan biet tot ban
+      loi/ban va (cap a01 train 122/96) nen chi o tang audit.
+  pattern-regex: '<\?(?:=|php\s+(?:echo|print)\b)(?![^?;\n]*\b(?:htmlspecialchars|htmlentities|esc_html|esc_attr|esc_url|esc_js|esc_textarea|wp_kses\w*|intval|floatval|urlencode|rawurlencode|json_encode|filter_var|number_format|strip_tags|e|h|escape\w*|_e|__)\s*\()\s*\$(?!_)[A-Za-z_]\w*(?:->\w+|\[[^\]\n]*\])*\s*;?\s*\?>'

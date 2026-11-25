@@ -1,0 +1,1226 @@
+id,language,class,parse,correct_any,correct_high,any_finding,any_high,baseline_correct,new_correct,rules
+creddata-0334968fd056a9a4,Java,HARDCODED_CREDENTIALS,partial,0,0,0,0,0,0,
+creddata-034e4ca0e2d34380,Python,HARDCODED_CREDENTIALS,ok,0,0,0,0,0,0,
+creddata-05ff0062a2c77179,Java,HARDCODED_CREDENTIALS,ok,0,0,0,0,0,0,
+creddata-1f44bfbb0cf64cf8,Python,Mẫu âm (không thuộc 6 nhóm),error,0,0,0,0,0,0,
+creddata-29bcb2ba7aac9369,Python,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+creddata-322c97cc18b81332,PHP,HARDCODED_CREDENTIALS,partial,1,1,1,1,1,0,team.php.hardcoded-secret
+creddata-43bd0d81d6f64d4f,Python,HARDCODED_CREDENTIALS,ok,0,0,0,0,0,0,
+creddata-43cbbe9742b38fe4,Java,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+creddata-49b0cdbe3e6b7f4f,Java,HARDCODED_CREDENTIALS,partial,1,1,1,1,1,0,team.java.hardcoded-secret
+creddata-4fb1829e026e3f5c,Java,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+creddata-6561d68903f6073b,JavaScript,HARDCODED_CREDENTIALS,partial,1,1,1,1,1,0,team.js.hardcoded-secret
+creddata-6b7ab30dcc17f00f,Python,HARDCODED_CREDENTIALS,ok,0,0,0,0,0,0,
+creddata-6dc7c67aabf4baba,Java,HARDCODED_CREDENTIALS,ok,0,0,0,0,0,0,
+creddata-7893bf9027e5427a,Python,HARDCODED_CREDENTIALS,ok,1,1,1,1,1,0,team.hardcoded-credentials
+creddata-7bede072599f2b20,JavaScript,HARDCODED_CREDENTIALS,ok,1,1,1,1,1,0,team.js.hardcoded-secret
+creddata-7fab91f654760d8d,Python,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+creddata-8ae3c24afd42e335,JavaScript,HARDCODED_CREDENTIALS,ok,0,0,0,0,0,0,
+creddata-9082a12cb98a4706,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+creddata-9384e5cf6a8c417e,JavaScript,HARDCODED_CREDENTIALS,ok,0,0,0,0,0,0,
+creddata-9b5abe40a62bcc7f,Python,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+creddata-a226a9e32ef6b88d,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+creddata-a3a8ad8ac8f7f4a1,Python,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+creddata-ad497ab2c243e2f8,Python,Mẫu âm (không thuộc 6 nhóm),partial,0,0,1,1,0,0,team.hardcoded-credentials
+creddata-b2d746794d225021,JavaScript,HARDCODED_CREDENTIALS,ok,1,1,1,1,1,0,team.js.hardcoded-secret
+creddata-cbb455167eab7cd5,PHP,HARDCODED_CREDENTIALS,ok,1,1,1,1,1,0,team.php.hardcoded-password-compare
+creddata-ce333a3cf456efdc,Java,HARDCODED_CREDENTIALS,partial,0,0,0,0,0,0,
+creddata-d194b7cfec2eb434,Python,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+creddata-e78251e19ca6ec6a,Python,HARDCODED_CREDENTIALS,ok,0,0,0,0,0,0,
+creddata-e95ab994d6468f14,Python,HARDCODED_CREDENTIALS,ok,1,1,1,1,1,0,team.hardcoded-credentials
+creddata-ee5184d68071de85,Python,HARDCODED_CREDENTIALS,ok,0,0,0,0,0,0,
+creddata-f09bad83bd29629e,Python,HARDCODED_CREDENTIALS,ok,1,1,1,1,1,0,team.hardcoded-credentials
+creddata-f0f99ef10f31145e,Python,HARDCODED_CREDENTIALS,ok,0,0,1,0,0,0,team.audit.html-output-api
+creddata-f49308cd85388026,Python,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+cvefixes-100269264914310,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-100498116969401,JavaScript,XSS,ok,0,0,0,0,0,0,
+cvefixes-100770968673264,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-101741464205323,Java,SQL_INJECTION,ok,1,0,1,0,1,0,team.java.audit.sql-api;team.java.sqli-concat;team.java.xss-html-concat
+cvefixes-103073406025762,JavaScript,XSS,ok,0,0,0,0,0,0,
+cvefixes-103447010673594,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-103671120009956,JavaScript,OS_COMMAND_INJECTION,ok,1,0,1,0,1,0,team.js.audit.process-api;team.js.cmd-shell
+cvefixes-105026678870786,PHP,SQL_INJECTION,ok,1,0,1,0,1,0,team.php.audit.sql-api
+cvefixes-105027068028237,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-106451506345125,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-106783450642884,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-107051815062759,PHP,HARDCODED_CREDENTIALS,ok,0,0,0,0,0,0,
+cvefixes-107581068449709,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-108410732675700,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-108708456786551,Java,XSS,ok,0,0,0,0,0,0,
+cvefixes-108900551317545,JavaScript,XSS,ok,1,0,1,0,1,0,team.js.xss-dom-sink;team.js.xss-html-concat
+cvefixes-109281197830031,JavaScript,XSS,ok,1,0,1,0,1,0,team.js.xss-dom-sink
+cvefixes-109745148084926,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-110594733705433,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-110692946697824,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-111412265642546,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.sql-api;team.php.sqli-string
+cvefixes-111853432106139,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.java.audit.file-path-api;team.java.path-upload-name
+cvefixes-112245875744400,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-112513916343050,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-113013038848938,PHP,SQL_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-113168070967014,Java,SQL_INJECTION,ok,1,0,1,0,1,0,team.java.audit.sql-api;team.java.sqli-concat
+cvefixes-113775065553704,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.xss-dom-sink;team.js.xss-html-concat
+cvefixes-115420516457156,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-115526043575261,PHP,SQL_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-115784642073518,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.sql-api;team.php.sqli-string
+cvefixes-115796475842157,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-115949520733077,JavaScript,XSS,ok,0,0,0,0,0,0,
+cvefixes-116581086581783,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-116697555830356,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.java.audit.sql-api
+cvefixes-116785515490080,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-117088351268452,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.py.audit.pathlib-api
+cvefixes-117744762133298,JavaScript,XSS,ok,0,0,0,0,0,0,
+cvefixes-11782669709768,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.sqli-string
+cvefixes-118275476909344,Java,XSS,ok,0,0,0,0,0,0,
+cvefixes-119749235266376,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.java.audit.sql-api
+cvefixes-120137692301338,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-120253881623862,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-12070871313321,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-121182532068403,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-121193856893340,PHP,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-121722499206528,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-121808241871897,PHP,SQL_INJECTION,ok,1,0,1,0,1,0,team.php.sqli-string
+cvefixes-121814868059837,JavaScript,XSS,ok,0,0,0,0,0,0,
+cvefixes-121973437175125,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.java.audit.file-path-api
+cvefixes-123324445022570,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.xss-html-string-building
+cvefixes-124130925186697,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-124203680208395,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,1,0,0,team.audit.html-output-api;team.path-from-parameter;team.xss-unsafe-html
+cvefixes-124212589106603,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-124437087966805,Java,XSS,ok,0,0,0,0,0,0,
+cvefixes-124529760917001,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-124645555150443,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+cvefixes-125520169427238,JavaScript,XSS,partial,0,0,0,0,0,0,
+cvefixes-12554292808754,Python,PATH_TRAVERSAL,ok,1,0,1,0,1,0,team.path-from-parameter;team.py.audit.pathlib-api
+cvefixes-127469291991123,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-127545590802994,JavaScript,XSS,error,0,0,0,0,0,0,
+cvefixes-128593218949284,Java,SQL_INJECTION,ok,0,0,1,1,0,0,team.java.audit.response-output;team.java.xss-html-concat;team.java.xss-taint;team.java.xss-writer-output
+cvefixes-128670416448074,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-129386709138028,JavaScript,XSS,partial,1,0,1,0,1,0,team.js.xss-jquery-insert
+cvefixes-129422609850123,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.sql-api
+cvefixes-129521012997047,JavaScript,XSS,partial,1,0,1,0,1,0,team.js.xss-html-concat
+cvefixes-130065263449446,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-130831024592477,JavaScript,XSS,ok,0,0,0,0,0,0,
+cvefixes-130833699931795,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+cvefixes-131149166626105,Python,PATH_TRAVERSAL,ok,1,0,1,0,1,0,team.path-from-parameter
+cvefixes-131961513996471,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.sql-api;team.php.sqli-string
+cvefixes-132143643302060,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-132582325555186,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,1,0,0,0,team.js.xss-html-concat
+cvefixes-132732643207043,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-133094149933764,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,1,0,0,team.java.audit.file-path-api;team.java.path-taint
+cvefixes-134350660856658,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-134354114546320,JavaScript,INSECURE_AUTHENTICATION,error,0,0,0,0,0,0,
+cvefixes-1348416148488,Python,PATH_TRAVERSAL,ok,0,0,0,0,0,0,
+cvefixes-135158665914915,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-135271440976942,JavaScript,XSS,partial,1,0,1,0,1,0,team.js.xss-dom-sink;team.js.xss-html-concat
+cvefixes-135465493868478,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+cvefixes-135539197327298,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-136238974588624,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,1,0,0,0,team.js.xss-jquery-insert
+cvefixes-136376690442865,JavaScript,OS_COMMAND_INJECTION,ok,1,0,1,0,1,0,team.js.audit.process-api
+cvefixes-136865694333523,Python,OS_COMMAND_INJECTION,ok,1,0,1,0,1,0,team.audit.process-api
+cvefixes-13764172523307,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.sql-api
+cvefixes-13847321227726,Python,PATH_TRAVERSAL,ok,0,0,0,0,0,0,
+cvefixes-138520210625147,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-139986567497302,JavaScript,XSS,ok,0,0,0,0,0,0,
+cvefixes-140238605683629,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-140588729099969,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.audit.sql-api
+cvefixes-140689024459659,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.py.audit.pathlib-api
+cvefixes-141218926843513,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-141510247707941,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.audit.process-api
+cvefixes-14170555258875,PHP,PATH_TRAVERSAL,ok,0,0,0,0,0,0,
+cvefixes-141757839152964,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.xss-dom-sink;team.js.xss-html-concat
+cvefixes-142133947945774,Python,INSECURE_AUTHENTICATION,ok,0,0,0,0,0,0,
+cvefixes-142974060527151,PHP,SQL_INJECTION,ok,1,0,1,0,1,0,team.php.audit.echo-unescaped;team.php.audit.sql-api;team.php.sqli-string
+cvefixes-143287333998246,Java,SQL_INJECTION,ok,1,0,1,0,1,0,team.java.audit.sql-api
+cvefixes-143939777285020,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-143965739757230,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.echo-unescaped
+cvefixes-14405409675331,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.sql-api
+cvefixes-144454365409598,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-14484395969861,JavaScript,XSS,ok,1,0,1,0,1,0,team.js.xss-dom-sink
+cvefixes-145361938280411,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-145743580998196,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.sql-api;team.php.sqli-string
+cvefixes-146109491943985,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-146201277550354,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-146362003855307,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-14648003136220,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+cvefixes-147109740808817,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-147554357730618,PHP,SQL_INJECTION,ok,1,0,1,0,1,0,team.php.audit.sql-api;team.php.sqli-string
+cvefixes-14961042047077,JavaScript,XSS,partial,0,0,0,0,0,0,
+cvefixes-149935315287871,PHP,XSS,ok,1,0,1,0,1,0,team.php.audit.echo-unescaped;team.php.xss-taint
+cvefixes-150306982602697,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-151414912649193,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-151705581404206,Java,SQL_INJECTION,ok,1,0,1,0,1,0,team.java.audit.sql-api
+cvefixes-152385096550466,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.audit.html-output-api
+cvefixes-153399649397168,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.audit.process-api
+cvefixes-15348109685033,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-153607783657530,PHP,HARDCODED_CREDENTIALS,ok,0,0,0,0,0,0,
+cvefixes-154115271313178,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-15433493671224,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-154726422502034,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-154865630600843,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+cvefixes-155909400696705,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-156037071368652,Python,XSS,ok,1,0,1,0,1,0,team.xss-html-string-building
+cvefixes-15709968916094,PHP,XSS,ok,1,0,1,0,1,0,team.php.audit.echo-unescaped;team.php.audit.xss-template-echo
+cvefixes-15789394238677,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-158404631061994,JavaScript,XSS,partial,0,0,0,0,0,0,
+cvefixes-158423786144384,PHP,SQL_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-158665697731215,JavaScript,XSS,partial,1,0,1,0,1,0,team.js.xss-dom-sink;team.js.xss-html-concat
+cvefixes-159434677704988,Python,INSECURE_AUTHENTICATION,ok,0,0,0,0,0,0,
+cvefixes-159568503095388,JavaScript,XSS,partial,1,0,1,0,1,0,team.js.xss-html-concat
+cvefixes-159570523315251,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-160849010054411,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-160877443032930,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-161684183392392,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-162176705244795,JavaScript,XSS,ok,1,0,1,0,1,0,team.js.xss-dom-sink
+cvefixes-162397044999802,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-162648757331883,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,1,0,0,team.java.audit.response-output;team.java.xss-html-concat;team.java.xss-taint;team.java.xss-writer-output
+cvefixes-162676104271765,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-162843336443888,PHP,INSECURE_AUTHENTICATION,ok,0,0,0,0,0,0,
+cvefixes-163514753759659,PHP,SQL_INJECTION,ok,1,0,1,0,1,0,team.php.audit.sql-api;team.php.sqli-string
+cvefixes-163684402749507,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-163795315857379,Python,OS_COMMAND_INJECTION,ok,1,1,1,1,1,0,team.audit.process-api;team.os-command-injection
+cvefixes-163989869285608,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-164159416583503,PHP,SQL_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-164310440365461,PHP,SQL_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-164779552649626,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.xss-dom-sink
+cvefixes-164915333909930,Java,SQL_INJECTION,ok,1,0,1,0,1,0,team.java.audit.sql-api;team.java.sqli-concat
+cvefixes-165936190074326,JavaScript,XSS,ok,0,0,0,0,0,0,
+cvefixes-165956199621982,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,1,0,0,team.audit.html-output-api;team.py.xss-taint
+cvefixes-166121163808003,JavaScript,XSS,ok,0,0,0,0,0,0,
+cvefixes-166756479664325,Python,PATH_TRAVERSAL,ok,0,0,0,0,0,0,
+cvefixes-166796065120594,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-16712911128886,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-167275103582251,JavaScript,XSS,partial,1,0,1,0,1,0,team.js.xss-dom-sink
+cvefixes-167558040779053,JavaScript,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-167564577002557,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.echo-unescaped;team.php.audit.xss-template-echo
+cvefixes-16778718698484,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.xss-dom-sink;team.js.xss-html-concat;team.js.xss-jquery-insert
+cvefixes-168733004882618,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-168921824779415,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.audit.process-api
+cvefixes-168955969638187,JavaScript,PATH_TRAVERSAL,ok,1,0,1,0,1,0,team.js.audit.fs-path-api
+cvefixes-169000773241048,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-169258065335723,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-169852464566816,JavaScript,XSS,ok,1,0,1,0,1,0,team.js.xss-dom-sink;team.js.xss-html-concat
+cvefixes-170225743881676,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.java.audit.file-path-api
+cvefixes-170303659854494,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-170350225626719,PHP,SQL_INJECTION,ok,1,0,1,0,1,0,team.php.audit.sql-api;team.php.sqli-string
+cvefixes-17065564347427,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-17076906897309,JavaScript,XSS,ok,0,0,0,0,0,0,
+cvefixes-171479412250483,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-171530234000212,PHP,SQL_INJECTION,ok,1,0,1,0,1,0,team.php.audit.sql-api;team.php.sqli-string
+cvefixes-171752358948366,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-171862086298220,JavaScript,XSS,partial,0,0,0,0,0,0,
+cvefixes-172219188137986,JavaScript,OS_COMMAND_INJECTION,ok,1,0,1,0,1,0,team.js.audit.process-api
+cvefixes-172489658357278,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-172501203591497,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-173037539387341,JavaScript,XSS,ok,1,0,1,0,1,0,team.js.xss-dom-sink
+cvefixes-173367779081882,PHP,SQL_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-173382780831377,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-173447606485724,JavaScript,XSS,ok,1,0,1,0,1,0,team.js.xss-html-concat
+cvefixes-17431223242571,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-174689563018605,Java,XSS,ok,0,0,0,0,0,0,
+cvefixes-175036039182821,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-17535568167813,JavaScript,Mẫu âm (không thuộc 6 nhóm),error,0,0,0,0,0,0,
+cvefixes-175601557630985,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-175980632163429,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-177109401996992,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-177795304126776,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-178636417780105,JavaScript,OS_COMMAND_INJECTION,partial,0,0,0,0,0,0,
+cvefixes-179761383925977,JavaScript,Mẫu âm (không thuộc 6 nhóm),error,0,0,0,0,0,0,
+cvefixes-180509737446957,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-180852066086587,JavaScript,XSS,ok,1,0,1,0,1,0,team.js.xss-dom-sink;team.js.xss-html-concat
+cvefixes-181100277651872,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-181420005546013,Python,PATH_TRAVERSAL,ok,0,0,0,0,0,0,
+cvefixes-18315502658661,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-183390199329938,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-183410158288028,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-183702025482965,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-183712929008836,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.xss-dom-sink;team.js.xss-html-concat
+cvefixes-183986684992147,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.echo-unescaped;team.php.audit.sql-api;team.php.sqli-string
+cvefixes-184043437463688,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.audit.fs-path-api
+cvefixes-184244825443950,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-184426006026882,JavaScript,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-184858592713184,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-184984369358354,PHP,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-18534024702670,PHP,XSS,partial,1,0,1,0,1,0,team.php.audit.echo-unescaped
+cvefixes-186055279776706,Python,XSS,ok,0,0,0,0,0,0,
+cvefixes-186144800263731,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-187405663456369,Python,SQL_INJECTION,ok,1,1,1,1,1,0,team.audit.sql-api;team.py.sqli-taint;team.sql-injection;team.sql-string-building
+cvefixes-187478630027755,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-188128448844977,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,1,0,0,0,team.js.xss-dom-sink;team.js.xss-html-concat
+cvefixes-18826450850163,Java,SQL_INJECTION,ok,1,0,1,0,1,0,team.java.audit.sql-api
+cvefixes-188410929970533,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.audit.sql-api
+cvefixes-188618795739016,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-189287561759083,JavaScript,INSECURE_AUTHENTICATION,ok,0,0,0,0,0,0,
+cvefixes-189335613206616,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-189922697947067,JavaScript,PATH_TRAVERSAL,ok,0,0,0,0,0,0,
+cvefixes-190036590410027,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.echo-unescaped;team.php.audit.xss-template-echo
+cvefixes-190469322472217,PHP,SQL_INJECTION,ok,1,0,1,0,1,0,team.php.audit.echo-unescaped;team.php.audit.sql-api;team.php.sqli-string
+cvefixes-19098635707572,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-191105230700851,PHP,SQL_INJECTION,ok,1,0,1,0,1,0,team.php.sqli-string
+cvefixes-191196569995132,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-191364770063803,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-19147177348671,JavaScript,PATH_TRAVERSAL,ok,0,0,0,0,0,0,
+cvefixes-191551001343756,PHP,SQL_INJECTION,ok,1,0,1,0,1,0,team.php.audit.sql-api
+cvefixes-191607267163573,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-191923181273139,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+cvefixes-191931790461759,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-192658883353705,JavaScript,PATH_TRAVERSAL,ok,1,0,1,0,1,0,team.js.audit.fs-path-api
+cvefixes-193129410068204,PHP,INSECURE_AUTHENTICATION,ok,0,0,0,0,0,0,
+cvefixes-193615942502544,JavaScript,PATH_TRAVERSAL,partial,1,0,1,0,1,0,team.js.audit.fs-path-api
+cvefixes-193919779400851,PHP,SQL_INJECTION,ok,1,0,1,0,1,0,team.php.sqli-string
+cvefixes-195020857990625,JavaScript,XSS,ok,0,0,0,0,0,0,
+cvefixes-195618457914119,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.sqli-string
+cvefixes-195789526508475,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.xss-html-concat
+cvefixes-196595777923863,Java,INSECURE_AUTHENTICATION,ok,0,0,0,0,0,0,
+cvefixes-198093060838606,Java,PATH_TRAVERSAL,ok,1,0,1,0,1,0,team.java.audit.file-path-api
+cvefixes-198114255240001,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-198394220623048,JavaScript,PATH_TRAVERSAL,ok,0,0,0,0,0,0,
+cvefixes-199236829981353,Java,PATH_TRAVERSAL,ok,0,0,0,0,0,0,
+cvefixes-199291857603848,PHP,SQL_INJECTION,ok,1,0,1,0,1,0,team.php.audit.echo-unescaped;team.php.audit.sql-api;team.php.sqli-string
+cvefixes-199395672312994,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-199656827610632,PHP,SQL_INJECTION,ok,1,0,1,0,1,0,team.php.audit.sql-api;team.php.sqli-string
+cvefixes-201107117626112,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-201890097137265,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-201987039681673,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-202383295664524,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-202834881570245,Python,INSECURE_AUTHENTICATION,ok,0,0,0,0,0,0,
+cvefixes-203295388368980,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-203647582599754,JavaScript,XSS,ok,0,0,0,0,0,0,
+cvefixes-204267598356323,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-204850956877278,PHP,PATH_TRAVERSAL,ok,0,0,0,0,0,0,
+cvefixes-20491304735696,Java,XSS,ok,0,0,0,0,0,0,
+cvefixes-205124593856637,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.xss-dom-sink
+cvefixes-205787520165582,JavaScript,XSS,ok,1,0,1,0,1,0,team.js.xss-dom-sink
+cvefixes-206140709427893,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-206364503317866,Java,SQL_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-206551616434019,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.java.audit.sql-api
+cvefixes-20687957788421,JavaScript,XSS,partial,0,0,0,0,0,0,
+cvefixes-208766524302900,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.xss-dom-sink;team.js.xss-html-concat
+cvefixes-209021260890864,PHP,SQL_INJECTION,ok,1,0,1,0,1,0,team.php.audit.sql-api
+cvefixes-209697433953180,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-210039964872794,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-210898064912976,Java,SQL_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-212226001388847,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-212832675555961,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-21295361615280,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-213531928054480,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-213785190447135,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-213823715307589,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-214120946366932,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-214164973946111,PHP,SQL_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-214251428377540,Python,OS_COMMAND_INJECTION,ok,1,1,1,1,1,0,team.audit.process-api;team.os-command-injection
+cvefixes-215938713224675,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-215945983888006,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-216229089218071,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,1,0,0,team.audit.html-output-api;team.py.xss-taint
+cvefixes-216430217578578,Python,OS_COMMAND_INJECTION,ok,1,1,1,1,1,0,team.audit.process-api;team.os-command-injection
+cvefixes-216733091391939,Java,XSS,ok,0,0,0,0,0,0,
+cvefixes-216832060261460,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.sql-api;team.php.sqli-string
+cvefixes-2170669794656,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-217231154526751,JavaScript,OS_COMMAND_INJECTION,partial,0,0,0,0,0,0,
+cvefixes-217806307350505,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,1,0,0,0,team.js.xss-dom-sink;team.js.xss-html-concat
+cvefixes-217816053819463,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.audit.process-api;team.js.cmd-shell
+cvefixes-218124267000221,Python,XSS,ok,1,0,1,0,1,0,team.xss-html-string-building
+cvefixes-218491465841684,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-218616030868694,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-219310520330385,JavaScript,Mẫu âm (không thuộc 6 nhóm),error,0,0,0,0,0,0,
+cvefixes-219419061292616,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-219494870844362,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.audit.process-api
+cvefixes-220070053644792,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-221017273085654,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.xss-dom-sink;team.js.xss-html-concat
+cvefixes-22102111163214,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.sql-api;team.php.sqli-string
+cvefixes-221185711561950,JavaScript,PATH_TRAVERSAL,ok,1,0,1,0,1,0,team.js.audit.fs-path-api
+cvefixes-221436113526266,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-222129742784664,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-222477280128678,JavaScript,PATH_TRAVERSAL,ok,0,0,0,0,0,0,
+cvefixes-222651633299551,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-222896577510136,Python,OS_COMMAND_INJECTION,ok,1,1,1,1,1,0,team.audit.process-api;team.os-command-injection
+cvefixes-22401295664131,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-224186975123459,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-224674089791584,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.java.audit.file-path-api;team.java.path-upload-name
+cvefixes-225014526382510,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-225609504157897,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+cvefixes-225762572566371,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-22626195770556,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-226359476651352,JavaScript,PATH_TRAVERSAL,ok,0,0,0,0,0,0,
+cvefixes-227403128316698,JavaScript,XSS,ok,0,0,0,0,0,0,
+cvefixes-227404646538029,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-22773131680365,JavaScript,OS_COMMAND_INJECTION,partial,0,0,0,0,0,0,
+cvefixes-228473564793660,PHP,INSECURE_AUTHENTICATION,ok,0,0,0,0,0,0,
+cvefixes-22928426396934,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-229300165137301,JavaScript,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-229557341541738,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-229715965330828,JavaScript,INSECURE_AUTHENTICATION,ok,0,0,0,0,0,0,
+cvefixes-230032164740020,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-230083137883348,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-231412140561499,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-231782828951366,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-23179683612187,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-231953582562066,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-232400818997451,Java,SQL_INJECTION,ok,1,0,1,0,1,0,team.java.audit.sql-api;team.java.sqli-concat
+cvefixes-232891233969546,PHP,SQL_INJECTION,ok,1,0,1,0,1,0,team.php.audit.sql-api;team.php.sqli-string
+cvefixes-233191089207921,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.sql-api
+cvefixes-23356332227560,PHP,SQL_INJECTION,ok,1,0,1,0,1,0,team.php.audit.sql-api
+cvefixes-234402765100377,JavaScript,XSS,ok,1,0,1,0,1,0,team.js.xss-dom-sink
+cvefixes-234428433254144,JavaScript,XSS,ok,0,0,0,0,0,0,
+cvefixes-234958814918846,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-235048228952776,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-235279188364196,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-235386382005687,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-23711240576627,PHP,SQL_INJECTION,ok,1,0,1,0,1,0,team.php.audit.sql-api;team.php.sqli-string
+cvefixes-23713275527405,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-237238562625393,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-23766334583808,JavaScript,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-237771887597545,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-23787546269430,PHP,PATH_TRAVERSAL,ok,0,0,0,0,0,0,
+cvefixes-238116129542365,PHP,SQL_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-238167204524195,PHP,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-238306651236630,JavaScript,INSECURE_AUTHENTICATION,ok,0,0,0,0,0,0,
+cvefixes-238671113530717,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-238948051510877,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.sql-api;team.php.sqli-string
+cvefixes-2391538524170,PHP,XSS,ok,1,1,1,1,1,0,team.php.audit.echo-unescaped;team.php.xss-taint;team.php.xss-template-request
+cvefixes-239265232584727,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-239607131024127,PHP,SQL_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-239997248798519,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-241364383292523,JavaScript,XSS,partial,1,0,1,0,1,0,team.js.xss-dom-sink;team.js.xss-html-concat
+cvefixes-242417645866985,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-242432102786384,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-242446435394992,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-242734444800268,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,1,0,0,0,team.js.xss-dom-sink;team.js.xss-html-concat
+cvefixes-242784134153645,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.sql-api
+cvefixes-242909487989696,PHP,INSECURE_AUTHENTICATION,ok,0,0,0,0,0,0,
+cvefixes-24304260905638,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-244005188963327,PHP,XSS,ok,1,0,1,0,1,0,team.php.audit.echo-unescaped;team.php.audit.xss-template-echo
+cvefixes-244085114515967,PHP,SQL_INJECTION,ok,1,0,1,0,1,0,team.php.audit.sql-api;team.php.sqli-string;team.php.sqli-taint
+cvefixes-244842633873444,Java,SQL_INJECTION,ok,1,0,1,0,1,0,team.java.audit.sql-api
+cvefixes-245037208331891,Python,XSS,ok,1,1,1,1,1,0,team.xss-unsafe-html
+cvefixes-245849245086670,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-246027733912457,JavaScript,XSS,ok,0,0,0,0,0,0,
+cvefixes-246081373807540,JavaScript,XSS,ok,0,0,0,0,0,0,
+cvefixes-246531860715477,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.java.audit.file-path-api
+cvefixes-246653765827159,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-246853082370986,Java,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+cvefixes-246952409106115,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.echo-unescaped;team.php.audit.xss-template-echo;team.php.xss-taint
+cvefixes-247001188544671,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-247388891062582,JavaScript,XSS,ok,1,0,1,0,1,0,team.js.xss-dom-sink
+cvefixes-247629871468614,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.audit.fs-path-api
+cvefixes-247834949092626,Python,INSECURE_AUTHENTICATION,ok,0,0,0,0,0,0,
+cvefixes-24878627017185,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-249063256620292,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-249537268520886,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-249547238008524,JavaScript,XSS,ok,1,0,1,0,1,0,team.js.xss-html-concat
+cvefixes-24971414588183,JavaScript,PATH_TRAVERSAL,ok,1,0,1,0,1,0,team.js.audit.fs-path-api
+cvefixes-249938069383374,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-250706137145596,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-251256334729855,PHP,XSS,ok,1,0,1,0,1,0,team.php.audit.echo-unescaped;team.php.audit.xss-template-echo
+cvefixes-251296453617341,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-25180847663925,Java,PATH_TRAVERSAL,ok,1,0,1,0,1,0,team.java.audit.file-path-api
+cvefixes-252924558226874,Java,PATH_TRAVERSAL,ok,1,0,1,0,1,0,team.java.audit.file-path-api
+cvefixes-252984661814608,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+cvefixes-254580400012295,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-25479969026484,JavaScript,Mẫu âm (không thuộc 6 nhóm),error,0,0,0,0,0,0,
+cvefixes-255724141382024,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-255816771785513,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-256224608541273,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,1,0,0,team.audit.process-api;team.os-command-injection
+cvefixes-25699464004225,Python,XSS,ok,1,1,1,1,1,0,team.audit.html-output-api;team.py.xss-taint
+cvefixes-257007504212776,Python,XSS,ok,0,0,0,0,0,0,
+cvefixes-257151840611270,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.path-from-parameter
+cvefixes-257462146906196,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,1,0,0,0,team.js.xss-dom-sink;team.js.xss-html-concat
+cvefixes-257943454363197,JavaScript,XSS,error,0,0,0,0,0,0,
+cvefixes-258449055852513,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-259038370316355,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-259212736518466,Java,PATH_TRAVERSAL,ok,1,0,1,0,1,0,team.java.audit.file-path-api
+cvefixes-260254215677618,Python,XSS,ok,0,0,0,0,0,0,
+cvefixes-260394761630845,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-260457668014146,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.sql-api;team.php.sqli-string
+cvefixes-26058888697622,JavaScript,PATH_TRAVERSAL,partial,0,0,0,0,0,0,
+cvefixes-260672520175517,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-260762282991917,Java,XSS,ok,0,0,0,0,0,0,
+cvefixes-261026318641453,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-261217891832150,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.audit.html-output-api
+cvefixes-262353998679015,PHP,SQL_INJECTION,ok,1,0,1,0,1,0,team.php.audit.sql-api;team.php.sqli-string
+cvefixes-262446760380588,PHP,INSECURE_AUTHENTICATION,ok,0,0,0,0,0,0,
+cvefixes-262553853975107,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-262750435153802,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-263384012305725,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,1,0,0,0,team.js.xss-dom-sink;team.js.xss-html-concat
+cvefixes-264056057662968,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-264124118248035,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-264237548806435,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.java.xss-html-concat
+cvefixes-264965588904921,JavaScript,XSS,ok,0,0,0,0,0,0,
+cvefixes-265356444093278,PHP,SQL_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-266664299894418,JavaScript,XSS,ok,1,0,1,0,1,0,team.js.xss-dom-sink
+cvefixes-267452202139343,JavaScript,Mẫu âm (không thuộc 6 nhóm),error,0,0,0,0,0,0,
+cvefixes-267493431342919,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+cvefixes-267711750442473,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-269030321621406,JavaScript,XSS,ok,0,0,0,0,0,0,
+cvefixes-269958726725223,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-270107944710413,Java,PATH_TRAVERSAL,ok,1,0,1,0,1,0,team.java.audit.file-path-api
+cvefixes-270361319453846,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.sqli-string
+cvefixes-270908718248730,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.sqli-string
+cvefixes-271353644956049,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.java.audit.file-path-api
+cvefixes-271681485094310,Python,XSS,ok,1,0,1,0,1,0,team.audit.html-output-api;team.path-from-parameter
+cvefixes-271850746515233,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.sql-api
+cvefixes-27199322154427,JavaScript,XSS,partial,1,0,1,0,1,0,team.js.xss-dom-sink;team.js.xss-html-concat
+cvefixes-272402614903037,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.xss-html-concat
+cvefixes-272706667691049,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-273346211311481,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-273620690953382,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-273925161926668,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-274501218693252,JavaScript,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-274663184936092,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-275083216010671,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,1,0,0,team.audit.process-api;team.os-command-injection
+cvefixes-275436426839090,Java,SQL_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-275676236313505,JavaScript,XSS,partial,0,0,0,0,0,0,
+cvefixes-275682967739754,JavaScript,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-275738376699951,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-275750958915691,Java,XSS,ok,0,0,1,0,0,0,team.java.audit.file-path-api
+cvefixes-276051515179578,PHP,PATH_TRAVERSAL,ok,0,0,0,0,0,0,
+cvefixes-276147708312589,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-276157552330971,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,1,0,0,team.xss-unsafe-html
+cvefixes-276707361826589,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-276775639818687,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-277008238079323,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-277441218727916,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-277795946934859,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.xss-dom-sink
+cvefixes-27965583670362,PHP,SQL_INJECTION,ok,1,0,1,0,1,0,team.php.audit.sql-api
+cvefixes-279671796661639,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.sql-api;team.php.sqli-string
+cvefixes-280041274233488,Python,XSS,ok,0,0,0,0,0,0,
+cvefixes-280526806601521,Python,PATH_TRAVERSAL,ok,1,0,1,0,1,0,team.path-from-parameter
+cvefixes-280674004211067,PHP,SQL_INJECTION,ok,1,0,1,0,1,0,team.php.audit.sql-api
+cvefixes-280968259770641,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-281339432197630,PHP,SQL_INJECTION,ok,1,0,1,0,1,0,team.php.audit.sql-api;team.php.sqli-string
+cvefixes-28684849999875,JavaScript,XSS,error,0,0,0,0,0,0,
+cvefixes-28744064212800,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.java.audit.sql-api
+cvefixes-2911622446942,JavaScript,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-29255686779784,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-29375514781869,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-29420569778514,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.xss-dom-sink
+cvefixes-29773046768095,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-29893602881473,PHP,SQL_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-300499565660,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-30215105697015,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+cvefixes-30760232627515,Python,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-30878319776337,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-31115656927514,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-31579134813368,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-32601956754400,Python,PATH_TRAVERSAL,ok,1,0,1,0,1,0,team.py.audit.pathlib-api
+cvefixes-33747247717567,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-34717916085298,Python,SQL_INJECTION,ok,1,0,1,0,1,0,team.audit.sql-api
+cvefixes-35016011507439,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-35987179284490,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-36681747140575,Python,XSS,ok,0,0,0,0,0,0,
+cvefixes-36811640024243,Java,SQL_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-38857724551616,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.sql-api
+cvefixes-39114930352445,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.sql-api;team.php.sqli-string
+cvefixes-39200061675160,JavaScript,XSS,partial,1,0,1,0,1,0,team.js.xss-dom-sink;team.js.xss-html-concat
+cvefixes-39624561488590,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+cvefixes-3970728898023,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-39833281229875,Python,PATH_TRAVERSAL,ok,0,0,0,0,0,0,
+cvefixes-40234552671701,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-40245313346036,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.java.audit.sql-api
+cvefixes-40493085431591,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.audit.process-api
+cvefixes-40608915980301,JavaScript,XSS,ok,1,0,1,0,1,0,team.js.xss-dom-sink
+cvefixes-40958118443362,PHP,XSS,ok,1,0,1,0,1,0,team.php.audit.echo-unescaped;team.php.audit.xss-template-echo;team.php.xss-taint
+cvefixes-41545801877523,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-41698733894102,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+cvefixes-41732367811980,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-41810042610387,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-42782098568211,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-42828041951972,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-43162508456922,PHP,XSS,ok,1,0,1,0,1,0,team.php.audit.echo-unescaped;team.php.audit.xss-template-echo
+cvefixes-43440875679094,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,1,0,0,0,team.js.audit.fs-path-api
+cvefixes-43544501070366,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.audit.fs-path-api
+cvefixes-44001949643838,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-4416611832221,Java,SQL_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-44406699572668,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-44905812846125,JavaScript,XSS,ok,1,0,1,0,1,0,team.js.xss-dom-sink;team.js.xss-html-concat;team.js.xss-jquery-insert
+cvefixes-45007368697828,Java,XSS,ok,0,0,0,0,0,0,
+cvefixes-45094220095079,JavaScript,XSS,partial,1,0,1,0,1,0,team.js.xss-html-concat
+cvefixes-45608187788338,JavaScript,XSS,ok,0,0,0,0,0,0,
+cvefixes-46226739721689,PHP,SQL_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-46443236432654,PHP,SQL_INJECTION,ok,1,0,1,0,1,0,team.php.audit.sql-api
+cvefixes-46624401927847,PHP,SQL_INJECTION,ok,1,0,1,0,1,0,team.php.audit.sql-api
+cvefixes-46677524543579,Java,SQL_INJECTION,ok,1,0,1,0,1,0,team.java.audit.sql-api
+cvefixes-46931853925739,Java,SQL_INJECTION,ok,1,0,1,0,1,0,team.java.audit.sql-api;team.java.sqli-concat
+cvefixes-47344810240194,Python,INSECURE_AUTHENTICATION,ok,0,0,0,0,0,0,
+cvefixes-47403253011907,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-47774916173399,PHP,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-47967593176599,PHP,XSS,ok,1,0,1,0,1,0,team.php.audit.echo-unescaped;team.php.audit.xss-template-echo;team.php.xss-taint
+cvefixes-48283452585689,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.py.audit.pathlib-api
+cvefixes-48869688979701,Java,PATH_TRAVERSAL,ok,1,0,1,0,1,0,team.java.audit.file-path-api
+cvefixes-48913345647950,Python,XSS,ok,0,0,0,0,0,0,
+cvefixes-49319085854156,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-49426920422599,JavaScript,XSS,partial,1,0,1,0,1,0,team.js.xss-dom-sink
+cvefixes-49875920350082,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-50145290937246,PHP,Mẫu âm (không thuộc 6 nhóm),partial,0,0,1,0,0,0,team.php.audit.echo-unescaped
+cvefixes-5130738260382,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-51414616930685,Java,SQL_INJECTION,ok,1,0,1,0,1,0,team.java.audit.sql-api;team.java.sqli-concat
+cvefixes-51645166103450,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.sql-api;team.php.sqli-string;team.php.sqli-taint
+cvefixes-5229641984501,PHP,SQL_INJECTION,ok,1,0,1,0,1,0,team.php.audit.sql-api
+cvefixes-52414792793851,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-53032760755515,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-53230549075749,JavaScript,XSS,ok,0,0,0,0,0,0,
+cvefixes-5326671590906,JavaScript,XSS,ok,0,0,0,0,0,0,
+cvefixes-5352805559975,Python,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-53772847246700,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-54019761550952,PHP,PATH_TRAVERSAL,ok,0,0,0,0,0,0,
+cvefixes-54148629032559,Java,SQL_INJECTION,ok,1,0,1,0,1,0,team.java.audit.sql-api
+cvefixes-5515938798000,JavaScript,XSS,ok,0,0,0,0,0,0,
+cvefixes-55200419020406,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-55213645310889,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.echo-unescaped;team.php.audit.xss-template-echo
+cvefixes-55424164942261,Java,PATH_TRAVERSAL,ok,0,0,0,0,0,0,
+cvefixes-5632821053388,Python,PATH_TRAVERSAL,ok,1,0,1,0,1,0,team.audit.sql-api;team.path-from-parameter
+cvefixes-56562214013272,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+cvefixes-57567278471006,JavaScript,XSS,partial,0,0,0,0,0,0,
+cvefixes-57905254780071,JavaScript,XSS,ok,1,0,1,0,1,0,team.js.xss-jquery-insert
+cvefixes-58681915531836,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,1,0,0,team.xss-html-string-building;team.xss-unsafe-html
+cvefixes-6007021424175,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-6064083534057,Java,PATH_TRAVERSAL,ok,0,0,0,0,0,0,
+cvefixes-60734481645322,Java,XSS,ok,0,0,0,0,0,0,
+cvefixes-61392625764701,PHP,SQL_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-61545939714064,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-61724737040245,JavaScript,Mẫu âm (không thuộc 6 nhóm),error,0,0,0,0,0,0,
+cvefixes-62749567949310,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-63208813627622,JavaScript,XSS,ok,1,0,1,0,1,0,team.js.xss-jquery-insert
+cvefixes-63647146797776,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-63794953822888,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-64746246135113,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.echo-unescaped;team.php.audit.sql-api;team.php.sqli-string
+cvefixes-6500205304494,Java,XSS,ok,0,0,0,0,0,0,
+cvefixes-66553035563494,JavaScript,XSS,partial,1,0,1,0,1,0,team.js.xss-dom-sink;team.js.xss-html-concat
+cvefixes-67041933710226,Java,SQL_INJECTION,ok,1,0,1,0,1,0,team.java.audit.sql-api
+cvefixes-67594965941982,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-68044536529537,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-68299888357943,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-68321757810654,JavaScript,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-68365696698267,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.xss-jquery-insert
+cvefixes-68851925323878,JavaScript,PATH_TRAVERSAL,ok,0,0,0,0,0,0,
+cvefixes-68895779976471,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.xss-dom-sink
+cvefixes-69099452223635,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-69387138264213,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.sql-api
+cvefixes-69559718259404,JavaScript,XSS,ok,0,0,0,0,0,0,
+cvefixes-69863999808559,PHP,SQL_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-69951783918034,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-71068240338822,Python,PATH_TRAVERSAL,ok,1,0,1,0,1,0,team.path-from-parameter
+cvefixes-71478234552047,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.xss-html-concat
+cvefixes-71510447555703,Python,XSS,ok,0,0,0,0,0,0,
+cvefixes-71744927671238,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-72056589213955,Java,XSS,ok,0,0,0,0,0,0,
+cvefixes-72450401194410,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-72875769701537,JavaScript,XSS,ok,1,0,1,0,1,0,team.js.xss-dom-sink;team.js.xss-html-concat
+cvefixes-73226189711674,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.xss-dom-sink
+cvefixes-74764757491492,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-75602599471869,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.java.audit.sql-api
+cvefixes-75885900587836,PHP,SQL_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-76066398077630,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-76161828246290,Java,SQL_INJECTION,ok,1,0,1,0,1,0,team.java.audit.sql-api;team.java.sqli-concat
+cvefixes-76388688461880,JavaScript,XSS,ok,0,0,0,0,0,0,
+cvefixes-76536270093272,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,1,0,0,team.xss-unsafe-html
+cvefixes-7729974717198,PHP,PATH_TRAVERSAL,ok,0,0,0,0,0,0,
+cvefixes-77333668953217,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+cvefixes-78458906042006,JavaScript,XSS,ok,1,0,1,0,1,0,team.js.xss-html-concat
+cvefixes-78888015898486,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.audit.process-api
+cvefixes-80104989154207,JavaScript,XSS,ok,0,0,0,0,0,0,
+cvefixes-8095389190769,Python,XSS,ok,0,0,0,0,0,0,
+cvefixes-81056273075812,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-82358697958916,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-82647445064748,JavaScript,XSS,error,0,0,0,0,0,0,
+cvefixes-82732164573724,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.echo-unescaped;team.php.audit.sql-api;team.php.sqli-string
+cvefixes-82938434270681,JavaScript,XSS,ok,1,0,1,0,1,0,team.js.xss-dom-sink;team.js.xss-html-concat
+cvefixes-83386048252927,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-83712482000166,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.sql-api
+cvefixes-8427107617281,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-85307938518391,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-8558867793509,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-86240189218219,JavaScript,XSS,ok,1,0,1,0,1,0,team.js.xss-dom-sink;team.js.xss-html-concat
+cvefixes-86354766015211,Python,SQL_INJECTION,ok,0,0,1,1,0,0,team.audit.html-output-api;team.py.xss-taint
+cvefixes-86634965629633,JavaScript,XSS,partial,0,0,0,0,0,0,
+cvefixes-86779080117301,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-86826060289254,Java,XSS,ok,0,0,0,0,0,0,
+cvefixes-86892610927987,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-86972704892186,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-87127419709053,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-87159891004440,JavaScript,XSS,ok,0,0,0,0,0,0,
+cvefixes-87723328561312,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.echo-unescaped
+cvefixes-8818251880324,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-88224983059868,Java,PATH_TRAVERSAL,ok,0,0,0,0,0,0,
+cvefixes-88701805328822,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-89447140336328,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-90379554013021,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,1,0,0,0,team.js.xss-html-concat
+cvefixes-90434982532109,JavaScript,XSS,partial,0,0,0,0,0,0,
+cvefixes-90484636195676,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-90723914988640,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+cvefixes-91092272128175,PHP,SQL_INJECTION,ok,1,0,1,0,1,0,team.php.audit.sql-api;team.php.sqli-string
+cvefixes-91171287674183,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-91479682334510,PHP,SQL_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-93019875727694,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.audit.fs-path-api
+cvefixes-93059420089190,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-94179742492552,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.audit.process-api
+cvefixes-94604838985539,Python,PATH_TRAVERSAL,ok,1,0,1,0,1,0,team.path-from-parameter
+cvefixes-95403254803853,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-95817176982823,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.sql-api;team.php.sqli-string
+cvefixes-96290399093400,PHP,SQL_INJECTION,ok,1,0,1,0,1,0,team.php.audit.sql-api;team.php.sqli-string
+cvefixes-96470329857050,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,1,0,0,0,team.js.xss-html-concat
+cvefixes-96593030556716,PHP,XSS,ok,1,0,1,0,1,0,team.php.audit.echo-unescaped;team.php.xss-taint
+cvefixes-96618252563823,PHP,SQL_INJECTION,ok,1,0,1,0,1,0,team.php.audit.sql-api;team.php.sqli-string
+cvefixes-96712232529519,JavaScript,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+cvefixes-97809666189078,JavaScript,XSS,ok,1,0,1,0,1,0,team.js.xss-dom-sink;team.js.xss-html-concat
+cvefixes-98093426587228,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-98479376485081,Python,PATH_TRAVERSAL,ok,0,0,0,0,0,0,
+cvefixes-98603496953257,PHP,SQL_INJECTION,ok,1,0,1,0,1,0,team.php.audit.sql-api
+cvefixes-99099405771305,PHP,XSS,ok,0,0,0,0,0,0,
+cvefixes-9941036527038,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-101023759350682-104-110,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-101023759350682-277-284,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-101791518335884-117-121,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-101791518335884-98-109,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-102743029536358-20-34,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-102743029536358-57-77,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.java.audit.sql-api
+cvefixes-unch-103594102217621-14-20,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+cvefixes-unch-103594102217621-22-28,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+cvefixes-unch-104338473172372-8-14,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-104954540083307-1023-1212,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+cvefixes-unch-104954540083307-245-255,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.audit.process-api
+cvefixes-unch-105142066506653-273-293,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-105142066506653-336-344,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-105323912975364-1272-1300,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.xss-dom-sink
+cvefixes-unch-105323912975364-4930-4936,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-105482340881074-50-80,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-105504299739645-2-37,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-107098101392380-237-242,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-107098101392380-91-113,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-107202695325950-108-135,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-107202695325950-211-216,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-10808015917145-45-60,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-10808015917145-62-90,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-10944605069009-165-174,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-10944605069009-182-202,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-109664799724472-23-29,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-109664799724472-37-59,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-109845198510345-525-659,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-109845198510345-63-72,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-109851396311582-284-314,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-109851396311582-575-602,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-113333627919484-254-262,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-113333627919484-853-871,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-114508071607361-36-39,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-118928114888975-110-123,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-118928114888975-125-141,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-119270489074786-46-57,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-120189171322889-719-724,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-120189171322889-848-928,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-120548300511757-15-28,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-120548300511757-20-26,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+cvefixes-unch-121920723778536-242-245,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-121920723778536-70-80,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-125504676400140-158-177,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-125504676400140-32-43,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-126916736604323-1108-1252,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-126916736604323-251-260,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-128615435378135-256-271,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-128615435378135-364-377,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-128808082739399-213-222,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-128808082739399-47-63,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-129427326815535-390-401,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-129427326815535-503-548,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-130816331592544-178-181,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-130816331592544-35-53,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-132813494207412-127-139,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-132813494207412-98-102,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-133074253071055-180-183,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-133074253071055-22-38,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-134303141369383-58-61,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.java.audit.file-path-api
+cvefixes-unch-134303141369383-82-86,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-135423158778547-113-155,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.xss-dom-sink;team.js.xss-html-concat
+cvefixes-unch-135423158778547-86-99,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-135738931879119-37-42,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-137355262659502-79-88,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-137355262659502-93-105,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-137732021601390-366-369,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-137732021601390-842-856,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-137874125074445-12-40,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-139013578075301-477-494,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-139013578075301-496-505,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-140634715212122-208-233,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-140634715212122-243-253,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-140646159518289-67-83,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-141117687634954-338-357,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-141117687634954-342-356,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-142274311850186-228-235,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-142274311850186-244-271,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-142702933705511-106-141,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-142702933705511-196-219,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-143546959623552-170-206,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-143546959623552-43-109,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-144495793314402-138-147,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-144495793314402-48-98,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-144565220228152-115-134,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-144565220228152-224-240,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-145170931523115-19-23,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.sql-api
+cvefixes-unch-145621924897854-154-160,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-145621924897854-219-234,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-147022799406414-499-505,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-147022799406414-654-663,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.xss-dom-sink;team.js.xss-html-concat
+cvefixes-unch-148406963373152-115-207,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-148635551879541-1630-1669,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-148635551879541-345-354,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-149972587706866-1281-1302,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-149972587706866-153-202,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-15007885108846-4627-4638,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.path-from-parameter
+cvefixes-unch-15007885108846-4767-4774,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-150136729250495-203-219,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-150136729250495-483-489,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-151310434520173-108-138,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-151310434520173-12-60,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-151925961467911-452-462,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-151925961467911-591-647,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-152295506447642-311-322,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-152295506447642-487-512,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-152994350448718-106-116,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-152994350448718-20-27,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-154166707159318-32-62,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-154166707159318-97-107,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-157371609759800-236-253,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.sql-api;team.php.sqli-string
+cvefixes-unch-157371609759800-47-143,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-160203126252123-1629-1662,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-160203126252123-1913-1928,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-161611803876413-319-324,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-161611803876413-550-555,JavaScript,Mẫu âm (không thuộc 6 nhóm),error,0,0,0,0,0,0,
+cvefixes-unch-162634647149194-212-217,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-162634647149194-76-79,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-16317056455407-28-41,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-16317056455407-7-15,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-163837480146240-101-120,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-163837480146240-83-88,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-16462078517800-10-17,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-16462078517800-205-267,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-164812577804360-277-337,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-164812577804360-749-760,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.sql-api
+cvefixes-unch-165154283511501-1041-1073,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-165154283511501-862-865,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-165177232500232-117-143,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-165177232500232-126-141,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-167592823572224-391-641,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-168451333660704-125-147,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.java.audit.sql-api
+cvefixes-unch-168451333660704-84-123,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.java.audit.sql-api
+cvefixes-unch-16850116693267-113-119,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-16850116693267-227-231,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-169122656791382-13-21,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.sql-api;team.php.sqli-string
+cvefixes-unch-170148440691859-122-131,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-170148440691859-597-613,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-170801085671006-1795-1805,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-170801085671006-1846-1850,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-174110200152034-1665-1832,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-174110200152034-2409-2422,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-176115016783544-132-152,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-176115016783544-249-255,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-178757440263723-274-355,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-178757440263723-420-464,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-179982602539960-532-535,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-179982602539960-584-593,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-180931194074374-66-73,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-180931194074374-89-166,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-181589043247954-376-396,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-181589043247954-607-619,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-183658943418824-156-191,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-183658943418824-38-72,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-184729892638991-37-65,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-187333750836719-169-185,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-187333750836719-228-238,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-18899625194540-21-39,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-18899625194540-47-56,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-189043062153014-66-84,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-189043062153014-92-96,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-189429573714405-131-136,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-189429573714405-62-65,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-190404989256803-69-79,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-190404989256803-81-94,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-191213595317364-115-119,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-191213595317364-87-98,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-191466522793966-695-703,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-191466522793966-936-940,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-192170468419280-25-43,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-192170468419280-95-98,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-192755712487707-521-525,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-192755712487707-988-1014,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-194944342479058-2154-2414,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.xss-html-string-building
+cvefixes-unch-194944342479058-3336-3349,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-196243298056536-1161-1165,JavaScript,Mẫu âm (không thuộc 6 nhóm),error,0,0,0,0,0,0,
+cvefixes-unch-196243298056536-708-717,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-196920567398079-42-78,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.echo-unescaped;team.php.xss-taint
+cvefixes-unch-199265469814776-130-137,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-199265469814776-180-183,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-204101927438880-247-274,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-204101927438880-60-73,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-206832491924478-33-39,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-206832491924478-7-11,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-209697518103929-100-253,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-209697518103929-169-236,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-212711979239143-400-411,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-212711979239143-66-80,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-213992061143742-28-49,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-213992061143742-40-47,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+cvefixes-unch-215671747607958-644-648,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-215671747607958-931-942,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-216024719243360-1-18,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-218678809520660-627-643,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-218678809520660-743-773,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.sqli-string
+cvefixes-unch-219486064866152-174-177,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-219486064866152-88-129,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-220209868669252-123-129,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-220209868669252-76-86,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.sql-api
+cvefixes-unch-22034866255682-156-172,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-22034866255682-266-302,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.echo-unescaped
+cvefixes-unch-220488435051922-395-447,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-220488435051922-513-557,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-220724147596638-1642-1647,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-220724147596638-997-1006,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-222155891585782-215-223,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-222155891585782-273-283,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-222356213902595-419-463,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-222356213902595-503-533,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-222443281438411-179-197,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-222443281438411-20-37,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-224446621730090-108-121,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-224446621730090-60-78,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-226653353592937-109-118,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-226653353592937-120-123,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-226932706889760-56-82,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-226932706889760-84-109,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-227428368940409-189-206,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-227428368940409-89-107,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-227621012332459-120-131,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-227621012332459-29-34,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-230585238446164-14-17,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-230585238446164-25-39,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-233486512677834-217-221,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-233486512677834-44-61,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-233610500345236-177-189,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.sql-api
+cvefixes-unch-233610500345236-331-367,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.echo-unescaped;team.php.audit.sql-api;team.php.sqli-string;team.php.sqli-taint
+cvefixes-unch-234430378752220-102-129,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-234430378752220-157-232,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-235003229765887-257-266,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-235003229765887-268-273,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-2356269253889-154-159,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-2356269253889-248-305,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.xss-dom-sink
+cvefixes-unch-236163165480839-13-17,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.audit.html-output-api
+cvefixes-unch-236163165480839-21-61,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.audit.html-output-api
+cvefixes-unch-238873522827830-202-481,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-238873522827830-739-749,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-239848748675276-289-306,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.audit.fs-path-api
+cvefixes-unch-239848748675276-75-84,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-240240034930194-14-42,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+cvefixes-unch-240240034930194-4-10,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-240343257274494-22-39,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-240343257274494-285-297,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-243633014798207-639-671,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-243633014798207-891-895,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-244651772036968-1928-1982,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-244651772036968-321-386,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-245511204870334-1-14,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-245511204870334-6-11,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-245653517899119-147-159,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-245653517899119-161-173,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-245716867463215-296-304,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-245716867463215-444-483,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-246873542311160-239-249,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-246873542311160-355-359,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-249385073917679-42-74,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-249596258555440-115-118,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-249596258555440-131-134,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-25106894243989-485-498,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-25106894243989-558-568,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-251832591233986-53-86,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.echo-unescaped;team.php.audit.sql-api;team.php.sqli-string
+cvefixes-unch-251832591233986-96-127,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.echo-unescaped;team.php.audit.sql-api;team.php.sqli-string
+cvefixes-unch-253759451015025-154-164,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-253759451015025-171-176,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-254303052026191-121-147,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-254303052026191-79-96,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-254728490959822-101-110,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.audit.fs-path-api
+cvefixes-unch-254728490959822-113-120,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-255262538775854-138-143,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-255262538775854-21-29,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-255575629232229-155-158,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-255575629232229-160-164,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-256525546586415-25-36,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-256525546586415-41-52,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-257808575236900-134-143,JavaScript,Mẫu âm (không thuộc 6 nhóm),error,0,0,0,0,0,0,
+cvefixes-unch-257808575236900-202-229,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-257841922882829-1861-1864,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-257841922882829-3069-3086,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-258551644463582-45-87,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-258551644463582-94-115,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-259333447908530-267-283,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-259333447908530-87-98,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-260268022659341-27-31,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-260268022659341-78-88,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-2608699457265-454-458,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-2608699457265-99-103,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-263743001956843-1343-1354,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-263743001956843-212-218,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-268498695678119-52-58,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-268498695678119-60-66,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-269432882595114-121-135,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-269432882595114-77-83,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-269808128411816-14-25,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-269808128411816-39-43,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-269909913685137-153-173,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-269909913685137-35-64,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.xss-dom-sink
+cvefixes-unch-275927343093946-583-591,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-275927343093946-720-931,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-276570958235752-11-60,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-27658870711642-3-14,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-27658870711642-64-70,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-277275623626994-526-530,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-277275623626994-538-544,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-277571580830257-380-387,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-277571580830257-89-94,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-278986348410195-134-153,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-278986348410195-657-660,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-279312891073007-259-266,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+cvefixes-unch-279312891073007-58-95,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+cvefixes-unch-279742146764467-150-159,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-279742146764467-365-370,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-280054761510320-105-113,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-280054761510320-266-272,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.sql-api;team.php.sqli-string
+cvefixes-unch-280279939935331-278-281,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-280279939935331-362-369,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-28466660059268-107-112,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-28466660059268-118-122,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-28836656678894-44-47,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-28836656678894-85-179,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+cvefixes-unch-30265214337351-18-31,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-31947008318572-425-436,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-31947008318572-530-566,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-35782727464609-11-39,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-36320961814015-182-189,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-36320961814015-64-89,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-37298611478618-114-120,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-37298611478618-77-91,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-37740196052066-14-17,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-378297165997-466-475,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-378297165997-511-514,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-38455789373605-122-131,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.sqli-string
+cvefixes-unch-38455789373605-77-91,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.sqli-string
+cvefixes-unch-38660185216031-606-627,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-38660185216031-633-641,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-39406689880839-119-123,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.py.audit.response-body
+cvefixes-unch-39406689880839-64-116,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.audit.sql-api;team.py.audit.response-body;team.sql-string-building
+cvefixes-unch-3940874393375-11-20,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-3940874393375-26-41,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-42064026419467-45-48,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-42064026419467-72-79,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-42665876670768-162-248,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-42665876670768-98-105,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-46707150742724-499-502,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-46707150742724-506-583,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-47772344581028-12-18,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-47772344581028-61-93,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-48395296337862-1218-1272,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-48395296337862-998-1004,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-48945459706351-295-308,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.sqli-string
+cvefixes-unch-48945459706351-344-348,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-51878768976116-14-17,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-51878768976116-19-44,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-52174087228596-141-147,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.java.audit.file-path-api
+cvefixes-unch-52174087228596-72-102,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.java.audit.file-path-api
+cvefixes-unch-52646465687592-126-137,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-53946837372622-149-153,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-53946837372622-83-97,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-54559410113150-12-26,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-54559410113150-389-416,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-54687587395129-160-184,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-54687587395129-219-242,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-56257130785338-126-149,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-56257130785338-84-87,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-56920735964401-360-363,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-56920735964401-551-556,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-57262598300229-26-49,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.echo-unescaped
+cvefixes-unch-57262598300229-8-24,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-57295797961122-455-465,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-57295797961122-702-706,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-58688523433800-103-106,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-58688523433800-69-76,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-59847996614827-41-47,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-59847996614827-50-59,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-61590845311343-150-154,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-61590845311343-99-102,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-62343534110202-111-167,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,1,0,0,0,team.js.xss-html-concat
+cvefixes-unch-62343534110202-312-319,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-63962750212981-21-24,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-63962750212981-40-51,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-64468896759985-224-233,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-64573493570356-18-22,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-64877782411665-13-24,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-64877782411665-49-57,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-65740201636672-157-202,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-65740201636672-678-713,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-67963963047020-155-172,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-67963963047020-194-222,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.echo-unescaped
+cvefixes-unch-68740712730112-123-189,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-68740712730112-167-178,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-69088093190456-140-186,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-69088093190456-636-639,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-69933024379274-4-12,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,1,0,0,team.php.hardcoded-secret
+cvefixes-unch-69933024379274-66-77,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-70947544231318-685-696,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-70947544231318-759-769,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-71964836425209-116-122,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-71964836425209-131-143,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-72043252353852-142-163,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.audit.process-api
+cvefixes-unch-72043252353852-45-67,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.xss-html-string-building
+cvefixes-unch-7237126023939-12-18,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-7237126023939-20-33,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-72470010447011-74-92,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-72470010447011-95-101,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-72899400714227-52-55,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-72899400714227-748-788,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-73177304124886-25-28,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+cvefixes-unch-73177304124886-281-284,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-73366106536026-1475-1557,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-73366106536026-764-788,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-73847159254988-21-33,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-73847159254988-48-57,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-74673698138407-182-185,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-74673698138407-84-108,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-76774913203102-115-140,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-76774913203102-74-85,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-7742564383709-255-263,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-7742564383709-720-734,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-78305107177215-28-34,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.sqli-string
+cvefixes-unch-78305107177215-4-16,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-79341160362-13-151,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-79341160362-844-878,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-80408288458729-133-144,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-80408288458729-360-373,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-80704208778064-1334-1341,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-80704208778064-689-696,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-81471584917238-164-199,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-81471584917238-97-158,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-82931952447472-49-55,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-82931952447472-57-64,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-83811097312648-496-515,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-83811097312648-83-90,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-85462231075298-1787-1790,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-85462231075298-2176-2187,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-86070908778813-178-196,Java,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+cvefixes-unch-86070908778813-261-271,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-86135907785435-13-17,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.xss-html-concat
+cvefixes-unch-86135907785435-7-11,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-87184949903991-203-213,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-87184949903991-252-257,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-88805474288490-11-31,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-90238753665649-313-523,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-90238753665649-881-884,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-90273933419135-1367-1374,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-90273933419135-2200-2204,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-9053844916966-30-90,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-9053844916966-396-438,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-90569128644265-222-297,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-90569128644265-98-107,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-91171202205797-46-58,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-92511861386963-22-39,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-92511861386963-367-386,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.echo-unescaped;team.php.xss-taint
+cvefixes-unch-9261451229763-16-36,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.sql-api;team.php.sqli-string
+cvefixes-unch-9261451229763-5-11,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-94313284324957-335-340,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-94313284324957-709-722,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-94379430936748-19-28,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-94379430936748-31-37,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-94571398159510-339-347,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-94571398159510-372-380,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-94627177610097-409-460,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-94627177610097-584-600,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-96056464703265-231-268,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-96056464703265-452-460,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-96906149383970-43-68,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-96906149383970-82-97,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,1,0,0,team.xss-unsafe-html
+cvefixes-unch-98267265912978-119-141,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.java.audit.file-path-api
+cvefixes-unch-98267265912978-200-237,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-98940233807098-13-109,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-98940233807098-261-273,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+cvefixes-unch-99578291642200-180-562,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.echo-unescaped;team.php.audit.xss-template-echo;team.php.xss-taint
+cvefixes-unch-99578291642200-567-577,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-100089409803479,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-101477937937771,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-102933941107434,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-104496191372104,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-105111469894321,JavaScript,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+morefixes-105188353292979,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-113546154969198,Python,INSECURE_AUTHENTICATION,ok,0,0,0,0,0,0,
+morefixes-114703118642914,Python,INSECURE_AUTHENTICATION,ok,0,0,0,0,0,0,
+morefixes-117807295893119,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,1,0,0,0,team.js.audit.process-api
+morefixes-125554120209003,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-130688842241276,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-131064374558262,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.js.audit.process-api
+morefixes-131564511839999,JavaScript,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+morefixes-143990978150613,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-144916116423435,JavaScript,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+morefixes-147775835415356,JavaScript,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+morefixes-149291539577640,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-151834423237639,Java,INSECURE_AUTHENTICATION,ok,0,0,0,0,0,0,
+morefixes-151948700243452,JavaScript,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+morefixes-164962282841376,PHP,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+morefixes-165973854626164,JavaScript,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+morefixes-169621753750882,Python,INSECURE_AUTHENTICATION,ok,0,0,0,0,0,0,
+morefixes-174332405405300,Python,INSECURE_AUTHENTICATION,ok,0,0,0,0,0,0,
+morefixes-179522118377705,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-182394880429555,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-185014597162974,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-192148670828633,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-193995123350994,PHP,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.php.audit.process-api
+morefixes-19693161417563,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-200823683366840,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-202050962198174,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-202989220986818,JavaScript,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+morefixes-208416736889780,Python,INSECURE_AUTHENTICATION,ok,0,0,0,0,0,0,
+morefixes-208574464831040,Python,INSECURE_AUTHENTICATION,ok,0,0,0,0,0,0,
+morefixes-20956411857546,JavaScript,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+morefixes-210823051482381,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+morefixes-215052229106622,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-219189380693809,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-220840258033539,Python,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+morefixes-231257103931551,JavaScript,OS_COMMAND_INJECTION,ok,1,0,1,0,1,0,team.js.audit.process-api;team.js.cmd-shell
+morefixes-233971316855655,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-236962008193212,Python,INSECURE_AUTHENTICATION,ok,0,0,0,0,0,0,
+morefixes-242532597593444,JavaScript,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+morefixes-242972526888308,Python,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+morefixes-244698490579821,Java,INSECURE_AUTHENTICATION,partial,0,0,0,0,0,0,
+morefixes-24763478563655,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-24907790546284,JavaScript,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+morefixes-250072746983600,Python,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+morefixes-251847393922140,Java,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+morefixes-260478236504436,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-260540462662650,Java,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-261630902768716,JavaScript,INSECURE_AUTHENTICATION,ok,0,0,0,0,0,0,
+morefixes-262619826248819,JavaScript,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+morefixes-262767886131435,JavaScript,OS_COMMAND_INJECTION,partial,1,0,1,0,1,0,team.js.audit.process-api
+morefixes-263229451403073,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-263584905305808,Python,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+morefixes-265057119575868,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-265467987567288,JavaScript,OS_COMMAND_INJECTION,partial,0,0,0,0,0,0,
+morefixes-265781054658980,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-27231737094495,JavaScript,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+morefixes-272618792643258,JavaScript,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+morefixes-275753146514102,Python,INSECURE_AUTHENTICATION,ok,0,0,0,0,0,0,
+morefixes-275938989688929,JavaScript,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+morefixes-280291436212271,Python,OS_COMMAND_INJECTION,ok,0,0,1,0,0,0,team.path-from-parameter
+morefixes-280783402345082,JavaScript,OS_COMMAND_INJECTION,partial,0,0,0,0,0,0,
+morefixes-281086961395876,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-281302444753492,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-29208995241501,JavaScript,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+morefixes-3225585770512,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-3277008353127,JavaScript,INSECURE_AUTHENTICATION,ok,0,0,0,0,0,0,
+morefixes-32928034226072,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-39828772018096,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-42012019891468,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+morefixes-42175840063427,Python,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+morefixes-43848915137578,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-44166516506109,JavaScript,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+morefixes-55669510524772,JavaScript,OS_COMMAND_INJECTION,ok,0,0,0,0,0,0,
+morefixes-63553516281881,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-66509634848890,Java,INSECURE_AUTHENTICATION,ok,0,0,0,0,0,0,
+morefixes-68854278638901,JavaScript,Mẫu âm (không thuộc 6 nhóm),partial,0,0,0,0,0,0,
+morefixes-72128944818838,Python,INSECURE_AUTHENTICATION,ok,0,0,0,0,0,0,
+morefixes-74204356216312,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-80818190223922,JavaScript,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,
+morefixes-82333562058288,JavaScript,OS_COMMAND_INJECTION,partial,0,0,0,0,0,0,
+morefixes-84138567420263,JavaScript,OS_COMMAND_INJECTION,ok,1,0,1,0,1,0,team.js.audit.process-api
+morefixes-93012566252763,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,1,0,0,0,team.path-from-parameter
+morefixes-94860249308295,Python,Mẫu âm (không thuộc 6 nhóm),ok,0,0,0,0,0,0,

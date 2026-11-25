@@ -1,0 +1,38 @@
+# syntax=docker/dockerfile:1
+# Anh aiws-codebert cho Pipeline 2 (Server 3): P0 cap quyen, P1 tach ham (tree-sitter), P3 CodeBERT (CPU),
+# P4 Compare + Gate, P5 ghi PostgreSQL. KHONG chua model: model nam o kho /srv/aiws/models, runner mount vao /models
+# (doi model = cai goi moi + doi ci/model-lock.json, khong build lai anh).
+# Build (thu muc goc repo):
+#   docker build -f ci/docker/Dockerfile.codebert -t aiws-codebert:0.1.0 .
+FROM python:3.11-slim
+
+ARG TORCH_VERSION=2.11.0
+ENV PYTHONUTF8=1 PYTHONDONTWRITEBYTECODE=1 PIP_NO_CACHE_DIR=1 PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 TOKENIZERS_PARALLELISM=false \
+    PYTHONPATH=/opt/aiws/ci AIWS_CI_HOME=/opt/aiws/ci \
+    AIWS_SEMGREP_TOOLS=/opt/aiws/security-config/semgrep/tools
+
+RUN apt-get update && apt-get install -y --no-install-recommends git ca-certificates \
+ && rm -rf /var/lib/apt/lists/* && git config --system --add safe.directory '*'
+
+COPY ci/docker/requirements-codebert.txt /tmp/req.txt
+RUN pip install "torch==${TORCH_VERSION}" --index-url https://download.pytorch.org/whl/cpu \
+ && pip install -r /tmp/req.txt
+
+WORKDIR /opt/aiws
+# Ma Pipeline 2 + chinh sach Gate + lock model mac dinh
+COPY ci/aiws_ci/ ci/aiws_ci/
+COPY ci/gate-policy.json ci/model-lock.json ci/
+# Dung CHUNG cach chon pham vi file voi job Semgrep (scan_repo.select_scope + .semgrepignore + taxonomy)
+COPY docs/taxonomy.yml docs/taxonomy.yml
+COPY security-config/semgrep/.semgrepignore security-config/semgrep/
+COPY security-config/semgrep/tools/scan_repo.py security-config/semgrep/tools/
+
+# Kiem tra nhanh: nap duoc ca 4 grammar tree-sitter
+RUN python -c "from aiws_ci.units import file_units as f; \
+assert f('a.py','def a(x):\n  return x\n','python')[0]; assert f('A.java','class A{ void m(){ int x=1; } }','java')[0]; \
+assert f('a.js','function a(){ return 1 }','javascript')[0]; assert f('a.php','<?php function a(){ return 1; }','php')[0]; print('tree-sitter OK')"
+
+RUN chmod -R a+rX /opt/aiws && useradd --create-home --uid 10001 scanner
+USER scanner
+WORKDIR /src

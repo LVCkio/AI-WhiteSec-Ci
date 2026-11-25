@@ -1,0 +1,104 @@
+# Ruleset AI-WhiteSec-CI v4.2.0 | ngon ngu: java | lop: SQL_INJECTION
+# confidence: high = ket luan truc tiep; audit = bat rong, can ra soat (luong SAST doc lap voi CodeBERT).
+# Test: tests/positive/java/sql_injection.* (phai bao) va tests/negative/java/sql_injection.* (khong duoc bao).
+rules:
+- id: team.java.sqli-taint
+  languages:
+  - java
+  severity: ERROR
+  message: Request data reaches an SQL query string.
+  metadata:
+    cwe: CWE-89
+    owasp: A03:2021
+    vuln_class: SQL_INJECTION
+    confidence: high
+    severity: critical
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.1.0
+    ruleset_version: 4.2.0
+    change_v42: Bo super.execute(...) khoi sink (WebGoat ProfileUpload - goi lop cha, khong phai JDBC; 2 bao nham + 1 sai lop).
+  mode: taint
+  pattern-sources:
+  - pattern: (javax.servlet.http.HttpServletRequest $R).$GET(...)
+  - pattern: (jakarta.servlet.http.HttpServletRequest $R).$GET(...)
+  - pattern: (HttpServletRequest $R).$GET(...)
+  - patterns:
+    - pattern-inside: '$RT $METHOD(..., @$ANNO(...) $TYPE $PARAM, ...) { ... }
+
+        '
+    - pattern: $PARAM
+    - metavariable-regex:
+        metavariable: $ANNO
+        regex: ^(RequestParam|PathVariable|RequestBody|RequestHeader|CookieValue)$
+  - patterns:
+    - pattern-inside: '$RT $METHOD(..., @$ANNO $TYPE $PARAM, ...) { ... }
+
+        '
+    - pattern: $PARAM
+    - metavariable-regex:
+        metavariable: $ANNO
+        regex: ^(RequestParam|PathVariable|RequestBody|RequestHeader|CookieValue)$
+  pattern-sinks:
+  - patterns:
+    - pattern-either:
+      - pattern: $S.executeQuery($Q, ...)
+      - pattern: $S.executeUpdate($Q, ...)
+      - pattern: $S.execute($Q, ...)
+      - pattern: $S.addBatch($Q)
+      - pattern: $C.prepareStatement($Q, ...)
+      - pattern: $C.prepareCall($Q, ...)
+      - pattern: $EM.createQuery($Q, ...)
+      - pattern: $EM.createNativeQuery($Q, ...)
+      - pattern: $J.queryForList($Q, ...)
+      - pattern: $J.queryForObject($Q, ...)
+      - pattern: $J.query($Q, ...)
+      - pattern: $J.update($Q, ...)
+    - pattern-not: super.execute(...)
+    - focus-metavariable: $Q
+  pattern-sanitizers:
+  - pattern: Integer.parseInt(...)
+  - pattern: Long.parseLong(...)
+  - pattern: Integer.valueOf(...)
+  - pattern: UUID.fromString(...)
+- id: team.java.audit.sql-api
+  languages:
+  - java
+  severity: INFO
+  message: An SQL execution API receives a non-literal query (audit hint).
+  metadata:
+    cwe: CWE-89
+    owasp: A03:2021
+    vuln_class: SQL_INJECTION
+    confidence: audit
+    severity: critical
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  patterns:
+  - pattern-either:
+    - pattern: $S.executeQuery($Q, ...)
+    - pattern: $S.executeUpdate($Q, ...)
+    - pattern: $C.prepareStatement($Q, ...)
+    - pattern: $EM.createQuery($Q, ...)
+    - pattern: $EM.createNativeQuery($Q, ...)
+  - pattern-not: $S.executeQuery("...", ...)
+  - pattern-not: $S.executeUpdate("...", ...)
+  - pattern-not: $C.prepareStatement("...", ...)
+  - pattern-not: $EM.createQuery("...", ...)
+- id: team.java.sqli-concat
+  languages:
+  - java
+  severity: WARNING
+  message: SQL text is built by string concatenation (audit).
+  metadata:
+    cwe: CWE-89
+    owasp: A03:2021
+    vuln_class: SQL_INJECTION
+    confidence: audit
+    severity: critical
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  pattern-either:
+  - pattern-regex: (?i)"\s*(?:select\s|insert\s+into|delete\s+from|update\s+\w+\s+set|where\s|order\s+by)[^"\n]*"\s*\+\s*[\w(]
+  - pattern-regex: (?i)"[^"\n]*\b(?:where|order\s+by|values\s*\()[^"\n]*"\s*\+\s*[\w(]

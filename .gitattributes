@@ -1,0 +1,18 @@
+# AI-WhiteSec-CI - giu LF cho file ma pipeline kiem sha256 hoac chay tren Linux (Server 3 / anh Docker).
+# Ly do (19/11/2026): Git for Windows (core.autocrlf=true) doi rule va semgrep.yml sang CRLF khi checkout
+# -> ruleset.py verify KHONG DAT (sha256 lech manifest) -> build anh aiws-semgrep tu ban checkout Windows
+# (run_ci_semgrep_local.bat) that bai. Chi liet ke file dang luu LF trong git; KHONG dat "* text=auto"
+# vi cac file da commit bang CRLF (reports/, *.bat, models/gate_config.json) se bi coi la "co thay doi"
+# va P0 tu choi quet cay khong sach.
+security-config/semgrep/semgrep.yml text eol=lf
+security-config/semgrep/ruleset-manifest.json text eol=lf
+security-config/semgrep/.semgrepignore text eol=lf
+security-config/semgrep/rules/** text eol=lf
+security-config/semgrep/rules_disabled/** text eol=lf
+security-config/semgrep/tests/** text eol=lf
+security-config/semgrep/tools/** text eol=lf
+security-config/semgrep/ci/** text eol=lf
+docs/taxonomy.yml text eol=lf
+ci/** text eol=lf
+.gitlab-ci.yml text eol=lf
+*.sh text eol=lf

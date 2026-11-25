@@ -1,0 +1,2354 @@
+# AI-WhiteSec-CI Semgrep ruleset v4.2.0 - FILE SINH TU DONG tu rules/, khong sua tay.
+# Tao bang: python security-config/semgrep/tools/ruleset.py build
+rules:
+- id: team.java.auth-jwt-unverified
+  languages:
+  - java
+  severity: ERROR
+  message: A JWT is parsed without requiring a valid signature.
+  metadata:
+    cwe: CWE-287
+    owasp: A07:2021
+    vuln_class: AUTHENTICATION_WEAKNESS
+    confidence: high
+    severity: high
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  pattern-either:
+  - pattern: Jwts.parser().$X(...).parse($T)
+  - pattern: Jwts.parser().parse($T)
+  - pattern: JWT.decode($T)
+  - pattern: $P.parseClaimsJwt($T)
+- id: team.java.auth-weak-password-hash
+  languages:
+  - java
+  severity: WARNING
+  message: A fast/broken hash is used for passwords (audit).
+  metadata:
+    cwe: CWE-916
+    owasp: A02:2021
+    vuln_class: AUTHENTICATION_WEAKNESS
+    confidence: audit
+    severity: high
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.1.0
+    ruleset_version: 4.2.0
+    change_v4: Chi bao khi gia tri duoc bam la mat khau (truoc day bao moi MessageDigest MD5).
+  patterns:
+  - pattern-either:
+    - pattern: DigestUtils.md5Hex($P)
+    - pattern: DigestUtils.sha1Hex($P)
+    - pattern: $MD.digest($P.getBytes(...))
+    - pattern: $MD.update($P.getBytes(...))
+    - pattern: $MD.digest($P)
+  - metavariable-regex:
+      metavariable: $P
+      regex: (?i)^\w*(pass|pwd|secret)\w*$
+- id: team.java.hardcoded-password-compare
+  languages:
+  - java
+  severity: ERROR
+  message: A password or secret is compared with a hardcoded literal.
+  metadata:
+    cwe: CWE-259
+    owasp: A07:2021
+    vuln_class: HARDCODED_CREDENTIALS
+    confidence: high
+    severity: high
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+    change_v4: Rule moi trong v4.
+  patterns:
+  - pattern-either:
+    - pattern: '"$LIT".equals($P)'
+    - pattern: $P.equals("$LIT")
+    - pattern: '"$LIT".equalsIgnoreCase($P)'
+  - metavariable-regex:
+      metavariable: $P
+      regex: (?i)^[\w.]*(password|passwd|pwd|secret|apikey|api_key)[\w.]*$
+  - metavariable-regex:
+      metavariable: $LIT
+      regex: ^.{4,}$
+- id: team.java.hardcoded-secret
+  languages:
+  - java
+  severity: ERROR
+  message: A credential or signing key is a hardcoded literal.
+  metadata:
+    cwe: CWE-798
+    owasp: A07:2021
+    vuln_class: HARDCODED_CREDENTIALS
+    confidence: high
+    severity: high
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  pattern-either:
+  - patterns:
+    - pattern-either:
+      - pattern: $TYPE $NAME = "$VAL";
+      - pattern: $NAME = "$VAL";
+    - metavariable-regex:
+        metavariable: $NAME
+        regex: (?i).*(password|passwd|pwd|secret|api_?key|access_?token|private_?key|jwt_?key|signing_?key).*
+    - metavariable-regex:
+        metavariable: $VAL
+        regex: ^.{4,}$
+  - pattern: DriverManager.getConnection($URL, $USER, "...")
+  - pattern: $B.signWith($ALG, "...")
+  - pattern: $B.setSigningKey("...")
+  - pattern: Algorithm.HMAC256("...")
+- id: team.java.cmdi-taint
+  languages:
+  - java
+  severity: ERROR
+  message: Request data reaches an OS command.
+  metadata:
+    cwe: CWE-78
+    owasp: A03:2021
+    vuln_class: OS_COMMAND_INJECTION
+    confidence: high
+    severity: critical
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  mode: taint
+  pattern-sources:
+  - pattern: (javax.servlet.http.HttpServletRequest $R).$GET(...)
+  - pattern: (jakarta.servlet.http.HttpServletRequest $R).$GET(...)
+  - pattern: (HttpServletRequest $R).$GET(...)
+  - patterns:
+    - pattern-inside: '$RT $METHOD(..., @$ANNO(...) $TYPE $PARAM, ...) { ... }
+
+        '
+    - pattern: $PARAM
+    - metavariable-regex:
+        metavariable: $ANNO
+        regex: ^(RequestParam|PathVariable|RequestBody|RequestHeader|CookieValue)$
+  - patterns:
+    - pattern-inside: '$RT $METHOD(..., @$ANNO $TYPE $PARAM, ...) { ... }
+
+        '
+    - pattern: $PARAM
+    - metavariable-regex:
+        metavariable: $ANNO
+        regex: ^(RequestParam|PathVariable|RequestBody|RequestHeader|CookieValue)$
+  pattern-sinks:
+  - patterns:
+    - pattern-either:
+      - pattern: Runtime.getRuntime().exec($X, ...)
+      - pattern: (Runtime $RT).exec($X, ...)
+      - pattern: new ProcessBuilder($X, ...)
+      - pattern: (ProcessBuilder $PB).command($X, ...)
+    - focus-metavariable: $X
+  pattern-sanitizers:
+  - pattern: Integer.parseInt(...)
+  - pattern: Long.parseLong(...)
+  - pattern: Integer.valueOf(...)
+  - pattern: UUID.fromString(...)
+- id: team.java.audit.process-api
+  languages:
+  - java
+  severity: INFO
+  message: A process API is used (audit hint).
+  metadata:
+    cwe: CWE-78
+    owasp: A03:2021
+    vuln_class: OS_COMMAND_INJECTION
+    confidence: audit
+    severity: critical
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.1.0
+    ruleset_version: 4.2.0
+    change_v4: Bo lenh la hang chuoi (khong the bi chen du lieu).
+  patterns:
+  - pattern-either:
+    - pattern: Runtime.getRuntime().exec(...)
+    - pattern: (Runtime $R).exec(...)
+    - pattern: new ProcessBuilder(...)
+  - pattern-not: Runtime.getRuntime().exec("...")
+  - pattern-not: new ProcessBuilder("...")
+- id: team.java.cmd-string
+  languages:
+  - java
+  severity: WARNING
+  message: An OS command is built from a concatenated string (audit).
+  metadata:
+    cwe: CWE-78
+    owasp: A03:2021
+    vuln_class: OS_COMMAND_INJECTION
+    confidence: audit
+    severity: critical
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  pattern-either:
+  - pattern: Runtime.getRuntime().exec("..." + $X, ...)
+  - pattern: Runtime.getRuntime().exec($X + "...", ...)
+  - pattern: new ProcessBuilder("sh", "-c", ...)
+  - pattern: new ProcessBuilder("bash", "-c", ...)
+  - pattern: new ProcessBuilder("cmd", "/c", ...)
+- id: team.java.audit.commandline-api
+  languages:
+  - java
+  severity: INFO
+  message: A command line is built from a non-literal value (Apache Commons Exec / command builders) (audit hint).
+  metadata:
+    cwe: CWE-78
+    owasp: A03:2021
+    vuln_class: OS_COMMAND_INJECTION
+    confidence: audit
+    severity: critical
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+    change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
+  patterns:
+  - pattern-either:
+    - pattern: new CommandLine($X, ...)
+    - pattern: CommandLine.parse($X, ...)
+    - pattern: $CL.addArgument($X, ...)
+    - pattern: $CL.addArguments($X, ...)
+    - pattern: $CL.withArg($X)
+    - pattern: $CL.withArgs(...)
+    - pattern: CommandLine.createCommandLine($X)
+  - pattern-not: new CommandLine("...", ...)
+  - pattern-not: CommandLine.parse("...", ...)
+  - pattern-not: $CL.addArgument("...", ...)
+  - pattern-not: $CL.withArg("...")
+  - pattern-not: CommandLine.createCommandLine("...")
+- id: team.java.path-taint
+  languages:
+  - java
+  severity: ERROR
+  message: Request data is used as a file system path.
+  metadata:
+    cwe: CWE-22
+    owasp: A01:2021
+    vuln_class: PATH_TRAVERSAL
+    confidence: high
+    severity: high
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  mode: taint
+  pattern-sources:
+  - pattern: (javax.servlet.http.HttpServletRequest $R).$GET(...)
+  - pattern: (jakarta.servlet.http.HttpServletRequest $R).$GET(...)
+  - pattern: (HttpServletRequest $R).$GET(...)
+  - patterns:
+    - pattern-inside: '$RT $METHOD(..., @$ANNO(...) $TYPE $PARAM, ...) { ... }
+
+        '
+    - pattern: $PARAM
+    - metavariable-regex:
+        metavariable: $ANNO
+        regex: ^(RequestParam|PathVariable|RequestBody|RequestHeader|CookieValue)$
+  - patterns:
+    - pattern-inside: '$RT $METHOD(..., @$ANNO $TYPE $PARAM, ...) { ... }
+
+        '
+    - pattern: $PARAM
+    - metavariable-regex:
+        metavariable: $ANNO
+        regex: ^(RequestParam|PathVariable|RequestBody|RequestHeader|CookieValue)$
+  pattern-sinks:
+  - patterns:
+    - pattern-either:
+      - pattern: new File($X)
+      - pattern: new File($D, $X)
+      - pattern: new FileInputStream($X)
+      - pattern: new FileOutputStream($X, ...)
+      - pattern: new FileReader($X)
+      - pattern: Paths.get($X, ...)
+      - pattern: Path.of($X, ...)
+      - pattern: $BASE.resolve($X)
+    - focus-metavariable: $X
+  pattern-sanitizers:
+  - pattern: FilenameUtils.getName(...)
+  - pattern: Paths.get(...).getFileName()
+  - pattern: (File $F).getName()
+- id: team.java.audit.file-path-api
+  languages:
+  - java
+  severity: INFO
+  message: A file system API receives a non-literal path (audit hint).
+  metadata:
+    cwe: CWE-22
+    owasp: A01:2021
+    vuln_class: PATH_TRAVERSAL
+    confidence: audit
+    severity: high
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  patterns:
+  - pattern-either:
+    - pattern: new File($P)
+    - pattern: new File($D, $P)
+    - pattern: new FileInputStream($P)
+    - pattern: new FileOutputStream($P, ...)
+    - pattern: Paths.get($P, ...)
+    - pattern: Path.of($P, ...)
+    - pattern: $BASE.resolve($P)
+    - pattern: $CTX.getResourceAsStream($P)
+    - pattern: $CTX.getRealPath($P)
+    - pattern: new ZipFile($P)
+    - pattern: $ZIS.getNextEntry()
+  - pattern-not: new File("...")
+  - pattern-not: new File($D, "...")
+  - pattern-not: Paths.get("...")
+  - pattern-not: $BASE.resolve("...")
+- id: team.java.path-upload-name
+  languages:
+  - java
+  severity: WARNING
+  message: A client-supplied file name or archive entry name is used as a path (audit).
+  metadata:
+    cwe: CWE-22
+    owasp: A01:2021
+    vuln_class: PATH_TRAVERSAL
+    confidence: audit
+    severity: high
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  pattern-either:
+  - pattern: new File($D, $F.getOriginalFilename())
+  - pattern: $D.resolve($F.getOriginalFilename())
+  - pattern: new File($D, $E.getName())
+  - pattern: $D.resolve($E.getName())
+- id: team.java.sqli-taint
+  languages:
+  - java
+  severity: ERROR
+  message: Request data reaches an SQL query string.
+  metadata:
+    cwe: CWE-89
+    owasp: A03:2021
+    vuln_class: SQL_INJECTION
+    confidence: high
+    severity: critical
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.1.0
+    ruleset_version: 4.2.0
+    change_v42: Bo super.execute(...) khoi sink (WebGoat ProfileUpload - goi lop cha, khong phai JDBC; 2 bao nham
+      + 1 sai lop).
+  mode: taint
+  pattern-sources:
+  - pattern: (javax.servlet.http.HttpServletRequest $R).$GET(...)
+  - pattern: (jakarta.servlet.http.HttpServletRequest $R).$GET(...)
+  - pattern: (HttpServletRequest $R).$GET(...)
+  - patterns:
+    - pattern-inside: '$RT $METHOD(..., @$ANNO(...) $TYPE $PARAM, ...) { ... }
+
+        '
+    - pattern: $PARAM
+    - metavariable-regex:
+        metavariable: $ANNO
+        regex: ^(RequestParam|PathVariable|RequestBody|RequestHeader|CookieValue)$
+  - patterns:
+    - pattern-inside: '$RT $METHOD(..., @$ANNO $TYPE $PARAM, ...) { ... }
+
+        '
+    - pattern: $PARAM
+    - metavariable-regex:
+        metavariable: $ANNO
+        regex: ^(RequestParam|PathVariable|RequestBody|RequestHeader|CookieValue)$
+  pattern-sinks:
+  - patterns:
+    - pattern-either:
+      - pattern: $S.executeQuery($Q, ...)
+      - pattern: $S.executeUpdate($Q, ...)
+      - pattern: $S.execute($Q, ...)
+      - pattern: $S.addBatch($Q)
+      - pattern: $C.prepareStatement($Q, ...)
+      - pattern: $C.prepareCall($Q, ...)
+      - pattern: $EM.createQuery($Q, ...)
+      - pattern: $EM.createNativeQuery($Q, ...)
+      - pattern: $J.queryForList($Q, ...)
+      - pattern: $J.queryForObject($Q, ...)
+      - pattern: $J.query($Q, ...)
+      - pattern: $J.update($Q, ...)
+    - pattern-not: super.execute(...)
+    - focus-metavariable: $Q
+  pattern-sanitizers:
+  - pattern: Integer.parseInt(...)
+  - pattern: Long.parseLong(...)
+  - pattern: Integer.valueOf(...)
+  - pattern: UUID.fromString(...)
+- id: team.java.audit.sql-api
+  languages:
+  - java
+  severity: INFO
+  message: An SQL execution API receives a non-literal query (audit hint).
+  metadata:
+    cwe: CWE-89
+    owasp: A03:2021
+    vuln_class: SQL_INJECTION
+    confidence: audit
+    severity: critical
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  patterns:
+  - pattern-either:
+    - pattern: $S.executeQuery($Q, ...)
+    - pattern: $S.executeUpdate($Q, ...)
+    - pattern: $C.prepareStatement($Q, ...)
+    - pattern: $EM.createQuery($Q, ...)
+    - pattern: $EM.createNativeQuery($Q, ...)
+  - pattern-not: $S.executeQuery("...", ...)
+  - pattern-not: $S.executeUpdate("...", ...)
+  - pattern-not: $C.prepareStatement("...", ...)
+  - pattern-not: $EM.createQuery("...", ...)
+- id: team.java.sqli-concat
+  languages:
+  - java
+  severity: WARNING
+  message: SQL text is built by string concatenation (audit).
+  metadata:
+    cwe: CWE-89
+    owasp: A03:2021
+    vuln_class: SQL_INJECTION
+    confidence: audit
+    severity: critical
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  pattern-either:
+  - pattern-regex: (?i)"\s*(?:select\s|insert\s+into|delete\s+from|update\s+\w+\s+set|where\s|order\s+by)[^"\n]*"\s*\+\s*[\w(]
+  - pattern-regex: (?i)"[^"\n]*\b(?:where|order\s+by|values\s*\()[^"\n]*"\s*\+\s*[\w(]
+- id: team.java.xss-taint
+  languages:
+  - java
+  severity: ERROR
+  message: Request data is written into the HTTP response without encoding.
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: high
+    severity: medium
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  mode: taint
+  pattern-sources:
+  - pattern: (javax.servlet.http.HttpServletRequest $R).$GET(...)
+  - pattern: (jakarta.servlet.http.HttpServletRequest $R).$GET(...)
+  - pattern: (HttpServletRequest $R).$GET(...)
+  - patterns:
+    - pattern-inside: '$RT $METHOD(..., @$ANNO(...) $TYPE $PARAM, ...) { ... }
+
+        '
+    - pattern: $PARAM
+    - metavariable-regex:
+        metavariable: $ANNO
+        regex: ^(RequestParam|PathVariable|RequestBody|RequestHeader|CookieValue)$
+  - patterns:
+    - pattern-inside: '$RT $METHOD(..., @$ANNO $TYPE $PARAM, ...) { ... }
+
+        '
+    - pattern: $PARAM
+    - metavariable-regex:
+        metavariable: $ANNO
+        regex: ^(RequestParam|PathVariable|RequestBody|RequestHeader|CookieValue)$
+  pattern-sinks:
+  - patterns:
+    - pattern-either:
+      - pattern: $RESP.getWriter().$W($X)
+      - pattern: (java.io.PrintWriter $PW).$W($X)
+      - pattern: (PrintWriter $PW).$W($X)
+      - pattern: (javax.servlet.jsp.JspWriter $JW).$W($X)
+    - metavariable-regex:
+        metavariable: $W
+        regex: ^(print|println|write|append|format|printf)$
+    - focus-metavariable: $X
+  pattern-sanitizers:
+  - pattern: Encode.forHtml(...)
+  - pattern: Encode.forHtmlContent(...)
+  - pattern: Encode.forHtmlAttribute(...)
+  - pattern: HtmlUtils.htmlEscape(...)
+  - pattern: StringEscapeUtils.escapeHtml4(...)
+  - pattern: ESAPI.encoder().encodeForHTML(...)
+  - pattern: Integer.parseInt(...)
+- id: team.java.audit.response-output
+  languages:
+  - java
+  severity: INFO
+  message: A non-literal value is written to the HTTP response (audit hint).
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: audit
+    severity: medium
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  patterns:
+  - pattern-either:
+    - pattern: $RESP.getWriter().$W($X)
+    - pattern: (PrintWriter $PW).$W($X)
+    - pattern: (javax.servlet.jsp.JspWriter $JW).$W($X)
+    - pattern: $RESP.getOutputStream().write($X)
+  - metavariable-regex:
+      metavariable: $W
+      regex: ^(print|println|write|append)$
+  - pattern-not: $RESP.getWriter().$W("...")
+  - pattern-not: (PrintWriter $PW).$W("...")
+- id: team.java.xss-html-concat
+  languages:
+  - java
+  severity: WARNING
+  message: HTML markup is concatenated with a variable (audit).
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: audit
+    severity: medium
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  pattern-regex: '"[^"\n]*<\/?[a-zA-Z][a-zA-Z0-9]*[\s>/][^"\n]*"\s*\+\s*(?!")[\w(]'
+- id: team.java.xss-writer-output
+  languages:
+  - java
+  severity: WARNING
+  message: A non-literal value is written to an HTML/XML writer or set as Jsoup element HTML (audit).
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: audit
+    severity: medium
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.1.0
+    ruleset_version: 4.2.0
+    change_v4: 'Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5). 1.1.0: write()
+      chi cho writer HTML/XML (FileWriter ghi file gay bao sai lop, train: 2/8).'
+  pattern-either:
+  - patterns:
+    - pattern-either:
+      - pattern: $P.print($X)
+      - pattern: $P.println($X)
+      - pattern: $P.printRaw($X)
+    - metavariable-regex:
+        metavariable: $P
+        regex: (?i)^(.*(printer|html|xml|jsp)\w*|out|.*(getprinter|getout)\(\))$
+    - pattern-not: $P.$W("...")
+    - pattern-not: System.out.$W(...)
+    - pattern-not: System.err.$W(...)
+  - patterns:
+    - pattern: $P.write($X)
+    - metavariable-regex:
+        metavariable: $P
+        regex: (?i)^(.*(html|xml)\w*|.*getprinter\(\))$
+    - pattern-not: $P.write("...")
+  - patterns:
+    - pattern: $EL.html($X)
+    - pattern-not: $EL.html("...")
+- id: team.js.auth-jwt-unverified
+  languages:
+  - javascript
+  - typescript
+  severity: ERROR
+  message: A JWT is decoded or verified without a real signature check.
+  metadata:
+    cwe: CWE-287
+    owasp: A07:2021
+    vuln_class: AUTHENTICATION_WEAKNESS
+    confidence: high
+    severity: high
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  pattern-either:
+  - pattern: '$JWT.verify($T, $K, {..., algorithms: [..., "none", ...], ...}, ...)'
+  - pattern: '$JWT.verify($T, $K, {..., ignoreExpiration: true, ...}, ...)'
+- id: team.js.auth-jwt-decode
+  languages:
+  - javascript
+  - typescript
+  severity: WARNING
+  message: jwt.decode() does not verify the signature; check it is not used for authentication (audit).
+  metadata:
+    cwe: CWE-287
+    owasp: A07:2021
+    vuln_class: AUTHENTICATION_WEAKNESS
+    confidence: audit
+    severity: high
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  pattern-either:
+  - pattern: jwt.decode($T, ...)
+  - pattern: jsonwebtoken.decode($T, ...)
+- id: team.js.auth-weak-password-hash
+  languages:
+  - javascript
+  - typescript
+  severity: WARNING
+  message: A fast/broken hash is used, possibly for passwords (audit).
+  metadata:
+    cwe: CWE-916
+    owasp: A02:2021
+    vuln_class: AUTHENTICATION_WEAKNESS
+    confidence: audit
+    severity: high
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  pattern-either:
+  - pattern: $CRYPTO.createHash("md5")
+  - pattern: $CRYPTO.createHash("sha1")
+  - pattern: md5($X)
+- id: team.js.hardcoded-password-compare
+  languages:
+  - javascript
+  - typescript
+  severity: ERROR
+  message: A password or secret is compared with a hardcoded literal.
+  metadata:
+    cwe: CWE-259
+    owasp: A07:2021
+    vuln_class: HARDCODED_CREDENTIALS
+    confidence: high
+    severity: high
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.1.0
+    ruleset_version: 4.2.0
+    change_v42: Bo so sanh voi chuoi 'undefined'/'null'/'true'/'false' (Juice Shop changePassword/resetPassword
+      - kiem tra rong, khong phai mat khau).
+    change_v4: Rule moi trong v4.
+  patterns:
+  - pattern-either:
+    - pattern: $P === "$LIT"
+    - pattern: '"$LIT" === $P'
+    - pattern: $P == "$LIT"
+    - pattern: '"$LIT" == $P'
+  - metavariable-regex:
+      metavariable: $P
+      regex: (?i)^[\w.$]*(password|passwd|pwd|secret|apikey|api_key)[\w.$]*$
+  - metavariable-regex:
+      metavariable: $LIT
+      regex: (?i)^(?!(?:undefined|null|true|false|none|nil|nan)$).{4,}$
+- id: team.js.hardcoded-secret
+  languages:
+  - javascript
+  - typescript
+  severity: ERROR
+  message: A credential or signing key is a hardcoded literal.
+  metadata:
+    cwe: CWE-798
+    owasp: A07:2021
+    vuln_class: HARDCODED_CREDENTIALS
+    confidence: high
+    severity: high
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  pattern-either:
+  - patterns:
+    - pattern-either:
+      - pattern: const $NAME = "$VAL"
+      - pattern: let $NAME = "$VAL"
+      - pattern: var $NAME = "$VAL"
+      - pattern: '{..., $NAME: "$VAL", ...}'
+    - metavariable-regex:
+        metavariable: $NAME
+        regex: (?i).*(password|passwd|pwd|secret|api_?key|access_?token|private_?key|jwt_?key|signing_?key).*
+    - metavariable-regex:
+        metavariable: $VAL
+        regex: ^.{4,}$
+  - pattern: $JWT.sign($P, "...", ...)
+  - pattern: $JWT.verify($T, "...", ...)
+- id: team.js.cmdi-taint
+  languages:
+  - javascript
+  - typescript
+  severity: ERROR
+  message: Request data reaches a shell command.
+  metadata:
+    cwe: CWE-78
+    owasp: A03:2021
+    vuln_class: OS_COMMAND_INJECTION
+    confidence: high
+    severity: critical
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  mode: taint
+  pattern-sources:
+  - pattern: $REQ.query
+  - pattern: $REQ.body
+  - pattern: $REQ.params
+  - pattern: $REQ.headers
+  - pattern: $REQ.cookies
+  pattern-sinks:
+  - patterns:
+    - pattern-either:
+      - pattern: $CP.exec($X, ...)
+      - pattern: $CP.execSync($X, ...)
+      - pattern: exec($X, ...)
+      - pattern: execSync($X, ...)
+      - pattern: $CP.spawn($X, ...)
+    - focus-metavariable: $X
+  pattern-sanitizers:
+  - pattern: parseInt(...)
+  - pattern: Number(...)
+  - pattern: parseFloat(...)
+  - pattern: $DB.escape(...)
+- id: team.js.cmd-shell
+  languages:
+  - javascript
+  - typescript
+  severity: WARNING
+  message: A process is started through a shell with a dynamic command (audit).
+  metadata:
+    cwe: CWE-78
+    owasp: A03:2021
+    vuln_class: OS_COMMAND_INJECTION
+    confidence: audit
+    severity: critical
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  pattern-either:
+  - pattern: $CP.exec("..." + $X, ...)
+  - pattern: $CP.execSync("..." + $X, ...)
+  - pattern: exec("..." + $X, ...)
+  - pattern: execSync("..." + $X, ...)
+  - pattern: $CP.exec(`...${$X}...`, ...)
+  - pattern: exec(`...${$X}...`, ...)
+  - pattern: '$CP.spawn($C, $ARGS, {..., shell: true, ...})'
+- id: team.js.audit.process-api
+  languages:
+  - javascript
+  - typescript
+  severity: INFO
+  message: A child process is started with a non-literal command (audit hint).
+  metadata:
+    cwe: CWE-78
+    owasp: A03:2021
+    vuln_class: OS_COMMAND_INJECTION
+    confidence: audit
+    severity: critical
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+    change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
+  patterns:
+  - pattern-either:
+    - patterns:
+      - pattern-either:
+        - pattern: $CP.exec($X, ...)
+        - pattern: $CP.execSync($X, ...)
+        - pattern: $CP.spawn($X, ...)
+        - pattern: $CP.spawnSync($X, ...)
+        - pattern: $CP.execFile($X, ...)
+        - pattern: $CP.execFileSync($X, ...)
+      - metavariable-regex:
+          metavariable: $CP
+          regex: ^(cp|child_process|childProcess|child|proc|shell|shelljs|sh|execa|childprocess|this)$
+    - pattern: exec($X, ...)
+    - pattern: execSync($X, ...)
+    - pattern: spawn($X, ...)
+    - pattern: execa($X, ...)
+  - pattern-not: $CP.$F("...", ...)
+  - pattern-not: $F("...", ...)
+- id: team.js.path-taint
+  languages:
+  - javascript
+  - typescript
+  severity: ERROR
+  message: Request data is used as a file system path.
+  metadata:
+    cwe: CWE-22
+    owasp: A01:2021
+    vuln_class: PATH_TRAVERSAL
+    confidence: high
+    severity: high
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  mode: taint
+  pattern-sources:
+  - pattern: $REQ.query
+  - pattern: $REQ.body
+  - pattern: $REQ.params
+  - pattern: $REQ.headers
+  - pattern: $REQ.cookies
+  pattern-sinks:
+  - patterns:
+    - pattern-either:
+      - pattern: $FS.$FN($X, ...)
+      - pattern: $RES.sendFile($X, ...)
+      - pattern: $RES.download($X, ...)
+      - pattern: $PATH.join($BASE, ..., $X, ...)
+      - pattern: $PATH.resolve($BASE, ..., $X, ...)
+    - metavariable-regex:
+        metavariable: $FN
+        regex: ^(readFile|readFileSync|createReadStream|writeFile|writeFileSync|createWriteStream|unlink|unlinkSync|appendFile|readdir|stat|access)$
+    - focus-metavariable: $X
+  - patterns:
+    - pattern-either:
+      - pattern: $RES.sendFile($X, ...)
+      - pattern: $RES.download($X, ...)
+    - focus-metavariable: $X
+  pattern-sanitizers:
+  - pattern: $PATH.basename(...)
+  - pattern: basename(...)
+- id: team.js.audit.fs-path-api
+  languages:
+  - javascript
+  - typescript
+  severity: INFO
+  message: A file system API receives a non-literal path (audit hint).
+  metadata:
+    cwe: CWE-22
+    owasp: A01:2021
+    vuln_class: PATH_TRAVERSAL
+    confidence: audit
+    severity: high
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.1.0
+    ruleset_version: 4.2.0
+    change_v42: Bo duong dan ghep toan hang so (path.resolve('...'), path.join(__dirname, '...')) - Juice Shop angular.ts.
+    change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
+  pattern-either:
+  - patterns:
+    - pattern: $FS.$FN($P, ...)
+    - pattern-not: $FS.$FN("...", ...)
+    - pattern-not: $X.$F(path.$J("..."), ...)
+    - pattern-not: $X.$F(path.$J("...", "..."), ...)
+    - pattern-not: $X.$F(path.$J(__dirname, "..."), ...)
+    - pattern-not: $X.$F(path.$J(__dirname, "...", "..."), ...)
+    - metavariable-regex:
+        metavariable: $FS
+        regex: ^(fs|fse|fsp|fsExtra|fs\.promises|fsPromises|fspath|promises)$
+    - metavariable-regex:
+        metavariable: $FN
+        regex: ^(readFile|readFileSync|createReadStream|writeFile|writeFileSync|createWriteStream|unlink|unlinkSync|readdir|readdirSync|stat|statSync|lstat|lstatSync|existsSync|access|accessSync|mkdir|mkdirSync|rmdir|rmdirSync|rm|rmSync|rename|renameSync|copyFile|copyFileSync|appendFile|appendFileSync|remove|removeSync|outputFile|outputFileSync)$
+  - patterns:
+    - pattern-either:
+      - pattern: $RES.sendFile($P, ...)
+      - pattern: $RES.download($P, ...)
+    - pattern-not: $RES.$M("...", ...)
+    - pattern-not: $X.$F(path.$J("..."), ...)
+    - pattern-not: $X.$F(path.$J("...", "..."), ...)
+    - pattern-not: $X.$F(path.$J(__dirname, "..."), ...)
+    - pattern-not: $X.$F(path.$J(__dirname, "...", "..."), ...)
+- id: team.js.sqli-taint
+  languages:
+  - javascript
+  - typescript
+  severity: ERROR
+  message: Request data reaches an SQL query string.
+  metadata:
+    cwe: CWE-89
+    owasp: A03:2021
+    vuln_class: SQL_INJECTION
+    confidence: high
+    severity: critical
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  mode: taint
+  pattern-sources:
+  - pattern: $REQ.query
+  - pattern: $REQ.body
+  - pattern: $REQ.params
+  - pattern: $REQ.headers
+  - pattern: $REQ.cookies
+  pattern-sinks:
+  - patterns:
+    - pattern-either:
+      - pattern: $DB.$QUERY($Q, ...)
+    - metavariable-regex:
+        metavariable: $QUERY
+        regex: ^(query|execute|raw|run|all|get)$
+    - metavariable-regex:
+        metavariable: $DB
+        regex: (?i).*(db|conn|pool|client|knex|sequelize|sql|database|connection|pg|mysql|sqlite|models?).*
+    - focus-metavariable: $Q
+  pattern-sanitizers:
+  - pattern: parseInt(...)
+  - pattern: Number(...)
+  - pattern: parseFloat(...)
+  - pattern: $DB.escape(...)
+- id: team.js.sqli-string
+  languages:
+  - javascript
+  - typescript
+  severity: WARNING
+  message: SQL text is built by concatenation or template interpolation (audit).
+  metadata:
+    cwe: CWE-89
+    owasp: A03:2021
+    vuln_class: SQL_INJECTION
+    confidence: audit
+    severity: critical
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  pattern-either:
+  - pattern-regex: (?i)[`'"]\s*(?:select\s|insert\s+into|delete\s+from|update\s+\w+\s+set)[^`'"\n]*(?:\$\{|[`'"]\s*\+\s*[\w(])
+  - pattern-regex: (?i)[`'"][^`'"\n]*\b(?:where|order\s+by|values\s*\()[^`'"\n]*(?:\$\{|[`'"]\s*\+\s*[\w(])
+- id: team.js.sqli-dynamic-query
+  languages:
+  - javascript
+  - typescript
+  severity: WARNING
+  message: A database query receives a string built by concatenation or template interpolation (audit).
+  metadata:
+    cwe: CWE-89
+    owasp: A03:2021
+    vuln_class: SQL_INJECTION
+    confidence: audit
+    severity: critical
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+    change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
+  pattern-either:
+  - patterns:
+    - pattern-either:
+      - pattern: $DB.$M($A + $B, ...)
+      - pattern: $DB.$M(`...${$X}...`, ...)
+    - metavariable-regex:
+        metavariable: $M
+        regex: ^(query|execute|raw|exec|prepare|unsafe)$
+    - metavariable-regex:
+        metavariable: $DB
+        regex: (?i).*(db|conn|pool|client|knex|sequelize|sql|database|connection|pg|mysql|sqlite|models?|tx|trx|manager|repository)$
+  - pattern: $SEQ.literal($A + $B)
+  - pattern: $SEQ.literal(`...${$X}...`)
+- id: team.js.audit.sql-api
+  languages:
+  - javascript
+  - typescript
+  severity: INFO
+  message: A database query API receives a non-literal query (audit hint).
+  metadata:
+    cwe: CWE-89
+    owasp: A03:2021
+    vuln_class: SQL_INJECTION
+    confidence: audit
+    severity: critical
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+    change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
+  patterns:
+  - pattern: $DB.$M($Q, ...)
+  - pattern-not: $DB.$M("...", ...)
+  - metavariable-regex:
+      metavariable: $M
+      regex: ^(query|execute|raw|exec|unsafe)$
+  - metavariable-regex:
+      metavariable: $DB
+      regex: (?i).*(db|conn|pool|client|knex|sequelize|sql|database|connection|pg|mysql|sqlite|models?|tx|trx)$
+  - metavariable-regex:
+      metavariable: $Q
+      regex: ^[A-Za-z_$][\w$.]*$
+- id: team.js.xss-taint
+  languages:
+  - javascript
+  - typescript
+  severity: ERROR
+  message: Request data is written into an HTML response or the DOM without encoding.
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: high
+    severity: medium
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  mode: taint
+  pattern-sources:
+  - pattern: $REQ.query
+  - pattern: $REQ.body
+  - pattern: $REQ.params
+  - pattern: $REQ.headers
+  - pattern: $REQ.cookies
+  pattern-sinks:
+  - patterns:
+    - pattern-either:
+      - pattern: $RES.send($X)
+      - pattern: $RES.write($X)
+      - pattern: $RES.end($X)
+    - focus-metavariable: $X
+  pattern-sanitizers:
+  - pattern: escape(...)
+  - pattern: escapeHtml(...)
+  - pattern: encodeURIComponent(...)
+  - pattern: DOMPurify.sanitize(...)
+  - pattern: $HE.encode(...)
+  - pattern: parseInt(...)
+  - pattern: JSON.stringify(...)
+- id: team.js.xss-dom-sink
+  languages:
+  - javascript
+  - typescript
+  severity: WARNING
+  message: A value is inserted as raw HTML into the page (audit).
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: audit
+    severity: medium
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  patterns:
+  - pattern-either:
+    - pattern: $EL.innerHTML = $X
+    - pattern: $EL.outerHTML = $X
+    - pattern: document.write($X)
+    - pattern: $EL.insertAdjacentHTML($POS, $X)
+    - pattern: $S.bypassSecurityTrustHtml($X)
+    - pattern: $J.html($X)
+  - pattern-not: $EL.innerHTML = "..."
+  - pattern-not: $EL.innerHTML = ''
+  - pattern-not: document.write("...")
+  - pattern-not: $J.html("...")
+- id: team.js.xss-html-concat
+  languages:
+  - javascript
+  - typescript
+  severity: WARNING
+  message: HTML markup is concatenated with a value (audit).
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: audit
+    severity: medium
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  pattern-either:
+  - pattern-regex: '[''"][^''"\n]*<\/?[a-zA-Z][a-zA-Z0-9]*[\s>/][^''"\n]*[''"]\s*\+\s*(?![''"])[\w(]'
+  - pattern-regex: '`[^`\n]*<\/?[a-zA-Z][a-zA-Z0-9]*[\s>/][^`\n]*\$\{'
+- id: team.js.xss-jquery-insert
+  languages:
+  - javascript
+  - typescript
+  severity: WARNING
+  message: A non-literal value is inserted into the DOM with jQuery append/prepend/after/before/replaceWith (audit).
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: audit
+    severity: medium
+    scope: JavaScript/TypeScript; Node.js, Express, child_process, fs, DOM, jQuery, jsonwebtoken
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+    change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
+  patterns:
+  - pattern-either:
+    - pattern: $E.append($X)
+    - pattern: $E.prepend($X)
+    - pattern: $E.after($X)
+    - pattern: $E.before($X)
+    - pattern: $E.replaceWith($X)
+  - pattern-not: $E.$M("...")
+  - pattern-not: $E.$M(document.createTextNode(...))
+  - metavariable-regex:
+      metavariable: $E
+      regex: (?i)^((\$|jquery)\(.*|[\w.$]*(el|elem|element|container|wrapper|div|row|list|table|tbody|body|node|panel|target|parent|box|area|holder|item|li|ul|span|cell|td|tr|html|content|dom))$
+- id: team.php.auth-weak-password-hash
+  languages:
+  - php
+  severity: WARNING
+  message: md5()/sha1() used on a password (audit).
+  metadata:
+    cwe: CWE-916
+    owasp: A02:2021
+    vuln_class: AUTHENTICATION_WEAKNESS
+    confidence: audit
+    severity: high
+    scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
+    rule_version: 1.1.0
+    ruleset_version: 4.2.0
+    change_v4: Ten bien phai la mot tu ve mat khau ($pass, $user_password), khong khop chuoi con.
+  pattern-either:
+  - patterns:
+    - pattern-either:
+      - pattern: md5($P)
+      - pattern: sha1($P)
+    - metavariable-regex:
+        metavariable: $P
+        regex: (?i)^['"$]?(\w*_)?(pass|password|passwd|pwd|secret)(_\w*)?['"]?$
+  - patterns:
+    - pattern-either:
+      - pattern: md5($ARR[$K])
+      - pattern: sha1($ARR[$K])
+    - metavariable-regex:
+        metavariable: $K
+        regex: (?i)^['"$]?(\w*_)?(pass|password|passwd|pwd|secret)(_\w*)?['"]?$
+- id: team.php.audit.auth-code
+  languages:
+  - php
+  severity: INFO
+  message: Authentication-sensitive code (login/permission functions, session user) (audit hint).
+  metadata:
+    cwe: CWE-287
+    owasp: A07:2021
+    vuln_class: AUTHENTICATION_WEAKNESS
+    confidence: audit
+    severity: high
+    scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
+    rule_version: 1.1.0
+    ruleset_version: 4.2.0
+    change_v4: 'Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5). 1.1.0: bo password_verify
+      (ham an toan, train: dung lop 10/20).'
+  pattern-either:
+  - pattern: $X->is_granted(...)
+  - pattern: $X->isGranted(...)
+  - patterns:
+    - pattern: $_SESSION[$K] = $V;
+    - metavariable-regex:
+        metavariable: $K
+        regex: (?i).*(user|login|auth|logged).*
+  - patterns:
+    - pattern: function $F(...) { ... }
+    - metavariable-regex:
+        metavariable: $F
+        regex: (?i)^(login|logout|authenticate|checkPassword|verifyPassword|checkLogin|isGranted|isAuthenticated|storeUser|validateToken|checkToken|checkAuth|doLogin)$
+- id: team.php.hardcoded-password-compare
+  languages:
+  - php
+  severity: ERROR
+  message: A password or secret is compared with a hardcoded literal.
+  metadata:
+    cwe: CWE-259
+    owasp: A07:2021
+    vuln_class: HARDCODED_CREDENTIALS
+    confidence: high
+    severity: high
+    scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+    change_v4: Rule moi trong v4.
+  patterns:
+  - pattern-either:
+    - pattern: $P === "$LIT"
+    - pattern: $P == "$LIT"
+    - pattern: '"$LIT" === $P'
+    - pattern: '"$LIT" == $P'
+  - metavariable-regex:
+      metavariable: $P
+      regex: (?i)^\$[\w\[\]'"\->]*(password|passwd|pwd|secret|api_?key)[\w\[\]'"\->]*$
+  - metavariable-regex:
+      metavariable: $LIT
+      regex: ^.{4,}$
+- id: team.php.hardcoded-secret
+  languages:
+  - php
+  severity: ERROR
+  message: A credential is a hardcoded literal.
+  metadata:
+    cwe: CWE-798
+    owasp: A07:2021
+    vuln_class: HARDCODED_CREDENTIALS
+    confidence: high
+    severity: high
+    scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  pattern-either:
+  - patterns:
+    - pattern: $VAR = '$VAL';
+    - metavariable-regex:
+        metavariable: $VAR
+        regex: (?i).*(password|passwd|pwd|secret|api_?key|access_?token|private_?key).*
+    - metavariable-regex:
+        metavariable: $VAL
+        regex: ^.{4,}$
+  - patterns:
+    - pattern: $ARR['$KEY'] = '$VAL';
+    - metavariable-regex:
+        metavariable: $KEY
+        regex: (?i).*(password|passwd|pwd|secret|api_?key|access_?token).*
+    - metavariable-regex:
+        metavariable: $VAL
+        regex: ^.{4,}$
+  - patterns:
+    - pattern: define('$KEY', '$VAL');
+    - metavariable-regex:
+        metavariable: $KEY
+        regex: (?i).*(password|passwd|pwd|secret|api_?key|token).*
+    - metavariable-regex:
+        metavariable: $VAL
+        regex: ^.{4,}$
+  - pattern: new PDO($DSN, $USER, '...')
+  - pattern: mysqli_connect($H, $U, '...', ...)
+- id: team.php.cmdi-taint
+  languages:
+  - php
+  severity: ERROR
+  message: Request data reaches a shell command.
+  metadata:
+    cwe: CWE-78
+    owasp: A03:2021
+    vuln_class: OS_COMMAND_INJECTION
+    confidence: high
+    severity: critical
+    scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  mode: taint
+  pattern-sources:
+  - pattern: $_GET
+  - pattern: $_POST
+  - pattern: $_REQUEST
+  - pattern: $_COOKIE
+  - pattern: $_SERVER['QUERY_STRING']
+  - pattern: $_SERVER['REQUEST_URI']
+  - pattern: $_SERVER['HTTP_USER_AGENT']
+  pattern-sinks:
+  - patterns:
+    - pattern-either:
+      - pattern: shell_exec($X, ...)
+      - pattern: exec($X, ...)
+      - pattern: system($X, ...)
+      - pattern: passthru($X, ...)
+      - pattern: popen($X, ...)
+      - pattern: proc_open($X, ...)
+      - pattern: pcntl_exec($X, ...)
+    - focus-metavariable: $X
+  pattern-sanitizers:
+  - pattern: escapeshellarg(...)
+  - pattern: intval(...)
+  - pattern: (int) $X
+- id: team.php.cmd-dynamic
+  languages:
+  - php
+  severity: WARNING
+  message: A shell command is built from a variable (audit).
+  metadata:
+    cwe: CWE-78
+    owasp: A03:2021
+    vuln_class: OS_COMMAND_INJECTION
+    confidence: audit
+    severity: critical
+    scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  patterns:
+  - pattern-either:
+    - pattern: shell_exec("..." . $X)
+    - pattern: exec("..." . $X, ...)
+    - pattern: system("..." . $X, ...)
+    - pattern: passthru("..." . $X, ...)
+    - pattern: shell_exec($X)
+  - pattern-not: shell_exec("...")
+  - pattern-not: shell_exec("..." . escapeshellarg($Y))
+  - pattern-not: exec("..." . escapeshellarg($Y), ...)
+  - pattern-not: system("..." . escapeshellarg($Y), ...)
+  - pattern-not: passthru("..." . escapeshellarg($Y), ...)
+- id: team.php.audit.process-api
+  languages:
+  - php
+  severity: INFO
+  message: A shell or process function receives a non-literal command (audit hint).
+  metadata:
+    cwe: CWE-78
+    owasp: A03:2021
+    vuln_class: OS_COMMAND_INJECTION
+    confidence: audit
+    severity: critical
+    scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+    change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
+  patterns:
+  - pattern-either:
+    - pattern: exec($X, ...)
+    - pattern: shell_exec($X)
+    - pattern: system($X, ...)
+    - pattern: passthru($X, ...)
+    - pattern: popen($X, ...)
+    - pattern: proc_open($X, ...)
+    - pattern: pcntl_exec($X, ...)
+    - pattern: escapeshellcmd($X)
+  - pattern-not: $F("...", ...)
+- id: team.php.path-taint
+  languages:
+  - php
+  severity: ERROR
+  message: Request data is used as a file path or included file.
+  metadata:
+    cwe: CWE-22
+    owasp: A01:2021
+    vuln_class: PATH_TRAVERSAL
+    confidence: high
+    severity: high
+    scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  mode: taint
+  pattern-sources:
+  - pattern: $_GET
+  - pattern: $_POST
+  - pattern: $_REQUEST
+  - pattern: $_COOKIE
+  - pattern: $_SERVER['QUERY_STRING']
+  - pattern: $_SERVER['REQUEST_URI']
+  - pattern: $_SERVER['HTTP_USER_AGENT']
+  pattern-sinks:
+  - patterns:
+    - pattern-either:
+      - pattern: include $X;
+      - pattern: include_once $X;
+      - pattern: require $X;
+      - pattern: require_once $X;
+      - pattern: file_get_contents($X, ...)
+      - pattern: fopen($X, ...)
+      - pattern: readfile($X, ...)
+      - pattern: file($X, ...)
+      - pattern: unlink($X, ...)
+      - pattern: file_put_contents($X, ...)
+      - pattern: copy($X, ...)
+    - focus-metavariable: $X
+  pattern-sanitizers:
+  - pattern: basename(...)
+  - pattern: intval(...)
+- id: team.php.sqli-taint
+  languages:
+  - php
+  severity: ERROR
+  message: Request data reaches an SQL query.
+  metadata:
+    cwe: CWE-89
+    owasp: A03:2021
+    vuln_class: SQL_INJECTION
+    confidence: high
+    severity: critical
+    scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  mode: taint
+  pattern-sources:
+  - pattern: $_GET
+  - pattern: $_POST
+  - pattern: $_REQUEST
+  - pattern: $_COOKIE
+  - pattern: $_SERVER['QUERY_STRING']
+  - pattern: $_SERVER['REQUEST_URI']
+  - pattern: $_SERVER['HTTP_USER_AGENT']
+  pattern-sinks:
+  - patterns:
+    - pattern-either:
+      - pattern: mysqli_query($C, $Q, ...)
+      - pattern: mysql_query($Q, ...)
+      - pattern: pg_query($C, $Q)
+      - pattern: sqlite_query($C, $Q)
+      - pattern: $DB->query($Q, ...)
+      - pattern: $DB->exec($Q)
+      - pattern: $DB->prepare($Q, ...)
+      - pattern: mysqli_prepare($C, $Q)
+    - focus-metavariable: $Q
+  pattern-sanitizers:
+  - pattern: intval(...)
+  - pattern: (int) $X
+  - pattern: floatval(...)
+  - pattern: $DB->quote(...)
+  - pattern: mysqli_real_escape_string(...)
+  - pattern: is_numeric(...)
+- id: team.php.sqli-string
+  languages:
+  - php
+  severity: WARNING
+  message: SQL text is built by concatenation or interpolation (audit).
+  metadata:
+    cwe: CWE-89
+    owasp: A03:2021
+    vuln_class: SQL_INJECTION
+    confidence: audit
+    severity: critical
+    scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  pattern-either:
+  - pattern-regex: (?i)["'](?:select\s|insert\s+into|delete\s+from|update\s+\w+\s+set)[^"'\n]*(?:["']\s*\.\s*\$|\$\w)
+  - pattern-regex: (?i)["'][^"'\n]*\b(?:where|order\s+by|values\s*\()[^"'\n]*(?:["']\s*\.\s*\$|\$\w)
+- id: team.php.audit.sql-api
+  languages:
+  - php
+  severity: INFO
+  message: An SQL API receives a dynamic query (audit hint).
+  metadata:
+    cwe: CWE-89
+    owasp: A03:2021
+    vuln_class: SQL_INJECTION
+    confidence: audit
+    severity: critical
+    scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+    change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
+  patterns:
+  - pattern-either:
+    - pattern: $DB->query($Q, ...)
+    - pattern: $DB->exec($Q)
+    - pattern: $DB->get_results($Q, ...)
+    - pattern: $DB->get_row($Q, ...)
+    - pattern: $DB->get_var($Q, ...)
+    - pattern: $DB->get_col($Q, ...)
+    - pattern: mysqli_query($C, $Q, ...)
+    - pattern: mysql_query($Q, ...)
+    - pattern: pg_query($C, $Q)
+    - pattern: $S->where($Q, ...)
+    - patterns:
+      - pattern: $DB->execute($Q, ...)
+      - metavariable-regex:
+          metavariable: $DB
+          regex: (?i)^\$(this->)?(z?db|conn\w*|adapter|pdo|mysqli?|database|\w*_db|dbh)$
+  - metavariable-regex:
+      metavariable: $Q
+      regex: (?s).*\$
+- id: team.php.xss-taint
+  languages:
+  - php
+  severity: ERROR
+  message: Request data is echoed into the page without encoding.
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: high
+    severity: medium
+    scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  mode: taint
+  pattern-sources:
+  - pattern: $_GET
+  - pattern: $_POST
+  - pattern: $_REQUEST
+  - pattern: $_COOKIE
+  - pattern: $_SERVER['PHP_SELF']
+  - pattern: $_SERVER['REQUEST_URI']
+  - pattern: $_SERVER['QUERY_STRING']
+  pattern-sinks:
+  - patterns:
+    - pattern-either:
+      - pattern: echo $X;
+      - pattern: print($X);
+      - pattern: printf($X, ...);
+      - pattern: die($X);
+      - pattern: exit($X);
+    - focus-metavariable: $X
+  pattern-sanitizers:
+  - pattern: htmlspecialchars(...)
+  - pattern: htmlentities(...)
+  - pattern: intval(...)
+  - pattern: (int) $X
+  - pattern: urlencode(...)
+  - pattern: json_encode(...)
+- id: team.php.xss-html-concat
+  languages:
+  - php
+  severity: WARNING
+  message: HTML markup is concatenated with a variable (audit).
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: audit
+    severity: medium
+    scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  pattern-either:
+  - pattern-regex: '["''][^"''\n]*<\/?[a-zA-Z][a-zA-Z0-9]*[\s>/][^"''\n]*["'']\s*\.\s*\$\w'
+  - pattern-regex: '"[^"\n]*<\/?[a-zA-Z][a-zA-Z0-9]*[\s>/][^"\n]*\{?\$\w[^"\n]*"'
+- id: team.php.audit.echo-unescaped
+  languages:
+  - php
+  severity: INFO
+  message: A variable is echoed into the page without an escaping function (audit hint).
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: audit
+    severity: medium
+    scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+    change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
+  patterns:
+  - pattern-either:
+    - pattern: echo $X;
+    - pattern: print($X);
+  - metavariable-regex:
+      metavariable: $X
+      regex: (?s).*\$\w
+  - pattern-not: echo htmlspecialchars(...);
+  - pattern-not: echo htmlentities(...);
+  - pattern-not: echo esc_html(...);
+  - pattern-not: echo esc_attr(...);
+  - pattern-not: echo esc_url(...);
+  - pattern-not: echo intval(...);
+  - pattern-not: echo json_encode(...);
+  - pattern-not: echo (int) $Y;
+- id: team.php.xss-template-request
+  languages:
+  - regex
+  paths:
+    include:
+    - '*.php'
+    - '*.phtml'
+  severity: ERROR
+  message: A PHP template prints request data ($_GET/$_POST/$_REQUEST/$_COOKIE or a request $_SERVER key) directly
+    with <?= / echo / print, without an escaping function.
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: high
+    severity: medium
+    scope: PHP template (HTML + <?= ?>, <?php echo ?>); regex rule because Semgrep's PHP parser fails on mixed HTML/PHP
+      fragments (PARSE_ERROR/PARTIAL_PARSE)
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+    change_v42: Rule moi trong v4.2.0. Mau PHP XSS bi bo sot tren train v5 phan lon la file template khong parse
+      duoc nen moi rule php (ke ca pattern-regex) deu khong chay. Train v5 - 44 lan bao, 43 dung lop XSS; cap a01
+      train - bao 44 ban loi, 2 ban da va.
+  pattern-regex: <\?(?:=|php\s+(?:echo|print)\b)\s*(?:isset\s*\([^()\n]*\)\s*\?\s*)?(?:['"][^'"\n]*['"]\s*\.\s*)?(?:(?:trim|ltrim|rtrim|ucfirst|ucwords|strtolower|strtoupper|stripslashes|urldecode|rawurldecode|base64_decode|nl2br|substr|str_replace|sprintf)\s*\(\s*)?\(?\s*(?:\$_(?:GET|POST|REQUEST|COOKIE)\b|\$_SERVER\s*\[\s*['"](?:PHP_SELF|REQUEST_URI|QUERY_STRING|HTTP_REFERER|HTTP_USER_AGENT|HTTP_HOST|PATH_INFO))
+- id: team.php.audit.xss-template-echo
+  languages:
+  - regex
+  paths:
+    include:
+    - '*.php'
+    - '*.phtml'
+  severity: INFO
+  message: A PHP template prints a variable with <?= / echo / print without an escaping function (audit hint).
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: audit
+    severity: medium
+    scope: PHP template (HTML + <?= ?>, <?php echo ?>); regex rule because Semgrep's PHP parser fails on mixed HTML/PHP
+      fragments (PARSE_ERROR/PARTIAL_PARSE)
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+    change_v42: Rule moi trong v4.2.0. Train v5 - 120 lan bao, 114 dung lop XSS (0,95); khong phan biet tot ban
+      loi/ban va (cap a01 train 122/96) nen chi o tang audit.
+  pattern-regex: <\?(?:=|php\s+(?:echo|print)\b)(?![^?;\n]*\b(?:htmlspecialchars|htmlentities|esc_html|esc_attr|esc_url|esc_js|esc_textarea|wp_kses\w*|intval|floatval|urlencode|rawurlencode|json_encode|filter_var|number_format|strip_tags|e|h|escape\w*|_e|__)\s*\()\s*\$(?!_)[A-Za-z_]\w*(?:->\w+|\[[^\]\n]*\])*\s*;?\s*\?>
+- id: team.authentication-weakness
+  languages:
+  - python
+  severity: WARNING
+  message: Authentication or token verification appears to be disabled.
+  metadata:
+    cwe: CWE-287
+    owasp: A07:2021
+    vuln_class: AUTHENTICATION_WEAKNESS
+    confidence: high
+    severity: high
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  pattern-either:
+  - pattern: 'jwt.decode(..., options={"verify_signature": False}, ...)'
+  - pattern: jwt.decode(..., verify=False, ...)
+  - pattern: jwt.decode(..., algorithms=["none"], ...)
+- id: team.audit.auth-code
+  languages:
+  - python
+  severity: INFO
+  message: Authentication-sensitive code (token/session/password/signature checks) (audit hint).
+  metadata:
+    cwe: CWE-287
+    owasp: A07:2021
+    vuln_class: AUTHENTICATION_WEAKNESS
+    confidence: audit
+    severity: high
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.1.0
+    ruleset_version: 4.2.0
+    change_v42: Bo hmac.compare_digest/check_password/check_password_hash - day la API AN TOAN duoc khuyen nghi,
+      rule khong duoc bao chinh cach sua.
+  pattern-either:
+  - pattern: jwt.decode(...)
+  - pattern: authenticate(...)
+  - pattern: login_user(...)
+  - pattern: $X.verify_signature(...)
+  - pattern: $X.validate_signature(...)
+  - patterns:
+    - pattern: "def $F(...):\n  ...\n"
+    - metavariable-regex:
+        metavariable: $F
+        regex: (?i)^(login|logout|authenticate|verify_(token|signature|password)|check_(auth|password|token)|is_authenticated|has_perm)
+- id: team.auth-secret-equality
+  languages:
+  - python
+  severity: WARNING
+  message: A secret, token or signature is compared with a plain equality operator.
+  metadata:
+    cwe: CWE-287
+    owasp: A07:2021
+    vuln_class: AUTHENTICATION_WEAKNESS
+    confidence: audit
+    severity: high
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.1.0
+    ruleset_version: 4.2.0
+    change_v4: Chi xet bien/thuoc tinh (khong xet bieu thuc goi ham); bo so sanh voi hang so (chuyen sang rule hardcoded-password-compare).
+  patterns:
+  - pattern-either:
+    - pattern: $A == $B
+    - pattern: $A != $B
+  - pattern-not: $A == None
+  - pattern-not: $A != None
+  - pattern-not: $A == "..."
+  - pattern-not: $A != "..."
+  - pattern-not: '"..." == $A'
+  - pattern-not: '"..." != $A'
+  - pattern-not: $A == True
+  - pattern-not: $A == False
+  - pattern-not: $A == 0
+  - metavariable-regex:
+      metavariable: $A
+      regex: (?i)^[\w.\[\]'"]*(password|passwd|token|secret|signature|digest|hmac|api_?key|nonce)[\w.\[\]'"]*$
+- id: team.auth-session-fixation
+  languages:
+  - python
+  severity: WARNING
+  message: A login function stores the user in the session without regenerating it (audit).
+  metadata:
+    cwe: CWE-384
+    owasp: A07:2021
+    vuln_class: AUTHENTICATION_WEAKNESS
+    confidence: audit
+    severity: high
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  patterns:
+  - pattern-inside: "def $FUNC(...):\n  ...\n"
+  - metavariable-regex:
+      metavariable: $FUNC
+      regex: (?i).*(login|log_in|signin|sign_in|authenticate).*
+  - pattern: session[$KEY] = $VALUE
+  - pattern-not-inside: 'session.clear()
+
+      ...
+
+      '
+  - pattern-not-inside: '$REQ.session.cycle_key()
+
+      ...
+
+      '
+  - pattern-not-inside: 'session.regenerate()
+
+      ...
+
+      '
+- id: team.auth-weak-password-hash
+  languages:
+  - python
+  severity: WARNING
+  message: A fast/broken hash is applied to a password (audit).
+  metadata:
+    cwe: CWE-916
+    owasp: A02:2021
+    vuln_class: AUTHENTICATION_WEAKNESS
+    confidence: audit
+    severity: high
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  patterns:
+  - pattern-either:
+    - pattern: hashlib.md5($X, ...)
+    - pattern: hashlib.sha1($X, ...)
+    - pattern: hashlib.md5($X.encode(...))
+    - pattern: hashlib.sha1($X.encode(...))
+  - metavariable-regex:
+      metavariable: $X
+      regex: (?i).*(pass|pwd|secret).*
+- id: team.hardcoded-auth-header
+  languages:
+  - python
+  severity: WARNING
+  message: An Authorization header or signing key is a hardcoded literal.
+  metadata:
+    cwe: CWE-798
+    owasp: A07:2021
+    vuln_class: HARDCODED_CREDENTIALS
+    confidence: high
+    severity: high
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  pattern-either:
+  - pattern-regex: (?i)["']Authorization["']\s*:\s*["'](?:Bearer|Basic|Token)\s+[A-Za-z0-9._~+/=-]{8,}["']
+  - pattern: jwt.encode($PAYLOAD, "...", ...)
+  - pattern: hmac.new("...", ...)
+- id: team.hardcoded-credentials
+  languages:
+  - python
+  severity: WARNING
+  message: A credential-like variable appears to contain a hardcoded string.
+  metadata:
+    cwe: CWE-798
+    owasp: A07:2021
+    vuln_class: HARDCODED_CREDENTIALS
+    confidence: high
+    severity: high
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  pattern-regex: (?i)\b\w*(?:password|passwd|pwd|secret|api[_-]?key|access[_-]?token|auth[_-]?token|private[_-]?key)\w*["']?\s*[=:]\s*["'][^"'\s]{4,}["']
+- id: team.py.hardcoded-password-compare
+  languages:
+  - python
+  severity: ERROR
+  message: A password or secret is compared with a hardcoded literal.
+  metadata:
+    cwe: CWE-259
+    owasp: A07:2021
+    vuln_class: HARDCODED_CREDENTIALS
+    confidence: high
+    severity: high
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+    change_v4: Rule moi trong v4.
+  patterns:
+  - pattern-either:
+    - pattern: $P == "$LIT"
+    - pattern: '"$LIT" == $P'
+  - metavariable-regex:
+      metavariable: $P
+      regex: (?i)^[\w.\[\]'"]*(password|passwd|pwd|secret|api_?key)[\w.\[\]'"]*$
+  - metavariable-regex:
+      metavariable: $LIT
+      regex: ^.{4,}$
+- id: team.os-command-injection
+  languages:
+  - python
+  severity: WARNING
+  message: A shell command is constructed or invoked through an unsafe API.
+  metadata:
+    cwe: CWE-78
+    owasp: A03:2021
+    vuln_class: OS_COMMAND_INJECTION
+    confidence: high
+    severity: critical
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.1.0
+    ruleset_version: 4.2.0
+    change_v4: Bo qua lenh la hang chuoi (vi du os.system("service nginx restart")).
+  patterns:
+  - pattern-either:
+    - pattern: os.system($COMMAND)
+    - pattern: os.popen($COMMAND, ...)
+    - pattern: subprocess.$F(..., shell=True, ...)
+    - pattern: commands.getoutput(...)
+    - patterns:
+      - pattern: os.$EXEC(...)
+      - metavariable-regex:
+          metavariable: $EXEC
+          regex: ^(?:exec[lv]p?e?|spawn[lv]p?e?)$
+    - pattern-regex: (?i)\bsubprocess\.(?:Popen|run|call|check_call|check_output|getoutput|getstatusoutput)\s*\([^)\n]*shell\s*=\s*True
+  - pattern-not: os.system("...")
+  - pattern-not: os.popen("...", ...)
+  - pattern-not: subprocess.$F("...", ..., shell=True, ...)
+  - pattern-not: subprocess.$F(["..."], ..., shell=True, ...)
+- id: team.os-command-string-building
+  languages:
+  - python
+  severity: WARNING
+  message: A process command is built from interpolated strings.
+  metadata:
+    cwe: CWE-78
+    owasp: A03:2021
+    vuln_class: OS_COMMAND_INJECTION
+    confidence: high
+    severity: critical
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  pattern-either:
+  - pattern: subprocess.$F(f"...", ...)
+  - pattern: subprocess.$F("..." % $X, ...)
+  - pattern: subprocess.$F("...".format(...), ...)
+  - pattern: subprocess.$F("..." + $X, ...)
+  - pattern: shlex.split(f"...", ...)
+  - pattern: shlex.split("..." % $X, ...)
+  - pattern: shlex.split("...".format(...), ...)
+- id: team.py.cmdi-taint
+  languages:
+  - python
+  severity: ERROR
+  message: Request data reaches a shell command.
+  metadata:
+    cwe: CWE-78
+    owasp: A03:2021
+    vuln_class: OS_COMMAND_INJECTION
+    confidence: high
+    severity: critical
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+    change_v4: Rule moi trong v4.
+  mode: taint
+  pattern-sources:
+  - pattern: flask.request.args
+  - pattern: flask.request.form
+  - pattern: flask.request.values
+  - pattern: flask.request.cookies
+  - pattern: flask.request.headers
+  - pattern: flask.request.get_json(...)
+  - pattern: flask.request.json
+  - pattern: request.args
+  - pattern: request.form
+  - pattern: request.values
+  - pattern: request.cookies
+  - pattern: request.json
+  - pattern: request.GET
+  - pattern: request.POST
+  - pattern: request.COOKIES
+  - pattern: request.query_params
+  - pattern: request.path_params
+  pattern-sinks:
+  - pattern-either:
+    - pattern: os.system(...)
+    - pattern: os.popen(...)
+    - pattern: subprocess.$F(..., shell=True, ...)
+    - pattern: commands.getoutput(...)
+  pattern-sanitizers:
+  - pattern: shlex.quote(...)
+  - pattern: pipes.quote(...)
+  - pattern: int(...)
+  - patterns:
+    - pattern-either:
+      - pattern: $F(...)
+      - pattern: $O.$F(...)
+    - metavariable-regex:
+        metavariable: $F
+        regex: (?i)^(validate|sanitize|sanitise|escape|clean|is_?valid)\w*$
+- id: team.audit.process-api
+  languages:
+  - python
+  severity: INFO
+  message: A process/shell API is used (audit hint).
+  metadata:
+    cwe: CWE-78
+    owasp: A03:2021
+    vuln_class: OS_COMMAND_INJECTION
+    confidence: audit
+    severity: critical
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.1.0
+    ruleset_version: 4.2.0
+    change_v4: Bo lenh la hang chuoi (khong the bi chen du lieu).
+  patterns:
+  - pattern-either:
+    - pattern: subprocess.$F(...)
+    - pattern: os.system(...)
+    - pattern: os.popen(...)
+    - pattern: os.spawnv(...)
+    - pattern: pexpect.spawn(...)
+    - pattern: shlex.split(...)
+  - pattern-not: os.system("...")
+  - pattern-not: os.popen("...", ...)
+  - pattern-not: subprocess.$F("...", ...)
+- id: team.path-request-taint
+  languages:
+  - python
+  severity: ERROR
+  message: Request data is used as a file system path.
+  metadata:
+    cwe: CWE-22
+    owasp: A01:2021
+    vuln_class: PATH_TRAVERSAL
+    confidence: high
+    severity: high
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  mode: taint
+  pattern-sources:
+  - pattern: request.args
+  - pattern: request.form
+  - pattern: request.values
+  - pattern: request.files
+  - pattern: request.GET
+  - pattern: request.POST
+  - pattern: request.path_params
+  - pattern: request.query_params
+  - pattern: request.match_info
+  pattern-sinks:
+  - patterns:
+    - pattern-either:
+      - pattern: open($X, ...)
+      - pattern: send_file($X, ...)
+      - pattern: FileResponse($X, ...)
+      - pattern: os.path.join($BASE, ..., $X, ...)
+      - pattern: os.remove($X)
+      - pattern: os.unlink($X)
+      - pattern: shutil.rmtree($X, ...)
+      - pattern: Path($X, ...)
+    - focus-metavariable: $X
+  pattern-sanitizers:
+  - pattern: os.path.basename(...)
+  - pattern: secure_filename(...)
+  - pattern: safe_join(...)
+  - pattern: int(...)
+- id: team.path-traversal
+  languages:
+  - python
+  severity: WARNING
+  message: A user-controlled path may reach a filesystem operation.
+  metadata:
+    cwe: CWE-22
+    owasp: A01:2021
+    vuln_class: PATH_TRAVERSAL
+    confidence: high
+    severity: high
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  pattern-regex: (?i)\b(?:open|Path|send_file|send_from_directory|FileResponse|serve_file|join)\s*\([^)\n]*(?:request\.(?:args|form|values|json|files|GET|POST|path_params|query_params|match_info))
+- id: team.archive-extract-all
+  languages:
+  - python
+  severity: WARNING
+  message: Archive members are extracted without filtering their paths.
+  metadata:
+    cwe: CWE-22
+    owasp: A01:2021
+    vuln_class: PATH_TRAVERSAL
+    confidence: audit
+    severity: high
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  patterns:
+  - pattern-either:
+    - pattern: $ARCHIVE.extractall(...)
+    - pattern: $ARCHIVE.extractfile(...)
+  - pattern-not: $ARCHIVE.extractall(..., filter=$F, ...)
+- id: team.audit.file-path-api
+  languages:
+  - python
+  severity: INFO
+  message: A file system API receives a non-literal path (audit hint).
+  metadata:
+    cwe: CWE-22
+    owasp: A01:2021
+    vuln_class: PATH_TRAVERSAL
+    confidence: audit
+    severity: high
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  patterns:
+  - pattern-either:
+    - pattern: open($P, ...)
+    - pattern: send_file($P, ...)
+    - pattern: os.remove($P)
+    - pattern: os.unlink($P)
+    - pattern: shutil.rmtree($P, ...)
+    - pattern: shutil.copy($P, ...)
+    - pattern: os.makedirs($P, ...)
+    - pattern: $Z.extract($M, ...)
+  - pattern-not: open("...", ...)
+  - pattern-not: send_file("...", ...)
+- id: team.path-from-parameter
+  languages:
+  - python
+  severity: WARNING
+  message: A function argument is used to build a filesystem path without normalisation.
+  metadata:
+    cwe: CWE-22
+    owasp: A01:2021
+    vuln_class: PATH_TRAVERSAL
+    confidence: audit
+    severity: high
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  mode: taint
+  pattern-sources:
+  - patterns:
+    - pattern-inside: "def $FUNC(..., $PARAM, ...):\n  ...\n"
+    - focus-metavariable: $PARAM
+    - metavariable-regex:
+        metavariable: $PARAM
+        regex: ^(?!self$|cls$)\w+$
+  pattern-sinks:
+  - patterns:
+    - pattern-either:
+      - pattern: os.path.join($BASE, ..., $X, ...)
+      - pattern: send_file($X, ...)
+      - pattern: FileResponse($X, ...)
+      - pattern: serve_file($X, ...)
+      - patterns:
+        - pattern: $BASE / $X
+        - metavariable-regex:
+            metavariable: $BASE
+            regex: (?i).*(?:dir|path|root|folder|base|Path\().*
+    - focus-metavariable: $X
+  pattern-sanitizers:
+  - pattern-either:
+    - pattern: os.path.basename(...)
+    - pattern: os.path.realpath(...)
+    - pattern: os.path.abspath(...)
+    - pattern: os.path.normpath(...)
+    - pattern: secure_filename(...)
+    - pattern: safe_join(...)
+    - pattern: $P.resolve(...)
+- id: team.py.audit.pathlib-api
+  languages:
+  - python
+  severity: INFO
+  message: A pathlib/shutil/os file operation receives a non-literal path (audit hint).
+  metadata:
+    cwe: CWE-22
+    owasp: A01:2021
+    vuln_class: PATH_TRAVERSAL
+    confidence: audit
+    severity: high
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+    change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
+  patterns:
+  - pattern-either:
+    - pattern: pathlib.Path($P, ...)
+    - pattern: Path($P, ...)
+    - pattern: shutil.move($A, $P)
+    - pattern: os.rename($A, $P)
+    - pattern: os.replace($A, $P)
+    - pattern: tarfile.open($P, ...)
+    - pattern: zipfile.ZipFile($P, ...)
+  - pattern-not: pathlib.Path("...", ...)
+  - pattern-not: Path("...", ...)
+  - pattern-not: Path(__file__, ...)
+  - pattern-not: pathlib.Path(__file__, ...)
+  - pattern-not: Path()
+- id: team.py.sqli-taint
+  languages:
+  - python
+  severity: ERROR
+  message: Request data reaches an SQL query string.
+  metadata:
+    cwe: CWE-89
+    owasp: A03:2021
+    vuln_class: SQL_INJECTION
+    confidence: high
+    severity: critical
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+    change_v4: Rule moi trong v4.
+  mode: taint
+  pattern-sources:
+  - pattern: flask.request.args
+  - pattern: flask.request.form
+  - pattern: flask.request.values
+  - pattern: flask.request.cookies
+  - pattern: flask.request.headers
+  - pattern: flask.request.get_json(...)
+  - pattern: flask.request.json
+  - pattern: request.args
+  - pattern: request.form
+  - pattern: request.values
+  - pattern: request.cookies
+  - pattern: request.json
+  - pattern: request.GET
+  - pattern: request.POST
+  - pattern: request.COOKIES
+  - pattern: request.query_params
+  - pattern: request.path_params
+  pattern-sinks:
+  - patterns:
+    - pattern-either:
+      - pattern: $C.execute($Q, ...)
+      - pattern: $C.executemany($Q, ...)
+      - pattern: $C.executescript($Q)
+      - pattern: $M.objects.raw($Q, ...)
+      - pattern: RawSQL($Q, ...)
+      - pattern: text($Q)
+    - focus-metavariable: $Q
+  pattern-sanitizers:
+  - pattern: int(...)
+  - pattern: float(...)
+  - patterns:
+    - pattern-either:
+      - pattern: $F(...)
+      - pattern: $O.$F(...)
+    - metavariable-regex:
+        metavariable: $F
+        regex: (?i)^(validate|sanitize|sanitise|escape|clean|is_?valid)\w*$
+- id: team.sql-injection
+  languages:
+  - python
+  severity: WARNING
+  message: SQL query appears to use dynamic string construction.
+  metadata:
+    cwe: CWE-89
+    owasp: A03:2021
+    vuln_class: SQL_INJECTION
+    confidence: high
+    severity: critical
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  pattern-regex: (?i)\b(?:execute|executemany|executescript|raw|extra|text)\s*\(\s*(?:f["']|["'][^"']*["']\s*(?:%|\+)|["'][^"']*["']\.format\s*\()
+- id: team.audit.sql-api
+  languages:
+  - python
+  severity: INFO
+  message: SQL execution API used (audit hint).
+  metadata:
+    cwe: CWE-89
+    owasp: A03:2021
+    vuln_class: SQL_INJECTION
+    confidence: audit
+    severity: critical
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.1.0
+    ruleset_version: 4.2.0
+    change_v4: Chi xet doi tuong ten giong DB (cursor/conn/db/session/engine) va bo cau truy van hang chuoi.
+  pattern-either:
+  - patterns:
+    - pattern-either:
+      - pattern: $C.execute($Q, ...)
+      - pattern: $C.executemany($Q, ...)
+      - pattern: $C.executescript($Q)
+    - pattern-not: $C.execute("...", ...)
+    - pattern-not: $C.executemany("...", ...)
+    - metavariable-regex:
+        metavariable: $C
+        regex: (?i)^(self\.)?(\w*cur\w*|\w*conn\w*|\w*db\w*|\w*session\w*|\w*engine\w*|c)$
+  - pattern: $M.objects.raw($Q, ...)
+  - pattern: $QS.extra(...)
+  - pattern: RawSQL($Q, ...)
+  - pattern: text($Q)
+- id: team.sql-string-building
+  languages:
+  - python
+  severity: WARNING
+  message: SQL text is built by interpolating or concatenating values.
+  metadata:
+    cwe: CWE-89
+    owasp: A03:2021
+    vuln_class: SQL_INJECTION
+    confidence: audit
+    severity: critical
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  pattern-regex: (?i)(?:\bf"[^"\n]*\b(?:select\s|insert\s+into|delete\s+from|update\s+\S+\s+set|where\s|order\s+by|group\s+by|values\s*\(|join\s)[^"\n]*\{|\bf'[^'\n]*\b(?:select\s|insert\s+into|delete\s+from|update\s+\S+\s+set|where\s|order\s+by|group\s+by|values\s*\(|join\s)[^'\n]*\{|"[^"\n]*\b(?:select\s|insert\s+into|delete\s+from|update\s+\S+\s+set|where\s|order\s+by|group\s+by|values\s*\(|join\s)[^"\n]*"\s*(?:%\s*[\w(]|\+\s*[\w(]|\.format\s*\()|'[^'\n]*\b(?:select\s|insert\s+into|delete\s+from|update\s+\S+\s+set|where\s|order\s+by|group\s+by|values\s*\(|join\s)[^'\n]*'\s*(?:%\s*[\w(]|\+\s*[\w(]|\.format\s*\())
+- id: team.py.xss-taint
+  languages:
+  - python
+  severity: ERROR
+  message: Request data is returned as HTML without escaping.
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: high
+    severity: medium
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+    change_v4: Rule moi trong v4.
+  mode: taint
+  pattern-sources:
+  - pattern: flask.request.args
+  - pattern: flask.request.form
+  - pattern: flask.request.values
+  - pattern: flask.request.cookies
+  - pattern: flask.request.headers
+  - pattern: flask.request.get_json(...)
+  - pattern: flask.request.json
+  - pattern: request.args
+  - pattern: request.form
+  - pattern: request.values
+  - pattern: request.cookies
+  - pattern: request.json
+  - pattern: request.GET
+  - pattern: request.POST
+  - pattern: request.COOKIES
+  - pattern: request.query_params
+  - pattern: request.path_params
+  pattern-sinks:
+  - pattern-either:
+    - pattern: HttpResponse(...)
+    - pattern: make_response(...)
+    - pattern: render_template_string(...)
+    - pattern: Markup(...)
+    - pattern: mark_safe(...)
+    - pattern: self.write(...)
+  pattern-sanitizers:
+  - pattern: escape(...)
+  - pattern: html.escape(...)
+  - pattern: markupsafe.escape(...)
+  - pattern: bleach.clean(...)
+  - pattern: int(...)
+  - pattern: json.dumps(...)
+  - pattern: render_template(...)
+  - patterns:
+    - pattern-either:
+      - pattern: $F(...)
+      - pattern: $O.$F(...)
+    - metavariable-regex:
+        metavariable: $F
+        regex: (?i)^(validate|sanitize|sanitise|escape|clean|is_?valid)\w*$
+- id: team.xss-response-formatting
+  languages:
+  - python
+  severity: WARNING
+  message: An HTTP response body is built by formatting values directly.
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: high
+    severity: medium
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  pattern-either:
+  - pattern: HttpResponse("..." % $X, ...)
+  - pattern: HttpResponse("...".format(...), ...)
+  - pattern: HttpResponse(f"...", ...)
+  - pattern: HttpResponse($A + $B, ...)
+  - pattern: make_response("..." % $X, ...)
+  - pattern: make_response(f"...", ...)
+  - pattern: make_response($A + $B, ...)
+- id: team.xss-unsafe-html
+  languages:
+  - python
+  severity: WARNING
+  message: Potentially untrusted content is inserted into HTML without escaping.
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: high
+    severity: medium
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  pattern-either:
+  - pattern: mark_safe($VALUE)
+  - pattern: Markup($VALUE)
+  - pattern: SafeString($VALUE)
+  - pattern: render_template_string($VALUE)
+  - pattern: jinja2.Environment(..., autoescape=False, ...)
+  - pattern: Environment(..., autoescape=False, ...)
+- id: team.audit.html-output-api
+  languages:
+  - python
+  severity: INFO
+  message: HTML is produced from a non-literal value (audit hint).
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: audit
+    severity: medium
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.1.0
+    ruleset_version: 4.2.0
+    change_v4: self.write thay cho $SELF.write (truoc day khop nham f.write ghi file).
+  patterns:
+  - pattern-either:
+    - pattern: HttpResponse($X, ...)
+    - pattern: make_response($X, ...)
+    - pattern: render_template_string($X, ...)
+    - pattern: self.write($X)
+    - pattern: self.finish($X)
+    - pattern: format_html($X, ...)
+    - pattern: SafeText($X)
+  - pattern-not: HttpResponse("...", ...)
+  - pattern-not: self.write("...")
+  - pattern-not: make_response("...", ...)
+- id: team.xss-html-string-building
+  languages:
+  - python
+  severity: WARNING
+  message: HTML markup is built by interpolating or concatenating values.
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: audit
+    severity: medium
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+  pattern-regex: (?i)(?:\bf"[^"\n]*<\/?[a-z][a-z0-9]*[\s>/][^"\n]*\{|\bf'[^'\n]*<\/?[a-z][a-z0-9]*[\s>/][^'\n]*\{|"[^"\n]*<\/?[a-z][a-z0-9]*[\s>/][^"\n]*"\s*(?:%\s*[\w(]|\+\s*[\w(]|\.format\s*\()|'[^'\n]*<\/?[a-z][a-z0-9]*[\s>/][^'\n]*'\s*(?:%\s*[\w(]|\+\s*[\w(]|\.format\s*\()|[\w)\]]\s*\+\s*[\"']\s*<\/[a-z])
+- id: team.py.xss-jinja-autoescape-default
+  languages:
+  - python
+  severity: WARNING
+  message: A Jinja2 environment/template is created without autoescape (Jinja2 default is off) (audit).
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: audit
+    severity: medium
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+    change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
+  pattern-either:
+  - patterns:
+    - pattern-either:
+      - pattern: jinja2.Environment(...)
+      - pattern: Environment(...)
+    - pattern-not: jinja2.Environment(..., autoescape=$A, ...)
+    - pattern-not: Environment(..., autoescape=$A, ...)
+  - pattern: jinja2.Template(...)
+- id: team.py.audit.response-body
+  languages:
+  - python
+  severity: INFO
+  message: An HTTP response body is built from a non-literal value (audit hint).
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: audit
+    severity: medium
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.0.0
+    ruleset_version: 4.2.0
+    change_v4: Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5).
+  patterns:
+  - pattern-either:
+    - pattern: flask.Response($X, ...)
+    - pattern: Response($X, ...)
+    - pattern: web.Response(..., text=$X, ...)
+    - pattern: web.Response(..., body=$X, ...)
+  - pattern-not: Response("...", ...)
+  - pattern-not: flask.Response("...", ...)
+  - pattern-not: Response(json.dumps(...), ...)
+  - pattern-not: flask.Response(json.dumps(...), ...)
+  - pattern-not: web.Response(..., text="...", ...)

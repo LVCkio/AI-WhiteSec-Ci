@@ -1,0 +1,537 @@
+{
+  "dataset_version": "v2.3",
+  "dataset_dir": "D:\\Đồ án FCA26IA18\\dataset_model\\dataset\\v2.3",
+  "split": "val",
+  "n": 1225,
+  "semgrep_version": "1.181.0",
+  "rules_sha256": "bff761dd3726fa3a094109e30dc3d6f62612254d4cf135e3a1e627ac2b863986",
+  "data_sha256": "06033fd87b462364b81981d97a6dd4075402e8db99e28e9d1d40a041127ed28c",
+  "data_card_sha256": "8375187538f27dbf18a92609ff70cf382702a0e1f14844101768d784623077b6",
+  "config": "D:\\Đồ án FCA26IA18\\main\\security-config\\semgrep\\semgrep.yml",
+  "baseline_csv": null,
+  "n_positive": 381,
+  "n_negative": 844,
+  "correct_positive": 132,
+  "correct_high": 17,
+  "negative_flagged": 159,
+  "negative_high": 13,
+  "new_correct_vs_baseline": 132,
+  "parse": {
+    "partial": 92,
+    "ok": 1118,
+    "error": 15
+  },
+  "n_scanned": 1225,
+  "rules": {
+    "team.audit.html-output-api": {
+      "positive_hits": 4,
+      "correct_positive": 2,
+      "new_positive_vs_baseline": 2,
+      "negative_hits": 7
+    },
+    "team.audit.process-api": {
+      "positive_hits": 5,
+      "correct_positive": 5,
+      "new_positive_vs_baseline": 5,
+      "negative_hits": 5
+    },
+    "team.audit.sql-api": {
+      "negative_hits": 3,
+      "correct_positive": 2,
+      "new_positive_vs_baseline": 2,
+      "positive_hits": 3
+    },
+    "team.hardcoded-credentials": {
+      "positive_hits": 3,
+      "correct_positive": 3,
+      "new_positive_vs_baseline": 3,
+      "negative_hits": 1
+    },
+    "team.java.audit.file-path-api": {
+      "negative_hits": 11,
+      "correct_positive": 6,
+      "new_positive_vs_baseline": 6,
+      "positive_hits": 7
+    },
+    "team.java.audit.response-output": {
+      "positive_hits": 1,
+      "correct_positive": 0,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 1
+    },
+    "team.java.audit.sql-api": {
+      "positive_hits": 14,
+      "correct_positive": 14,
+      "new_positive_vs_baseline": 14,
+      "negative_hits": 9
+    },
+    "team.java.hardcoded-secret": {
+      "positive_hits": 1,
+      "correct_positive": 1,
+      "new_positive_vs_baseline": 1
+    },
+    "team.java.path-taint": {
+      "negative_hits": 1,
+      "correct_positive": 0,
+      "new_positive_vs_baseline": 0
+    },
+    "team.java.path-upload-name": {
+      "negative_hits": 2,
+      "correct_positive": 0,
+      "new_positive_vs_baseline": 0
+    },
+    "team.java.sqli-concat": {
+      "positive_hits": 7,
+      "correct_positive": 7,
+      "new_positive_vs_baseline": 7
+    },
+    "team.java.xss-html-concat": {
+      "positive_hits": 2,
+      "correct_positive": 0,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 2
+    },
+    "team.java.xss-taint": {
+      "positive_hits": 1,
+      "correct_positive": 0,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 1
+    },
+    "team.java.xss-writer-output": {
+      "positive_hits": 1,
+      "correct_positive": 0,
+      "new_positive_vs_baseline": 0,
+      "negative_hits": 1
+    },
+    "team.js.audit.fs-path-api": {
+      "positive_hits": 5,
+      "correct_positive": 5,
+      "new_positive_vs_baseline": 5,
+      "negative_hits": 7
+    },
+    "team.js.audit.process-api": {
+      "positive_hits": 6,
+      "correct_positive": 6,
+      "new_positive_vs_baseline": 6,
+      "negative_hits": 9
+    },
+    "team.js.cmd-shell": {
+      "positive_hits": 2,
+      "correct_positive": 2,
+      "new_positive_vs_baseline": 2,
+      "negative_hits": 1
+    },
+    "team.js.hardcoded-secret": {
+      "positive_hits": 3,
+      "correct_positive": 3,
+      "new_positive_vs_baseline": 3
+    },
+    "team.js.sqli-string": {
+      "negative_hits": 1,
+      "correct_positive": 0,
+      "new_positive_vs_baseline": 0
+    },
+    "team.js.xss-dom-sink": {
+      "positive_hits": 25,
+      "correct_positive": 25,
+      "new_positive_vs_baseline": 25,
+      "negative_hits": 22
+    },
+    "team.js.xss-html-concat": {
+      "positive_hits": 20,
+      "correct_positive": 20,
+      "new_positive_vs_baseline": 20,
+      "negative_hits": 21
+    },
+    "team.js.xss-jquery-insert": {
+      "positive_hits": 4,
+      "correct_positive": 4,
+      "new_positive_vs_baseline": 4,
+      "negative_hits": 3
+    },
+    "team.os-command-injection": {
+      "positive_hits": 4,
+      "correct_positive": 4,
+      "new_positive_vs_baseline": 4,
+      "negative_hits": 2
+    },
+    "team.path-from-parameter": {
+      "negative_hits": 4,
+      "correct_positive": 6,
+      "new_positive_vs_baseline": 6,
+      "positive_hits": 8
+    },
+    "team.php.audit.echo-unescaped": {
+      "positive_hits": 13,
+      "correct_positive": 10,
+      "new_positive_vs_baseline": 10,
+      "negative_hits": 19
+    },
+    "team.php.audit.process-api": {
+      "negative_hits": 1,
+      "correct_positive": 0,
+      "new_positive_vs_baseline": 0
+    },
+    "team.php.audit.sql-api": {
+      "positive_hits": 26,
+      "correct_positive": 26,
+      "new_positive_vs_baseline": 26,
+      "negative_hits": 35
+    },
+    "team.php.audit.xss-template-echo": {
+      "positive_hits": 6,
+      "correct_positive": 6,
+      "new_positive_vs_baseline": 6,
+      "negative_hits": 5
+    },
+    "team.php.hardcoded-password-compare": {
+      "positive_hits": 1,
+      "correct_positive": 1,
+      "new_positive_vs_baseline": 1
+    },
+    "team.php.hardcoded-secret": {
+      "positive_hits": 1,
+      "correct_positive": 1,
+      "new_positive_vs_baseline": 1,
+      "negative_hits": 1
+    },
+    "team.php.path-taint": {
+      "negative_hits": 1,
+      "correct_positive": 0,
+      "new_positive_vs_baseline": 0
+    },
+    "team.php.sqli-string": {
+      "negative_hits": 30,
+      "correct_positive": 19,
+      "new_positive_vs_baseline": 19,
+      "positive_hits": 19
+    },
+    "team.php.sqli-taint": {
+      "positive_hits": 1,
+      "correct_positive": 1,
+      "new_positive_vs_baseline": 1,
+      "negative_hits": 2
+    },
+    "team.php.xss-taint": {
+      "positive_hits": 5,
+      "correct_positive": 5,
+      "new_positive_vs_baseline": 5,
+      "negative_hits": 3
+    },
+    "team.php.xss-template-request": {
+      "positive_hits": 1,
+      "correct_positive": 1,
+      "new_positive_vs_baseline": 1
+    },
+    "team.py.audit.pathlib-api": {
+      "negative_hits": 3,
+      "correct_positive": 2,
+      "new_positive_vs_baseline": 2,
+      "positive_hits": 2
+    },
+    "team.py.audit.response-body": {
+      "negative_hits": 2,
+      "correct_positive": 0,
+      "new_positive_vs_baseline": 0
+    },
+    "team.py.sqli-taint": {
+      "positive_hits": 1,
+      "correct_positive": 1,
+      "new_positive_vs_baseline": 1
+    },
+    "team.py.xss-taint": {
+      "negative_hits": 2,
+      "correct_positive": 1,
+      "new_positive_vs_baseline": 1,
+      "positive_hits": 2
+    },
+    "team.sql-injection": {
+      "positive_hits": 1,
+      "correct_positive": 1,
+      "new_positive_vs_baseline": 1
+    },
+    "team.sql-string-building": {
+      "positive_hits": 1,
+      "correct_positive": 1,
+      "new_positive_vs_baseline": 1,
+      "negative_hits": 1
+    },
+    "team.xss-html-string-building": {
+      "negative_hits": 4,
+      "correct_positive": 2,
+      "new_positive_vs_baseline": 2,
+      "positive_hits": 2
+    },
+    "team.xss-unsafe-html": {
+      "negative_hits": 5,
+      "correct_positive": 1,
+      "new_positive_vs_baseline": 1,
+      "positive_hits": 1
+    }
+  },
+  "pairs": {
+    "team.php.hardcoded-secret": {
+      "correct_before_with_after": 0,
+      "after_still_flagged": 0
+    },
+    "team.java.hardcoded-secret": {
+      "correct_before_with_after": 0,
+      "after_still_flagged": 0
+    },
+    "team.js.hardcoded-secret": {
+      "correct_before_with_after": 0,
+      "after_still_flagged": 0
+    },
+    "team.hardcoded-credentials": {
+      "correct_before_with_after": 0,
+      "after_still_flagged": 0
+    },
+    "team.php.hardcoded-password-compare": {
+      "correct_before_with_after": 0,
+      "after_still_flagged": 0
+    },
+    "team.audit.html-output-api": {
+      "correct_before_with_after": 2,
+      "after_still_flagged": 2
+    },
+    "team.java.audit.sql-api": {
+      "correct_before_with_after": 14,
+      "after_still_flagged": 6
+    },
+    "team.java.sqli-concat": {
+      "correct_before_with_after": 7,
+      "after_still_flagged": 0
+    },
+    "team.java.xss-html-concat": {
+      "correct_before_with_after": 0,
+      "after_still_flagged": 0
+    },
+    "team.js.audit.process-api": {
+      "correct_before_with_after": 6,
+      "after_still_flagged": 5
+    },
+    "team.js.cmd-shell": {
+      "correct_before_with_after": 2,
+      "after_still_flagged": 1
+    },
+    "team.php.audit.sql-api": {
+      "correct_before_with_after": 26,
+      "after_still_flagged": 24
+    },
+    "team.js.xss-html-concat": {
+      "correct_before_with_after": 20,
+      "after_still_flagged": 17
+    },
+    "team.js.xss-dom-sink": {
+      "correct_before_with_after": 25,
+      "after_still_flagged": 17
+    },
+    "team.php.sqli-string": {
+      "correct_before_with_after": 19,
+      "after_still_flagged": 19
+    },
+    "team.java.audit.file-path-api": {
+      "correct_before_with_after": 6,
+      "after_still_flagged": 6
+    },
+    "team.java.path-upload-name": {
+      "correct_before_with_after": 0,
+      "after_still_flagged": 0
+    },
+    "team.py.audit.pathlib-api": {
+      "correct_before_with_after": 2,
+      "after_still_flagged": 2
+    },
+    "team.xss-html-string-building": {
+      "correct_before_with_after": 2,
+      "after_still_flagged": 2
+    },
+    "team.path-from-parameter": {
+      "correct_before_with_after": 6,
+      "after_still_flagged": 1
+    },
+    "team.xss-unsafe-html": {
+      "correct_before_with_after": 1,
+      "after_still_flagged": 1
+    },
+    "team.java.audit.response-output": {
+      "correct_before_with_after": 0,
+      "after_still_flagged": 0
+    },
+    "team.java.xss-writer-output": {
+      "correct_before_with_after": 0,
+      "after_still_flagged": 0
+    },
+    "team.java.xss-taint": {
+      "correct_before_with_after": 0,
+      "after_still_flagged": 0
+    },
+    "team.js.xss-jquery-insert": {
+      "correct_before_with_after": 4,
+      "after_still_flagged": 3
+    },
+    "team.java.path-taint": {
+      "correct_before_with_after": 0,
+      "after_still_flagged": 0
+    },
+    "team.audit.process-api": {
+      "correct_before_with_after": 5,
+      "after_still_flagged": 4
+    },
+    "team.audit.sql-api": {
+      "correct_before_with_after": 2,
+      "after_still_flagged": 1
+    },
+    "team.php.audit.echo-unescaped": {
+      "correct_before_with_after": 10,
+      "after_still_flagged": 7
+    },
+    "team.php.xss-taint": {
+      "correct_before_with_after": 5,
+      "after_still_flagged": 1
+    },
+    "team.php.audit.xss-template-echo": {
+      "correct_before_with_after": 6,
+      "after_still_flagged": 4
+    },
+    "team.os-command-injection": {
+      "correct_before_with_after": 4,
+      "after_still_flagged": 2
+    },
+    "team.py.xss-taint": {
+      "correct_before_with_after": 1,
+      "after_still_flagged": 1
+    },
+    "team.js.audit.fs-path-api": {
+      "correct_before_with_after": 5,
+      "after_still_flagged": 5
+    },
+    "team.sql-injection": {
+      "correct_before_with_after": 1,
+      "after_still_flagged": 0
+    },
+    "team.sql-string-building": {
+      "correct_before_with_after": 1,
+      "after_still_flagged": 0
+    },
+    "team.py.sqli-taint": {
+      "correct_before_with_after": 1,
+      "after_still_flagged": 0
+    },
+    "team.php.xss-template-request": {
+      "correct_before_with_after": 1,
+      "after_still_flagged": 0
+    },
+    "team.php.sqli-taint": {
+      "correct_before_with_after": 1,
+      "after_still_flagged": 1
+    },
+    "team.py.audit.response-body": {
+      "correct_before_with_after": 0,
+      "after_still_flagged": 0
+    },
+    "team.js.sqli-string": {
+      "correct_before_with_after": 0,
+      "after_still_flagged": 0
+    },
+    "team.php.path-taint": {
+      "correct_before_with_after": 0,
+      "after_still_flagged": 0
+    },
+    "team.php.audit.process-api": {
+      "correct_before_with_after": 0,
+      "after_still_flagged": 0
+    }
+  },
+  "cells": {
+    "Python|HARDCODED_CREDENTIALS": {
+      "n": 9,
+      "correct": 3
+    },
+    "Python|INSECURE_AUTHENTICATION": {
+      "n": 14,
+      "correct": 0
+    },
+    "Python|OS_COMMAND_INJECTION": {
+      "n": 13,
+      "correct": 5
+    },
+    "Python|PATH_TRAVERSAL": {
+      "n": 13,
+      "correct": 7
+    },
+    "Python|SQL_INJECTION": {
+      "n": 3,
+      "correct": 2
+    },
+    "Python|XSS": {
+      "n": 13,
+      "correct": 5
+    },
+    "Java|HARDCODED_CREDENTIALS": {
+      "n": 5,
+      "correct": 1
+    },
+    "Java|INSECURE_AUTHENTICATION": {
+      "n": 4,
+      "correct": 0
+    },
+    "Java|PATH_TRAVERSAL": {
+      "n": 10,
+      "correct": 6
+    },
+    "Java|SQL_INJECTION": {
+      "n": 20,
+      "correct": 14
+    },
+    "Java|XSS": {
+      "n": 13,
+      "correct": 0
+    },
+    "JavaScript|HARDCODED_CREDENTIALS": {
+      "n": 5,
+      "correct": 3
+    },
+    "JavaScript|INSECURE_AUTHENTICATION": {
+      "n": 6,
+      "correct": 0
+    },
+    "JavaScript|OS_COMMAND_INJECTION": {
+      "n": 38,
+      "correct": 6
+    },
+    "JavaScript|PATH_TRAVERSAL": {
+      "n": 12,
+      "correct": 5
+    },
+    "JavaScript|XSS": {
+      "n": 73,
+      "correct": 34
+    },
+    "PHP|HARDCODED_CREDENTIALS": {
+      "n": 4,
+      "correct": 2
+    },
+    "PHP|INSECURE_AUTHENTICATION": {
+      "n": 5,
+      "correct": 0
+    },
+    "PHP|OS_COMMAND_INJECTION": {
+      "n": 5,
+      "correct": 0
+    },
+    "PHP|PATH_TRAVERSAL": {
+      "n": 6,
+      "correct": 0
+    },
+    "PHP|SQL_INJECTION": {
+      "n": 45,
+      "correct": 29
+    },
+    "PHP|XSS": {
+      "n": 65,
+      "correct": 10
+    }
+  },
+  "policy": "train for development, val for aggregate evaluation; no test or target applications read; no labels changed"
+}

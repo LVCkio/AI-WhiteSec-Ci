@@ -1,0 +1,4 @@
+===== bat dau Mon 10/26/2026 12:38:45.27 ===== 
+[scan_repo] 15 file trong pham vi (loai 6); parse {'ok': 15, 'partial': 0, 'failed': 0, 'not_scanned': 0}; 190 finding (high 1, audit 189); canh bao cau hinh 0 -> security-config\semgrep\reports\p2_demo_2026-10-26\semgrep-results.json
+scan exit: 0 
+===== XONG Mon 10/26/2026 12:38:54.72 ===== 

@@ -1,5 +1,4 @@
-# Rule DA TAT trong ruleset v4.2.0 (khong vao bundle semgrep.yml). Ly do: metadata.disabled_v42.
-# Bat lai: chuyen khoi rule ve rules/php/authentication_weakness.yml, khoi phuc test tu archive/ va chay tools/ruleset.py all.
+# Disabled rules; excluded from the active bundle. See metadata.disabled_v460.
 rules:
 - id: team.php.auth-secret-equality
   languages:
@@ -15,7 +14,8 @@ rules:
     scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
     rule_version: 1.1.0
     ruleset_version: 4.2.0
-    disabled_v42: "TC4: train 0/7 dung lop; DVWA 9 bao nham dang $pass_new == $pass_conf (so sanh mat khau nhap lai)."
+    disabled_v42: 'TC4: train 0/7 dung lop; DVWA 9 bao nham dang $pass_new == $pass_conf (so sanh mat khau nhap
+      lai).'
     change_v4: Bo 'pass'/'otp' don le (khop nham $not_pass_update), so sanh voi true/false/null/hang chuoi.
   patterns:
   - pattern-either:
@@ -38,3 +38,37 @@ rules:
   - metavariable-regex:
       metavariable: $A
       regex: (?i)^\$((\w*_)?(pass|pwd|hash)(_\w*)?|[\w\[\]'"\->]*(password|passwd|token|secret)[\w\[\]'"\->]*)$
+- id: team.php.audit.auth-code
+  languages:
+  - php
+  severity: WARNING
+  message: Authentication-sensitive code (login/permission functions, session user) (audit hint).
+  metadata:
+    cwe: CWE-287
+    owasp: A07:2021
+    vuln_class: AUTHENTICATION_WEAKNESS
+    confidence: audit
+    severity: high
+    scope: PHP; superglobals ($_GET/$_POST/...), mysqli, PDO, pg_*, include/require
+    rule_version: 1.3.0
+    ruleset_version: 4.6.0
+    change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
+    change_v4: 'Rule moi trong v4.1.0 (bo sung do phu, tu phan tich mau bi bo sot tren train v5). 1.1.0: bo password_verify
+      (ham an toan, train: dung lop 10/20).'
+    previous_rule_version: 1.2.0
+    disabled_v460: 'TC4 train v2.2: 3/9 correct class (0.333), 13 negative hits. TC3: isGranted/is_granted, session
+      assignment and login-like function names identify authentication functionality, not an authentication weakness.'
+    disabled_date: '2026-10-26'
+  pattern-either:
+  - pattern: $X->is_granted(...)
+  - pattern: $X->isGranted(...)
+  - patterns:
+    - pattern: $_SESSION[$K] = $V;
+    - metavariable-regex:
+        metavariable: $K
+        regex: (?i).*(user|login|auth|logged).*
+  - patterns:
+    - pattern: function $F(...) { ... }
+    - metavariable-regex:
+        metavariable: $F
+        regex: (?i)^(login|logout|authenticate|checkPassword|verifyPassword|checkLogin|isGranted|isAuthenticated|storeUser|validateToken|checkToken|checkAuth|doLogin)$

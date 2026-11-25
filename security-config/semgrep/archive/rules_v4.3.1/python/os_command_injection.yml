@@ -1,0 +1,137 @@
+# Ruleset AI-WhiteSec-CI v4.2.0 | ngon ngu: python | lop: OS_COMMAND_INJECTION
+# confidence: high = ket luan truc tiep; audit = bat rong, can ra soat (luong SAST doc lap voi CodeBERT).
+# Test: tests/positive/python/os_command_injection.* (phai bao) va tests/negative/python/os_command_injection.* (khong duoc bao).
+rules:
+- id: team.os-command-injection
+  languages:
+  - python
+  severity: ERROR
+  message: A shell command is constructed or invoked through an unsafe API.
+  metadata:
+    cwe: CWE-78
+    owasp: A03:2021
+    vuln_class: OS_COMMAND_INJECTION
+    confidence: high
+    severity: critical
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.2.0
+    ruleset_version: 4.3.1
+    change_v43: 'severity WARNING -> ERROR (semgrep_tool.md 5.3: severity suy tu confidence high).'
+    change_v4: Bo qua lenh la hang chuoi (vi du os.system("service nginx restart")).
+  patterns:
+  - pattern-either:
+    - pattern: os.system($COMMAND)
+    - pattern: os.popen($COMMAND, ...)
+    - pattern: subprocess.$F(..., shell=True, ...)
+    - pattern: commands.getoutput(...)
+    - patterns:
+      - pattern: os.$EXEC(...)
+      - metavariable-regex:
+          metavariable: $EXEC
+          regex: ^(?:exec[lv]p?e?|spawn[lv]p?e?)$
+    - pattern-regex: (?i)\bsubprocess\.(?:Popen|run|call|check_call|check_output|getoutput|getstatusoutput)\s*\([^)\n]*shell\s*=\s*True
+  - pattern-not: os.system("...")
+  - pattern-not: os.popen("...", ...)
+  - pattern-not: subprocess.$F("...", ..., shell=True, ...)
+  - pattern-not: subprocess.$F(["..."], ..., shell=True, ...)
+- id: team.os-command-string-building
+  languages:
+  - python
+  severity: ERROR
+  message: A process command is built from interpolated strings.
+  metadata:
+    cwe: CWE-78
+    owasp: A03:2021
+    vuln_class: OS_COMMAND_INJECTION
+    confidence: high
+    severity: critical
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.1.0
+    ruleset_version: 4.3.1
+    change_v43: 'severity WARNING -> ERROR (semgrep_tool.md 5.3: severity suy tu confidence high).'
+  pattern-either:
+  - pattern: subprocess.$F(f"...", ...)
+  - pattern: subprocess.$F("..." % $X, ...)
+  - pattern: subprocess.$F("...".format(...), ...)
+  - pattern: subprocess.$F("..." + $X, ...)
+  - pattern: shlex.split(f"...", ...)
+  - pattern: shlex.split("..." % $X, ...)
+  - pattern: shlex.split("...".format(...), ...)
+- id: team.py.cmdi-taint
+  languages:
+  - python
+  severity: ERROR
+  message: Request data reaches a shell command.
+  metadata:
+    cwe: CWE-78
+    owasp: A03:2021
+    vuln_class: OS_COMMAND_INJECTION
+    confidence: high
+    severity: critical
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.0.0
+    ruleset_version: 4.3.1
+    change_v4: Rule moi trong v4.
+  mode: taint
+  pattern-sources:
+  - pattern: flask.request.args
+  - pattern: flask.request.form
+  - pattern: flask.request.values
+  - pattern: flask.request.cookies
+  - pattern: flask.request.headers
+  - pattern: flask.request.get_json(...)
+  - pattern: flask.request.json
+  - pattern: request.args
+  - pattern: request.form
+  - pattern: request.values
+  - pattern: request.cookies
+  - pattern: request.json
+  - pattern: request.GET
+  - pattern: request.POST
+  - pattern: request.COOKIES
+  - pattern: request.query_params
+  - pattern: request.path_params
+  pattern-sinks:
+  - pattern-either:
+    - pattern: os.system(...)
+    - pattern: os.popen(...)
+    - pattern: subprocess.$F(..., shell=True, ...)
+    - pattern: commands.getoutput(...)
+  pattern-sanitizers:
+  - pattern: shlex.quote(...)
+  - pattern: pipes.quote(...)
+  - pattern: int(...)
+  - patterns:
+    - pattern-either:
+      - pattern: $F(...)
+      - pattern: $O.$F(...)
+    - metavariable-regex:
+        metavariable: $F
+        regex: (?i)^(validate|sanitize|sanitise|escape|clean|is_?valid)\w*$
+- id: team.audit.process-api
+  languages:
+  - python
+  severity: WARNING
+  message: A process/shell API is used (audit hint).
+  metadata:
+    cwe: CWE-78
+    owasp: A03:2021
+    vuln_class: OS_COMMAND_INJECTION
+    confidence: audit
+    severity: critical
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.2.0
+    ruleset_version: 4.3.1
+    change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
+    change_v4: Bo lenh la hang chuoi (khong the bi chen du lieu).
+  patterns:
+  - pattern-either:
+    - pattern: subprocess.$F(...)
+    - pattern: os.system(...)
+    - pattern: os.popen(...)
+    - pattern: os.spawnv(...)
+    - pattern: pexpect.spawn(...)
+    - pattern: shlex.split(...)
+  - pattern-not: os.system("...")
+  - pattern-not: os.popen("...", ...)
+  - pattern-not: subprocess.$F("...", ...)

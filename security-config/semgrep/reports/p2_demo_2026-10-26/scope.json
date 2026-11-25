@@ -1,0 +1,92 @@
+{
+  "repo": "AI-WhiteSec-Ci",
+  "commit": "f36aa6c1e5e8af2f36266e1739fe3dc70827d29d",
+  "files": [
+    {
+      "path": "dashboard/collect.py",
+      "language": "python"
+    },
+    {
+      "path": "dashboard/project_info.py",
+      "language": "python"
+    },
+    {
+      "path": "dashboard/server.py",
+      "language": "python"
+    },
+    {
+      "path": "dashboard/static/js/agg.js",
+      "language": "javascript"
+    },
+    {
+      "path": "dashboard/static/js/alerts.js",
+      "language": "javascript"
+    },
+    {
+      "path": "dashboard/static/js/charts.js",
+      "language": "javascript"
+    },
+    {
+      "path": "dashboard/static/js/comparison.js",
+      "language": "javascript"
+    },
+    {
+      "path": "dashboard/static/js/config.js",
+      "language": "javascript"
+    },
+    {
+      "path": "dashboard/static/js/evaluation.js",
+      "language": "javascript"
+    },
+    {
+      "path": "dashboard/static/js/main.js",
+      "language": "javascript"
+    },
+    {
+      "path": "dashboard/static/js/monitoring.js",
+      "language": "javascript"
+    },
+    {
+      "path": "dashboard/static/js/overview.js",
+      "language": "javascript"
+    },
+    {
+      "path": "dashboard/static/js/ui.js",
+      "language": "javascript"
+    },
+    {
+      "path": "security-config/semgrep/tools/ruleset.py",
+      "language": "python"
+    },
+    {
+      "path": "tests/test_dashboard.py",
+      "language": "python"
+    }
+  ],
+  "excluded": [
+    {
+      "path": ".git/",
+      "reason": "ignore:.git/"
+    },
+    {
+      "path": "data_versions/",
+      "reason": "ignore:data_versions/"
+    },
+    {
+      "path": "models/",
+      "reason": "ignore:models/"
+    },
+    {
+      "path": "dashboard/__pycache__/",
+      "reason": "ignore:__pycache__/"
+    },
+    {
+      "path": "dashboard/static/vendor/",
+      "reason": "ignore:vendor/"
+    },
+    {
+      "path": "tests/__pycache__/",
+      "reason": "ignore:__pycache__/"
+    }
+  ]
+}

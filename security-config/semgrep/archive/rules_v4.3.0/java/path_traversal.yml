@@ -1,0 +1,106 @@
+# Ruleset AI-WhiteSec-CI v4.2.0 | ngon ngu: java | lop: PATH_TRAVERSAL
+# confidence: high = ket luan truc tiep; audit = bat rong, can ra soat (luong SAST doc lap voi CodeBERT).
+# Test: tests/positive/java/path_traversal.* (phai bao) va tests/negative/java/path_traversal.* (khong duoc bao).
+rules:
+- id: team.java.path-taint
+  languages:
+  - java
+  severity: ERROR
+  message: Request data is used as a file system path.
+  metadata:
+    cwe: CWE-22
+    owasp: A01:2021
+    vuln_class: PATH_TRAVERSAL
+    confidence: high
+    severity: high
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.0.0
+    ruleset_version: 4.3.0
+  mode: taint
+  pattern-sources:
+  - pattern: (javax.servlet.http.HttpServletRequest $R).$GET(...)
+  - pattern: (jakarta.servlet.http.HttpServletRequest $R).$GET(...)
+  - pattern: (HttpServletRequest $R).$GET(...)
+  - patterns:
+    - pattern-inside: '$RT $METHOD(..., @$ANNO(...) $TYPE $PARAM, ...) { ... }
+
+        '
+    - pattern: $PARAM
+    - metavariable-regex:
+        metavariable: $ANNO
+        regex: ^(RequestParam|PathVariable|RequestBody|RequestHeader|CookieValue)$
+  - patterns:
+    - pattern-inside: '$RT $METHOD(..., @$ANNO $TYPE $PARAM, ...) { ... }
+
+        '
+    - pattern: $PARAM
+    - metavariable-regex:
+        metavariable: $ANNO
+        regex: ^(RequestParam|PathVariable|RequestBody|RequestHeader|CookieValue)$
+  pattern-sinks:
+  - patterns:
+    - pattern-either:
+      - pattern: new File($X)
+      - pattern: new File($D, $X)
+      - pattern: new FileInputStream($X)
+      - pattern: new FileOutputStream($X, ...)
+      - pattern: new FileReader($X)
+      - pattern: Paths.get($X, ...)
+      - pattern: Path.of($X, ...)
+      - pattern: $BASE.resolve($X)
+    - focus-metavariable: $X
+  pattern-sanitizers:
+  - pattern: FilenameUtils.getName(...)
+  - pattern: Paths.get(...).getFileName()
+  - pattern: (File $F).getName()
+- id: team.java.audit.file-path-api
+  languages:
+  - java
+  severity: WARNING
+  message: A file system API receives a non-literal path (audit hint).
+  metadata:
+    cwe: CWE-22
+    owasp: A01:2021
+    vuln_class: PATH_TRAVERSAL
+    confidence: audit
+    severity: high
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.1.0
+    ruleset_version: 4.3.0
+    change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
+  patterns:
+  - pattern-either:
+    - pattern: new File($P)
+    - pattern: new File($D, $P)
+    - pattern: new FileInputStream($P)
+    - pattern: new FileOutputStream($P, ...)
+    - pattern: Paths.get($P, ...)
+    - pattern: Path.of($P, ...)
+    - pattern: $BASE.resolve($P)
+    - pattern: $CTX.getResourceAsStream($P)
+    - pattern: $CTX.getRealPath($P)
+    - pattern: new ZipFile($P)
+    - pattern: $ZIS.getNextEntry()
+  - pattern-not: new File("...")
+  - pattern-not: new File($D, "...")
+  - pattern-not: Paths.get("...")
+  - pattern-not: $BASE.resolve("...")
+- id: team.java.path-upload-name
+  languages:
+  - java
+  severity: WARNING
+  message: A client-supplied file name or archive entry name is used as a path (audit).
+  metadata:
+    cwe: CWE-22
+    owasp: A01:2021
+    vuln_class: PATH_TRAVERSAL
+    confidence: audit
+    severity: high
+    scope: Java; Servlet (javax/jakarta), Spring MVC, JDBC, JPA, JdbcTemplate
+    rule_version: 1.0.0
+    ruleset_version: 4.3.0
+  pattern-either:
+  - pattern: new File($D, $F.getOriginalFilename())
+  - pattern: $D.resolve($F.getOriginalFilename())
+  - pattern: new File($D, $E.getName())
+  - pattern: $D.resolve($E.getName())

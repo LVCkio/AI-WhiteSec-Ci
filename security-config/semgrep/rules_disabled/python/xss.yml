@@ -1,0 +1,32 @@
+# Disabled rules; excluded from the active bundle. See metadata.disabled_v480.
+rules:
+- id: team.audit.html-output-api
+  languages:
+  - python
+  severity: WARNING
+  message: HTML is produced from a non-literal value (audit hint).
+  metadata:
+    cwe: CWE-79
+    owasp: A03:2021
+    vuln_class: XSS
+    confidence: audit
+    severity: medium
+    scope: Python; Flask, Django, FastAPI, Tornado, DB-API (sqlite3, psycopg2, MySQLdb), SQLAlchemy
+    rule_version: 1.2.0
+    ruleset_version: 4.8.0
+    disabled_v480: 'Tat trong v4.8.0 (vai tro Semgrep la ve tinh cho CodeBERT; tieu chi TC4 v4.8 tinh precision mau gom ca mau am, nguong audit 0.25). precision mau train 9/49 = 0.18 (bo hneg 0.22); val 2/11 = 0.18. Do tren dataset v2.6 (Semgrep 1.181.0, ruleset 4.7.1): Claude outputs/semgrep_v471_val_v26/DE_XUAT_CAT_TIA_v4.7.1.md'
+    disabled_date: '2026-11-14'
+    change_v43: 'severity INFO -> WARNING (semgrep_tool.md 5.3: severity suy tu confidence audit).'
+    change_v4: self.write thay cho $SELF.write (truoc day khop nham f.write ghi file).
+  patterns:
+  - pattern-either:
+    - pattern: HttpResponse($X, ...)
+    - pattern: make_response($X, ...)
+    - pattern: render_template_string($X, ...)
+    - pattern: self.write($X)
+    - pattern: self.finish($X)
+    - pattern: format_html($X, ...)
+    - pattern: SafeText($X)
+  - pattern-not: HttpResponse("...", ...)
+  - pattern-not: self.write("...")
+  - pattern-not: make_response("...", ...)
