@@ -20,6 +20,9 @@ variables:
   AIWS_CODEBERT_IMAGE: "aiws-codebert:0.1.0"   # build bang ci/servers/server3_pipeline2.sh
   AIWS_MODEL_STORE: "/models"                  # mount tu /srv/aiws/models tren Server 3
   AIWS_OUT: "aiws-out"
+  # 28/11c (b+): p4 KHONG tu dung khi Gate goc BLOCK; p5-report (pipeline cha) chan theo Gate SAU DUYET
+  # -> BLOCK chi do bao nham: duyet tren Dashboard + Retry p5-report. Dat "1" de quay ve cach cu.
+  AIWS_GATE_ENFORCE: "0"
   # Tach ham: nhom quyet dinh (29/10) dung LIZARD tam thoi cho buoi review (giong cach tao dataset train);
   # sau review doi lai "treesitter". Doi cho mot lan chay: bien AIWS_UNIT_BACKEND khi Run pipeline.
   AIWS_UNIT_BACKEND: "lizard"

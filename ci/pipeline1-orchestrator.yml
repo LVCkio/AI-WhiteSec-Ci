@@ -12,6 +12,7 @@
 #   scan        : dispatch  - giao viec cho PIPELINE 2 (CON) tren Server 3 (ci/pipeline2-worker.yml), CHO ket qua
 #                             (strategy: depend -> Gate BLOCK hay loi o Server 3 lam pipeline cha that bai, chan merge)
 #   report      : P5-report - doc ket qua da ghi o PostgreSQL Server 2 qua WhiteSec API, in tom tat (luon chay)
+#                             28/11c: DO khi Gate sau duyet BLOCK/FAIL (p4 khong tu dung nua: AIWS_GATE_ENFORCE=0)
 #                             + ghi gate.env (AIWS_GATE = Gate SAU DUYET cua ca luot, 28/11b; AIWS_GATE_RAW = Gate goc)
 #   staging     : .aiws-deploy-staging    (CD, 25/11/2026) - CHI khi AIWS_GATE la PASS hoac INFO
 #   production  : .aiws-deploy-production (CD) - bam tay sau khi dev xem staging, chi tren nhanh main
@@ -114,7 +115,7 @@ p5-report:
     name: "$AIWS_REPORT_IMAGE"
     entrypoint: [""]
   when: always
-  allow_failure: true
+  allow_failure: false        # 28/11c (b+): p5-report CHAN khi Gate sau duyet BLOCK/FAIL (thay p4)
   variables:
     GIT_STRATEGY: none
   script:
@@ -172,6 +173,10 @@ p5-report:
           c = gar.get("counts") or {}
           print(f"Sau duyet: bao nham {c.get('false_positive', 0)} · can them thong tin {c.get('needs_info', 0)} · lo hong that {c.get('confirmed', 0)}"
                 f" · ke thua {c.get('inherited', 0)} · con {gar.get('pending_review', 0)} ham cho duyet")
+      if eff in ("BLOCK", "FAIL"):          # 28/11c (b+): pipeline DO thay cho p4 (AIWS_GATE_ENFORCE=0)
+          print(f"Security Gate cho CD = {eff} -> pipeline DO. Neu chi do bao nham: danh bao nham tren Dashboard "
+                f"(lan quet #{r['id']}) roi bam Retry job p5-report. Lo hong that: sua ma, push commit moi.")
+          raise SystemExit(1)
       dc = g.get("decisions") or {}
       print("Don vi {}: ".format(g.get("units_evaluated")) + " / ".join(f"{k} {dc.get(k, 0)}" for k in ("BLOCK", "REVIEW", "INFO", "PASS")))
       print(f"Model {rep['model'].get('name')} (dataset {rep['model'].get('dataset_version')}) | ruleset {rep['ruleset'].get('ruleset_version')}")
@@ -204,9 +209,26 @@ p5-report:
     url: $AIWS_STAGING_URL
   script:
     - |
-      case "${AIWS_GATE:-UNKNOWN}" in
-        PASS|INFO) echo "Security Gate = $AIWS_GATE (lan quet #${AIWS_RUN_ID:-?}) -> len staging" ;;
-        *) echo "Security Gate = ${AIWS_GATE:-UNKNOWN} -> CHAN truoc staging. Xem va sua tren Dashboard (lan quet #${AIWS_RUN_ID:-?}), roi quet lai commit moi."
+      # 28/11b-dx: doc lai Gate SAU DUYET luc job chay (Co che B). Duyet tren Dashboard xong -> bam Retry job nay.
+      aiws_gate_now() {
+        G="${AIWS_GATE:-UNKNOWN}"; RAW="${AIWS_GATE_RAW:-$G}"
+        if [ -n "${AIWS_RUN_ID:-}" ] && command -v curl >/dev/null 2>&1; then
+          J=$(curl -fsS -m 10 "$AIWS_API_URL/api/runs/$AIWS_RUN_ID/gate-after-review" 2>/dev/null || true)
+          V=$(printf '%s' "$J" | grep -o '"version": *"gate-sau-duyet-2' | head -1 || true)
+          L=$(printf '%s' "$J" | grep -o '"decision": *"[A-Z]*"' | head -1 | grep -o '[A-Z][A-Z]*' || true)
+          if [ -n "$V" ] && [ -n "$L" ]; then G="$L"; echo "Gate sau duyet (doc lai luc $(date +%H:%M:%S)): $G"; else echo "Khong doc lai duoc Gate sau duyet -> dung $G (luc p5-report)"; fi
+        fi
+        case "$RAW" in FAIL|UNKNOWN) G="$RAW" ;; esac
+        if [ -n "${AIWS_ANALYSIS:-}" ] && [ "$AIWS_ANALYSIS" != "sast_and_codebert" ] && [ "$G" = "PASS" ]; then G=REVIEW; fi
+        [ "$G" = "INFO" ] && G=PASS
+        AIWS_GATE_NOW="$G"
+      }
+      aiws_gate_now
+      case "$AIWS_GATE_NOW" in
+        PASS) echo "Security Gate = PASS${AIWS_INFO_COUNT:+ (co ${AIWS_INFO_COUNT} muc INFO - khong chan)} (lan quet #${AIWS_RUN_ID:-?}) -> len staging" ;;
+        REVIEW) echo "Security Gate = REVIEW -> CHO DUYET. Duyet tren Dashboard (lan quet #${AIWS_RUN_ID:-?}): danh bao nham / xac nhan, roi bam Retry job nay."
+           exit 1 ;;
+        *) echo "Security Gate = $AIWS_GATE_NOW -> CHAN truoc staging. Sua ma va push commit moi (lan quet #${AIWS_RUN_ID:-?})."
            exit 1 ;;
       esac
     - $AIWS_DEPLOY_SCRIPT staging
@@ -225,5 +247,26 @@ p5-report:
     url: $AIWS_PROD_URL
   script:
     # 26/11: boc ca dong trong nhay don - trong YAML, " #" mo dau chu thich va cat mat lenh
-    - 'echo "Duyet boi $GITLAB_USER_LOGIN ($GITLAB_USER_NAME) - commit $CI_COMMIT_SHORT_SHA, lan quet #${AIWS_RUN_ID:-?}"'
+    - |
+      # 28/11b-dx: doc lai Gate SAU DUYET luc job chay (Co che B). Duyet tren Dashboard xong -> bam Retry job nay.
+      aiws_gate_now() {
+        G="${AIWS_GATE:-UNKNOWN}"; RAW="${AIWS_GATE_RAW:-$G}"
+        if [ -n "${AIWS_RUN_ID:-}" ] && command -v curl >/dev/null 2>&1; then
+          J=$(curl -fsS -m 10 "$AIWS_API_URL/api/runs/$AIWS_RUN_ID/gate-after-review" 2>/dev/null || true)
+          V=$(printf '%s' "$J" | grep -o '"version": *"gate-sau-duyet-2' | head -1 || true)
+          L=$(printf '%s' "$J" | grep -o '"decision": *"[A-Z]*"' | head -1 | grep -o '[A-Z][A-Z]*' || true)
+          if [ -n "$V" ] && [ -n "$L" ]; then G="$L"; echo "Gate sau duyet (doc lai luc $(date +%H:%M:%S)): $G"; else echo "Khong doc lai duoc Gate sau duyet -> dung $G (luc p5-report)"; fi
+        fi
+        case "$RAW" in FAIL|UNKNOWN) G="$RAW" ;; esac
+        if [ -n "${AIWS_ANALYSIS:-}" ] && [ "$AIWS_ANALYSIS" != "sast_and_codebert" ] && [ "$G" = "PASS" ]; then G=REVIEW; fi
+        [ "$G" = "INFO" ] && G=PASS
+        AIWS_GATE_NOW="$G"
+      }
+      # Double-Check Gate: Gate sau duyet co the doi sau khi len staging (vd. nguoi duyet xac nhan lo hong that)
+      aiws_gate_now
+      if [ "$AIWS_GATE_NOW" != "PASS" ]; then
+        echo "DOUBLE-CHECK GATE: Gate hien tai = $AIWS_GATE_NOW (luc len staging: ${AIWS_GATE:-?}) -> KHONG len production. Xem Dashboard, lan quet #${AIWS_RUN_ID:-?}."
+        exit 1
+      fi
+      echo "Double-Check Gate: PASS - duyet boi $GITLAB_USER_LOGIN ($GITLAB_USER_NAME), commit $CI_COMMIT_SHORT_SHA, lan quet #${AIWS_RUN_ID:-?}"
     - $AIWS_DEPLOY_SCRIPT production
