@@ -1,6 +1,6 @@
 # =====================================================================================================
 # MAU .gitlab-ci.yml cho PROJECT CAN QUET (khong phai AI-WhiteSec-Ci) - 19/11/2026.
-# Chep file nay vao goc project can quet, dat ten .gitlab-ci.yml, sua 2 cho "root/ai-whitesec-ci" va "main"
+# Chep file nay vao goc project can quet, dat ten .gitlab-ci.yml, sua 2 cho "whitesec-du-an/ai-whitesec-ci" va "main"
 # neu duong dan / nhanh cua project AI-WhiteSec-Ci tren GitLab khac. Pipeline 1, Pipeline 2 va job Semgrep
 # deu lay tu AI-WhiteSec-Ci, khong can chep file nao khac.
 #
@@ -12,12 +12,13 @@
 #      Settings -> CI/CD -> Runners -> Enable cho tung runner (hoac dang ky lai thanh group/instance runner).
 #   3. Bien CI/CD AIWS_DB_DSN (P5 ghi PostgreSQL Server 2) dat o project nay hoac o group (Masked).
 #   4. Ref "main" phai co ban ci/ va security-config/semgrep/ can dung (vd sau khi merge nhanh semgrep/v481).
+# 28/11c: AI-WhiteSec-Ci da chuyen vao nhom whitesec-du-an (truoc la root/ai-whitesec-ci).
 # Bien GitLab cho phep trong include: project/ref: chi bien project/group/instance va CI_PROJECT_*; KHONG dung
 # duoc bien khai bao trong file nay -> de nguyen chu.
 # =====================================================================================================
 
 include:
-  - project: "root/ai-whitesec-ci"
+  - project: "whitesec-du-an/ai-whitesec-ci"
     ref: main
     file: "/ci/pipeline1-orchestrator.yml"
 
@@ -25,7 +26,7 @@ dispatch-worker:
   extends: .aiws-dispatch
   trigger:
     include:
-      - project: "root/ai-whitesec-ci"
+      - project: "whitesec-du-an/ai-whitesec-ci"
         ref: main
         file: "/ci/pipeline2-worker.yml"
 
