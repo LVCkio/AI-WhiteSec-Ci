@@ -129,6 +129,9 @@ def ci_context() -> dict:
         "pipeline_id": e("CI_PIPELINE_ID"), "pipeline_url": e("CI_PIPELINE_URL"),
         "parent_pipeline_id": e("AIWS_PARENT_PIPELINE_ID") or e("CI_PIPELINE_ID"),
         "parent_pipeline_url": e("AIWS_PARENT_PIPELINE_URL"),
+        # 28/11b: so thu tu pipeline trong project (#iid tren GitLab) - dashboard hien "CI #<iid>"
+        "pipeline_iid": e("CI_PIPELINE_IID"),
+        "parent_pipeline_iid": e("AIWS_PARENT_PIPELINE_IID") or e("CI_PIPELINE_IID"),
         "source": e("AIWS_PIPELINE_SOURCE") or e("CI_PIPELINE_SOURCE"),
         "project_path": e("CI_PROJECT_PATH"), "project_url": e("CI_PROJECT_URL"),
         "ref": e("CI_COMMIT_REF_NAME"), "commit": e("CI_COMMIT_SHA"),

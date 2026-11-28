@@ -12,7 +12,7 @@
 #   scan        : dispatch  - giao viec cho PIPELINE 2 (CON) tren Server 3 (ci/pipeline2-worker.yml), CHO ket qua
 #                             (strategy: depend -> Gate BLOCK hay loi o Server 3 lam pipeline cha that bai, chan merge)
 #   report      : P5-report - doc ket qua da ghi o PostgreSQL Server 2 qua WhiteSec API, in tom tat (luon chay)
-#                             + ghi gate.env (AIWS_GATE = quyet dinh Gate cua ca luot) cho cac job deploy
+#                             + ghi gate.env (AIWS_GATE = Gate SAU DUYET cua ca luot, 28/11b; AIWS_GATE_RAW = Gate goc)
 #   staging     : .aiws-deploy-staging    (CD, 25/11/2026) - CHI khi AIWS_GATE la PASS hoac INFO
 #   production  : .aiws-deploy-production (CD) - bam tay sau khi dev xem staging, chi tren nhanh main
 #   Hai job deploy la mau an (dau cham): project can quet tu khai bao trong .gitlab-ci.yml cua no
@@ -80,6 +80,7 @@ p1-plan:
         echo "AIWS_PIPELINE_SOURCE=$SRC"
         echo "AIWS_PARENT_PIPELINE_ID=$CI_PIPELINE_ID"
         echo "AIWS_PARENT_PIPELINE_URL=$CI_PIPELINE_URL"
+        echo "AIWS_PARENT_PIPELINE_IID=$CI_PIPELINE_IID"   # 28/11b
         echo "AIWS_MR_IID=${CI_MERGE_REQUEST_IID:-}"
       } > plan.env
       echo "== Ke hoach quet =="; cat plan.env; echo "WhiteSec API Server 1: $API"
@@ -99,6 +100,7 @@ p1-plan:
   variables:
     # Pipeline con lay ke hoach (plan.env) bang needs:pipeline:job tu chinh pipeline cha nay
     AIWS_PARENT_PIPELINE_ID: $CI_PIPELINE_ID
+    AIWS_PARENT_PIPELINE_IID: $CI_PIPELINE_IID    # 28/11b: dashboard hien "CI #<iid>"
   trigger:
     strategy: depend
     forward:
@@ -121,9 +123,10 @@ p5-report:
       import json, os, urllib.request
       api, pid = os.environ["AIWS_API_URL"], os.environ["CI_PIPELINE_ID"]
 
-      def gate_env(gate, run_id=""):          # 25/11: cho job deploy; khong doc duoc -> UNKNOWN (deploy bi chan)
-          with open("gate.env", "w") as fh:
-              fh.write(f"AIWS_GATE={gate}\nAIWS_RUN_ID={run_id}\n")
+      def gate_env(gate, run_id="", raw="", nguon="", info=0, analysis="", iid=""):   # 25/11 (+28/11b: them truong)
+          with open("gate.env", "w") as fh:            # khong doc duoc -> UNKNOWN (deploy bi chan)
+              fh.write(f"AIWS_GATE={gate}\nAIWS_RUN_ID={run_id}\nAIWS_GATE_RAW={raw or gate}\nAIWS_GATE_NGUON={nguon}\n"
+                       f"AIWS_INFO_COUNT={info}\nAIWS_ANALYSIS={analysis}\nAIWS_PIPELINE_IID={iid}\n")
 
       gate_env("UNKNOWN")
       import time
@@ -145,8 +148,30 @@ p5-report:
               print("Chua co ban ghi trong PostgreSQL cho pipeline nay sau 60 s (AIWS_DB_DSN/PGPASSWORD chua dat hoac P5 loi).")
           raise SystemExit(0)
       r = hit[0]; rep = r["report"]; g = rep["gate"]
-      gate_env(str(rep.get("security_gate") or "UNKNOWN").upper(), r["id"])
-      print(f"pipeline_runs #{r['id']} | {r['status']} | Security Gate: {rep['security_gate']} | che do {g.get('scan_mode')}")
+      # 28/11b: Gate cho CD = Gate SAU DUYET (ke thua bao nham / can them thong tin / lo hong that tu version truoc).
+      #   INFO khong chan (API tra PASS). Gate goc FAIL giu FAIL; luot thieu cong cu toi thieu REVIEW; API loi -> Gate goc.
+      raw = str(rep.get("security_gate") or "UNKNOWN").upper()
+      eff, nguon, info, gar = ("PASS" if raw == "INFO" else raw), "goc", int((g.get("decisions") or {}).get("INFO") or 0), None
+      try:
+          gar = json.load(urllib.request.urlopen(f"{api}/api/runs/{r['id']}/gate-after-review", timeout=10))
+      except Exception as e:
+          print(f"Khong doc duoc Gate sau duyet ({e}) -> dung Gate goc {raw}")
+      if gar and str(gar.get("version", "")).startswith("gate-sau-duyet-2") and gar.get("decision") in ("PASS", "REVIEW", "BLOCK"):
+          eff, nguon, info = gar["decision"], "sau_duyet", int(gar.get("info_count") or 0)
+      RK = {"PASS": 0, "INFO": 1, "REVIEW": 2, "BLOCK": 3, "FAIL": 4, "UNKNOWN": 5}
+      if raw in ("FAIL", "UNKNOWN"):
+          eff = raw
+      elif rep.get("analysis_status") not in (None, "sast_and_codebert") and RK.get(eff, 5) < RK["REVIEW"]:
+          eff = "REVIEW"                       # thieu Semgrep / CodeBERT: duyet bao nham khong bu duoc
+      ci = rep.get("ci") or {}
+      gate_env(eff, r["id"], raw=raw, nguon=nguon, info=info, analysis=rep.get("analysis_status") or "",
+               iid=ci.get("parent_pipeline_iid") or os.environ.get("CI_PIPELINE_IID", ""))
+      print(f"pipeline_runs #{r['id']} | {r['status']} | Security Gate goc: {raw} | Gate cho CD ({nguon}): {eff}"
+            + (f" (co {info} muc INFO - khong chan)" if info else "") + f" | che do {g.get('scan_mode')}")
+      if gar and nguon == "sau_duyet":
+          c = gar.get("counts") or {}
+          print(f"Sau duyet: bao nham {c.get('false_positive', 0)} · can them thong tin {c.get('needs_info', 0)} · lo hong that {c.get('confirmed', 0)}"
+                f" · ke thua {c.get('inherited', 0)} · con {gar.get('pending_review', 0)} ham cho duyet")
       dc = g.get("decisions") or {}
       print("Don vi {}: ".format(g.get("units_evaluated")) + " / ".join(f"{k} {dc.get(k, 0)}" for k in ("BLOCK", "REVIEW", "INFO", "PASS")))
       print(f"Model {rep['model'].get('name')} (dataset {rep['model'].get('dataset_version')}) | ruleset {rep['ruleset'].get('ruleset_version')}")
